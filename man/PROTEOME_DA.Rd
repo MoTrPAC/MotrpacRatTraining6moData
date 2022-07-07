@@ -25,32 +25,32 @@
 \format{
 A data frame with >40000 rows and 16 variables:
 \describe{
-  \item{\code{feature_ID}}{character, analyte identifier}
-  \item{\code{tissue}}{character, MoTrPAC tissue release code}
-  \item{\code{assay}}{character, MoTrPAC assay or "ome" code. "prot-pr" for 
-      global proteomics; "prot-ph" for phosphoproteomics; "prot-ac" for
-      acetylomics; "prot-ub" for ubiquitylomics.}
-  \item{\code{sex}}{character, one of "male" or "female"}
-  \item{\code{logFC}}{double, log fold-change where the numerator is \code{comparison_group} 
-      and the denominator is the group of sex-matched sedentary control animals}
-  \item{\code{logFC_se}}{double, standard error of the log fold-change}
-  \item{\code{tscore}}{double, t statistic}
-  \item{\code{covariates}}{character, comma-separated list of covariates or NA}
-  \item{\code{comparison_group}}{character, time point compared to the sex-matched 
-      sedentary control animals, one of "1w", "2w", "4w", "8w"}
-  \item{\code{p_value}}{double, unadjusted p-value for the difference between 
-      \code{comparison_group} and the group of sex-matched sedentary control animals}
-  \item{\code{comparison_average_intensity}}{double, average intensity among the replicates in \code{comparison_group}}
-  \item{\code{reference_average_intensity}}{double, average intensity among the 
-      replicates in the group of sex-matched sedentary control animals}
-  \item{\code{numNAs}}{integer, number of missing values in the current 
-      \code{comparison_group} and sex-matched sedentary control animals}
-  \item{\code{adj_p_value}}{double, adjusted p-value from \code{p_value} column. 
-      P-values are BY-adjusted across all datasets within a given \code{assay}.}
-  \item{\code{tissue_abbreviation}}{character, MoTrPAC tissue abbreviation used in manuscripts}
-  \item{\code{selection_fdr}}{double, adjusted training p-value used to 
-      select training-regulated analytes. P-values are IHW-adjusted across all 
-      datasets within a given \code{assay} with \code{tissue} as a covariate.} 
+\item{\code{feature_ID}}{character, analyte identifier}
+\item{\code{tissue}}{character, MoTrPAC tissue release code}
+\item{\code{assay}}{character, MoTrPAC assay or "ome" code. "prot-pr" for
+global proteomics; "prot-ph" for phosphoproteomics; "prot-ac" for
+acetylomics; "prot-ub" for ubiquitylomics.}
+\item{\code{sex}}{character, one of "male" or "female"}
+\item{\code{logFC}}{double, log fold-change where the numerator is \code{comparison_group}
+and the denominator is the group of sex-matched sedentary control animals}
+\item{\code{logFC_se}}{double, standard error of the log fold-change}
+\item{\code{tscore}}{double, t statistic}
+\item{\code{covariates}}{character, comma-separated list of covariates or NA}
+\item{\code{comparison_group}}{character, time point compared to the sex-matched
+sedentary control animals, one of "1w", "2w", "4w", "8w"}
+\item{\code{p_value}}{double, unadjusted p-value for the difference between
+\code{comparison_group} and the group of sex-matched sedentary control animals}
+\item{\code{comparison_average_intensity}}{double, average intensity among the replicates in \code{comparison_group}}
+\item{\code{reference_average_intensity}}{double, average intensity among the
+replicates in the group of sex-matched sedentary control animals}
+\item{\code{numNAs}}{integer, number of missing values in the current
+\code{comparison_group} and sex-matched sedentary control animals}
+\item{\code{adj_p_value}}{double, adjusted p-value from \code{p_value} column.
+P-values are BY-adjusted across all datasets within a given \code{assay}.}
+\item{\code{tissue_abbreviation}}{character, MoTrPAC tissue abbreviation used in manuscripts}
+\item{\code{selection_fdr}}{double, adjusted training p-value used to
+select training-regulated analytes. P-values are IHW-adjusted across all
+datasets within a given \code{assay} with \code{tissue} as a covariate.}
 }
 
 An object of class \code{data.frame} with 47992 rows and 16 columns.
@@ -125,9 +125,9 @@ UBIQ_HEART_DA
 UBIQ_LIVER_DA
 }
 \description{
-Timewise summary statistics and training FDR from 
-    differential analysis (DA) that tests the effect of training on each 
-    proteomics feature (protein, phosphosite, acetylsite, ubiquitlsite) 
-    within each sex. One data frame per data type per tissue.
+Timewise summary statistics and training FDR from
+differential analysis (DA) that tests the effect of training on each
+proteomics feature (protein, phosphosite, acetylsite, ubiquitlsite)
+within each sex. One data frame per data type per tissue.
 }
 \keyword{datasets}
