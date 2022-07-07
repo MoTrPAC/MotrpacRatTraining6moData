@@ -24,27 +24,27 @@
 \format{
 A data frame with >180 rows and 15 variables:
 \describe{
-  \item{\code{feature_ID}}{character, analyte identifier}
-  \item{\code{panel}}{character, name of LUMINEX panel, e.g., "rat-mag27plex"}
-  \item{\code{tissue}}{character, MoTrPAC tissue release code}
-  \item{\code{assay}}{character, MoTrPAC assay or "ome" code. "immunoassay" for multiplexed immunoassay datasets.}
-  \item{\code{comparison_group}}{character, time point compared to the sex-matched 
-      sedentary control animals, one of "1w", "2w", "4w", "8w"}
-  \item{\code{logFC}}{double, log fold-change where the numerator is \code{comparison_group} 
-      and the denominator is the group of sex-matched sedentary control animals}
-  \item{\code{logFC_se}}{double, standard error of the log fold-change}
-  \item{\code{p_value}}{double, unadjusted p-value for the difference between 
-      \code{comparison_group} and the group of sex-matched sedentary control animals}
-  \item{\code{reference_average_intensity_se}}{double, standard error of \code{reference_average_intensity}}
-  \item{\code{comparison_average_intensity}}{double, average intensity among the replicates in \code{comparison_group}}
-  \item{\code{sex}}{character, one of "male" or "female"}
-  \item{\code{covariates}}{character, comma-separated list of covariates or NA}
-  \item{\code{adj_p_value}}{double, adjusted p-value from \code{p_value} column. 
-      P-values are BY-adjusted across all datasets within a given \code{assay}.}
-  \item{\code{tissue_abbreviation}}{character, MoTrPAC tissue abbreviation used in manuscripts}
-  \item{\code{selection_fdr}}{double, adjusted training p-value used to 
-      select training-regulated analytes. P-values are IHW-adjusted across all 
-      datasets within a given \code{assay} with \code{tissue} as a covariate.} 
+\item{\code{feature_ID}}{character, analyte identifier}
+\item{\code{panel}}{character, name of LUMINEX panel, e.g., "rat-mag27plex"}
+\item{\code{tissue}}{character, MoTrPAC tissue release code}
+\item{\code{assay}}{character, MoTrPAC assay or "ome" code. "immunoassay" for multiplexed immunoassay datasets.}
+\item{\code{comparison_group}}{character, time point compared to the sex-matched
+sedentary control animals, one of "1w", "2w", "4w", "8w"}
+\item{\code{logFC}}{double, log fold-change where the numerator is \code{comparison_group}
+and the denominator is the group of sex-matched sedentary control animals}
+\item{\code{logFC_se}}{double, standard error of the log fold-change}
+\item{\code{p_value}}{double, unadjusted p-value for the difference between
+\code{comparison_group} and the group of sex-matched sedentary control animals}
+\item{\code{reference_average_intensity_se}}{double, standard error of \code{reference_average_intensity}}
+\item{\code{comparison_average_intensity}}{double, average intensity among the replicates in \code{comparison_group}}
+\item{\code{sex}}{character, one of "male" or "female"}
+\item{\code{covariates}}{character, comma-separated list of covariates or NA}
+\item{\code{adj_p_value}}{double, adjusted p-value from \code{p_value} column.
+P-values are BY-adjusted across all datasets within a given \code{assay}.}
+\item{\code{tissue_abbreviation}}{character, MoTrPAC tissue abbreviation used in manuscripts}
+\item{\code{selection_fdr}}{double, adjusted training p-value used to
+select training-regulated analytes. P-values are IHW-adjusted across all
+datasets within a given \code{assay} with \code{tissue} as a covariate.}
 }
 
 An object of class \code{data.frame} with 368 rows and 15 columns.
@@ -115,8 +115,8 @@ IMMUNO_SPLEEN_DA
 IMMUNO_LUNG_DA
 }
 \description{
-Timewise summary statistics and training FDR from 
-    differential analysis (DA) that tests the effect of training on each 
-    immunoassay analyte within each sex. One data frame per tissue.
+Timewise summary statistics and training FDR from
+differential analysis (DA) that tests the effect of training on each
+immunoassay analyte within each sex. One data frame per tissue.
 }
 \keyword{datasets}
