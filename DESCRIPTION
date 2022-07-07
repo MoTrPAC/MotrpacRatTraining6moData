@@ -1,0 +1,7 @@
+Package: MotrpacRatTraining6moData
+Type: Package
+Title: Data for analysis of the MoTrPAC endurance exercise training study in 6-month-old rats
+Version: 1.0.0
+Depends: 
+    R (>= 2.10)
+LazyData: true
