@@ -86,7 +86,6 @@
 #'       "Distal Intergenic", "Promoter (<=1kb)", "Exon", "Promoter (1-2kb)", "Downstream (<5kb)", "Upstream (<5kb)", "5' UTR", "Intron", "3' UTR", "Overlaps Gene"}
 #'   \item{\code{kegg_id}}{character, KEGG ID for METAB features only. See [MotrpacBicQC::get_and_validate_mdd()] for more details.} 
 #'}
-#' @seealso [REPEATED_FEATURES]
 #' @details All proteomics feature IDs (RefSeq accessions) were mapped to gene 
 #'     symbols and Entrez IDs using NCBI’s "gene2refseq" mapping files 
 #'     (<https://ftp.ncbi.nlm.nih.gov/gene/DATA/gene2refseq.gz>, downloaded on 2020/12/18). 
