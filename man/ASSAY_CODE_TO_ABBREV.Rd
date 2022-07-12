@@ -12,6 +12,6 @@ ASSAY_CODE_TO_ABBREV
 }
 \description{
 Values are abbreviations (\code{ASSAY_ABBREV}) and names are codes.
-See \code{MotrpacBicQC::assay_codes} for more details.
+See \link[MotrpacBicQC:assay_codes]{MotrpacBicQC::assay_codes} for more details.
 }
 \keyword{datasets}
