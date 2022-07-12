@@ -1,0 +1,420 @@
+---
+title: "Download sample-level data"
+author: "Nicole Gay"
+date: "12/9/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+## WARNING: this code is not self-contained. it requires access to the motrpac-mawg GitHub and gs://mawg-data GCP 
+
+library(data.table)
+library(MotrpacBicQC)
+library(dplyr)
+knitr::opts_chunk$set(echo = TRUE)
+
+mawgdir = '/oak/stanford/groups/smontgom/nicolerg/MOTRPAC/MAWG_DATA'
+gitdir = "/oak/stanford/groups/smontgom/nicolerg/src/MOTRPAC/"
+scratch='/oak/stanford/groups/smontgom/nicolerg/tmp'
+datadir = '/oak/stanford/groups/smontgom/shared/motrpac/internal_releases/motrpac-data-freeze-pass/pass1b-06/v1.0/normalized-sample-level'
+gsutil='~/google-cloud-sdk/bin/gsutil'
+
+source(sprintf("%s/motrpac-mawg/pass1b-06/tools/get_fx.R", gitdir))
+source(sprintf("%s/motrpac-mawg/pass1b-06/integrative/clustering/cluster_viz_fx.R", gitdir))
+```
+
+```{r load data}
+# feature_to_universe and 5% FDR tables 
+# system(sprintf("gsutil -m cp -r gs://mawg-data/pass1b-06/merged %s", datadir))
+load(sprintf("%s/merged/zs_smoothed-0.05fdr-0logfc-cluster-input_20211115.RData", mawgdir))
+load(sprintf("%s/merged/master_feature_to_gene_20211116.RData", mawgdir))
+
+differential_features = rownames(zs_smoothed)
+master_feature_to_gene = NULL # don't need this 
+head(repeated_feature_map)
+
+# read in pheno data
+pheno = dl_format_pheno(scratch, gsutil, parallel=T)
+```
+
+```{r fx}
+combine_normalized_data = function(gsutil_path, pattern, ome_abbreviation, datadir, gsutil_bin = '~/google-cloud-sdk/bin/gsutil', pheno = NULL, features_to_keep = NULL, tissue_index=3, skip=1, file_list=NULL, viallabel=F, add_filename_as_column=F){
+  norm_list = list()
+  
+  if(is.null(file_list)){
+    # list normalized data
+    file_list = system(sprintf("%s ls %s/*%s*", gsutil_bin, gsutil_path, pattern), intern=T)
+    if(length(file_list)==0){
+      stop(sprintf("No files found for %s/*%s*", gsutil_path, pattern))
+    }
+    # check if files already exist
+    file_names = paste(sprintf("%s/%s", datadir, ome_abbreviation), basename(file_list), sep="/")
+    if(!all(file.exists(file_names))){
+      # download those files 
+      system(sprintf("mkdir -p %s/%s", datadir, ome_abbreviation))
+      system(sprintf("%s -m cp %s/*%s* %s/%s", gsutil_bin, gsutil_path, pattern, datadir, ome_abbreviation))
+    }
+    file_list = list.files(path=sprintf("%s/%s", datadir, ome_abbreviation), pattern=pattern,  full.names = T)
+  }
+
+  # read in and format 
+  for(f in file_list){
+    if(ome_abbreviation=='ATAC' & grepl("_mssm_", f)) next
+    print(basename(f))
+    curr_norm = fread(f, sep='\t', header=T, skip = skip) # use pid as colname 
+    if(colnames(curr_norm)[1]!='pid'){
+      warning(sprintf("pid is not where expected in the header for %s. Renaming column.",f))
+      colnames(curr_norm)[1] = 'pid'
+    }else{
+      # remove bid
+      curr_norm = curr_norm[2:nrow(curr_norm)]
+    }
+    # fix feature id
+    tissue_code = unname(unlist(strsplit(basename(f), '_')))[tissue_index]
+    if(!tissue_code %in% names(tissue_abbr)){
+      stop(sprintf("Tissue code not recognized for %s: %s", f, tissue_code))
+    }
+    tissue_abbrv = tissue_abbr[[tissue_code]]
+    feature_names = sprintf("%s;%s;%s", ome_abbreviation, tissue_abbrv, curr_norm[,pid])
+    curr_norm[,pid := NULL]
+    curr_norm = cbind(data.table(feature=feature_names), curr_norm)
+    
+    if(!is.null(features_to_keep)){
+      # filter down to these features
+      print(dim(curr_norm))
+      print(length(features_to_keep))
+      curr_norm = curr_norm[feature %in% features_to_keep]
+      print(dim(curr_norm))
+    }
+    
+    # replace viallabel with pid
+    if(viallabel){
+      if(is.null(pheno)) stop("pheno needs to be supplied if viallabel=T")
+      # replace viallabel with pid
+      print(colnames(curr_norm) %in% as.character(pheno[,viallabel]))
+      pheno_sub = unique(pheno[,.(viallabel, pid)])
+      colnames(curr_norm)[colnames(curr_norm) %in% as.character(pheno[,viallabel])] = 
+        as.character(pheno_sub[match(colnames(curr_norm)[colnames(curr_norm) %in% as.character(pheno[,viallabel])], as.character(viallabel)), pid])
+    }
+    
+    if(add_filename_as_column){
+      curr_norm[,origin_file := basename(f)]
+    }
+    
+    head(curr_norm)
+    norm_list[[f]] = curr_norm
+  }
+  
+  norm = rbindlist(norm_list, fill=T)
+  
+  if(!is.null(pheno)){
+    # check if pids are valid 
+    if(!all(colnames(norm)[2:ncol(norm)] %in% as.character(pheno[,pid]))){
+      warning("Some PIDs not found")
+    }
+  }
+  
+  return(norm)
+}
+```
+
+```{r read in for each ome}
+norm_data_list = list()
+
+# rna
+norm_data_list[["TRNSCRPT"]] = combine_normalized_data("gs://motrpac-data-freeze-pass/pass1b-06/v1.0/analysis/transcriptomics/transcript-rna-seq/normalized-data", "normalized-log-cpm", "TRNSCRPT", datadir, pheno=pheno)
+
+# atac
+atac = combine_normalized_data("gs://motrpac-data-freeze-pass/pass1b-06/v1.0/analysis/epigenomics/epigen-atac-seq/normalized-data", "quant-norm", "ATAC", datadir, pheno=pheno, features_to_keep = rownames(zs_smoothed)[grepl("ATAC", rownames(zs_smoothed))], tissue_index = 4)
+length(rownames(zs_smoothed)[grepl("ATAC", rownames(zs_smoothed))])
+dim(atac)
+norm_data_list[['ATAC']] = atac
+
+# rrbs
+rrbs = combine_normalized_data("gs://motrpac-data-freeze-pass/pass1b-06/v1.0/analysis/epigenomics/epigen-rrbs/normalized-data", "normalized-log-M-window.txt", "METHYL", datadir, pheno=pheno, features_to_keep = rownames(zs_smoothed)[grepl("METHYL", rownames(zs_smoothed))])
+length(rownames(zs_smoothed)[grepl("METHYL", rownames(zs_smoothed))])
+dim(rrbs)
+norm_data_list[['METHYL']] = rrbs
+
+# prot-pr
+prot = combine_normalized_data("gs://motrpac-data-freeze-pass/pass1b-06/v1.0/analysis/proteomics-untargeted/prot-pr/normalized-data", "med-mad-normalized-logratio.txt", "PROT", datadir, pheno=pheno)
+norm_data_list[['PROT']] = prot
+
+# prot-ac
+ac = combine_normalized_data("gs://motrpac-data-freeze-pass/pass1b-06/v1.0/analysis/proteomics-untargeted/prot-ac/normalized-data", "med-mad-normalized-logratio.txt", "ACETYL", datadir, pheno=pheno)
+norm_data_list[['ACETYL']] = ac
+
+# prot-ub
+ub = combine_normalized_data("gs://motrpac-data-freeze-pass/pass1b-06/v1.0/analysis/proteomics-untargeted/prot-ub/normalized-data", "med-mad-normalized-protein-corrected-logratio.txt", "UBIQ", datadir, pheno=pheno)
+norm_data_list[['UBIQ']] = ub  
+
+# prot-ph
+ph = combine_normalized_data("gs://motrpac-data-freeze-pass/pass1b-06/v1.0/analysis/proteomics-untargeted/prot-ph/normalized-data", "med-mad-normalized-logratio.txt", "PHOSPHO", datadir, pheno=pheno)
+norm_data_list[['PHOSPHO']] = ph
+```
+
+```{r immuno}
+immuno = combine_normalized_data("gs://motrpac-data-freeze-pass/pass1b-06/v1.0/analysis/proteomics-targeted/immunoassay-luminex/normalized-data", "merged_mfi-log2-filt-imputed.txt", "IMMUNO", datadir, skip=0, tissue_index = 4)
+
+plasma = fread("/oak/stanford/groups/smontgom/shared/motrpac/internal_releases/motrpac-data-freeze-pass/pass1b-06/v1.0/normalized-sample-level/IMMUNO/motrpac_20211019_pass1b-06_t31-plasma_immunoassay_merged_mfi-log2-filt-imputed.txt", header=T)
+
+# replace bid with pid
+colnames(immuno) %in% as.character(pheno[,bid])
+pheno_sub = unique(pheno[,.(bid, pid)])
+colnames(immuno)[colnames(immuno) %in% as.character(pheno[,bid])] = 
+  as.character(pheno_sub[match(colnames(immuno)[colnames(immuno) %in% as.character(pheno[,bid])], as.character(bid)), pid])
+
+# rename repeated features 
+immuno = merge(immuno, repeated_feature_map[,.(feature, panel, new_feature)], by=c('feature','panel'), all.x=T)
+immuno[!is.na(new_feature), feature := new_feature]
+immuno[,c('new_feature', 'panel', 'tissue') := NULL]
+
+# replace . with space
+immuno[grepl("\\.", feature)]
+
+diff_immuno = unique(differential_features[grepl("IMMUNO;", differential_features)])
+table(diff_immuno %in% immuno[,feature])
+diff_immuno[!diff_immuno %in% immuno[,feature]]
+
+immuno[grepl("peptide", feature, ignore.case = T)]
+# replace "C.Peptide" with "C Peptide"
+immuno[grepl(";C\\.Peptide$", feature), feature := gsub(";C\\.Peptide$", ";C Peptide", feature)]
+immuno[grepl("serpin", feature, ignore.case = T)]
+# replace "PAI.1.SERPIN.E" with "PAI-1/SERPIN-E"
+immuno[grepl(";PAI\\.1\\.SERPIN\\.E$", feature), feature := gsub(";PAI\\.1\\.SERPIN\\.E$", ";PAI-1/SERPIN-E", feature)]
+
+diff_immuno[!diff_immuno %in% immuno[,feature]]
+
+norm_data_list[['IMMUNO']] = immuno
+```
+
+*Targeted metabolomics*  
+If you are going to anyways scale and center, you can probably use `imputed_named-convert2na-log2-featurectr-featurefilt-knn`. I think targeted platforms with less than 13 features were not imputed, so you may need to start with `named-convert2na-log2.txt` or if available `named-convert2na-log2-featurectr-featurefilt.txt`. Just following what we used for the DEA , except that for DEA we didn't **center** the features. 
+
+*Untargeted metabolomics*  
+Either `named-featurefilt-knn-samplefilt-log2-featurestd.txt` or `named-featurefilt-knn-samplefilt-log2-featurestd-samplectr.txt` based on
+"sample_ctr" in the decision table.
+```{r deal with metab}
+## metab
+decision_table = dl_read_gcp("gs://motrpac-data-freeze-pass/pass1b-06/v1.0/analysis/metabolomics-named-merged/stats-tests/pass1b-06_sample-ctr-decision-table-kw-summary.txt", sep="\t")
+
+# only do this once
+# # first, download all relevant data 
+# system(sprintf("mkdir -p %s/%s", datadir, "METAB"))
+# system(sprintf("gsutil cp gs://motrpac-data-freeze-pass/pass1b-06/v1.0/analysis/metabolomics-named-merged/normalized-data/*imputed_named-convert2na-log2-featurectr-featurefilt-knn* %s/METAB", datadir))
+# system(sprintf("gsutil cp gs://motrpac-data-freeze-pass/pass1b-06/v1.0/analysis/metabolomics-named-merged/normalized-data/*named-convert2na-log2.txt %s/METAB", datadir))
+# system(sprintf("gsutil cp gs://motrpac-data-freeze-pass/pass1b-06/v1.0/analysis/metabolomics-named-merged/normalized-data/*named-convert2na-log2-featurectr-featurefilt.txt %s/METAB", datadir))
+# system(sprintf("gsutil cp gs://motrpac-data-freeze-pass/pass1b-06/v1.0/analysis/metabolomics-named-merged/normalized-data/*named-featurefilt-knn-samplefilt-log2-featurestd.txt %s/METAB", datadir))
+# system(sprintf("gsutil cp gs://motrpac-data-freeze-pass/pass1b-06/v1.0/analysis/metabolomics-named-merged/normalized-data/*named-featurefilt-knn-samplefilt-log2-featurestd-samplectr.txt %s/METAB", datadir))
+
+# get a list of data sets 
+datasets = unique(unname(unlist(sapply(list.files(path=sprintf("%s/METAB", datadir)), 
+       function(x){
+         paste0(unname(unlist(strsplit(x, "_")))[1:5], collapse="_")
+       }))))
+
+# for targeted data:
+targeted_datasets = datasets[grepl("_t_", datasets)]
+# for each dataset, check if "convert2na-log2-featurectr-featurefilt-knn" exists. if not, get "named-convert2na-log2.txt"
+targeted_file_list = c()
+for(d in targeted_datasets){
+  p = list.files(path=sprintf("%s/METAB", datadir), pattern=d, full.names = T)
+  if(length(p)==0){
+    print(d)
+    stop()
+  }else if(length(p)==1){
+    targeted_file_list = c(targeted_file_list, p)
+  }else{
+    targeted_file_list = c(targeted_file_list, p[grepl("convert2na-log2-featurectr-featurefilt-knn", p)])
+  }
+}
+length(targeted_datasets) == length(targeted_file_list)
+
+# for untargeted data:
+untargeted_datasets = datasets[grepl("_u_", datasets)]
+untargeted_file_list = c()
+for(d in untargeted_datasets){
+  p = list.files(path=sprintf("%s/METAB", datadir), pattern=d, full.names = T)
+  if(length(p)==0){
+    print(d)
+    stop()
+  }else if(length(p)==1){
+    untargeted_file_list = c(untargeted_file_list, p)
+  }else{
+    # should we sample-center?
+    samplectr = decision_table[dataset==d, sample_ctr]
+    if(samplectr==1){
+      untargeted_file_list = c(untargeted_file_list, p[grepl("featurestd-samplectr.txt", p)])
+    }else{
+      untargeted_file_list = c(untargeted_file_list, p[grepl("featurestd.txt", p)])
+    }
+  }
+}
+length(untargeted_datasets) == length(untargeted_file_list)
+
+# now merge this specified list of files 
+metab = combine_normalized_data('', '', 'METAB', datadir, gsutil_bin = '~/google-cloud-sdk/bin/gsutil', pheno=pheno, 
+                                file_list=c(untargeted_file_list, targeted_file_list), tissue_index = 2, skip=0, viallabel=T)
+head(metab)
+
+# # for Megan
+# metab = combine_normalized_data('', '', 'METAB', datadir, gsutil_bin = '~/google-cloud-sdk/bin/gsutil', pheno=pheno, 
+#                                 file_list=c(untargeted_file_list, targeted_file_list), tissue_index = 2, skip=0, viallabel=T,
+#                                 add_filename_as_column = T)
+# # add dataset 
+# metab[,dataset := unname(unlist(sapply(origin_file, function(x){
+#   splits = unname(unlist(strsplit(x,'_')))
+#   dataset = paste0(splits[3:5], collapse='-')
+#   return(dataset)
+# })))]
+# # reorder columns 
+# metab = metab[,c('feature','origin_file','dataset',colnames(metab)[!colnames(metab)%in%c('feature','origin_file','dataset')]), with=F]
+# write.table(metab, file = sprintf("%s/metabolomics-all-sample-level-data.tsv", datadir), sep='\t', col.names=T, row.names=F, quote=F)
+```
+
+```{r make all features match }
+# # for now, remove duplicate feature names
+# metab_no_dup = metab[!duplicated(feature)]
+# 
+# # non-imputed data for untargeted platforms do not exist
+# norm_data_list[['imputed']][['METAB']] = metab_no_dup
+
+# now, deal with duplicate metabolites
+# what are the features present in the DEA tables? the sample-level tables? how to adjust them?
+# get meta-reg dea
+metab_metareg = dl_load_gcp("gs://motrpac-data-freeze-pass/pass1b-06/v1.0/analysis/metabolomics-named-merged/dea/meta-regression/metab_metareg_20211018.RData", "metab_metareg")
+metab_dea = as.data.table(metab_metareg$training_dea)
+metab_dea[,feature := sprintf("METAB;%s;%s", tissue_abbreviation, feature_ID)]
+diff_metab = differential_features[grepl("METAB;", differential_features)]
+table(diff_metab %in% metab_dea[,feature]) # 205 differential metabolite features not in training-dea results 
+table(metab_dea[,feature_ID] %in% repeated_feature_map[,feature_ID])
+table(diff_metab %in% repeated_feature_map[,new_feature])
+# all features in diff_metab but not in training-dea are explained by renaming duplicate metabolites
+# features are prepended with dataset, e.g. GMP --> meta-reg:GM, metab-u-ionpneg:GMP, metab-u-rppos:GMP
+# in our case, we want ALL individual sample-level data
+# do all differential metabolites match if we remove dataset from feature?
+head(diff_metab[!diff_metab %in% metab_dea[,feature]])
+fixed = gsub(";metab-[a-z-]+:|;meta-reg:",";",diff_metab[!diff_metab %in% metab_dea[,feature]])
+table(fixed %in% metab_dea[,feature])
+# okay, so all 205 features in diff_metab but not in training-dea are addressed by reverting diff_metab feature_ID back to original feature_ID 
+# this means we need to (1) rename duplicate features from sample-level data and (2) handle duplicate feature names WITHIN the plotting function, which will exist because of the meta-regression
+```
+
+```{r reread and rename metabolites}
+# first, reread data and rename duplicate features when necessary
+metab = combine_normalized_data('', '', 'METAB', datadir, gsutil_bin = '~/google-cloud-sdk/bin/gsutil', pheno=pheno, 
+                                file_list=c(untargeted_file_list, targeted_file_list), tissue_index = 2, skip=0, viallabel=T, add_filename_as_column=T)
+table(diff_metab %in% metab[,feature]) # 505 differential metabolite features not in sample-level data
+```
+
+```{r}
+# extract data set from file name
+metab[,dataset := unname(unlist(sapply(origin_file, function(x){
+  paste0(unname(unlist(strsplit(x, "_")))[3:5], collapse='-')
+})))]
+# rename feature_ID when duplicated
+metab_dup_subset = metab[!feature %in% differential_features]
+metab_dup_subset[, feature_ID := gsub(".*;","",feature)]
+metab_dup_subset[, feature_prefix := unname(unlist(sapply(feature, function(x){
+  paste0(unname(unlist(strsplit(x, ';')))[1:2], collapse=';')
+})))]
+metab_dup_subset[,new_feature := sprintf("%s;%s:%s", feature_prefix, dataset, feature_ID)]
+# only keep new feature if it's in diff_metab
+metab_dup_subset[,feature := ifelse(new_feature %in% differential_features, new_feature, feature)]
+
+# merge back
+metab_dup_subset[,c('feature_prefix','feature_ID','new_feature'):= NULL]
+metab_nondup = metab[feature %in% differential_features]
+metab_nodup = rbindlist(list(metab_nondup, metab_dup_subset), use.names=T)
+metab_nodup[,c('origin_file','dataset') := NULL]
+# this still won't fix duplicated features with "meta-reg" in the new feature_ID 
+
+# okay, how many are we down to?
+table(diff_metab %in% metab_nodup[,feature])
+
+# what's left must be from meta-reg. need to convert metabolite_name in sample-level data to refmet 
+# god this is a pain 
+mdd = data.table(MotrpacBicQC::metabolomics_data_dictionary)
+head(metab_nondup)
+# again, subset to what isn't matching
+metab_dup_subset = metab_nodup[!feature %in% diff_metab]
+# match to refmet 
+metab_dup_subset[,metabolite_name := gsub(".*;","",feature)]
+metab_dup_subset[,refmet := mdd[match(metab_dup_subset[,metabolite_name], metabolite_name), refmet_name]]
+metab_dup_subset[,tissue := unname(unlist(sapply(feature, function(x) unname(unlist(strsplit(x, ';')))[2])))]
+metab_dup_subset[,new_feature := sprintf("METAB;%s;%s", tissue, refmet)]
+table(diff_metab %in% c(metab_nodup[,feature], metab_dup_subset[,new_feature])) # ???? what are these stubborn 22??
+metab_dup_subset[,feature := ifelse(new_feature %in% diff_metab, new_feature, feature)]
+metab_dup_subset[,c('metabolite_name','refmet','tissue','new_feature') := NULL]
+
+# merge back before trying to deal with these final 22
+metab_nodup2 = rbindlist(list(metab_nodup, metab_dup_subset), use.names=T)
+table(diff_metab %in% metab_nodup2[,feature])
+```
+
+```{r handle meta-reg}
+metab_nodup2[grepl("meta-reg", feature)]
+metab_nodup2[feature=="METAB;LIVER;GMP"]
+
+# rename these guys 
+# METAB;BAT;meta-reg:GMP
+# METAB;LIVER;meta-reg:GMP 
+# METAB;LUNG;meta-reg:GMP
+# METAB;SKM-GN;meta-reg:GMP
+# METAB;WAT-SC;meta-reg:GMP
+
+for(m in c("METAB;BAT;GMP", "METAB;LIVER;GMP", "METAB;LUNG;GMP", "METAB;SKM-GN;GMP", "METAB;WAT-SC;GMP")){
+  splits = unname(unlist(strsplit(m, ';')))
+  new = sprintf("%s;%s;meta-reg:GMP", splits[1], splits[2])
+  # replace in metab_nodup2
+  metab_nodup2[feature == m, feature := new]
+}
+
+# check that these have been fixed
+writeLines(diff_metab[!diff_metab %in% metab_nodup2[,feature]])
+
+norm_data_list[['METAB']] = metab_nodup2
+save(norm_data_list, file=sprintf("%s/norm_data_list.RData", datadir))
+```
+
+```{r merge all}
+load(file=sprintf("%s/norm_data_list.RData", datadir))
+norm_data = rbindlist(norm_data_list, fill = T)
+
+# make sure values are numeric 
+numeric_cols = colnames(norm_data)[2:ncol(norm_data)]
+norm_data[,(numeric_cols) := lapply(.SD, as.numeric), .SDcols = numeric_cols]
+
+# convert to data.frame for others
+norm_data_df = as.data.frame(norm_data)
+
+# save current version
+saveRDS(norm_data_df, file=sprintf("%s/signif-epigen-features_all-other-features_sample-level-data_20220220.RDS", datadir))
+write.table(norm_data_df, file=sprintf("%s/signif-epigen-features_all-other-features_sample-level-data_20220220.tsv", datadir), sep="\t", col.names=T, row.names=F, quote=F)
+system(sprintf("gsutil -m cp -n %s/signif-epigen-features_all-other-features_sample-level-data_20220220* gs://mawg-data/pass1b-06/merged/freeze-sample-level-data/",datadir))
+
+# filter down to differential features
+norm_data_diff = norm_data[feature %in% differential_features]
+dim(norm_data_diff)
+length(unique(norm_data_diff[,feature]))
+length(differential_features)
+table(differential_features %in% norm_data_diff[,feature]) # WOO!!!
+
+# look at duplicate feature names
+norm_data_diff[feature %in% feature[duplicated(feature)]]
+
+# convert to data.frame for others
+diff_sample_level = as.data.frame(norm_data_diff)
+
+# save
+saveRDS(diff_sample_level, file=sprintf("%s/dea-0.05fdr-sample-level-data_20211212.RDS", datadir))
+write.table(diff_sample_level, file=sprintf("%s/dea-0.05fdr-sample-level-data_20211212.tsv", datadir), sep="\t", col.names=T, row.names=F, quote=F)
+system(sprintf("gsutil -m cp -n %s/dea-0.05fdr-sample-level-data_20211212* gs://mawg-data/pass1b-06/merged/freeze-sample-level-data/",datadir))
+# gs://mawg-data/pass1b-06/merged/dea-0.05fdr-sample-level-data_20211212.RDS
+# gs://mawg-data/pass1b-06/merged/freeze-sample-level-data/dea-0.05fdr-sample-level-data_20211212.RDS
+```
+
+```{r}
+diff_sample_level = readRDS("/oak/stanford/groups/smontgom/shared/motrpac/internal_releases/motrpac-data-freeze-pass/pass1b-06/v1.0/normalized-sample-level/dea-0.05fdr-sample-level-data_20211212.RDS")
+head(diff_sample_level)
+```
