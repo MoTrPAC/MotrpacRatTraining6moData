@@ -432,6 +432,97 @@
 "TRNSCRPT_WATSC_RAW_COUNTS"
 
 
+#' @title RNA-seq normalized sample-level data
+#' @description TMM-normalized RNA-seq counts (log CPM)
+#' @format A data frame with 301801 rows and 51 columns
+#' @details One row per feature, a \code{feature} column, and one column per PID (participant ID).
+#'   \code{feature} is in the format \code{[ASSAY_ABBREV];[TISSUE_ABBREV];[new_feature_ID]}.
+#' @source \code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/transcriptomics/transcript-rna-seq/normalized-data/*normalized-log-cpm*} 
+"TRNSCRPT_SAMPLE_DATA"
+
+
+#' @title ATAC-seq normalized sample-level data for training-regulated features 
+#' @description [limma::voom()] quantile-normalized ATAC-seq counts for training-regulated features only. 
+#'   See the data release on <https://motrpac-data.org/> for sample-level data for all features. 
+#' @format A data frame with 2247 rows and 51 columns
+#' @details One row per feature, a \code{feature} column, and one column per PID (participant ID).
+#'   \code{feature} is in the format \code{[ASSAY_ABBREV];[TISSUE_ABBREV];[new_feature_ID]}.
+#' @source \code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/epigenomics/epigen-atac-seq/normalized-data/*quant-norm*} 
+"ATAC_SAMPLE_DATA"
+
+
+#' @title RRBS normalized sample-level data for training-regulated features 
+#' @description Normalized RRBS sample-level data for training-regulated features only. 
+#'   See the data release on <https://motrpac-data.org/> for sample-level data for all features. 
+#' @format A data frame with 1530 rows and 51 columns
+#' @details One row per feature, a \code{feature} column, and one column per PID (participant ID).
+#'   \code{feature} is in the format \code{[ASSAY_ABBREV];[TISSUE_ABBREV];[new_feature_ID]}.
+#' @source \code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/epigenomics/epigen-rrbs/normalized-data/*normalized-log-M-window.txt*} 
+"METHYL_SAMPLE_DATA"
+
+
+#' @title Global proteomics normalized sample-level data
+#' @description Median-MAD normalized sample-level protein expression data
+#' @format A data frame with 66775 rows and 61 columns
+#' @details One row per feature, a \code{feature} column, and one column per PID (participant ID).
+#'   \code{feature} is in the format \code{[ASSAY_ABBREV];[TISSUE_ABBREV];[new_feature_ID]}.
+#' @source \code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/proteomics-untargeted/prot-pr/normalized-data/*med-mad-normalized-logratio.txt} 
+"PROT_SAMPLE_DATA"
+
+
+#' @title Protein acetylation normalized sample-level data
+#' @description Median-MAD normalized sample-level protein acetylation data. Not adjusted for protein abundance. 
+#' @format A data frame with 14963 rows and 55 columns
+#' @details One row per feature, a \code{feature} column, and one column per PID (participant ID).
+#'   \code{feature} is in the format \code{[ASSAY_ABBREV];[TISSUE_ABBREV];[new_feature_ID]}.
+#' @source \code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/proteomics-untargeted/prot-ac/normalized-data/*med-mad-normalized-logratio.txt} 
+"ACETYL_SAMPLE_DATA"
+
+
+#' @title Protein ubiquitynation normalized sample-level data
+#' @description Median-MAD normalized sample-level protein ubiquitynation data. Adjusted for protein abundance. 
+#' @format A data frame with 16422 rows and 61 columns
+#' @details One row per feature, a \code{feature} column, and one column per PID (participant ID).
+#'   \code{feature} is in the format \code{[ASSAY_ABBREV];[TISSUE_ABBREV];[new_feature_ID]}.
+#' @source \code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/proteomics-untargeted/prot-ub/normalized-data/*med-mad-normalized-protein-corrected-logratio.txt} 
+"UBIQ_SAMPLE_DATA"
+
+
+#' @title Protein phosphorylation normalized sample-level data
+#' @description Median-MAD normalized sample-level protein phosphorylation data. Not adjusted for protein abundance. 
+#' @format A data frame with 268037 rows and 61 columns
+#' @details One row per feature, a \code{feature} column, and one column per PID (participant ID).
+#'   \code{feature} is in the format \code{[ASSAY_ABBREV];[TISSUE_ABBREV];[new_feature_ID]}.
+#' @source \code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/proteomics-untargeted/prot-ph/normalized-data/*med-mad-normalized-logratio.txt} 
+"PHOSPHO_SAMPLE_DATA"
+
+
+#' @title Immunoassay normalized sample-level data
+#' @description Normalized sample-level multiplexed immunoassay data. Raw mean fluorescent intensities (MFIs)
+#'   were log2-transformed, measurements corresponding to wells with less than 20 beads were removed, 
+#'   and the corresponding missing values were imputed with KNN (k=5).
+#' @format A data frame with 916 rows and 60 columns
+#' @details One row per feature, a \code{feature} column, and one column per PID (participant ID).
+#'   \code{feature} is in the format \code{[ASSAY_ABBREV];[TISSUE_ABBREV];[new_feature_ID]}.
+#' @source \code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/proteomics-targeted/immunoassay-luminex/normalized-data/*merged_mfi-log2-filt-imputed.txt} 
+"IMMUNO_SAMPLE_DATA"
+
+
+#' @title Metabolomics normalized sample-level data
+#' @description Normalized sample-level metabolomics data
+#' @format A data frame with 25477 rows and 55 columns
+#' @details One row per feature, a \code{feature} column, and one column per PID (participant ID).
+#'   \code{feature} is in the format \code{[ASSAY_ABBREV];[TISSUE_ABBREV];[new_feature_ID]}.
+#' @source \code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/metabolomics-named-merged/normalized-data} 
+#' @description 
+#'   For targeted datasets, the file matching "convert2na-log2-featurectr-featurefilt-knn" was used if it existed; "named-convert2na-log2.txt" was used otherwise. 
+#'   
+#'   For untargeted datasets, the decision table ("gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/metabolomics-named-merged/stats-tests/pass1b-06_sample-ctr-decision-table-kw-summary.txt")
+#'   was used to determine which normalized file to use for each dataset. If the data were supposed to be sample-centered, 
+#'   the file matching "named-featurefilt-knn-samplefilt-log2-featurestd-samplectr.txt" was used. Otherwise, "named-featurefilt-knn-samplefilt-log2-featurestd.txt" was used. 
+"METAB_SAMPLE_DATA"
+
+
 #' @title Differential analysis of RNA-seq datasets 
 #' @description Timewise summary statistics and training FDR from 
 #'     differential analysis (DA) that tests the effect of training on the 
