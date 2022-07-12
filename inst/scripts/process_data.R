@@ -302,15 +302,6 @@ assign("PHENO", pass1b)
 usethis::use_data(PHENO, overwrite = TRUE)
 sinew::makeOxygen(PHENO)
 
-
-# Sample-level data -------------------------------------------------------------
-
-## NOT DONE YET
-# # See https://github.com/MoTrPAC/motrpac-mawg/blob/master/pass1b-06/tools/combine-sample-level-data.Rmd
-# 
-# # Differential epigen* features and ALL other features:
-# sample_data = dl_read_gcp("gs://mawg-data/pass1b-06/merged/freeze-sample-level-data/signif-epigen-features_all-other-features_sample-level-data_20220220.tsv")
-
  
 # Feature-to-gene map -----------------------------------------------------------
 
@@ -326,7 +317,56 @@ usethis::use_data(REPEATED_FEATURES, overwrite = TRUE)
 sinew::makeOxygen(FEATURE_TO_GENE)
 sinew::makeOxygen(REPEATED_FEATURES)
 
+
 # Rat-to-human ortholog map -----------------------------------------------------
 
+rat_to_human = dl_read_gcp("gs://mawg-data/external-datasets/rat-id-mapping/gencode.v39.RGD.20201001.human.rat.gene.ids.txt", sep="\t")
+RAT_TO_HUMAN_GENE = as.data.frame(rat_to_human)
+usethis::use_data(RAT_TO_HUMAN_GENE, overwrite = TRUE)
+sinew::makeOxygen(RAT_TO_HUMAN_GENE)
+
+# RNA-seq counts  ---------------------------------------------------------------
+
+data_dir = "/oak/stanford/groups/smontgom/shared/motrpac/internal_releases/motrpac-data-freeze-pass/v1.1/results/transcriptomics"
+for(tissue_code in names(TISSUE_CODE_TO_ABBREV)){
+  file = sprintf("%s/%s/transcript-rna-seq/motrpac_pass1b-06_%s_transcript-rna-seq_rsem-genes-count.txt", data_dir, tissue_code, tissue_code)
+  if(file.exists(file)){
+    counts = fread(file, sep="\t", header=T)
+    # set row names
+    counts = as.data.frame(counts)
+    rownames(counts) = counts$gene_id
+    counts$gene_id = NULL
+    # coerce values to int
+    counts_round = as.data.frame(apply(counts, c(1,2), as.integer)) 
+    # change name
+    new_name = sprintf("TRNSCRPT_%s_RAW_COUNTS", gsub("-","",TISSUE_CODE_TO_ABBREV[[tissue_code]]))
+    writeLines(new_name)
+    assign(new_name, counts_round)
+    # save .rda
+    do.call("use_data", list(as.name(new_name), overwrite = TRUE))
+  }else{
+    print(sprintf("file %s DNE", file))
+  }
+}
+
+# GET data type QC metrics ------------------------------------------------------
+
+TRNSCRPT_META = as.data.frame(dl_read_gcp("gs://motrpac-data-freeze-pass/pass1b-06/v1.1/results/transcriptomics/qa-qc/motrpac_pass1b-06_transcript-rna-seq_qa-qc-metrics.csv", sep=","))
+colnames(TRNSCRPT_META) = gsub(" .*","",colnames(TRNSCRPT_META))
+ATAC_META = as.data.frame(dl_read_gcp("gs://motrpac-data-freeze-pass/pass1b-06/v1.1/results/epigenomics/qa-qc/motrpac_pass1b-06_epigen-atac-seq_qa-qc-metrics.csv", sep=","))
+colnames(ATAC_META) = gsub(" .*","",colnames(ATAC_META))
+METHYL_META = as.data.frame(dl_read_gcp("gs://motrpac-data-freeze-pass/pass1b-06/v1.1/results/epigenomics/qa-qc/motrpac_pass1b-06_epigen-rrbs_qa-qc-metrics.csv", sep=","))
+colnames(METHYL_META) = gsub(" .*","",colnames(METHYL_META))
+
+usethis::use_data(TRNSCRPT_META, ATAC_META, METHYL_META, internal = FALSE, overwrite = TRUE)
+sinew::makeOxygen(TRNSCRPT_META)
+sinew::makeOxygen(ATAC_META)
+sinew::makeOxygen(METHYL_META)
+
+# Sample-level data -------------------------------------------------------------
+
 ## NOT DONE YET
-"gs://mawg-data/external-datasets/rat-id-mapping/gencode.v39.RGD.20201001.human.rat.gene.ids.txt"
+# # See https://github.com/MoTrPAC/motrpac-mawg/blob/master/pass1b-06/tools/combine-sample-level-data.Rmd
+# 
+# # Differential epigen* features and ALL other features:
+# sample_data = dl_read_gcp("gs://mawg-data/pass1b-06/merged/freeze-sample-level-data/signif-epigen-features_all-other-features_sample-level-data_20220220.tsv")

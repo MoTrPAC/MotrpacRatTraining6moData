@@ -45,7 +45,4 @@ other using RGD’s rat gene annotation
 This dramatically improves performance. 
 }
 }
-\seealso{
-\link{REPEATED_FEATURES}
-}
 \keyword{datasets}

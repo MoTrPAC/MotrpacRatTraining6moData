@@ -12,6 +12,6 @@ TISSUE_ABBREV_TO_CODE
 }
 \description{
 Values are codes and names are abbreviations (\code{TISSUE_ABBREV}).
-See \code{MotrpacBicQC::bic_animal_tissue_code} for more details.
+See \link[MotrpacBicQC:bic_animal_tissue_code]{MotrpacBicQC::bic_animal_tissue_code} for more details.
 }
 \keyword{datasets}
