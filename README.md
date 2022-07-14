@@ -23,15 +23,15 @@ data(TRNSCRPT_LIVER_DA)
 List of current sets:
 ```
 ACETYL_HEART_DA                                    Differential analysis of proteomics datasets
+ACETYL_HEART_NORM_DATA                             Normalized protein acetylation data
 ACETYL_LIVER_DA                                    Differential analysis of proteomics datasets
-ACETYL_SAMPLE_DATA                                 Protein acetylation normalized sample-level data
+ACETYL_LIVER_NORM_DATA                             Normalized protein acetylation data
 ASSAY_ABBREV                                       Assay or "ome" abbreviations
 ASSAY_ABBREV_TO_CODE                               Assay abbreviation-to-code mapping
 ASSAY_CODE_TO_ABBREV                               Assay code-to-abbreviation mapping
 ASSAY_COLORS                                       Assay colors
 ASSAY_ORDER                                        Assay order
 ATAC_META                                          ATAC-seq metadata and QC
-ATAC_SAMPLE_DATA                                   ATAC-seq normalized sample-level data for training-regulated features
 FEATURE_TO_GENE                                    Feature-to-gene map
 GENE_UNIVERSES                                     Gene-centric universes
 GRAPH_COMPONENTS                                   Graph components
@@ -47,9 +47,10 @@ IMMUNO_HIPPOC_DA                                   Differential analysis of mult
 IMMUNO_KIDNEY_DA                                   Differential analysis of multiplexed immunoassays
 IMMUNO_LIVER_DA                                    Differential analysis of multiplexed immunoassays
 IMMUNO_LUNG_DA                                     Differential analysis of multiplexed immunoassays
+IMMUNO_META                                        Multiplexed immunoassay metadata and QC
+IMMUNO_NORM_DATA                                   Processed immunoassay data used for differential analysis
 IMMUNO_OVARY_DA                                    Differential analysis of multiplexed immunoassays
 IMMUNO_PLASMA_DA                                   Differential analysis of multiplexed immunoassays
-IMMUNO_SAMPLE_DATA                                 Immunoassay normalized sample-level data
 IMMUNO_SKMGN_DA                                    Differential analysis of multiplexed immunoassays
 IMMUNO_SKMVL_DA                                    Differential analysis of multiplexed immunoassays
 IMMUNO_SMLINT_DA                                   Differential analysis of multiplexed immunoassays
@@ -68,7 +69,6 @@ METAB_LIVER_DA                                     Differential analysis of merg
 METAB_LUNG_DA                                      Differential analysis of merged metabolomics datasets
 METAB_OVARY_DA                                     Differential analysis of merged metabolomics datasets
 METAB_PLASMA_DA                                    Differential analysis of merged metabolomics datasets
-METAB_SAMPLE_DATA                                  Metabolomics normalized sample-level data
 METAB_SKMGN_DA                                     Differential analysis of merged metabolomics datasets
 METAB_SKMVL_DA                                     Differential analysis of merged metabolomics datasets
 METAB_SMLINT_DA                                    Differential analysis of merged metabolomics datasets
@@ -77,25 +77,36 @@ METAB_TESTES_DA                                    Differential analysis of merg
 METAB_VENACV_DA                                    Differential analysis of merged metabolomics datasets
 METAB_WATSC_DA                                     Differential analysis of merged metabolomics datasets
 METHYL_META                                        RRBS metadata and QC
-METHYL_SAMPLE_DATA                                 RRBS normalized sample-level data for training-regulated features
 PATHWAY_PARENTS                                    KEGG and Reactome parent pathways
 PHENO                                              Phenotypic data
 PHOSPHO_CORTEX_DA                                  Differential analysis of proteomics datasets
+PHOSPHO_CORTEX_NORM_DATA                           Normalized protein phosphorylation data
 PHOSPHO_HEART_DA                                   Differential analysis of proteomics datasets
+PHOSPHO_HEART_NORM_DATA                            Normalized protein phosphorylation data
 PHOSPHO_KIDNEY_DA                                  Differential analysis of proteomics datasets
+PHOSPHO_KIDNEY_NORM_DATA                           Normalized protein phosphorylation data
 PHOSPHO_LIVER_DA                                   Differential analysis of proteomics datasets
+PHOSPHO_LIVER_NORM_DATA                            Normalized protein phosphorylation data
 PHOSPHO_LUNG_DA                                    Differential analysis of proteomics datasets
-PHOSPHO_SAMPLE_DATA                                Protein phosphorylation normalized sample-level data
+PHOSPHO_LUNG_NORM_DATA                             Normalized protein phosphorylation data
 PHOSPHO_SKMGN_DA                                   Differential analysis of proteomics datasets
+PHOSPHO_SKMGN_NORM_DATA                            Normalized protein phosphorylation data
 PHOSPHO_WATSC_DA                                   Differential analysis of proteomics datasets
+PHOSPHO_WATSC_NORM_DATA                            Normalized protein phosphorylation data
 PROT_CORTEX_DA                                     Differential analysis of proteomics datasets
+PROT_CORTEX_NORM_DATA                              Normalized protein expression data
 PROT_HEART_DA                                      Differential analysis of proteomics datasets
+PROT_HEART_NORM_DATA                               Normalized protein expression data
 PROT_KIDNEY_DA                                     Differential analysis of proteomics datasets
+PROT_KIDNEY_NORM_DATA                              Normalized protein expression data
 PROT_LIVER_DA                                      Differential analysis of proteomics datasets
+PROT_LIVER_NORM_DATA                               Normalized protein expression data
 PROT_LUNG_DA                                       Differential analysis of proteomics datasets
-PROT_SAMPLE_DATA                                   Global proteomics normalized sample-level data
+PROT_LUNG_NORM_DATA                                Normalized protein expression data
 PROT_SKMGN_DA                                      Differential analysis of proteomics datasets
+PROT_SKMGN_NORM_DATA                               Normalized protein expression data
 PROT_WATSC_DA                                      Differential analysis of proteomics datasets
+PROT_WATSC_NORM_DATA                               Normalized protein expression data
 RAT_TO_HUMAN_GENE                                  Rat-to-human gene ortholog map
 REPEATED_FEATURES                                  Repeated feature info
 REPFDR_INPUTS                                      'repfdr' inputs
@@ -108,46 +119,65 @@ TISSUE_COLORS                                      Tissue colors
 TISSUE_ORDER                                       Tissue order
 TRAINING_REGULATED_FEATURES                        Training-regulated features
 TRNSCRPT_ADRNL_DA                                  Differential analysis of RNA-seq datasets
+TRNSCRPT_ADRNL_NORM_DATA                           Normalized RNA-seq data
 TRNSCRPT_ADRNL_RAW_COUNTS                          RNA-seq raw counts
 TRNSCRPT_BAT_DA                                    Differential analysis of RNA-seq datasets
+TRNSCRPT_BAT_NORM_DATA                             Normalized RNA-seq data
 TRNSCRPT_BAT_RAW_COUNTS                            RNA-seq raw counts
 TRNSCRPT_BLOOD_DA                                  Differential analysis of RNA-seq datasets
+TRNSCRPT_BLOOD_NORM_DATA                           Normalized RNA-seq data
 TRNSCRPT_BLOOD_RAW_COUNTS                          RNA-seq raw counts
 TRNSCRPT_COLON_DA                                  Differential analysis of RNA-seq datasets
+TRNSCRPT_COLON_NORM_DATA                           Normalized RNA-seq data
 TRNSCRPT_COLON_RAW_COUNTS                          RNA-seq raw counts
 TRNSCRPT_CORTEX_DA                                 Differential analysis of RNA-seq datasets
+TRNSCRPT_CORTEX_NORM_DATA                          Normalized RNA-seq data
 TRNSCRPT_CORTEX_RAW_COUNTS                         RNA-seq raw counts
 TRNSCRPT_HEART_DA                                  Differential analysis of RNA-seq datasets
+TRNSCRPT_HEART_NORM_DATA                           Normalized RNA-seq data
 TRNSCRPT_HEART_RAW_COUNTS                          RNA-seq raw counts
 TRNSCRPT_HIPPOC_DA                                 Differential analysis of RNA-seq datasets
+TRNSCRPT_HIPPOC_NORM_DATA                          Normalized RNA-seq data
 TRNSCRPT_HIPPOC_RAW_COUNTS                         RNA-seq raw counts
 TRNSCRPT_HYPOTH_DA                                 Differential analysis of RNA-seq datasets
+TRNSCRPT_HYPOTH_NORM_DATA                          Normalized RNA-seq data
 TRNSCRPT_HYPOTH_RAW_COUNTS                         RNA-seq raw counts
 TRNSCRPT_KIDNEY_DA                                 Differential analysis of RNA-seq datasets
+TRNSCRPT_KIDNEY_NORM_DATA                          Normalized RNA-seq data
 TRNSCRPT_KIDNEY_RAW_COUNTS                         RNA-seq raw counts
 TRNSCRPT_LIVER_DA                                  Differential analysis of RNA-seq datasets
+TRNSCRPT_LIVER_NORM_DATA                           Normalized RNA-seq data
 TRNSCRPT_LIVER_RAW_COUNTS                          RNA-seq raw counts
 TRNSCRPT_LUNG_DA                                   Differential analysis of RNA-seq datasets
+TRNSCRPT_LUNG_NORM_DATA                            Normalized RNA-seq data
 TRNSCRPT_LUNG_RAW_COUNTS                           RNA-seq raw counts
 TRNSCRPT_META                                      RNA-seq metadata and QC
 TRNSCRPT_OVARY_DA                                  Differential analysis of RNA-seq datasets
+TRNSCRPT_OVARY_NORM_DATA                           Normalized RNA-seq data
 TRNSCRPT_OVARY_RAW_COUNTS                          RNA-seq raw counts
-TRNSCRPT_SAMPLE_DATA                               RNA-seq normalized sample-level data
 TRNSCRPT_SKMGN_DA                                  Differential analysis of RNA-seq datasets
+TRNSCRPT_SKMGN_NORM_DATA                           Normalized RNA-seq data
 TRNSCRPT_SKMGN_RAW_COUNTS                          RNA-seq raw counts
 TRNSCRPT_SKMVL_DA                                  Differential analysis of RNA-seq datasets
+TRNSCRPT_SKMVL_NORM_DATA                           Normalized RNA-seq data
 TRNSCRPT_SKMVL_RAW_COUNTS                          RNA-seq raw counts
 TRNSCRPT_SMLINT_DA                                 Differential analysis of RNA-seq datasets
+TRNSCRPT_SMLINT_NORM_DATA                          Normalized RNA-seq data
 TRNSCRPT_SMLINT_RAW_COUNTS                         RNA-seq raw counts
 TRNSCRPT_SPLEEN_DA                                 Differential analysis of RNA-seq datasets
+TRNSCRPT_SPLEEN_NORM_DATA                          Normalized RNA-seq data
 TRNSCRPT_SPLEEN_RAW_COUNTS                         RNA-seq raw counts
 TRNSCRPT_TESTES_DA                                 Differential analysis of RNA-seq datasets
+TRNSCRPT_TESTES_NORM_DATA                          Normalized RNA-seq data
 TRNSCRPT_TESTES_RAW_COUNTS                         RNA-seq raw counts
 TRNSCRPT_VENACV_DA                                 Differential analysis of RNA-seq datasets
+TRNSCRPT_VENACV_NORM_DATA                          Normalized RNA-seq data
 TRNSCRPT_VENACV_RAW_COUNTS                         RNA-seq raw counts
 TRNSCRPT_WATSC_DA                                  Differential analysis of RNA-seq datasets
+TRNSCRPT_WATSC_NORM_DATA                           Normalized RNA-seq data
 TRNSCRPT_WATSC_RAW_COUNTS                          RNA-seq raw counts
 UBIQ_HEART_DA                                      Differential analysis of proteomics datasets
+UBIQ_HEART_NORM_DATA                               Normalized protein ubiquitynation data
 UBIQ_LIVER_DA                                      Differential analysis of proteomics datasets
-UBIQ_SAMPLE_DATA                                   Protein ubiquitynation normalized sample-level data
+UBIQ_LIVER_NORM_DATA                               Normalized protein ubiquitynation data
 ```
