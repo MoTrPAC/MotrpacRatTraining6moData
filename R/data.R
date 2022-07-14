@@ -432,95 +432,306 @@
 "TRNSCRPT_WATSC_RAW_COUNTS"
 
 
-#' @title RNA-seq normalized sample-level data
-#' @description TMM-normalized RNA-seq counts (log CPM)
-#' @format A data frame with 301801 rows and 51 columns
-#' @details One row per feature, a \code{feature} column, and one column per PID (participant ID).
-#'   \code{feature} is in the format \code{[ASSAY_ABBREV];[TISSUE_ABBREV];[new_feature_ID]}.
-#' @source \code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/transcriptomics/transcript-rna-seq/normalized-data/*normalized-log-cpm*} 
-"TRNSCRPT_SAMPLE_DATA"
+#' @title Normalized RNA-seq data
+#' @description Normalized sample-level RNA-seq (TRNSCRPT) data used for visualization
+#' @format A data frame with genes in rows (\code{feature_ID}) and samples in columns (\code{viallabel}) 
+#' @details Filtering of lowly expressed genes and normalization were performed 
+#'   separately in each tissue. RSEM gene counts were used to remove lowly expressed genes, 
+#'   defined as having 0.5 or fewer counts per million in all but one sample. 
+#'   To generate normalized sample-level data, filtered gene counts were 
+#'   TMM-normalized using [edgeR::calcNormFactors()], followed by conversion to log counts per million with [edgeR::cpm()].
+#' @source \code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/transcriptomics/transcript-rna-seq/normalized-data/*normalized-log-cpm*}
+#' @name TRNSCRPT_NORM_DATA
+"TRNSCRPT_BLOOD_NORM_DATA"
+
+#' @rdname TRNSCRPT_NORM_DATA
+"TRNSCRPT_HIPPOC_NORM_DATA"
+
+#' @rdname TRNSCRPT_NORM_DATA
+"TRNSCRPT_CORTEX_NORM_DATA"
+
+#' @rdname TRNSCRPT_NORM_DATA
+"TRNSCRPT_HYPOTH_NORM_DATA"
+
+#' @rdname TRNSCRPT_NORM_DATA
+"TRNSCRPT_SKMGN_NORM_DATA"
+
+#' @rdname TRNSCRPT_NORM_DATA
+"TRNSCRPT_SKMVL_NORM_DATA"
+
+#' @rdname TRNSCRPT_NORM_DATA
+"TRNSCRPT_HEART_NORM_DATA"
+
+#' @rdname TRNSCRPT_NORM_DATA
+"TRNSCRPT_KIDNEY_NORM_DATA"
+
+#' @rdname TRNSCRPT_NORM_DATA
+"TRNSCRPT_ADRNL_NORM_DATA"
+
+#' @rdname TRNSCRPT_NORM_DATA
+"TRNSCRPT_COLON_NORM_DATA"
+
+#' @rdname TRNSCRPT_NORM_DATA
+"TRNSCRPT_SPLEEN_NORM_DATA"
+
+#' @rdname TRNSCRPT_NORM_DATA
+"TRNSCRPT_TESTES_NORM_DATA"
+
+#' @rdname TRNSCRPT_NORM_DATA
+"TRNSCRPT_OVARY_NORM_DATA"
+
+#' @rdname TRNSCRPT_NORM_DATA
+"TRNSCRPT_VENACV_NORM_DATA"
+
+#' @rdname TRNSCRPT_NORM_DATA
+"TRNSCRPT_LUNG_NORM_DATA"
+
+#' @rdname TRNSCRPT_NORM_DATA
+"TRNSCRPT_SMLINT_NORM_DATA"
+
+#' @rdname TRNSCRPT_NORM_DATA
+"TRNSCRPT_LIVER_NORM_DATA"
+
+#' @rdname TRNSCRPT_NORM_DATA
+"TRNSCRPT_BAT_NORM_DATA"
+
+#' @rdname TRNSCRPT_NORM_DATA
+"TRNSCRPT_WATSC_NORM_DATA"
 
 
-#' @title ATAC-seq normalized sample-level data for training-regulated features 
-#' @description [limma::voom()] quantile-normalized ATAC-seq counts for training-regulated features only. 
-#'   See the data release on <https://motrpac-data.org/> for sample-level data for all features. 
-#' @format A data frame with 2247 rows and 51 columns
-#' @details One row per feature, a \code{feature} column, and one column per PID (participant ID).
-#'   \code{feature} is in the format \code{[ASSAY_ABBREV];[TISSUE_ABBREV];[new_feature_ID]}.
-#' @source \code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/epigenomics/epigen-atac-seq/normalized-data/*quant-norm*} 
-"ATAC_SAMPLE_DATA"
+#' #' @title Normalized ATAC-seq data
+#' #' @description Normalized sample-level ATAC-seq (ATAC) data used for visualization and differential analysis
+#' #' @format A data frame with peaks in rows (\code{feature_ID}) and samples in columns (\code{viallabel}) 
+#' #' @details Data was processed with the [ENCODE ATAC-seq pipeline (v1.7.0)](https://github.com/ENCODE-DCC/atac-seq-pipeline). 
+#' #'   Samples from a single sex and training time point, e.g., males trained for 2 weeks, were analyzed together as biological 
+#' #'   replicates in a single workflow. Briefly, adapters were trimmed with cutadapt v2.5 (Martin, 2011) and aligned to release 96 
+#' #'   of the Ensembl Rattus norvegicus (rn6) genome (Dobin et al., 2013) with Bowtie 2 v2.3.4.3 (Langmead and Salzberg, 2012). 
+#' #'   Duplicate reads and reads mapping to the mitochondrial chromosome were removed. Signal files and peak calls were generated 
+#' #'   using MACS2 v2.2.4 (Gaspar, 2018), both from reads from each sample and pooled reads from all biological replicates. 
+#' #'   Pooled peaks were compared with the peaks called for each replicate individually using Irreproducibility Discovery Rate (Li et al., 2011) 
+#' #'   and thresholded to generate an optimal set of peaks. 
+#' #'   
+#' #'   The cloud implementation of the ENCODE ATAC-seq pipeline and source code for the post-processing steps are available at <https://github.com/MoTrPAC/motrpac-atac-seq-pipeline>. 
+#' #'   Optimal peaks (overlap.optimal_peak.narrowPeak.bed.gz) from all workflows were concatenated, trimmed to 200 base pairs around the summit, 
+#' #'   and sorted and merged with bedtools v2.29.0 (Quinlan and Hall, 2010) to generate a master peak list. This peak list was intersected with 
+#' #'   the filtered alignments from each sample using bedtools coverage with options \code{-nonamecheck} and \code{-counts} to generate a peak by 
+#' #'   sample matrix of raw counts. 
+#' #'   
+#' #'   The remaining steps were applied separately on raw counts from each tissue. Peaks from non-autosomal chromosomes were removed, 
+#' #'   as well as peaks that did not have at least 10 read counts in four samples. Filtered raw counts were then quantile-normalized with 
+#' #'   limma-voom (Law et al., 2014). This version of the normalized data is provided by this object.
+#' #'   
+#' #' @source \code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/epigenomics/epigen-atac-seq/normalized-data/*quant-norm*}
+#' #' @name ATAC_NORM_DATA
+#' "ATAC_HIPPOC_NORM_DATA"
+#' 
+#' #' @rdname ATAC_NORM_DATA
+#' "ATAC_SKMGN_NORM_DATA"
+#' 
+#' #' @rdname ATAC_NORM_DATA
+#' "ATAC_HEART_NORM_DATA"
+#' 
+#' #' @rdname ATAC_NORM_DATA
+#' "ATAC_KIDNEY_NORM_DATA"
+#' 
+#' #' @rdname ATAC_NORM_DATA
+#' "ATAC_LUNG_NORM_DATA"
+#' 
+#' #' @rdname ATAC_NORM_DATA
+#' "ATAC_LIVER_NORM_DATA"
+#' 
+#' #' @rdname ATAC_NORM_DATA
+#' "ATAC_BAT_NORM_DATA"
+#' 
+#' #' @rdname ATAC_NORM_DATA
+#' "ATAC_WATSC_NORM_DATA"
+#' 
+#' 
+#' #' @title Normalized DNA methylation data
+#' #' @description Normalized DNA methylation (METHYL) data used for visualization
+#' #' @format A data frame with CpG sites in rows (\code{feature_ID}) and samples in columns (\code{viallabel}) 
+#' #' @details Only CpG sites with methylation coverage of >=10 in all samples were included for downstream analysis, 
+#' #'   and normalization was performed separately in each tissue. Individual CpG sites were divided into 500 base-pair 
+#' #'   windows and were clustered using the Markov Clustering algorithm via the MCL R package (Jager, 2015). To apply MCL, 
+#' #'   for each 500 base-pair window an undirected graph was constructed, linking individual sites if their correlation 
+#' #'   was >=0.7. MCL was chosen for this task as it: (1) determines the number of clusters internally, (2) identifies 
+#' #'   homogeneous clusters, and (3) keeps single sites that are not correlated with either sites as singletons (clusters of size one). 
+#' #'   The resulting sites/clusters were used as input for normalization and differential analysis with edgeR (Robinson et al., 2010). 
+#' #'   To generate this normalized sample-level data, the methylation coverages of filtered sites/clusters were first log2-transformed, 
+#' #'   and normalization was performed using [preprocessCore::normalize.quantiles.robust()] (Bolstad, 2021).
+#' #'   
+#' #'   In order to stay under the 50MB GitHub file limit, data frames with more than 500k rows were split in half and saved in two 
+#' #'   files, e.g. [METHYL_BAT_NORM_DATA_P1] and [METHYL_BAT_NORM_DATA_P2]
+#' #' @source \code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/epigenomics/epigen-rrbs/normalized-data/*normalized-log-M-window.txt}
+#' #' @name METHYL_NORM_DATA
+#' "METHYL_BAT_NORM_DATA_P1"
+#' 
+#' #' @rdname METHYL_NORM_DATA
+#' "METHYL_BAT_NORM_DATA_P2"
+#' 
+#' #' @rdname METHYL_NORM_DATA
+#' "METHYL_HEART_NORM_DATA_P1"
+#' 
+#' #' @rdname METHYL_NORM_DATA
+#' "METHYL_HEART_NORM_DATA_P2"
+#' 
+#' #' @rdname METHYL_NORM_DATA
+#' "METHYL_HIPPOC_NORM_DATA_P1"
+#' 
+#' #' @rdname METHYL_NORM_DATA
+#' "METHYL_HIPPOC_NORM_DATA_P2"
+#' 
+#' #' @rdname METHYL_NORM_DATA
+#' "METHYL_KIDNEY_NORM_DATA_P1"
+#' 
+#' #' @rdname METHYL_NORM_DATA
+#' "METHYL_KIDNEY_NORM_DATA_P2"
+#' 
+#' #' @rdname METHYL_NORM_DATA
+#' "METHYL_LIVER_NORM_DATA_P1"
+#' 
+#' #' @rdname METHYL_NORM_DATA
+#' "METHYL_LIVER_NORM_DATA_P2"
+#' 
+#' #' @rdname METHYL_NORM_DATA
+#' "METHYL_LUNG_NORM_DATA_P1"
+#' 
+#' #' @rdname METHYL_NORM_DATA
+#' "METHYL_LUNG_NORM_DATA_P2"
+#' 
+#' #' @rdname METHYL_NORM_DATA
+#' "METHYL_SKMGN_NORM_DATA_P1"
+#' 
+#' #' @rdname METHYL_NORM_DATA
+#' "METHYL_SKMGN_NORM_DATA_P2"
+#' 
+#' #' @rdname METHYL_NORM_DATA
+#' "METHYL_WATSC_NORM_DATA_P1"
+#' 
+#' #' @rdname METHYL_NORM_DATA
+#' "METHYL_WATSC_NORM_DATA_P2"
 
 
-#' @title RRBS normalized sample-level data for training-regulated features 
-#' @description Normalized RRBS sample-level data for training-regulated features only. 
-#'   See the data release on <https://motrpac-data.org/> for sample-level data for all features. 
-#' @format A data frame with 1530 rows and 51 columns
-#' @details One row per feature, a \code{feature} column, and one column per PID (participant ID).
-#'   \code{feature} is in the format \code{[ASSAY_ABBREV];[TISSUE_ABBREV];[new_feature_ID]}.
-#' @source \code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/epigenomics/epigen-rrbs/normalized-data/*normalized-log-M-window.txt*} 
-"METHYL_SAMPLE_DATA"
+#' @title Normalized protein expression data
+#' @description Median-MAD normalized protein expression (PROT) data used for visualization and differential analysis
+#' @format A data frame with protein IDs in rows (\code{feature_ID}) and samples in columns (\code{viallabel}) 
+#' @details Log2 TMT ratios to the common reference were used as quantitative values for all proteomics features 
+#'   (proteins, phosphosites, acetylsite, and ubiquitylsites). Proteomics features not fully quantified in at least 
+#'   two plexes within a tissue and non-rat contaminants were removed. Log2 TMT ratios were sample-normalized by 
+#'   median-centering and mean absolute deviation scaling. Plex batch effects were removed using linear models 
+#'   implemented by the [limma::removeBatchEffect()].  
+#' @source \code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/proteomics-untargeted/prot-pr/normalized-data/*med-mad-normalized-logratio.txt}
+#' @name PROT_NORM_DATA
+"PROT_CORTEX_NORM_DATA"
+
+#' @rdname PROT_NORM_DATA
+"PROT_SKMGN_NORM_DATA"
+
+#' @rdname PROT_NORM_DATA
+"PROT_HEART_NORM_DATA"
+
+#' @rdname PROT_NORM_DATA
+"PROT_KIDNEY_NORM_DATA"
+
+#' @rdname PROT_NORM_DATA
+"PROT_LUNG_NORM_DATA"
+
+#' @rdname PROT_NORM_DATA
+"PROT_LIVER_NORM_DATA"
+
+#' @rdname PROT_NORM_DATA
+"PROT_WATSC_NORM_DATA"
 
 
-#' @title Global proteomics normalized sample-level data
-#' @description Median-MAD normalized sample-level protein expression data
-#' @format A data frame with 66775 rows and 61 columns
-#' @details One row per feature, a \code{feature} column, and one column per PID (participant ID).
-#'   \code{feature} is in the format \code{[ASSAY_ABBREV];[TISSUE_ABBREV];[new_feature_ID]}.
-#' @source \code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/proteomics-untargeted/prot-pr/normalized-data/*med-mad-normalized-logratio.txt} 
-"PROT_SAMPLE_DATA"
+#' @title Normalized protein acetylation data
+#' @description Median-MAD normalized protein acetylation (ACETYL) data used for visualization and differential analysis
+#' @format A data frame with acetylsites in rows (\code{feature_ID}) and samples in columns (\code{viallabel}) 
+#' @details Log2 TMT ratios to the common reference were used as quantitative values for all proteomics features 
+#'   (proteins, phosphosites, acetylsite, and ubiquitylsites). Proteomics features not fully quantified in at least 
+#'   two plexes within a tissue and non-rat contaminants were removed. Log2 TMT ratios were sample-normalized by 
+#'   median-centering and mean absolute deviation scaling. Plex batch effects were removed using linear models 
+#'   implemented by the [limma::removeBatchEffect()].  
+#' @source \code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/proteomics-untargeted/prot-ac/normalized-data/*med-mad-normalized-logratio.txt}
+#' @name ACETYL_NORM_DATA
+"ACETYL_HEART_NORM_DATA"
+
+#' @rdname ACETYL_NORM_DATA
+"ACETYL_LIVER_NORM_DATA"
 
 
-#' @title Protein acetylation normalized sample-level data
-#' @description Median-MAD normalized sample-level protein acetylation data. Not adjusted for protein abundance. 
-#' @format A data frame with 14963 rows and 55 columns
-#' @details One row per feature, a \code{feature} column, and one column per PID (participant ID).
-#'   \code{feature} is in the format \code{[ASSAY_ABBREV];[TISSUE_ABBREV];[new_feature_ID]}.
-#' @source \code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/proteomics-untargeted/prot-ac/normalized-data/*med-mad-normalized-logratio.txt} 
-"ACETYL_SAMPLE_DATA"
+#' @title Normalized protein phosphorylation data
+#' @description Median-MAD normalized protein phosphorylation (PHOSPHO) data used for visualization and differential analysis
+#' @format A data frame with phosphosites in rows (\code{feature_ID}) and samples in columns (\code{viallabel}) 
+#' @details Log2 TMT ratios to the common reference were used as quantitative values for all proteomics features 
+#'   (proteins, phosphosites, acetylsite, and ubiquitylsites). Proteomics features not fully quantified in at least 
+#'   two plexes within a tissue and non-rat contaminants were removed. Log2 TMT ratios were sample-normalized by 
+#'   median-centering and mean absolute deviation scaling. Plex batch effects were removed using linear models 
+#'   implemented by the [limma::removeBatchEffect()].  
+#' @source \code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/proteomics-untargeted/prot-ph/normalized-data/*med-mad-normalized-logratio.txt}
+#' @name PHOSPHO_NORM_DATA
+"PHOSPHO_CORTEX_NORM_DATA"
+
+#' @rdname PHOSPHO_NORM_DATA
+"PHOSPHO_SKMGN_NORM_DATA"
+
+#' @rdname PHOSPHO_NORM_DATA
+"PHOSPHO_HEART_NORM_DATA"
+
+#' @rdname PHOSPHO_NORM_DATA
+"PHOSPHO_KIDNEY_NORM_DATA"
+
+#' @rdname PHOSPHO_NORM_DATA
+"PHOSPHO_LUNG_NORM_DATA"
+
+#' @rdname PHOSPHO_NORM_DATA
+"PHOSPHO_LIVER_NORM_DATA"
+
+#' @rdname PHOSPHO_NORM_DATA
+"PHOSPHO_WATSC_NORM_DATA"
 
 
-#' @title Protein ubiquitynation normalized sample-level data
-#' @description Median-MAD normalized sample-level protein ubiquitynation data. Adjusted for protein abundance. 
-#' @format A data frame with 16422 rows and 61 columns
-#' @details One row per feature, a \code{feature} column, and one column per PID (participant ID).
-#'   \code{feature} is in the format \code{[ASSAY_ABBREV];[TISSUE_ABBREV];[new_feature_ID]}.
-#' @source \code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/proteomics-untargeted/prot-ub/normalized-data/*med-mad-normalized-protein-corrected-logratio.txt} 
-"UBIQ_SAMPLE_DATA"
+#' @title Normalized protein ubiquitynation data
+#' @description Median-MAD normalized protein ubiquitynation (UBIQ) data used for visualization and differential analysis
+#' @format A data frame with phosphosites in rows (\code{feature_ID}) and samples in columns (\code{viallabel}) 
+#' @details Log2 TMT ratios to the common reference were used as quantitative values for all proteomics features 
+#'   (proteins, phosphosites, acetylsite, and ubiquitylsites). Proteomics features not fully quantified in at least 
+#'   two plexes within a tissue and non-rat contaminants were removed. Log2 TMT ratios were sample-normalized by 
+#'   median-centering and mean absolute deviation scaling. Plex batch effects were removed using linear models 
+#'   implemented by the [limma::removeBatchEffect()]. The ubiquitynation datasets were corrected for changes in protein abundances 
+#'   by fitting a global linear model between the ubiquitylsite and the cognate protein and extracting the residuals. 
+#' @source \code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/proteomics-untargeted/prot-ph/normalized-data/*med-mad-normalized-protein-corrected-logratio.txt}
+#' @name UBIQ_NORM_DATA
+"UBIQ_HEART_NORM_DATA"
+
+#' @rdname UBIQ_NORM_DATA
+"UBIQ_LIVER_NORM_DATA"
 
 
-#' @title Protein phosphorylation normalized sample-level data
-#' @description Median-MAD normalized sample-level protein phosphorylation data. Not adjusted for protein abundance. 
-#' @format A data frame with 268037 rows and 61 columns
-#' @details One row per feature, a \code{feature} column, and one column per PID (participant ID).
-#'   \code{feature} is in the format \code{[ASSAY_ABBREV];[TISSUE_ABBREV];[new_feature_ID]}.
-#' @source \code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/proteomics-untargeted/prot-ph/normalized-data/*med-mad-normalized-logratio.txt} 
-"PHOSPHO_SAMPLE_DATA"
-
-
-#' @title Immunoassay normalized sample-level data
-#' @description Normalized sample-level multiplexed immunoassay data. Raw mean fluorescent intensities (MFIs)
-#'   were log2-transformed, measurements corresponding to wells with less than 20 beads were removed, 
-#'   and the corresponding missing values were imputed with KNN (k=5).
-#' @format A data frame with 916 rows and 60 columns
-#' @details One row per feature, a \code{feature} column, and one column per PID (participant ID).
-#'   \code{feature} is in the format \code{[ASSAY_ABBREV];[TISSUE_ABBREV];[new_feature_ID]}.
-#' @source \code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/proteomics-targeted/immunoassay-luminex/normalized-data/*merged_mfi-log2-filt-imputed.txt} 
-"IMMUNO_SAMPLE_DATA"
-
-
-#' @title Metabolomics normalized sample-level data
-#' @description Normalized sample-level metabolomics data
-#' @format A data frame with 25477 rows and 55 columns
-#' @details One row per feature, a \code{feature} column, and one column per PID (participant ID).
-#'   \code{feature} is in the format \code{[ASSAY_ABBREV];[TISSUE_ABBREV];[new_feature_ID]}.
-#' @source \code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/metabolomics-named-merged/normalized-data} 
-#' @description 
-#'   For targeted datasets, the file matching "convert2na-log2-featurectr-featurefilt-knn" was used if it existed; "named-convert2na-log2.txt" was used otherwise. 
+#' @title Processed immunoassay data used for differential analysis
+#' @description Normalized, imputed, and filtered multiplexed immunoassay data used for differential analysis  
+#' @format A nested list of data frames
+#' @details 
+#'   IMMUNO sample-level data is in a different format than sample-level data for other assays/omes. 
+#'   Extract data from a panel and tissue using \code{IMMUNO_SAMPLE_DATA[[panel]][[tissue]]}, where \code{panel} 
+#'   is one of "ADIPONECTIN", "SERPIN-E", "rat-mag27plex", "rat-metabolic", "rat-myokine", "rat-pituitary", and 
+#'   \code{tissue} is a tissue abbreviation (see [TISSUE_ABBREV]). Samples (vial labels) are in rows, and analytes are
+#'   in columns. Column names, barring the first "viallabel" column, correspond to \code{feature_ID}s. 
 #'   
-#'   For untargeted datasets, the decision table ("gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/metabolomics-named-merged/stats-tests/pass1b-06_sample-ctr-decision-table-kw-summary.txt")
-#'   was used to determine which normalized file to use for each dataset. If the data were supposed to be sample-centered, 
-#'   the file matching "named-featurefilt-knn-samplefilt-log2-featurestd-samplectr.txt" was used. Otherwise, "named-featurefilt-knn-samplefilt-log2-featurestd.txt" was used. 
-"METAB_SAMPLE_DATA"
+#'   Raw mean fluorescent intensities (MFIs) were log2-transformed, and measurements corresponding to wells with less than 20 beads were removed. 
+#'   For remaining measurements in each panel and tissue, samples with more than 50\% missing values (i.e., due to low bead count) were removed; 
+#'   features with at least two missing values for a single experimental group (e.g., males trained for 2 weeks) were removed 
+#'   (this affected four colon analytes and one spleen analyte, all in the rat-mag27plex panel). Remaining missing values were 
+#'   imputed with k-nearest neighbors (k=5 features). Within each panel, tissue, and analyte, we calculated the mean and standard deviation 
+#'   and removed outlying measurements more than 4 standard deviations away from the mean. This is the version of the data provided by this object
+#'   and used for differential analysis. 
+#'   
+#'   SERPIN-E and ADIPONECTIN were both originally in a panel called rat-adipokine. They 
+#'   were split into their own "panels" because this panel was run with two dilutions, 
+#'   and one was optimal for SERPIN-E while the other was optimal for ADIPONECTIN.
+#'   Hence, in some places \code{panel} refers to "rat-adipokine" while in other places, 
+#'   like here, \code{panel} refers to "SERPIN-E" or "ADIPONECTIN", among others. 
+#' @source \code{gs://mawg-data/pass1b-06/immunoassay/data/release/pass1b-06*_mfi-log2-filt-imputed-na-outliers.txt} 
+"IMMUNO_NORM_DATA"
 
 
 #' @title Differential analysis of RNA-seq datasets 
@@ -1432,3 +1643,37 @@
 #'}
 #' @source <gs://motrpac-data-freeze-pass/pass1b-06/v1.1/results/epigenomics/qa-qc/motrpac_pass1b-06_epigen-rrbs_qa-qc-metrics.csv>
 "METHYL_META"
+
+
+#' @title Multiplexed immunoassay metadata and QC
+#' @description Multiplexed immunoassay (IMMUNO) experimental and quantification QC metrics 
+#' @format A data frame with 1511 rows and 23 variables:
+#' \describe{
+#'   \item{\code{viallabel}}{character, sample identifier}
+#'   \item{\code{tissue_code}}{character, tissue code used in data release. See [MotrpacBicQC::bic_animal_tissue_code].}
+#'   \item{\code{bid}}{integer, biospecimen ID}
+#'   \item{\code{luminex_sample_name}}{character, sample name used by HIMC in raw data files}
+#'   \item{\code{panel_name}}{character, LUMINEX panel name}
+#'   \item{\code{plate_id}}{character, plate ID in format "[date]-[tissues]_[panel_name]"}
+#'   \item{\code{ppt_type}}{character, species}
+#'   \item{\code{weight_mg}}{integer, sample weight in mg (solid tissue only)}
+#'   \item{\code{volume_ul}}{integer, sample volume in uL (plasma only)}
+#'   \item{\code{date_extracted}}{character, date of protein extraction}
+#'   \item{\code{operators}}{character, initials of experimentalists}
+#'   \item{\code{protein_conc_mg_ml}}{double, protein concentration in mg/mL}
+#'   \item{\code{vol_plate1_ul}}{integer, volume (uL) of sample submitted in first master plate (plate used for LUMINEX assays)}
+#'   \item{\code{min_vol_plate2_ul}}{integer, volume (uL) of remaining sample submitted in second master plate (backup plate)}
+#'   \item{\code{comments}}{character, comments about protein extraction}
+#'   \item{\code{sample_well_position}}{character, well position in plates submitted to the HIMC}
+#'   \item{\code{luminex_well}}{character, well position for LUMINEX assay}
+#'   \item{\code{sex}}{character, "male" or "female"}
+#'   \item{\code{group}}{character, intervention group, one of "1w", "2w", "4w", "8w", "control"}
+#'   \item{\code{CHEX1}}{double, custom Assay CHEX control beads to monitor instrument performance}
+#'   \item{\code{CHEX2}}{double, custom Assay CHEX control beads to monitor application of the detection antibody}
+#'   \item{\code{CHEX3}}{double, custom Assay CHEX control beads to monitor application of the fluorescent reporter}
+#'   \item{\code{CHEX4}}{double, custom Assay CHEX control beads to monitor nonspecific binding} 
+#'}
+#' @details Protein extractions from the same sample/viallabel were used for multiple
+#'   panels, so metadata must be matched to unique samples using both \code{viallabel} and \code{panel_name}. 
+"IMMUNO_META"
+
