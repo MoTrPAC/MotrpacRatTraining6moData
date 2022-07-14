@@ -10,3 +10,9 @@
 .Rhistory
 .RData
 .Ruserdata
+
+# large RData
+**METHYL*RAW_COUNTS*
+**METHYL*NORM_DATA*
+**ATAC*NORM_DATA*
+large-data/
