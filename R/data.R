@@ -1677,3 +1677,17 @@
 #'   panels, so metadata must be matched to unique samples using both \code{viallabel} and \code{panel_name}. 
 "IMMUNO_META"
 
+
+#' @title Sample outliers
+#' @description Outliers excluded during differential analysis
+#' @format A data frame with 27 rows and 4 variables:
+#' \describe{
+#'   \item{\code{assay}}{character, assay abbreviation, one of [ASSAY_ABBREV]}
+#'   \item{\code{tissue}}{character, tissue abbreviation, one of [TISSUE_ABBREV]}
+#'   \item{\code{viallabel}}{double, sample identifier}
+#'   \item{\code{reason}}{character, reason(s) the sample was called an outlier} 
+#'}
+#' @details If the sample was an outlier in principal component (PC) space, \code{reason}
+#'   lists the PC(s) in which it was an outlier. See ome-specific details of outlier calling 
+#'   in the supplementary methods of the manuscript. 
+"OUTLIERS"
