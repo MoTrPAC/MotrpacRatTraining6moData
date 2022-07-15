@@ -362,11 +362,3 @@ usethis::use_data(TRNSCRPT_META, ATAC_META, METHYL_META, internal = FALSE, overw
 sinew::makeOxygen(TRNSCRPT_META)
 sinew::makeOxygen(ATAC_META)
 sinew::makeOxygen(METHYL_META)
-
-# Sample-level data -------------------------------------------------------------
-
-## NOT DONE YET
-# # See https://github.com/MoTrPAC/motrpac-mawg/blob/master/pass1b-06/tools/combine-sample-level-data.Rmd
-# 
-# # Differential epigen* features and ALL other features:
-# sample_data = dl_read_gcp("gs://mawg-data/pass1b-06/merged/freeze-sample-level-data/signif-epigen-features_all-other-features_sample-level-data_20220220.tsv")
