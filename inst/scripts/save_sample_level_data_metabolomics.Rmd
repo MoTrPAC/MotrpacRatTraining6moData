@@ -1,0 +1,399 @@
+---
+title: "Download metabolomics sample-level data"
+author: "Pierre M Jean Beltran"
+date: "7/16/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE,echo=F}
+library(data.table)
+library(MotrpacBicQC)
+library(MotrpacRatTraining6moData)
+library(dplyr)
+library(testit)
+library(usethis)
+library(sinew)
+library(devtools)
+knitr::opts_chunk$set(echo = TRUE)
+# set the current session
+session_packages = c("knitr","kableExtra","limma","tidyverse","metap")
+for (lib_name in session_packages){
+  tryCatch({library(lib_name,character.only = T)}, error = function(e) {
+    print(paste("Cannot load",lib_name,", please install"))
+  })
+}
+```
+
+In this document we prepare the PASS1B metabolomics animal data of MoTrPAC. The analysis flow is as follows:
+
+1. Load the normalized and scaled data from the google cloud
+2. Select either sample-center or non-centered data according to pre-computed KW test results
+
+# 1. Load data
+
+## 1.1 Set parameters and paths
+```{r,message=FALSE,warning=FALSE,results="hide"}
+#Specificy if data needs to be downloaded
+download_from_bucket <- TRUE
+
+# Specify the parameters required for the analysis
+# This dir should have the motrpac-bic-norm-qc repo
+repo_local_dir = "~/Projects/"
+
+# Runnable command for gsutil
+gsutil_cmd = "gsutil"
+
+# Where should the data be downloaded to
+# local_data_dir = "~/Projects/temp/metabolomics/"
+local_data_dir = normalizePath("~/Projects/motrpac-bic-norm-qc/data/")
+
+# Metabolomics original data freeze
+targeted_buckets = c(
+  "gs://motrpac-processed-mass_spectrometry/DF_PASS_20210731/pass1b-06/metabolomics-targeted/"
+)
+untargeted_buckets = c(
+  "gs://motrpac-processed-mass_spectrometry/DF_PASS_20210731/pass1b-06/metabolomics-untargeted/"
+)
+
+# Path to the processed metabolomics data generated with pass1b_metabolomics_reimplementation.Rmd
+bucket_analysis = "gs://mawg-data/pass1b-06/metabolomics/data/analysis_20210914"
+bucket_normalized_tables = "gs://mawg-data/pass1b-06/metabolomics/data/normalized_tables_20210914/"
+
+# Path to output bucket
+mawg_dea_bucket = "gs://mawg-data/pass1b-06/metabolomics/dea/20210914/"
+mawg_data_bucket = "gs://mawg-data/pass1b-06/metabolomics/data/merged_20210914/"
+
+# Specify bucket and local path for the phenotypic data
+# this path is internal to BIC - faster
+# pheno_bucket = "gs://bic_data_analysis/pass1b/pheno_dmaqc/merged2020-06-12/"
+# pheno_bucket = "gs://motrpac-internal-release2-results/pass1b-06/phenotype/"
+pheno_bucket = "gs://mawg-data/pass1b-06/pheno_dmaqc/merged2021-09-09/"
+
+# pheno_local_dir = "~/Projects/temp/pheno/"
+pheno_local_dir = "~/Projects/motrpac-bic-norm-qc/data/20210731/"
+
+#Suffix to be written with the output file - usually the date
+output_suffix <- "20211006"
+
+# Previous metabolomics analysis
+metabolomics_analysis_previous <- "gs://mawg-data/pass1b-06/metabolomics/dea/deprecated_20201121/metabolomics_named_redundant_20210209.RData"
+
+```
+
+Specifiy the pipeline, metadata, and sample variables for the analysis.
+```{r,eval=T,message=FALSE,warning=FALSE,results="hide"}
+# Define technical and biological variables to be considered in the QC
+pipeline_qc_cols = c("sample_order","raw_intensity","num_NAs")
+biospec_cols = c("registration.sex",
+                 "key.anirandgroup",
+                 "registration.batchnumber",
+                 "training.staffid",
+                 "is_control",
+                 "vo2.max.test.vo2_max_visit1", # this assumes that visit1's are aligned
+                 "terminal.weight.mg",
+                 "time_to_freeze",
+                 "timepoint",
+                 "bid",
+                 "pid")
+```
+
+```{r,warning=F,results=F,message=F}
+# load functions and libraries
+source(paste0(repo_local_dir,"motrpac-bic-norm-qc/tools/gcp_functions.R"))
+source(paste0(repo_local_dir,"motrpac-bic-norm-qc/tools/config_session.R"))
+source(paste0(repo_local_dir,"motrpac-bic-norm-qc/tools/metabolomics_data_parsing_functions.R"))
+```
+
+## 1.2 Load phenotype data
+
+```{r,message=FALSE,warning=FALSE,results="hide"}
+# Add the pheno data
+pheno_data = parse_pheno_data(pheno_bucket,
+                              local_path = path.expand(pheno_local_dir),
+                              remove_prev_files = TRUE,
+                              GSUTIL_PATH=gsutil_cmd)
+
+# add a tissue variable (for convenience)
+pheno_data$viallabel_data$tissue = 
+  pheno_data$viallabel_data$specimen.processing.sampletypedescription
+
+# add the time to freeze variable ((for convenience))
+pheno_data$viallabel_data$time_to_freeze = 
+  pheno_data$viallabel_data$calculated.variables.frozetime_after_train - 
+  pheno_data$viallabel_data$calculated.variables.deathtime_after_train
+
+# some freeze times are negative because the tissues were taken
+# before sacrifice time, zero these cases
+pheno_data$viallabel_data$time_to_freeze = pmax(0,pheno_data$viallabel_data$time_to_freeze)
+
+# add a binary is_control variable
+pheno_data$viallabel_data$is_control = as.numeric(grepl("control",
+                                                        pheno_data$viallabel_data$key.anirandgroup,
+                                                        ignore.case = TRUE))
+
+# add the timepoint as a number
+# x - the text description of the group
+get_numeric_timepoint <- function(x){
+  v = rep(0,length(x))
+  tps = c("Eight"=8,"Four"=4,"One"=1,"Two"=2)
+  for(tp in names(tps)){
+    v[grepl(paste0(tp,"-week"),x,perl = T,ignore.case = T)] = tps[tp]
+  }
+  return(v)
+}
+pheno_data$viallabel_data$timepoint = get_numeric_timepoint(
+  pheno_data$viallabel_data$key.anirandgroup
+)
+```
+
+## 1.3 Load metabolomics metadata
+
+Load the parsed meta-data (from the cloud), required for all analyses presented here.
+```{r}
+if(download_from_bucket){
+  for(targeted_bucket in targeted_buckets){
+    rem_prev = targeted_bucket == targeted_buckets[1]
+    obj = download_bucket_to_local_dir(targeted_bucket,
+                                       path.expand(local_data_dir),
+                                       remove_prev_files = rem_prev,
+                                       GSUTIL_PATH=gsutil_cmd)
+  }
+  for(untargeted_bucket in untargeted_buckets){
+    obj = download_bucket_to_local_dir(untargeted_bucket,
+                                       path.expand(local_data_dir),
+                                       remove_prev_files = FALSE,
+                                       GSUTIL_PATH=gsutil_cmd)
+  }
+}
+  
+obj = list(
+  downloaded_files = list.files(local_data_dir,
+                                full.names = TRUE,
+                                recursive = TRUE),
+  local_path = local_data_dir
+)
+
+read_metabolomics_datasets_from_download_obj <- function(download_obj,verbose=T){
+  downloaded_files = download_obj$downloaded_files
+  local_path_reg = gsub("motrpac-bic-norm-qc\\\\","",download_obj$local_path)
+  bucket_content = strsplit(downloaded_files,split=local_path_reg)
+  bucket_content = lapply(bucket_content,function(x)
+    strsplit(x[2],split=.Platform$file.sep)[[1]])
+  # this is crucial: we assume that bucket structure is omics/tissue/assay/file, which
+  # provides a vector of size five when splitting using "/
+  bucket_content = bucket_content[sapply(bucket_content,length)==5]
+  tissues = unlist(sapply(bucket_content,function(x)x[length(x)-2]))
+  platforms = unlist(sapply(bucket_content,function(x)x[length(x)-1]))
+  tissue_plarform_pairs = unique(cbind(tissues,platforms))
+  tissue_plarform_pairs = 
+    tissue_plarform_pairs[!grepl("qa-qc",tissue_plarform_pairs[,2]),]
+  
+  metabolomics_parsed_datasets = list()
+  failed_buckets = c()
+  for(j in 1:nrow(tissue_plarform_pairs)){
+    tissue = tissue_plarform_pairs[j,1]
+    platform = tissue_plarform_pairs[j,2]
+    dataset_name = paste(c(tissue,platform),collapse=",")
+    if(verbose){
+      print(paste("parsing dataset:",dataset_name))
+    }
+    # read all datasets in current platform bucket - named and unnamed (if exists)
+    # try reading first, if files are missing we will get an error
+    datasets = NULL
+    try({
+      datasets = read_single_metabolomics_dataset_from_bucket(download_obj,tissue,platform)
+    })
+    if(is.null(datasets)){
+      failed_buckets = c(failed_buckets,dataset_name)
+      if(verbose){
+        print(paste("Error, could not parse the data from:", dataset_name))
+        print("Possible reason: missing data or metadata files, please revise")
+      }
+      next
+    }
+    if(verbose){print("done")}
+    # add new datasets to the list of objects
+    for(nn in names(datasets)){
+        if(is.null(datasets[[nn]])){next}
+        metabolomics_parsed_datasets[[paste(dataset_name,nn,sep=",")]] = datasets[[nn]]
+    }
+  }
+  return(list(metabolomics_parsed_datasets=metabolomics_parsed_datasets,
+              failed_buckets=failed_buckets))
+}
+
+
+metab_datasets = read_metabolomics_datasets_from_download_obj(download_obj = obj,
+                                                              verbose = TRUE)
+metabolomics_parsed_datasets = metab_datasets$metabolomics_parsed_datasets
+
+# Download previous version of DEA results
+get_single_file_from_bucket_to_local_dir(bucket = metabolomics_analysis_previous, 
+                                         local_path = path.expand(local_data_dir), 
+                                         remove_prev_files = FALSE,
+                                         GSUTIL_PATH = gsutil_cmd)
+load(file.path(local_data_dir, "metabolomics_named_redundant_20210209.RData"))
+```
+
+
+## 1.4 Load metabolomics normalized data
+Load processed metabolomics data if required
+```{r}
+if(download_from_bucket){
+  obj = download_bucket_to_local_dir(bucket_analysis,
+                                     local_path=path.expand(local_data_dir),
+                                     remove_prev_files = FALSE,
+                                     GSUTIL_PATH=gsutil_cmd) 
+  
+  obj_normalized_tables = download_bucket_to_local_dir(bucket_normalized_tables,
+                                              local_path=path.expand(local_data_dir),
+                                              remove_prev_files = FALSE,
+                                              GSUTIL_PATH=gsutil_cmd)
+}
+
+#Load Rdata files containing lists of the normalized metabolomics tables
+load(Sys.glob(file.path(local_data_dir,"normalized_tables_*/targeted.Rdata"))) #targeted
+load(Sys.glob(file.path(local_data_dir,"normalized_tables_*/untargeted_named.Rdata"))) #untargeted_named
+```
+
+
+# 2. Prepare metabolomics data
+
+This section organizes and prepares metabolomics data for DEA.
+1. Read KW test results to decide whether untargeted data used should be sample-centered or not.
+2. Select appropriate tables for DEA:
+    * Metabolomics targeted (>12 features): Table "3b imputed" - knn imputed, log2 transformed, feature ctr. Note: feature ctr has to be removed to preserve scale
+  * Metabolomics targeted (<=12 features): Table "2" - log2 transformed
+  * Metabolomics untargeted sample-centered: Table "2b2" - knn imputed, log2 transformed, sample centered
+  * Metabolomics untargeted non-centered: Table "2" - knn imputed, log2 transformed
+3. Read phenotype data matching samples in table
+4. Extract tissue and assay names for each dataset
+5. Remove Vena Cava Female 1 and 2 week samples, which are contaminated
+6. Remove metabolites that have all missing values
+7. Add feature metadata
+
+```{r}
+metab_data <- 
+  
+#1.Read KW test results------------------------------------------------------
+read_tsv(Sys.glob(file.path(local_data_dir,
+                   "analysis_*/pass1b-06_sample-ctr-decision-table-kw-summary.txt"))) %>%
+  select(dataset,sample_ctr) %>%
+  
+#2. Select tables for DEA----------------------------------------------------
+mutate(data_for_dea = map2(dataset,sample_ctr, function(dataset,sample_ctr){
+  
+  #Read targeted data
+  if(grepl("metab_t",dataset)){
+    
+    #If dataset contains >12 features return table 3b imputed
+    #However, remove feature scaling
+    if("3b.imputed_named-convert2na-log2-featurectr-featurefilt-knn" %in%
+       names(targeted[[dataset]])){
+      
+      scaled_data <- targeted[[dataset]][["3b.imputed_named-convert2na-log2-featurectr-featurefilt-knn"]]
+      nonscaled_data <- targeted[[dataset]][["2_named-convert2na-log2"]]
+      
+      #Make sure non-scaled data has similar features as the scaled data
+      nonscaled_data <- nonscaled_data[rownames(scaled_data),colnames(scaled_data)]
+      
+      data_median <- apply(nonscaled_data,1,median,na.rm=TRUE)
+      # return_mat <- normalize_data*data_sd
+      return_mat <- scaled_data+data_median
+      return(return_mat)
+      
+      #Otherwise return table 2
+    } else{
+      return(targeted[[dataset]][["2_named-convert2na-log2"]])
+    }
+  
+    #Read untargeted dataset
+  } else {
+    #If sample-centered data should be used return table 2b2
+    if(sample_ctr == 1){
+      return(untargeted_named[[dataset]][['2b2_named-featurefilt-knn-samplefilt-log2-samplectr']])
+      
+      #Otherwise, return table 2 
+    } else {
+      return(untargeted_named[[dataset]][["2_named-featurefilt-knn-samplefilt-log2"]])
+    }
+  }
+  stop(paste0("Dataset ", dataset," in KW table not found!"))
+})) %>%
+  
+#3. Read corresponding phenotype data-----------------------------------------
+mutate(pheno = map(data_for_dea,function(x){
+  
+  pheno <- pheno_data$viallabel_data %>%
+    select(viallabel,timepoint,registration.sex,is_control,bid,pid) %>%
+    mutate(viallabel = as.character(viallabel)) %>%
+    
+    #Filter for samples in current dataset
+    filter(viallabel %in% colnames(x)) %>%
+    
+    #Change sex integer to letter and add group variable
+    mutate(sex = case_when(
+      registration.sex == 1 ~ "F",
+      registration.sex == 2 ~ "M"),
+      tr_group = paste(timepoint,is_control,sep="_")
+    )
+  
+  #Check if all samples have metadata
+  not_found <- setdiff(x %>% colnames,pheno %>% .$viallabel)
+  
+  if(length(not_found) > 0){
+    warning(paste("Samples not found in pheno data:",paste(not_found,collapse = ";")))
+  }
+  
+  return(pheno)
+  
+})) %>%
+  
+#4. Extract tissue and assay names--------------------------------------------
+separate(dataset,into=c("phase","tissue","ome","modality","platform"),
+         sep="_") %>%
+  mutate(assay_code = paste(ome,modality,platform,sep = "-")) %>%
+  select(-ome,-modality,-platform,-phase, -sample_ctr) %>%
+  select(tissue,assay_code,everything()) %>%
+  
+#5. Remove vena cava contaminated samples---------------------------------------
+# First remove female 1w and 2w vena cava samples from data 
+mutate(data_for_dea = pmap(list(tissue,data_for_dea,pheno), function(tissue,dat,pheno){
+  if(tissue == "t65-aorta"){
+    to_include <- pheno %>% filter(!((sex == "F") &
+                                       (tr_group == "1_0" | tr_group == "2_0")))
+    return(dat[,to_include$viallabel])
+  } else {
+    return(dat)
+  }
+}),
+#Also remove from pheno metadata
+pheno = map2(pheno,data_for_dea,function(pheno,dat){
+  return(pheno[colnames(dat),])
+})) %>%
+  
+#6. Remove metabolites that have all missing values
+mutate(data_for_dea = map(data_for_dea,function(x){
+  return(x[rowSums(is.na(x)) < ncol(x),])
+})) %>%
+  
+#7. Add feature metadata --------------------------------------------------------
+
+#Extract feature metadata
+mutate(feature_metadata = pmap(list(tissue,assay_code,data_for_dea), function(tissue,assay_code,dat){
+  id <- paste(tissue,assay_code,"named",sep = ",")
+  metadata <- metabolomics_parsed_datasets[[id]][["row_annot"]]
+  metadata <- metadata[rownames(dat),]
+  if(sum(is.na(metadata$metabolite_name))>0){
+    warning("Unable to find metadata for all features in: ", id)
+  }
+  return(metadata)
+}))
+```
+# 3. Save results
+```{r}
+METAB_SAMPLE_DATA <- metab_data %>%
+  rename(sample_data = data_for_dea)
+usethis::use_data(METAB_SAMPLE_DATA,overwrite=T)
+```
+
