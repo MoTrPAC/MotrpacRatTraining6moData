@@ -76,6 +76,7 @@ METAB_SPLEEN_DA                       Differential analysis of merged metabolomi
 METAB_TESTES_DA                       Differential analysis of merged metabolomics datasets
 METAB_VENACV_DA                       Differential analysis of merged metabolomics datasets
 METAB_WATSC_DA                        Differential analysis of merged metabolomics datasets
+METAB_SAMPLE_DATA                     Normalized metabolite data for all tissues and platforms
 METHYL_META                           RRBS metadata and QC
 OUTLIERS                              Sample outliers
 PATHWAY_PARENTS                       KEGG and Reactome parent pathways
