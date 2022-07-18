@@ -1691,3 +1691,17 @@
 #'   lists the PC(s) in which it was an outlier. See ome-specific details of outlier calling 
 #'   in the supplementary methods of the manuscript. 
 "OUTLIERS"
+
+
+#' @title Metabolomics Sample-Level Data
+#' @description Combined sample level data organized by metabolomics platforms and tissue
+#' @format A data frame with 113 rows and 5 variables:
+#' \describe{
+#'   \item{\code{tissue}}{character, MoTrPAC tissue release code}
+#'   \item{\code{assay_code}}{character, assay code used in data release. See [MotrpacBicQC::assay_codes].}
+#'   \item{\code{sample_data}}{list, normalized sample-level data}
+#'   \item{\code{pheno}}{list, phenotypic data important for differential abundance analysis}
+#'   \item{\code{feature_metadata}}{list, feature metadata importand for differntial abundance analysis} 
+#'}
+#' @details DETAILS
+"METAB_SAMPLE_DATA"
