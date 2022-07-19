@@ -295,6 +295,14 @@ for(c in colnames(pass1b)){
 }
 pass1b[,(cols_to_remove) := NULL]
 
+# add tissue column by parsing viallabel
+pass1b[,tissue_code_no := sapply(viallabel, function(x){
+  paste0(c("T", unname(unlist(strsplit(x, "")))[8:9]), collapse="")
+})]
+tissue_dt = data.table(MotrpacBicQC::bic_animal_tissue_code)
+tissue_dt = tissue_dt[!is.na(abbreviation)]
+pass1b[,tissue := tissue_dt[match(pass1b[,tissue_code_no], bic_tissue_code), abbreviation]]
+
 # convert to data.frame
 pass1b = as.data.frame(pass1b)
 rownames(pass1b) = pass1b$viallabel
@@ -362,3 +370,4 @@ usethis::use_data(TRNSCRPT_META, ATAC_META, METHYL_META, internal = FALSE, overw
 sinew::makeOxygen(TRNSCRPT_META)
 sinew::makeOxygen(ATAC_META)
 sinew::makeOxygen(METHYL_META)
+
