@@ -173,6 +173,15 @@ combine_normalized_data = function(gsutil_path,
   
   return(norm)
 }
+
+viallabel_to_pid = function(viallabels){
+  pheno = as.data.table(MotrpacRatTraining6moData::PHENO)
+  pheno = unique(pheno[,.(viallabel, pid)])
+  pheno = pheno[viallabel %in% as.character(viallabels)]
+  vl_to_pid = pheno[,pid]
+  names(vl_to_pid) = pheno[,viallabel]
+  return(vl_to_pid)
+}
 ```
 
 ```{r read in for each ome}
@@ -301,6 +310,7 @@ for(f in flist){
   # }
   
   setnames(imputed, "vial_label", "viallabel")
+  imputed = as.data.frame(imputed)
   imputed_data[[panel]][[tissue_abbrev]] = imputed
 }
 new_meta = rbindlist(new_meta_list)
@@ -323,6 +333,47 @@ system(sprintf("gsutil cp %s gs://mawg-data/pass1b-06/immunoassay/data/release/"
 # save the data in list format 
 IMMUNO_NORM_DATA = imputed_data
 usethis::use_data(IMMUNO_NORM_DATA, overwrite=T)
+```
+
+### Create single feature x pid table for IMMUNO
+```{r format IMMUNO for viz}
+load("../../data/IMMUNO_NORM_DATA.rda")
+load("../../data/REPEATED_FEATURES.rda")
+rep = data.table(REPEATED_FEATURES)
+names(IMMUNO_NORM_DATA)
+data_list = list()
+for(panel in names(IMMUNO_NORM_DATA)){
+  for(tissue in names(IMMUNO_NORM_DATA[[panel]])){
+    df = IMMUNO_NORM_DATA[[panel]][[tissue]]
+    # transpose
+    rownames(df) = df$viallabel
+    df$viallabel = NULL
+    df_t = as.data.frame(t(df))
+    feature_ID = rownames(df_t)
+    # fix repeated features
+    features = sprintf("IMMUNO;%s;%s", tissue, feature_ID)
+    if(any(features %in% rep[,feature])){
+      new_features = sprintf("IMMUNO;%s;%s:%s", tissue, panel, feature_ID)
+      features[new_features %in% rep[,new_feature]] = new_features[new_features %in% rep[,new_feature]]
+    }
+    # replace colname with pid 
+    colnames(df_t) = viallabel_to_pid(colnames(df_t))
+    # make data.table
+    dt = as.data.table(cbind(feature=features, df_t))
+    label=sprintf("%s;%s", tissue, panel)
+    writeLines(label)
+    data_list[[label]] = dt
+  }
+}
+immuno_data = rbindlist(data_list, fill=T)
+# make sure rownames are unique
+length(immuno_data[,feature]) == length(unique(immuno_data[,feature]))
+# check that repeated features match
+all(immuno_data[grepl(":",feature),feature] %in% rep[,new_feature])
+
+# save 
+IMMUNO_VIZ_DATA = as.data.frame(immuno_data)
+usethis::use_data(IMMUNO_VIZ_DATA, overwrite=T)
 ```
 
 ## Save METHYL to GDrive
@@ -543,5 +594,102 @@ target = "https://www.dropbox.com/s/s6c4otggrkyhh05/ATAC_NORM_DATA.rda?raw=1"
 obj = load_dropbox_rdata(target, tmpdir)
 ```
 
+## Format METAB sample-level data
+### Create single feature x pid table for METAB
+```{r}
+# start with Pierre's .rda
+load("../../data/METAB_SAMPLE_DATA.rda")
+data_list = list()
+for(i in 1:nrow(METAB_SAMPLE_DATA)){
+  tissue_code = METAB_SAMPLE_DATA$tissue[i]
+  tissue = TISSUE_CODE_TO_ABBREV[[tissue_code]]
+  assay_code = METAB_SAMPLE_DATA$assay_code[i]
+  sample_data = as.data.frame(METAB_SAMPLE_DATA$sample_data[i][[1]])
+  
+  # replace colname with pid 
+  colnames(sample_data) = viallabel_to_pid(colnames(sample_data))
+  
+  # make original and "fixed" feature for ALL feature_ID
+  features = sprintf("METAB;%s;%s", tissue, rownames(sample_data))
+  new_features = sprintf("METAB;%s;%s:%s", tissue, assay_code, rownames(sample_data))
 
+  # make data.table
+  dt = as.data.table(cbind(feature=features, 
+                           new_feature=new_features,
+                           sample_data))
+  label=sprintf("%s;%s", tissue, assay_code)
+  writeLines(label)
+  data_list[[i]] = dt
+}
+metab_data = rbindlist(data_list, fill=T)
+```
+
+```{r}
+# GOAL: get the sample-level data to match `feature` in the states table, as well as `feature_ID` from the sample-level data 
+differential_features = GRAPH_STATES$feature
+
+# now, deal with duplicate metabolites
+# what are the features present in the DEA tables? the sample-level tables? how to adjust them?
+# get meta-reg dea
+metab_metareg = dl_load_gcp("gs://motrpac-data-freeze-pass/pass1b-06/v1.0/analysis/metabolomics-named-merged/dea/meta-regression/metab_metareg_20211018.RData", "metab_metareg")
+metab_dea = as.data.table(metab_metareg$training_dea)
+metab_dea[,feature := sprintf("METAB;%s;%s", tissue_abbreviation, feature_ID)]
+diff_metab = differential_features[grepl("METAB;", differential_features)]
+table(diff_metab %in% metab_dea[,feature]) # 205 differential metabolite features not in training-dea results 
+table(metab_dea[,feature_ID] %in% rep[,feature_ID])
+table(diff_metab %in% rep[,new_feature])
+# all features in diff_metab but not in training-dea are explained by renaming duplicate metabolites
+# features are prepended with dataset, e.g. GMP --> meta-reg:GM, metab-u-ionpneg:GMP, metab-u-rppos:GMP
+# in our case, we want ALL individual sample-level data
+# do all differential metabolites match if we remove dataset from feature?
+head(diff_metab[!diff_metab %in% metab_dea[,feature]])
+fixed = gsub(";metab-[a-z-]+:|;meta-reg:",";",diff_metab[!diff_metab %in% metab_dea[,feature]])
+table(fixed %in% metab_dea[,feature])
+# okay, so all 205 features in diff_metab but not in training-dea are addressed by reverting diff_metab feature_ID back to original feature_ID 
+# this means we need to (1) rename duplicate features from sample-level data and (2) handle duplicate feature names WITHIN the plotting function, which will exist because of the meta-regression
+
+# rename feature_ID when duplicated
+metab_data[,feature := ifelse(new_feature %in% rep[,new_feature], new_feature, feature)]
+metab_data[,new_feature := NULL]
+
+# do we cover all diff metab?
+table(diff_metab %in% metab_data[,feature])
+
+# find subset of metab named by refmet instead of metabolite_name. these are hits from meta-reg
+metab_data[,metabolite_name := gsub(".*;","",feature)]
+metab_data[,refmet := mdd[match(metab_data[,metabolite_name], metabolite_name), refmet_name]]
+metab_data_sub = metab_data[!is.na(refmet)]
+metab_data_sub[,tissue := unname(unlist(sapply(feature, function(x) unname(unlist(strsplit(x, ';')))[2])))]
+metab_data_sub[,new_feature := sprintf("METAB;%s;%s", tissue, refmet)]
+metab_data_sub = metab_data_sub[new_feature %in% diff_metab]
+metab_data_sub = metab_data_sub[!feature == new_feature]
+metab_data_sub[,feature := new_feature]
+metab_data_sub[,c('metabolite_name', 'refmet', 'tissue', 'new_feature') := NULL]
+
+# save these. duplicate if necessary 
+metab_data2 = rbindlist(list(metab_data, metab_data_sub), fill=T)
+metab_data2[,c("metabolite_name","refmet") := NULL]
+
+# what's left?
+table(diff_metab %in% metab_data2[,feature])
+diff_metab[!diff_metab %in% metab_data2[,feature]]
+
+# add these guys 
+# METAB;BAT;meta-reg:GMP
+# METAB;LIVER;meta-reg:GMP 
+# METAB;LUNG;meta-reg:GMP
+# METAB;SKM-GN;meta-reg:GMP
+# METAB;WAT-SC;meta-reg:GMP
+
+sub2 = metab_data2[feature %in% c("METAB;BAT;GMP", "METAB;LIVER;GMP", "METAB;LUNG;GMP", "METAB;SKM-GN;GMP", "METAB;WAT-SC;GMP")]
+sub2[,feature := gsub("GMP","meta-reg:GMP",feature)]
+
+metab_data3 = rbindlist(list(metab_data2, sub2), fill=T)
+table(diff_metab %in% metab_data3[,feature])
+
+# now all differential features exist in metab_data3
+# there are still duplicate features from non-differential metab, but that's okay (I think?)
+METAB_VIZ_DATA = as.data.frame(metab_data3)
+usethis::use_data(METAB_VIZ_DATA, overwrite=T)
+```
 
