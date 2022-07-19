@@ -7,11 +7,17 @@
 \format{
 A data frame with 27 rows and 4 variables:
 \describe{
-\item{\code{assay}}{character, assay abbreviation, one of \link{ASSAY_ABBREV}}
+\item{\code{viallabel}}{character, sample identifier}
 \item{\code{tissue}}{character, tissue abbreviation, one of \link{TISSUE_ABBREV}}
-\item{\code{viallabel}}{double, sample identifier}
+\item{\code{assay}}{character, assay abbreviation, one of \link{ASSAY_ABBREV}}
+\item{\code{platform}}{character, LUMINEX panel if \code{assay} is IMMUNO}
+\item{\code{pid}}{integer, participant ID, one per animal}
+\item{\code{group}}{character, combination of sex and training time point that the sample belongs to, e.g., "female_1w"}
 \item{\code{reason}}{character, reason(s) the sample was called an outlier}
 }
+}
+\source{
+\url{https://docs.google.com/spreadsheets/d/1DetAMovcmMJqulEA41yBLd4I9Q1XSHPH1U8U2aVMShg/edit#gid=2057863805}
 }
 \usage{
 OUTLIERS
