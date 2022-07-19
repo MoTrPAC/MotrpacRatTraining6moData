@@ -363,6 +363,8 @@
 #'   \item{\code{group}}{character, intervention group, one of "1w", "2w", "4w", "8w", "control"}
 #'   \item{\code{sex}}{character, sex, one of "male", "female"}
 #'   \item{\code{time_to_freeze}}{integer, sample time to freeze, \code{calculated.variables.frozetime_after_train - calculated.variables.deathtime_after_train}} 
+#'   \item{\code{tissue_code_no}}{character, BIC tissue code. See [MotrpacBicQC::bic_animal_tissue_code].}
+#'   \item{\code{tissue}}{character, tissue abbreviation, one of [TISSUE_ABBREV]} 
 #'}
 "PHENO"
 
@@ -734,6 +736,58 @@
 "IMMUNO_NORM_DATA"
 
 
+#' @title Combined immunoassay data used for visualization
+#' @description Normalized, imputed, and filtered multiplexed immunoassay data used for visualization  
+#' @format A data frame with 720 rows and 60 variables:
+#' \describe{
+#'   \item{\code{feature}}{unique \code{feature} in the format \code{[ASSAY_ABBREV];[TISSUE_ABBREV];[feature_ID]},
+#'     where \code{feature_ID} is \code{new_feature_ID} when applicable. See [REPEATED_FEATURES] for details.}
+#' }
+#' @details 
+#'   Analytes (\code{feature}) are in rows, and participants IDs (PIDs, i.e., unique animal IDs) are in columns. 
+#'   When an analyte was measured by more than one panel, the panel name is prepended to \code{feature_ID} to 
+#'   provide unique feature identifiers. See [REPEATED_FEATURES] for details. 
+#'   
+#'   Data are equivalent to the data provided in [IMMUNO_NORM_DATA]. [IMMUNO_NORM_DATA] is compatible with the 
+#'   differential analysis functions while this format is compatible with visualization functions. 
+#'   
+#' @source \code{gs://mawg-data/pass1b-06/immunoassay/data/release/pass1b-06*_mfi-log2-filt-imputed-na-outliers.txt} 
+"IMMUNO_VIZ_DATA"
+
+
+#' @title Normalized metabolomics data
+#' @description Combined sample-level data organized by metabolomics platforms and tissue used for differential analysis
+#' @format A tibble with 113 rows and 5 variables:
+#' \describe{
+#'   \item{\code{tissue}}{character, tissue code used in data release. See [MotrpacBicQC::bic_animal_tissue_code].}
+#'   \item{\code{assay_code}}{character, assay code used in data release. See [MotrpacBicQC::assay_codes].}
+#'   \item{\code{sample_data}}{list where first element is a tibble of feature by viallabel normalized sample-level data}
+#'   \item{\code{pheno}}{list, phenotypic data important for differential abundance analysis}
+#'   \item{\code{feature_metadata}}{list, feature metadata important for differntial abundance analysis} 
+#'}
+#' @details TODO
+"METAB_SAMPLE_DATA"
+
+
+#' @title Combined metabolomics data
+#' @description Combined sample-level metabolomics data used for visualization
+#' @format A data frame with 15116 rows and 55 variables:
+#' \describe{
+#'   \item{\code{feature}}{unique \code{feature} in the format \code{[ASSAY_ABBREV];[TISSUE_ABBREV];[feature_ID]},
+#'     where \code{feature_ID} is \code{new_feature_ID} when applicable. See [REPEATED_FEATURES] for details.}
+#' }
+#' @details
+#'   Analytes (\code{feature}) are in rows, and participants IDs (PIDs, i.e., unique animal IDs) are in columns. 
+#'   When an metabolite was measured by more than one platform, the platform name is prepended to \code{feature_ID} to 
+#'   provide unique feature identifiers. See [REPEATED_FEATURES] for details. For completeness, analytes are defined 
+#'   both with the \code{feature_ID} used in the original sample-level data AND with the \code{feature} used in the 
+#'   graphical analysis results, e.g., [GRAPH_STATES]. 
+#'   
+#'   Data are equivalent to the data provided in [METAB_SAMPLE_DATA]. [METAB_SAMPLE_DATA] is compatible with the 
+#'   differential analysis functions while this format is compatible with visualization functions. 
+"METAB_VIZ_DATA"
+
+
 #' @title Differential analysis of RNA-seq datasets 
 #' @description Timewise summary statistics and training FDR from 
 #'     differential analysis (DA) that tests the effect of training on the 
@@ -767,7 +821,7 @@
 #'   \item{\code{selection_fdr}}{double, adjusted training p-value used to 
 #'       select training-regulated analytes. P-values are IHW-adjusted across all 
 #'       datasets within a given \code{assay} with \code{tissue} as a covariate.} 
-#'}
+#' }
 #' @name TRNSCRPT_DA
 "TRNSCRPT_BLOOD_DA"
 
@@ -1682,26 +1736,16 @@
 #' @description Outliers excluded during differential analysis
 #' @format A data frame with 27 rows and 4 variables:
 #' \describe{
-#'   \item{\code{assay}}{character, assay abbreviation, one of [ASSAY_ABBREV]}
+#'   \item{\code{viallabel}}{character, sample identifier}
 #'   \item{\code{tissue}}{character, tissue abbreviation, one of [TISSUE_ABBREV]}
-#'   \item{\code{viallabel}}{double, sample identifier}
+#'   \item{\code{assay}}{character, assay abbreviation, one of [ASSAY_ABBREV]}
+#'   \item{\code{platform}}{character, LUMINEX panel if \code{assay} is IMMUNO}
+#'   \item{\code{pid}}{integer, participant ID, one per animal}
+#'   \item{\code{group}}{character, combination of sex and training time point that the sample belongs to, e.g., "female_1w"}
 #'   \item{\code{reason}}{character, reason(s) the sample was called an outlier} 
 #'}
 #' @details If the sample was an outlier in principal component (PC) space, \code{reason}
 #'   lists the PC(s) in which it was an outlier. See ome-specific details of outlier calling 
 #'   in the supplementary methods of the manuscript. 
+#' @source <https://docs.google.com/spreadsheets/d/1DetAMovcmMJqulEA41yBLd4I9Q1XSHPH1U8U2aVMShg/edit#gid=2057863805>
 "OUTLIERS"
-
-
-#' @title Metabolomics Sample-Level Data
-#' @description Combined sample level data organized by metabolomics platforms and tissue
-#' @format A data frame with 113 rows and 5 variables:
-#' \describe{
-#'   \item{\code{tissue}}{character, MoTrPAC tissue release code}
-#'   \item{\code{assay_code}}{character, assay code used in data release. See [MotrpacBicQC::assay_codes].}
-#'   \item{\code{sample_data}}{list, normalized sample-level data}
-#'   \item{\code{pheno}}{list, phenotypic data important for differential abundance analysis}
-#'   \item{\code{feature_metadata}}{list, feature metadata importand for differntial abundance analysis} 
-#'}
-#' @details DETAILS
-"METAB_SAMPLE_DATA"
