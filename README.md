@@ -2,10 +2,33 @@
 Data for analysis of the MoTrPAC endurance exercise training study in 6-month-old rats
 
 ## Installation
-This takes a few minutes: 
 ```r
 devtools::install_github("MoTrPAC/MotrpacRatTraining6moData")
 ```
+Note that the `*** moving datasets to lazyload DB` step takes the longest (~5 minutes). 
+
+### Troubleshooting
+If you get this error:
+```
+Downloading GitHub repo MoTrPAC/MotrpacRatTraining6moData@HEAD
+Error in utils::download.file(url, path, method = method, quiet = quiet,  : 
+  download from 'https://api.github.com/repos/MoTrPAC/MotrpacRatTraining6moData/tarball/HEAD' failed
+```
+Try extending the timeout: 
+```r
+devtools::install_github("MoTrPAC/MotrpacRatTraining6moData", timeout=1e5)
+```
+
+### Last resort
+If you can't get `devtools::install_github("MoTrPAC/MotrpacRatTraining6moData")` to work, try this:  
+
+1. Go to <https://api.github.com/repos/MoTrPAC/MotrpacRatTraining6moData/tarball/HEAD>, which will automatically start downloading this repository in a tarball 
+2. Install the package from source: 
+   ```r
+   install.packages("~/Downloads/MoTrPAC-MotrpacRatTraining6moData-0729e2e.tar.gz", repos = NULL, type = "source")
+   library(MotrpacRatTraining6moData)
+   ```
+
 ## Explore available data objects
 List available data objects after loading the package:
 ```r
