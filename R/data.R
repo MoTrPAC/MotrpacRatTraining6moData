@@ -1,3 +1,5 @@
+## Colors and abbreviations ####
+
 #' @title Tissue abbreviations 
 #' @description Tissue abbreviations used in tables and figures 
 #' @format Unnamed character vector
@@ -63,6 +65,8 @@
 "TISSUE_ORDER"
 
 
+## Gene mappings ####
+
 #' @name FEATURE_TO_GENE
 #' @title Feature-to-gene map
 #' @description This feature-to-gene map associates every feature tested in 
@@ -70,7 +74,7 @@
 #' @format A data frame with 4044034 rows and 9 variables:
 #' \describe{
 #'   \item{\code{entrez_gene}}{double, Entrez gene ID}
-#'   \item{\code{feature_ID}}{character, MoTrPAC feature identifier}
+#'   \item{\code{feature_ID}}{@eval feature_ID()}
 #'   \item{\code{rgd_gene}}{integer, RGD gene ID}
 #'   \item{\code{gene_symbol}}{character, official gene symbol}
 #'   \item{\code{old_gene_symbol}}{character, semicolon-separated list of deprecated or alias gene symbols}
@@ -84,7 +88,7 @@
 #'     is always less than "geneEnd", even if the gene is on the negative strand ("geneStrand" == 2).}
 #'   \item{\code{custom_annotation}}{character, a version of the \code{ChIPseeker} annotations with many corrections. Values include:
 #'     "Distal Intergenic", "Promoter (<=1kb)", "Exon", "Promoter (1-2kb)", "Downstream (<5kb)", "Upstream (<5kb)", "5' UTR", "Intron", "3' UTR", "Overlaps Gene"}
-#'   \item{\code{kegg_id}}{character, KEGG ID for METAB features only. See [MotrpacBicQC::get_and_validate_mdd()] for more details.} 
+#'   \item{\code{kegg_id}}{character, KEGG ID for METAB features only. See [MotrpacBicQC::metabolomics_data_dictionary] for more details.} 
 #'}
 #' @details All proteomics feature IDs (RefSeq accessions) were mapped to gene 
 #'     symbols and Entrez IDs using NCBI’s "gene2refseq" mapping files 
@@ -145,16 +149,14 @@
 #'     unique identifiers were used in the graphical analysis. 
 #' @format A data frame with 825 rows and 10 variables:
 #' \describe{
-#'   \item{\code{feature_ID}}{character, MoTrPAC feature identifier}
+#'   \item{\code{feature_ID}}{@eval feature_ID()}
 #'   \item{\code{assay_abbr}}{character, assay abbreviation}
 #'   \item{\code{tissue_abbreviation}}{character, tissue abbreviation}
 #'   \item{\code{dataset}}{character, platform for metabolomics features only. 
 #'       "meta-reg" indicates the feature came from the merged meta-regression results.
 #'       See more details in [MotrpacBicQC::assay_codes].}
 #'   \item{\code{panel}}{character, name of LUMINEX panel for immunoassay features only}
-#'   \item{\code{selection_fdr}}{double, adjusted training p-value used to 
-#'       select training-regulated analytes. P-values are IHW-adjusted across all 
-#'       datasets within a given \code{assay} with \code{tissue} as a covariate.}
+#'   \item{\code{selection_fdr}}{@eval selection_fdr()}
 #'   \item{\code{metabolite_refmet}}{character, RefMet name of metabolite OR the site-given code for unnamed metabolites}
 #'   \item{\code{feature}}{character, duplicated \code{feature} in the format \code{[ASSAY_ABBREV];[TISSUE_ABBREV];[feature_ID]}}
 #'   \item{\code{new_feature_ID}}{character, new unique \code{feature_ID} with \code{panel} or \code{dataset} prepended}
@@ -170,6 +172,8 @@
 "REPEATED_FEATURES"
 
 
+## Phenotypic data ####
+
 #' @title Phenotypic data 
 #' @description Phenotypic data for samples from the MoTrPAC endurance exercise 
 #'     training study in 6-month-old rats. One row per sample (\code{viallabel}).
@@ -179,7 +183,7 @@
 #'   \item{\code{bid}}{integer, unique, randomly generated 8 digit numeric identifier used in linkage to phenotypic data}
 #'   \item{\code{labelid}}{double, unique 11 digit identifier for specimen label ID, originating at the collection site, 
 #'       that provides a link to specimen processing and used for shipments to the biorepository (same as 
-#'       \code{vialLabel} only in instances where aliquots were not further processed at the biorepository)}
+#'       \code{viallabel} only in instances where aliquots were not further processed at the biorepository)}
 #'   \item{\code{viallabel}}{character, unique 11 digit numeric identifier of a sample vial made up of \code{bid}, 
 #'       \code{key.sacrificetime}, \code{specimen.processing.sampletypedescription}, and aliquot number}
 #'   \item{\code{key.protocol}}{character, protocol in which the procedures for sample collection were outlined}
@@ -361,13 +365,15 @@
 #'   \item{\code{sacrificetime}}{character, sacrifice time point in weeks, one of "1w", "2w", "4w", "8w"}
 #'   \item{\code{intervention}}{character, intervention, one of "training", "control"}
 #'   \item{\code{group}}{character, intervention group, one of "1w", "2w", "4w", "8w", "control"}
-#'   \item{\code{sex}}{character, sex, one of "male", "female"}
+#'   \item{\code{sex}}{@eval sex()}
 #'   \item{\code{time_to_freeze}}{integer, sample time to freeze, \code{calculated.variables.frozetime_after_train - calculated.variables.deathtime_after_train}} 
 #'   \item{\code{tissue_code_no}}{character, BIC tissue code. See [MotrpacBicQC::bic_animal_tissue_code].}
-#'   \item{\code{tissue}}{character, tissue abbreviation, one of [TISSUE_ABBREV]} 
+#'   \item{\code{tissue}}{@eval tissue()} 
 #'}
 "PHENO"
 
+
+## RNA-seq sample-level data ####
 
 #' @title RNA-seq raw counts
 #' @description RNA-seq raw counts as quantified by RSEM
@@ -501,118 +507,224 @@
 "TRNSCRPT_WATSC_NORM_DATA"
 
 
-#' #' @title Normalized ATAC-seq data
-#' #' @description Normalized sample-level ATAC-seq (ATAC) data used for visualization and differential analysis
-#' #' @format A data frame with peaks in rows (\code{feature_ID}) and samples in columns (\code{viallabel}) 
-#' #' @details Data was processed with the [ENCODE ATAC-seq pipeline (v1.7.0)](https://github.com/ENCODE-DCC/atac-seq-pipeline). 
-#' #'   Samples from a single sex and training time point, e.g., males trained for 2 weeks, were analyzed together as biological 
-#' #'   replicates in a single workflow. Briefly, adapters were trimmed with cutadapt v2.5 (Martin, 2011) and aligned to release 96 
-#' #'   of the Ensembl Rattus norvegicus (rn6) genome (Dobin et al., 2013) with Bowtie 2 v2.3.4.3 (Langmead and Salzberg, 2012). 
-#' #'   Duplicate reads and reads mapping to the mitochondrial chromosome were removed. Signal files and peak calls were generated 
-#' #'   using MACS2 v2.2.4 (Gaspar, 2018), both from reads from each sample and pooled reads from all biological replicates. 
-#' #'   Pooled peaks were compared with the peaks called for each replicate individually using Irreproducibility Discovery Rate (Li et al., 2011) 
-#' #'   and thresholded to generate an optimal set of peaks. 
-#' #'   
-#' #'   The cloud implementation of the ENCODE ATAC-seq pipeline and source code for the post-processing steps are available at <https://github.com/MoTrPAC/motrpac-atac-seq-pipeline>. 
-#' #'   Optimal peaks (overlap.optimal_peak.narrowPeak.bed.gz) from all workflows were concatenated, trimmed to 200 base pairs around the summit, 
-#' #'   and sorted and merged with bedtools v2.29.0 (Quinlan and Hall, 2010) to generate a master peak list. This peak list was intersected with 
-#' #'   the filtered alignments from each sample using bedtools coverage with options \code{-nonamecheck} and \code{-counts} to generate a peak by 
-#' #'   sample matrix of raw counts. 
-#' #'   
-#' #'   The remaining steps were applied separately on raw counts from each tissue. Peaks from non-autosomal chromosomes were removed, 
-#' #'   as well as peaks that did not have at least 10 read counts in four samples. Filtered raw counts were then quantile-normalized with 
-#' #'   limma-voom (Law et al., 2014). This version of the normalized data is provided by this object.
-#' #'   
-#' #' @source \code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/epigenomics/epigen-atac-seq/normalized-data/*quant-norm*}
-#' #' @name ATAC_NORM_DATA
-#' "ATAC_HIPPOC_NORM_DATA"
-#' 
-#' #' @rdname ATAC_NORM_DATA
-#' "ATAC_SKMGN_NORM_DATA"
-#' 
-#' #' @rdname ATAC_NORM_DATA
-#' "ATAC_HEART_NORM_DATA"
-#' 
-#' #' @rdname ATAC_NORM_DATA
-#' "ATAC_KIDNEY_NORM_DATA"
-#' 
-#' #' @rdname ATAC_NORM_DATA
-#' "ATAC_LUNG_NORM_DATA"
-#' 
-#' #' @rdname ATAC_NORM_DATA
-#' "ATAC_LIVER_NORM_DATA"
-#' 
-#' #' @rdname ATAC_NORM_DATA
-#' "ATAC_BAT_NORM_DATA"
-#' 
-#' #' @rdname ATAC_NORM_DATA
-#' "ATAC_WATSC_NORM_DATA"
-#' 
-#' 
-#' #' @title Normalized DNA methylation data
-#' #' @description Normalized DNA methylation (METHYL) data used for visualization
-#' #' @format A data frame with CpG sites in rows (\code{feature_ID}) and samples in columns (\code{viallabel}) 
-#' #' @details Only CpG sites with methylation coverage of >=10 in all samples were included for downstream analysis, 
-#' #'   and normalization was performed separately in each tissue. Individual CpG sites were divided into 500 base-pair 
-#' #'   windows and were clustered using the Markov Clustering algorithm via the MCL R package (Jager, 2015). To apply MCL, 
-#' #'   for each 500 base-pair window an undirected graph was constructed, linking individual sites if their correlation 
-#' #'   was >=0.7. MCL was chosen for this task as it: (1) determines the number of clusters internally, (2) identifies 
-#' #'   homogeneous clusters, and (3) keeps single sites that are not correlated with either sites as singletons (clusters of size one). 
-#' #'   The resulting sites/clusters were used as input for normalization and differential analysis with edgeR (Robinson et al., 2010). 
-#' #'   To generate this normalized sample-level data, the methylation coverages of filtered sites/clusters were first log2-transformed, 
-#' #'   and normalization was performed using [preprocessCore::normalize.quantiles.robust()] (Bolstad, 2021).
-#' #'   
-#' #'   In order to stay under the 50MB GitHub file limit, data frames with more than 500k rows were split in half and saved in two 
-#' #'   files, e.g. [METHYL_BAT_NORM_DATA_P1] and [METHYL_BAT_NORM_DATA_P2]
-#' #' @source \code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/epigenomics/epigen-rrbs/normalized-data/*normalized-log-M-window.txt}
-#' #' @name METHYL_NORM_DATA
-#' "METHYL_BAT_NORM_DATA_P1"
-#' 
-#' #' @rdname METHYL_NORM_DATA
-#' "METHYL_BAT_NORM_DATA_P2"
-#' 
-#' #' @rdname METHYL_NORM_DATA
-#' "METHYL_HEART_NORM_DATA_P1"
-#' 
-#' #' @rdname METHYL_NORM_DATA
-#' "METHYL_HEART_NORM_DATA_P2"
-#' 
-#' #' @rdname METHYL_NORM_DATA
-#' "METHYL_HIPPOC_NORM_DATA_P1"
-#' 
-#' #' @rdname METHYL_NORM_DATA
-#' "METHYL_HIPPOC_NORM_DATA_P2"
-#' 
-#' #' @rdname METHYL_NORM_DATA
-#' "METHYL_KIDNEY_NORM_DATA_P1"
-#' 
-#' #' @rdname METHYL_NORM_DATA
-#' "METHYL_KIDNEY_NORM_DATA_P2"
-#' 
-#' #' @rdname METHYL_NORM_DATA
-#' "METHYL_LIVER_NORM_DATA_P1"
-#' 
-#' #' @rdname METHYL_NORM_DATA
-#' "METHYL_LIVER_NORM_DATA_P2"
-#' 
-#' #' @rdname METHYL_NORM_DATA
-#' "METHYL_LUNG_NORM_DATA_P1"
-#' 
-#' #' @rdname METHYL_NORM_DATA
-#' "METHYL_LUNG_NORM_DATA_P2"
-#' 
-#' #' @rdname METHYL_NORM_DATA
-#' "METHYL_SKMGN_NORM_DATA_P1"
-#' 
-#' #' @rdname METHYL_NORM_DATA
-#' "METHYL_SKMGN_NORM_DATA_P2"
-#' 
-#' #' @rdname METHYL_NORM_DATA
-#' "METHYL_WATSC_NORM_DATA_P1"
-#' 
-#' #' @rdname METHYL_NORM_DATA
-#' "METHYL_WATSC_NORM_DATA_P2"
+## ATAC-seq sample-level data ####
 
+#' @title ATAC-seq raw counts
+#' @description TODO
+#' @format TODO
+#' @details TODO
+#'   ATAC raw counts data are only available via download from the Cloud. See TODO.
+#' @name ATAC_RAW_COUNTS
+NULL
+
+#' @rdname ATAC_RAW_COUNTS
+"ATAC_HIPPOC_RAW_COUNTS"
+
+#' @rdname ATAC_RAW_COUNTS
+"ATAC_SKMGN_RAW_COUNTS"
+
+#' @rdname ATAC_RAW_COUNTS
+"ATAC_HEART_RAW_COUNTS"
+
+#' @rdname ATAC_RAW_COUNTS
+"ATAC_KIDNEY_RAW_COUNTS"
+
+#' @rdname ATAC_RAW_COUNTS
+"ATAC_LUNG_RAW_COUNTS"
+
+#' @rdname ATAC_RAW_COUNTS
+"ATAC_LIVER_RAW_COUNTS"
+
+#' @rdname ATAC_RAW_COUNTS
+"ATAC_BAT_RAW_COUNTS"
+
+
+#' @title Normalized ATAC-seq data
+#' @description Normalized sample-level ATAC-seq (ATAC) data used for visualization and differential analysis
+#' @format A data frame with peaks in rows (\code{feature_ID}) and samples in columns (\code{viallabel})
+#' @details Data was processed with the [ENCODE ATAC-seq pipeline (v1.7.0)](https://github.com/ENCODE-DCC/atac-seq-pipeline).
+#'   Samples from a single sex and training time point, e.g., males trained for 2 weeks, were analyzed together as biological
+#'   replicates in a single workflow. Briefly, adapters were trimmed with cutadapt v2.5 (Martin, 2011) and aligned to release 96
+#'   of the Ensembl Rattus norvegicus (rn6) genome (Dobin et al., 2013) with Bowtie 2 v2.3.4.3 (Langmead and Salzberg, 2012).
+#'   Duplicate reads and reads mapping to the mitochondrial chromosome were removed. Signal files and peak calls were generated
+#'   using MACS2 v2.2.4 (Gaspar, 2018), both from reads from each sample and pooled reads from all biological replicates.
+#'   Pooled peaks were compared with the peaks called for each replicate individually using Irreproducibility Discovery Rate (Li et al., 2011)
+#'   and thresholded to generate an optimal set of peaks.
+#'
+#'   The cloud implementation of the ENCODE ATAC-seq pipeline and source code for the post-processing steps are available at <https://github.com/MoTrPAC/motrpac-atac-seq-pipeline>.
+#'   Optimal peaks (overlap.optimal_peak.narrowPeak.bed.gz) from all workflows were concatenated, trimmed to 200 base pairs around the summit,
+#'   and sorted and merged with bedtools v2.29.0 (Quinlan and Hall, 2010) to generate a master peak list. This peak list was intersected with
+#'   the filtered alignments from each sample using bedtools coverage with options \code{-nonamecheck} and \code{-counts} to generate a peak by
+#'   sample matrix of raw counts.
+#'
+#'   The remaining steps were applied separately on raw counts from each tissue. Peaks from non-autosomal chromosomes were removed,
+#'   as well as peaks that did not have at least 10 read counts in four samples. Filtered raw counts were then quantile-normalized with
+#'   limma-voom (Law et al., 2014). 
+#'   
+#'   This version of the normalized data is available via download from Google Cloud Storage. See TODO. 
+#'   
+#'   For the subset of normalized data corresponding to training-regulated features at 5% IHW FDR, see [ATAC_NORM_DATA_05FDR].
+#'
+#' @source \code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/epigenomics/epigen-atac-seq/normalized-data/*quant-norm*}
+#' @name ATAC_NORM_DATA
+NULL
+
+#' @name ATAC_NORM_DATA
+"ATAC_HIPPOC_NORM_DATA"
+
+#' @rdname ATAC_NORM_DATA
+"ATAC_SKMGN_NORM_DATA"
+
+#' @rdname ATAC_NORM_DATA
+"ATAC_HEART_NORM_DATA"
+
+#' @rdname ATAC_NORM_DATA
+"ATAC_KIDNEY_NORM_DATA"
+
+#' @rdname ATAC_NORM_DATA
+"ATAC_LUNG_NORM_DATA"
+
+#' @rdname ATAC_NORM_DATA
+"ATAC_LIVER_NORM_DATA"
+
+#' @rdname ATAC_NORM_DATA
+"ATAC_BAT_NORM_DATA"
+
+#' @rdname ATAC_NORM_DATA
+"ATAC_WATSC_NORM_DATA"
+
+
+#' @title Normalized ATAC-seq data for training-regulated features
+#' @description Normalized sample-level ATAC-seq (ATAC) data used for visualization and differential analysis.
+#'   Only for training-regulated features at 5% IHW FDR. For sample-level data for \emph{all} features, 
+#'   see [ATAC_NORM_DATA] and TODO.
+#' @format A data frame with peaks in rows (\code{feature_ID}) and samples in columns (\code{viallabel})
+#' @details Data was processed with the [ENCODE ATAC-seq pipeline (v1.7.0)](https://github.com/ENCODE-DCC/atac-seq-pipeline).
+#'   Samples from a single sex and training time point, e.g., males trained for 2 weeks, were analyzed together as biological
+#'   replicates in a single workflow. Briefly, adapters were trimmed with cutadapt v2.5 (Martin, 2011) and aligned to release 96
+#'   of the Ensembl Rattus norvegicus (rn6) genome (Dobin et al., 2013) with Bowtie 2 v2.3.4.3 (Langmead and Salzberg, 2012).
+#'   Duplicate reads and reads mapping to the mitochondrial chromosome were removed. Signal files and peak calls were generated
+#'   using MACS2 v2.2.4 (Gaspar, 2018), both from reads from each sample and pooled reads from all biological replicates.
+#'   Pooled peaks were compared with the peaks called for each replicate individually using Irreproducibility Discovery Rate (Li et al., 2011)
+#'   and thresholded to generate an optimal set of peaks.
+#'
+#'   The cloud implementation of the ENCODE ATAC-seq pipeline and source code for the post-processing steps are available at 
+#'   <https://github.com/MoTrPAC/motrpac-atac-seq-pipeline>.
+#'   Optimal peaks (overlap.optimal_peak.narrowPeak.bed.gz) from all workflows were concatenated, trimmed to 200 base pairs around the summit,
+#'   and sorted and merged with bedtools v2.29.0 (Quinlan and Hall, 2010) to generate a master peak list. This peak list was intersected with
+#'   the filtered alignments from each sample using bedtools coverage with options \code{-nonamecheck} and \code{-counts} to generate a peak by
+#'   sample matrix of raw counts.
+#'
+#'   The remaining steps were applied separately on raw counts from each tissue. Peaks from non-autosomal chromosomes were removed,
+#'   as well as peaks that did not have at least 10 read counts in four samples. Filtered raw counts were then quantile-normalized with
+#'   limma-voom (Law et al., 2014). 
+#'   
+#'   After performing differential analysis (see TODO), training-regulated features were selected at 5% IHW FDR. The normalized data were
+#'   filtered down to these features and provided here. 
+#'   
+#'   For the full set of normalized sample-level data, see TODO. 
+#'
+#' @source \code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/epigenomics/epigen-atac-seq/normalized-data/*quant-norm*}
+#' @name ATAC_NORM_DATA_05FDR
+"ATAC_HIPPOC_NORM_DATA_05FDR"
+
+#' @rdname ATAC_NORM_DATA_05FDR
+"ATAC_SKMGN_NORM_DATA_05FDR"
+
+#' @rdname ATAC_NORM_DATA_05FDR
+"ATAC_HEART_NORM_DATA_05FDR"
+
+#' @rdname ATAC_NORM_DATA_05FDR
+"ATAC_KIDNEY_NORM_DATA_05FDR"
+
+#' @rdname ATAC_NORM_DATA_05FDR
+"ATAC_LUNG_NORM_DATA_05FDR"
+
+#' @rdname ATAC_NORM_DATA_05FDR
+"ATAC_LIVER_NORM_DATA_05FDR"
+
+#' @rdname ATAC_NORM_DATA_05FDR
+"ATAC_BAT_NORM_DATA_05FDR"
+
+#' @rdname ATAC_NORM_DATA_05FDR
+"ATAC_WATSC_NORM_DATA_05FDR"
+
+
+## RRBS sample-level data ####
+
+#' @title RRBS raw counts
+#' @description TODO
+#' @format TODO
+#' @details TODO
+#'   METHYL data is only available via download from the Cloud. See TODO.
+#' @name METHYL_RAW_COUNTS
+NULL
+
+
+#' @title Normalized DNA methylation data
+#' @description Normalized DNA methylation (METHYL) data used for visualization.
+#'   Only for training-regulated features at 5% IHW FDR. For sample-level data for \emph{all} features, 
+#'   see [METHYL_NORM_DATA] and TODO.
+#' @format A data frame with CpG sites in rows (\code{feature_ID}) and samples in columns (\code{viallabel})
+#' @details Only CpG sites with methylation coverage of >=10 in all samples were included for downstream analysis,
+#'   and normalization was performed separately in each tissue. Individual CpG sites were divided into 500 base-pair
+#'   windows and were clustered using the Markov Clustering algorithm via the MCL R package (Jager, 2015). To apply MCL,
+#'   for each 500 base-pair window an undirected graph was constructed, linking individual sites if their correlation
+#'   was >=0.7. MCL was chosen for this task as it: (1) determines the number of clusters internally, (2) identifies
+#'   homogeneous clusters, and (3) keeps single sites that are not correlated with either sites as singletons (clusters of size one).
+#'   The resulting sites/clusters were used as input for normalization and differential analysis with edgeR (Robinson et al., 2010).
+#'   To generate this normalized sample-level data, the methylation coverages of filtered sites/clusters were first log2-transformed,
+#'   and normalization was performed using [preprocessCore::normalize.quantiles.robust()] (Bolstad, 2021).
+#'   
+#'   After performing differential analysis (see TODO), training-regulated features were selected at 5% IHW FDR. The normalized data were
+#'   filtered down to these features and provided here. 
+#'   
+#' @source \code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/epigenomics/epigen-rrbs/normalized-data/*normalized-log-M-window.txt}
+#' @name METHYL_NORM_DATA
+NULL
+
+
+#' @title Normalized DNA methylation data for training-regulated features
+#' @description Normalized DNA methylation (METHYL) data used for visualization
+#' @format A data frame with CpG sites in rows (\code{feature_ID}) and samples in columns (\code{viallabel})
+#' @details Only CpG sites with methylation coverage of >=10 in all samples were included for downstream analysis,
+#'   and normalization was performed separately in each tissue. Individual CpG sites were divided into 500 base-pair
+#'   windows and were clustered using the Markov Clustering algorithm via the MCL R package (Jager, 2015). To apply MCL,
+#'   for each 500 base-pair window an undirected graph was constructed, linking individual sites if their correlation
+#'   was >=0.7. MCL was chosen for this task as it: (1) determines the number of clusters internally, (2) identifies
+#'   homogeneous clusters, and (3) keeps single sites that are not correlated with either sites as singletons (clusters of size one).
+#'   The resulting sites/clusters were used as input for normalization and differential analysis with edgeR (Robinson et al., 2010).
+#'   To generate this normalized sample-level data, the methylation coverages of filtered sites/clusters were first log2-transformed,
+#'   and normalization was performed using [preprocessCore::normalize.quantiles.robust()] (Bolstad, 2021).
+#'   
+#'   METHYL data is only available via download from the Cloud. See TODO.
+#' @source \code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/epigenomics/epigen-rrbs/normalized-data/*normalized-log-M-window.txt}
+#' @name METHYL_NORM_DATA_05FDR
+"METHYL_HIPPOC_NORM_DATA_05FDR"
+
+#' @rdname METHYL_NORM_DATA_05FDR
+"METHYL_SKMGN_NORM_DATA_05FDR"
+
+#' @rdname METHYL_NORM_DATA_05FDR
+"METHYL_HEART_NORM_DATA_05FDR"
+
+#' @rdname METHYL_NORM_DATA_05FDR
+"METHYL_KIDNEY_NORM_DATA_05FDR"
+
+#' @rdname METHYL_NORM_DATA_05FDR
+"METHYL_LUNG_NORM_DATA_05FDR"
+
+#' @rdname METHYL_NORM_DATA_05FDR
+"METHYL_LIVER_NORM_DATA_05FDR"
+
+#' @rdname METHYL_NORM_DATA_05FDR
+"METHYL_BAT_NORM_DATA_05FDR"
+
+#' @rdname METHYL_NORM_DATA_05FDR
+"METHYL_WATSC_NORM_DATA_05FDR"
+
+
+## Proteomics sample-level data ####
 
 #' @title Normalized protein expression data
 #' @description Median-MAD normalized protein expression (PROT) data used for visualization and differential analysis
@@ -709,6 +821,8 @@
 "UBIQ_LIVER_NORM_DATA"
 
 
+## Immunoassay sample-level data ####
+
 #' @title Processed immunoassay data used for differential analysis
 #' @description Normalized, imputed, and filtered multiplexed immunoassay data used for differential analysis  
 #' @format A nested list of data frames
@@ -733,34 +847,36 @@
 #'   Hence, in some places \code{panel} refers to "rat-adipokine" while in other places, 
 #'   like here, \code{panel} refers to "SERPIN-E" or "ADIPONECTIN", among others. 
 #' @source \code{gs://mawg-data/pass1b-06/immunoassay/data/release/pass1b-06*_mfi-log2-filt-imputed-na-outliers.txt} 
-"IMMUNO_NORM_DATA"
+"IMMUNO_NORM_DATA_NESTED"
 
 
 #' @title Combined immunoassay data used for visualization
-#' @description Normalized, imputed, and filtered multiplexed immunoassay data used for visualization  
-#' @format A data frame with 720 rows and 60 variables:
+#' @description Normalized, imputed, and filtered multiplexed immunoassay data used for visualization.
+#'   Data are equivalent to the data provided in [IMMUNO_NORM_DATA_NESTED]. [IMMUNO_NORM_DATA_NESTED] is compatible with the 
+#'   differential analysis functions while this format is compatible with visualization functions. 
+#' @format A data frame with 720 rows and 64 variables:
 #' \describe{
-#'   \item{\code{feature}}{unique \code{feature} in the format \code{[ASSAY_ABBREV];[TISSUE_ABBREV];[feature_ID]},
-#'     where \code{feature_ID} is \code{new_feature_ID} when applicable. See [REPEATED_FEATURES] for details.}
+#'   \item{\code{feature}}{@eval feature()}
+#'   \item{\code{feature_ID}}{@eval feature_ID()}
+#'   \item{\code{tissue}}{@eval tissue()}
+#'   \item{\code{assay}}{@eval assay()}
+#'   \item{\code{dataset}}{character, LUMINEX panel}
 #' }
 #' @details 
-#'   Analytes (\code{feature}) are in rows, and participants IDs (PIDs, i.e., unique animal IDs) are in columns. 
-#'   When an analyte was measured by more than one panel, the panel name is prepended to \code{feature_ID} to 
-#'   provide unique feature identifiers. See [REPEATED_FEATURES] for details. 
-#'   
-#'   Data are equivalent to the data provided in [IMMUNO_NORM_DATA]. [IMMUNO_NORM_DATA] is compatible with the 
-#'   differential analysis functions while this format is compatible with visualization functions. 
+#'   Analytes are in rows, and participants IDs (PIDs, i.e., unique animal IDs) are in columns.
 #'   
 #' @source \code{gs://mawg-data/pass1b-06/immunoassay/data/release/pass1b-06*_mfi-log2-filt-imputed-na-outliers.txt} 
-"IMMUNO_VIZ_DATA"
+"IMMUNO_NORM_DATA_FLAT"
 
 
-#' @title Normalized metabolomics data
+## Metabolomics sample-level data ####
+
+#' @title Nested metabolomics data used for differential analysis
 #' @description Combined sample-level data organized by metabolomics platforms and tissue used for differential analysis
 #' @format A tibble with 113 rows and 5 variables:
 #' \describe{
-#'   \item{\code{tissue}}{character, tissue code used in data release. See [MotrpacBicQC::bic_animal_tissue_code].}
-#'   \item{\code{assay_code}}{character, assay code used in data release. See [MotrpacBicQC::assay_codes].}
+#'   \item{\code{tissue}}{@eval tissue_code()}
+#'   \item{\code{assay_code}}{@eval assay_code()}
 #'   \item{\code{sample_data}}{list where first element is a tibble of feature by viallabel normalized sample-level data}
 #'   \item{\code{pheno}}{list, phenotypic data important for differential abundance analysis}
 #'   \item{\code{feature_metadata}}{list, feature metadata important for differntial abundance analysis} 
@@ -769,8 +885,10 @@
 "METAB_SAMPLE_DATA"
 
 
-#' @title Combined metabolomics data
-#' @description Combined sample-level metabolomics data used for visualization
+#' @title Combined metabolomics data used for visualization
+#' @description Combined sample-level metabolomics data used for visualization.
+#'   Data are equivalent to the data provided in [METAB_SAMPLE_DATA]. [METAB_SAMPLE_DATA] is compatible with the 
+#'   differential analysis functions while this format is compatible with visualization functions. 
 #' @format A data frame with 15116 rows and 55 variables:
 #' \describe{
 #'   \item{\code{feature}}{unique \code{feature} in the format \code{[ASSAY_ABBREV];[TISSUE_ABBREV];[feature_ID]},
@@ -783,10 +901,364 @@
 #'   both with the \code{feature_ID} used in the original sample-level data AND with the \code{feature} used in the 
 #'   graphical analysis results, e.g., [GRAPH_STATES]. 
 #'   
-#'   Data are equivalent to the data provided in [METAB_SAMPLE_DATA]. [METAB_SAMPLE_DATA] is compatible with the 
-#'   differential analysis functions while this format is compatible with visualization functions. 
 "METAB_VIZ_DATA"
 
+
+## Differential analysis ####
+
+### Ome-specific metadata ####
+
+#' @title RNA-seq metadata and QC  
+#' @description RNA-seq experimental and quantification QC metrics for transcriptomic (TRNSCRPT) data
+#' @format A data frame with 935 rows and 82 variables:
+#' \describe{
+#'   \item{\code{vial_label}}{double, sample identifier}
+#'   \item{\code{2D_barcode}}{double, sample barcode}
+#'   \item{\code{Species}}{character, species}
+#'   \item{\code{BID}}{integer, biospecimen ID}
+#'   \item{\code{PID}}{double, participant ID, one per animal}
+#'   \item{\code{Tissue}}{character, tissue description}
+#'   \item{\code{Sample_category}}{character, study sample ("study") or reference standard ("ref)}
+#'   \item{\code{GET_site}}{character, which Genomics, Epigenomics, and Transcriptomics (GET) 
+#'     site performed the assay, "Stanford" or "MSSM" (Icahn School of Medicine at Mount Sinai)}
+#'   \item{\code{RNA_extr_plate_ID}}{character, RNA extraction plate ID}
+#'   \item{\code{RNA_extr_date}}{character, RNA extraction date}
+#'   \item{\code{RNA_extr_conc}}{double, RNA concentration (ng/uL)}
+#'   \item{\code{RIN}}{double, RNA Integrity Number}
+#'   \item{\code{r_260_280}}{double, 260/280 ratio}
+#'   \item{\code{r_260_230}}{double 260/230 ratio}
+#'   \item{\code{Lib_prep_date}}{character, library preparation date in MM/DD/YYYY format}
+#'   \item{\code{Lib_RNA_conc}}{double, RNA concentration used for library prep (ng/uL)}
+#'   \item{\code{Lib_RNA_vol}}{integer, RNA volume used for library prep (uL)}
+#'   \item{\code{Lib_robot}}{character, robot used for library prep}
+#'   \item{\code{Lib_vendor}}{character, library prep vendor}
+#'   \item{\code{Lib_type}}{character, library prep type}
+#'   \item{\code{Lib_kit_id}}{character, library prep kit ID}
+#'   \item{\code{Lib_batch_ID}}{character, library prep batch ID that distinguished different sample processing batches}
+#'   \item{\code{Lib_barcode_well}}{character, well}
+#'   \item{\code{Lib_index_1}}{character, i7 index}
+#'   \item{\code{Lib_index_2}}{character, i5 index}
+#'   \item{\code{Lib_adapter_1}}{character, Truseq I7 index with 16bp index}
+#'   \item{\code{Lib_adapter_2}}{character, Truseq I5 index with 8bp index}
+#'   \item{\code{Lib_UMI_cycle_num}}{integer, number of bases of UMI}
+#'   \item{\code{Lib_adapter_size}}{integer, total size of the two adapters}
+#'   \item{\code{Lib_frag_size}}{integer, average library fragment size (bp)}
+#'   \item{\code{Lib_DNA_conc}}{double, DNA concentration of original stock of the library (ng/uL)}
+#'   \item{\code{Lib_molarity}}{double, library molarity (nM)}
+#'   \item{\code{Seq_platform}}{character, sequencing platform}
+#'   \item{\code{Seq_date}}{integer, sequencing date, YYMMDD format}
+#'   \item{\code{Seq_machine_ID}}{character, serial number of the sequencer}
+#'   \item{\code{Seq_flowcell_ID}}{character, flow cell ID}
+#'   \item{\code{Seq_flowcell_run}}{integer, flow cell run}
+#'   \item{\code{Seq_flowcell_lane}}{character, flow cell lane}
+#'   \item{\code{Seq_flowcell_type}}{character, flow cell type, e.g., S4}
+#'   \item{\code{Seq_length}}{integer, read length}
+#'   \item{\code{Seq_end_type}}{integer, 1=single-end, 2=paired-end}
+#'   \item{\code{Phase}}{character, study phase, "PASS1B-06"}
+#'   \item{\code{Seq_batch}}{character, unique identifier for sequencing batch}
+#'   \item{\code{reads_raw}}{double, number of read pairs in the raw FASTQ}
+#'   \item{\code{pct_adapter_detected}}{double, percent of reads with adapter detected}
+#'   \item{\code{pct_trimmed}}{double, percent of reads that were trimmed}
+#'   \item{\code{pct_trimmed_bases}}{double, percent of bases that were trimmed}
+#'   \item{\code{reads}}{double, number of read pairs in the trimmed FASTQ files}
+#'   \item{\code{pct_GC}}{double, percent GC content in trimmed FASTQ files}
+#'   \item{\code{pct_dup_sequence}}{double, percent of duplicated sequences in trimmed FASTQ files}
+#'   \item{\code{pct_rRNA}}{double, percent of rRNA reads in trimmed FASTQ files}
+#'   \item{\code{pct_globin}}{double, percent of globin reads in trimmed FASTQ files}
+#'   \item{\code{pct_phix}}{double, percent of phix reads in trimmed FASTQ files}
+#'   \item{\code{pct_picard_dup}}{double, PCR duplication assessed by Picard’s tool MarkDuplicate}
+#'   \item{\code{pct_umi_dup}}{double, PCR duplication rate assessed using UMIs (Unique Molecular Identifiers)}
+#'   \item{\code{avg_input_read_length}}{double, average input read length}
+#'   \item{\code{uniquely_mapped}}{double, number of uniquely mapped reads}
+#'   \item{\code{pct_uniquely_mapped}}{double, percent of uniquely mapped reads}
+#'   \item{\code{avg_mapped_read_length}}{double, average input mapped length}
+#'   \item{\code{num_splices}}{double, number of splices}
+#'   \item{\code{num_annotated_splices}}{double, number of annotated splices}
+#'   \item{\code{num_GTAG_splices}}{double, number of GT/AG and CT/AC splices}
+#'   \item{\code{num_GCAG_splices}}{double, number of GC/AG and CT/GC splices}
+#'   \item{\code{num_ATAC_splices}}{double, number of AT/AC and GT/TA splices}
+#'   \item{\code{num_noncanonical_splices}}{double, number of non-canonical splices}
+#'   \item{\code{pct_multimapped}}{double, percent of reads that multimapped}
+#'   \item{\code{pct_multimapped_toomany}}{double, percent of reads that multimapped too many times}
+#'   \item{\code{pct_unmapped_mismatches}}{double, percent of unmapped reads due to mismatches}
+#'   \item{\code{pct_unmapped_tooshort}}{double, percent of unmapped reads due to shortness}
+#'   \item{\code{pct_unmapped_other}}{double, percent of unmapped reads for other reason}
+#'   \item{\code{pct_chimeric}}{double, percent chimeric reads}
+#'   \item{\code{pct_chrX}}{double, percent of reads mapped to chromosome X}
+#'   \item{\code{pct_chrY}}{double, percent of reads mapped to chromosome Y}
+#'   \item{\code{pct_chrM}}{double, percent of reads mapped to the mitochondrial genome}
+#'   \item{\code{pct_chrAuto}}{double, percent of reads mapped to autosomal chromosomes}
+#'   \item{\code{pct_contig}}{double, percent of reads mapped to contigs}
+#'   \item{\code{pct_coding}}{double, percent of bases mapped to coding}
+#'   \item{\code{pct_utr}}{double, percent of bases mapped to untranslated region}
+#'   \item{\code{pct_intronic}}{double, percent of bases mapped to introns}
+#'   \item{\code{pct_intergenic}}{double, percent of bases mapped to intergenic}
+#'   \item{\code{pct_mrna}}{double, percent of bases mapped to mRNA}
+#'   \item{\code{median_5_3_bias}}{double, median 5' to 3' bias} 
+#'}
+#' @source <gs://motrpac-data-freeze-pass/pass1b-06/v1.1/results/transcriptomics/qa-qc/motrpac_pass1b-06_transcript-rna-seq_qa-qc-metrics.csv>
+"TRNSCRPT_META"
+
+
+#' @title ATAC-seq metadata and QC 
+#' @description ATAC-seq experimental and quantification QC metrics for chromatin accessibility (ATAC) data 
+#' @format A data frame with 520 rows and 106 variables:
+#' \describe{
+#'   \item{\code{viallabel}}{double, sample identifier}
+#'   \item{\code{general.description}}{character, pipeline workflow description}
+#'   \item{\code{replicate}}{character, replicate in the pipeline workflow}
+#'   \item{\code{general.date}}{double, date the pipeline workflow was run}
+#'   \item{\code{general.title}}{character, pipeline workflow title}
+#'   \item{\code{general.pipeline_ver}}{character, ENCODE ATAC-seq pipeline version}
+#'   \item{\code{general.pipeline_type}}{character, "atac"}
+#'   \item{\code{general.genome}}{character, reference genome}
+#'   \item{\code{general.aligner}}{character, read aligner}
+#'   \item{\code{general.peak_caller}}{character, peak caller}
+#'   \item{\code{general.seq_endedness.paired_end}}{logical, are the reads paired-ended}
+#'   \item{\code{replication.num_peaks.num_peaks}}{integer, number of replication peaks (max 300000)}
+#'   \item{\code{peak_stat.peak_region_size.min_size}}{integer, minimum peak width}
+#'   \item{\code{peak_stat.peak_region_size.25_pct}}{integer, 25th percentile of peak width}
+#'   \item{\code{peak_stat.peak_region_size.50_pct}}{integer, 50th percentile of peak width}
+#'   \item{\code{peak_stat.peak_region_size.75_pct}}{integer, 75th percentile of peak width}
+#'   \item{\code{peak_stat.peak_region_size.max_size}}{integer, max peak width}
+#'   \item{\code{peak_stat.peak_region_size.mean}}{double, mean peak width}
+#'   \item{\code{peak_enrich.frac_reads_in_peaks.macs2.frip}}{double, fraction of reads in MACS2 peaks}
+#'   \item{\code{align.samstat.total_reads}}{integer, total number of alignments, including multimappers}
+#'   \item{\code{align.samstat.mapped_reads}}{integer, total number of mapped reads}
+#'   \item{\code{align.samstat.pct_mapped_reads}}{double, percent of reads that mapped}
+#'   \item{\code{align.samstat.paired_reads}}{integer, number of paired reads}
+#'   \item{\code{align.samstat.read1}}{integer, number of read 1 reads}
+#'   \item{\code{align.samstat.read2}}{integer, number of read 2 reads}
+#'   \item{\code{align.samstat.properly_paired_reads}}{integer, number of properly paired reads}
+#'   \item{\code{align.samstat.pct_properly_paired_reads}}{double, percent of reads that were properly paired}
+#'   \item{\code{align.samstat.with_itself}}{integer, number of reads paired with its pair}
+#'   \item{\code{align.samstat.singletons}}{integer, number of singleton reads}
+#'   \item{\code{align.samstat.pct_singletons}}{double, percent of reads that were singleton}
+#'   \item{\code{align.samstat.diff_chroms}}{integer}
+#'   \item{\code{align.dup.paired_reads}}{integer, number of paired reads for duplication step}
+#'   \item{\code{align.dup.paired_duplicate_reads}}{integer, number of duplicate paired reads}
+#'   \item{\code{align.dup.paired_optical_duplicate_reads}}{integer, number of optical duplicate paired reads}
+#'   \item{\code{align.dup.pct_duplicate_reads}}{double, percent of reads that are duplicate}
+#'   \item{\code{align.frac_mito.non_mito_reads}}{integer, percent of reads that align to non-mitochondrial DNA}
+#'   \item{\code{align.frac_mito.mito_reads}}{integer, number of reads that align to mitochondrial DNA}
+#'   \item{\code{align.frac_mito.frac_mito_reads}}{double, fraction of reads that align to mitochondrial DNA}
+#'   \item{\code{align.nodup_samstat.total_reads}}{integer, number of reads after applying all filters}
+#'   \item{\code{align.nodup_samstat.mapped_reads}}{integer, number of mapped reads after applying all filters}
+#'   \item{\code{align.nodup_samstat.paired_reads}}{integer, number of paired reads after applying all filters}
+#'   \item{\code{align.nodup_samstat.read1}}{integer, number of read 1 reads after applying all filters}
+#'   \item{\code{align.nodup_samstat.read2}}{integer, number of read 2 reads after applying all filters}
+#'   \item{\code{align.nodup_samstat.properly_paired_reads}}{integer, number of properly paired reads after applying all filters}
+#'   \item{\code{align.nodup_samstat.with_itself}}{integer, number of reads paired with its pair after applying all filters}
+#'   \item{\code{align.frag_len_stat.frac_reads_in_nfr}}{double, fraction of reads in nucelosome-free region. Should be a value greater than 0.4.}
+#'   \item{\code{align.frag_len_stat.frac_reads_in_nfr_qc_pass}}{logical, does \code{align.frag_len_stat.frac_reads_in_nfr} pass the cutoff?}
+#'   \item{\code{align.frag_len_stat.frac_reads_in_nfr_qc_reason}}{character, reason for \code{align.frag_len_stat.frac_reads_in_nfr_qc_pass}}
+#'   \item{\code{align.frag_len_stat.nfr_over_mono_nuc_reads}}{double, reads in nucleosome-free-region 
+#'     versus reads in mononucleosomal peak. Should be a value greater than 2.5.}
+#'   \item{\code{align.frag_len_stat.nfr_over_mono_nuc_reads_qc_pass}}{logical, does \code{align.frag_len_stat.frac_reads_in_nfr_qc_pass} pass the cutoff?}
+#'   \item{\code{align.frag_len_stat.nfr_over_mono_nuc_reads_qc_reason}}{character, reason for \code{align.frag_len_stat.nfr_over_mono_nuc_reads_qc_pass}}
+#'   \item{\code{align.frag_len_stat.nfr_peak_exists}}{logical, does a nucleosome-free peak exist?}
+#'   \item{\code{align.frag_len_stat.mono_nuc_peak_exists}}{logical, does a mono-nucleosomal peak exist?}
+#'   \item{\code{align.frag_len_stat.di_nuc_peak_exists}}{logical, does a di-nucleosomal peak exist?}
+#'   \item{\code{lib_complexity.lib_complexity.total_fragments}}{integer, total number of fragments}
+#'   \item{\code{lib_complexity.lib_complexity.distinct_fragments}}{integer, number of distinct fragments}
+#'   \item{\code{lib_complexity.lib_complexity.positions_with_one_read}}{integer, number of positions with one read}
+#'   \item{\code{lib_complexity.lib_complexity.NRF}}{double, non-reduandant fraction. Measure of library complexity. Ideally >0.9}
+#'   \item{\code{lib_complexity.lib_complexity.PBC1}}{double, PCR bottlenecking coefficient 1. Measure of library complexity. Ideally >0.9}
+#'   \item{\code{lib_complexity.lib_complexity.PBC2}}{double PCR bottlenecking coefficient 2. Measure of library complexity. Ideally >3}
+#'   \item{\code{align_enrich.tss_enrich.tss_enrich}}{double, transcription start site enrichment of peaks}
+#'   \item{\code{2D_barcode}}{double, sample barcode}
+#'   \item{\code{Tissue}}{character, tissue description}
+#'   \item{\code{Species}}{character, species}
+#'   \item{\code{Sample_category}}{character, study sample ("study") or reference standard ("ref)}
+#'   \item{\code{GET_site}}{character, which Genomics, Epigenomics, and Transcriptomics (GET) 
+#'     site performed the assay, "Stanford" or "MSSM" (Icahn School of Medicine at Mount Sinai)}
+#'   \item{\code{Sample_batch}}{integer, numeric batch number for batch in which this sample was manually processed}
+#'   \item{\code{Lib_adapter_1}}{character, Adapter sequence for read 1}
+#'   \item{\code{Lib_adapter_2}}{character, Adapter sequence for read 2}
+#'   \item{\code{Lib_index_1}}{character, i7 index}
+#'   \item{\code{Lib_index_2}}{character, i5 index}
+#'   \item{\code{Nuclei_extr_date}}{character, nuclei extraction date}
+#'   \item{\code{Nuclei_extr_count}}{integer, nuclei count}
+#'   \item{\code{Nuclei_tagmentation}}{integer, number of nuclei used in each tagmentation reaction}
+#'   \item{\code{Tagmentation_date}}{character, tagmentation date, MM/DD/YYYY format}
+#'   \item{\code{Tagmentation_enzyme_cat}}{integer, catalog number of tagmentation enzyme TDE1 (Tn5)}
+#'   \item{\code{Tagmentation_enzyme_lot}}{integer, lot number of tagmentation enzyme TDE1 (Tn5)}
+#'   \item{\code{Tagmentation_buffer_cat}}{integer, catalog number of tagmentation buffer}
+#'   \item{\code{Tagmentation_buffer_lot}}{integer, lot number of tagmentation buffer}
+#'   \item{\code{Tagmentation_reaction_vol}}{integer, volume of tagmentation (uL)}
+#'   \item{\code{Tagmentation_purification_kit}}{character, purification kit}
+#'   \item{\code{Tagmentation_purified_DNA_vol}}{double, volume of purified DNA (uL)}
+#'   \item{\code{PCR_date}}{character, PCR date, MM/DD/YYYY format}
+#'   \item{\code{PCR_cycle_nr}}{integer, number of PCR cycles}
+#'   \item{\code{PCR_purification_beads_ul}}{character, volume of SPRIselect beads for lower size selection}
+#'   \item{\code{Lib_DNA_conc}}{double, DNA concentration for the library (ng/uL)}
+#'   \item{\code{Lib_DNA_molarity}}{double, DNA molarity of library (nM)}
+#'   \item{\code{Lib_frag_size}}{integer, average library fragment size}
+#'   \item{\code{Lib_BA_quality}}{integer, visual inspection of the library quality with the Bioanalyzer track (1=good, 0=bad)}
+#'   \item{\code{Seq_DNA_molarity}}{double, DNA molarity for sequencing (nM)}
+#'   \item{\code{Seq_platform}}{character, sequencing platform}
+#'   \item{\code{Seq_date}}{integer, sequencing date, YYMMDD format}
+#'   \item{\code{Seq_machine_ID}}{character, serial number of the sequencer}
+#'   \item{\code{Seq_flowcell_ID}}{character, flow cell ID}
+#'   \item{\code{Seq_flowcell_run}}{integer, flow cell run}
+#'   \item{\code{Seq_flowcell_lane}}{character, flow cell lane}
+#'   \item{\code{Seq_flowcell_type}}{character, flow cell type, e.g., S4}
+#'   \item{\code{Seq_length}}{double, read length}
+#'   \item{\code{Seq_end_type}}{integer, 1=single-end, 2=paired-end}
+#'   \item{\code{total_primary_alignments}}{integer, number of primary alignments}
+#'   \item{\code{pct_chrX}}{double, number of reads mapped to chromosome X}
+#'   \item{\code{pct_chrY}}{double, number of reads mapped to chromosome Y}
+#'   \item{\code{pct_chrM}}{double, number of reads mapped to chromosome M}
+#'   \item{\code{pct_auto}}{double, number of reads mapped to autosomal chromosomes}
+#'   \item{\code{pct_contig}}{double, number of reads mapped to contigs}
+#'   \item{\code{Seq_batch}}{character, unique identifier for sequencing batch} 
+#'}
+#' @details The [ENCODE ATAC-seq pipeline v1.7.0](https://github.com/ENCODE-DCC/atac-seq-pipeline/tree/v1.7.0) was used to quantify ATAC-seq data. 
+#'   Columns with a period are QC metrics from this pipeline. Note that the ENCODE pipeline reports alignments per paired-end read, 
+#'   so \code{align.samstat.total_reads} reports the number of paired-end reads that align, which corresponds to twice the number of sequenced fragments.    
+#' 
+#' @source <gs://motrpac-data-freeze-pass/pass1b-06/v1.1/results/epigenomics/qa-qc/motrpac_pass1b-06_epigen-atac-seq_qa-qc-metrics.csv>
+"ATAC_META"
+
+
+#' @title RRBS metadata and QC
+#' @description RRBS experimental and quantification QC metrics for DNA methylation (METHYL) data 
+#' @format A data frame with 416 rows and 75 variables:
+#' \describe{
+#'   \item{\code{vial_label}}{double, sample identifier}
+#'   \item{\code{2D_barcode}}{double, sample barcode}
+#'   \item{\code{Species}}{character, species}
+#'   \item{\code{BID}}{integer, biospecimen ID}
+#'   \item{\code{PID}}{double, participant ID, one per animal}
+#'   \item{\code{Tissue}}{character, tissue description}
+#'   \item{\code{Sample_category}}{character, study sample ("study") or reference standard ("ref)}
+#'   \item{\code{GET_site}}{character, which Genomics, Epigenomics, and Transcriptomics (GET) 
+#'     site performed the assay, "Stanford" or "MSSM" (Icahn School of Medicine at Mount Sinai)}
+#'   \item{\code{DNA_extr_plate_ID}}{integer, DNA extraction plate ID}
+#'   \item{\code{DNA_extr_date}}{character, DNA extraction date}
+#'   \item{\code{DNA_extr_protocol}}{character, DNA extraction protocol}
+#'   \item{\code{DNA_extr_robot}}{character, robot used for DNA extraction}
+#'   \item{\code{DNA_conc}}{double, DNA concentration (ng/uL)}
+#'   \item{\code{A280/260}}{double, 280/260 ratio}
+#'   \item{\code{A260/230}}{double, 260/230 ratio}
+#'   \item{\code{Lib_prep_date}}{character, library preparation date}
+#'   \item{\code{Lib_DNA_mass}}{double, DNA mass used for library prep (ng)}
+#'   \item{\code{Lib_DNA_vol}}{double, volume of the library (uL)}
+#'   \item{\code{lambda_DNA_mass}}{double, spiked-in Lambda DNA mass (ng)}
+#'   \item{\code{Lib_robot}}{character, robot used for library prep}
+#'   \item{\code{Lib_kit_vendor}}{character, library prep vendor}
+#'   \item{\code{Lib_kit_type}}{character, library prep kit}
+#'   \item{\code{Lib_kit_ID}}{character, library kit ID}
+#'   \item{\code{Lib_batch_ID}}{character, library prep batch ID}
+#'   \item{\code{Lib_index_1}}{character, i7 index}
+#'   \item{\code{Lib_index_2}}{logical, i5 index}
+#'   \item{\code{Lib_adapter_1}}{character, Trueseq i7 index with 16 bp index}
+#'   \item{\code{Lib_adapter_2}}{character, include customized Metseq primer}
+#'   \item{\code{Lib_UMI_cycle_num}}{integer, number of bases of UMI}
+#'   \item{\code{Lib_adapter_size}}{integer, the total size of the two adapters}
+#'   \item{\code{Lib_conc}}{double, DNA concentration for the library (ng/uL)}
+#'   \item{\code{Lib_frag_size}}{integer, average library fragment size}
+#'   \item{\code{Lib_molarity}}{double, library molarity (nM)}
+#'   \item{\code{Seq_platform}}{character, sequencing platform}
+#'   \item{\code{Seq_date}}{integer, sequencing date}
+#'   \item{\code{Seq_machine_ID}}{character, serial number of the sequencing machine}
+#'   \item{\code{Seq_flowcell_ID}}{character, flow cell ID}
+#'   \item{\code{Seq_flowcell_run}}{integer, flow cell run}
+#'   \item{\code{Seq_flowcell_lane}}{character, flow cell lane}
+#'   \item{\code{Seq_flowcell_type}}{character, flow cell type, e.g., "S4"}
+#'   \item{\code{Seq_length}}{integer, read length}
+#'   \item{\code{Seq_end_type}}{integer, 1=single-end, 2=paired-end}
+#'   \item{\code{reads_raw}}{integer, number of raw read pairs}
+#'   \item{\code{pct_adapter_detected}}{double, percent of reads with adapter detected}
+#'   \item{\code{pct_trimmed}}{double, percent of trimmed reads from the initial trimming}
+#'   \item{\code{pct_no_MSPI}}{double, percent of reads with no MSPI present among the trimmed reads}
+#'   \item{\code{pct_trimmed_bases}}{double, percent of bases that were trimmed}
+#'   \item{\code{pct_removed}}{double, percent of reads that were removed due to adapter trimming or no presence of MSPI}
+#'   \item{\code{reads}}{integer, number of read pairs in the trimmed FASTQ files}
+#'   \item{\code{pct_GC}}{double, percent GC content in the trimmed FASTQ files}
+#'   \item{\code{pct_dup_sequence}}{double, percent of duplicated sequences in trimmed FASTQ files}
+#'   \item{\code{pct_phix}}{double, percent of phix reads in trimmed FASTQ files}
+#'   \item{\code{pct_chrX}}{double, percent of reads mapped to chromosome X}
+#'   \item{\code{pct_chrY}}{double, percent of reads mapped to chromosome Y}
+#'   \item{\code{pct_chrM}}{double, percent of reads mapped to the mitochondrial genome}
+#'   \item{\code{pct_chrAuto}}{double, percent of reads mapped to autosomal chromosomes}
+#'   \item{\code{pct_contig}}{double, percent of reads mapped to contigs}
+#'   \item{\code{pct_Uniq}}{double, percent of uniquely mapped reads}
+#'   \item{\code{pct_Unaligned}}{double, percent of unaligned reads}
+#'   \item{\code{pct_Ambi}}{double, percent of ambiguously mapped reads}
+#'   \item{\code{pct_OT}}{double, percent of mapped reads aligned to the original top stand}
+#'   \item{\code{pct_OB}}{double, percent of mapped reads aligned to the original bottom stand}
+#'   \item{\code{pct_CTOT}}{double, percent of mapped reads aligned to the complementary to original top strand}
+#'   \item{\code{pct_CTOB}}{double, percent of mapped reads aligned to the complementary to original bottom strand}
+#'   \item{\code{pct_umi_dup}}{double, PCR duplication rate assessed using UMIs (Unique Molecular Identifiers)}
+#'   \item{\code{pct_CpG}}{double, global CpG methylation level based on the deduplicated data}
+#'   \item{\code{pct_CHG}}{double, global CHG methylation level  based on the deduplicated data}
+#'   \item{\code{pct_CHH}}{double, global CHH methylation level  based on the deduplicated data}
+#'   \item{\code{lambda_pct_Uniq}}{double, percent of uniquely mapped reads to lambda}
+#'   \item{\code{lambda_pct_Ambi}}{double, percent of ambiguously mapped reads to lambda}
+#'   \item{\code{lambda_pct_umi_dup}}{double, PCR duplication rate assessed using UMIs (Unique Molecular Identifiers)}
+#'   \item{\code{lambda_pct_CpG}}{double, global CpG methylation level based on the deduplicated data}
+#'   \item{\code{lambda_pct_CHG}}{double, global CHG methylation level  based on the deduplicated data}
+#'   \item{\code{lambda_pct_CHH}}{double, global CHH methylation level  based on the deduplicated data}
+#'   \item{\code{Seq_batch}}{character, unique identifier for sequencing batch}
+#'}
+#' @source <gs://motrpac-data-freeze-pass/pass1b-06/v1.1/results/epigenomics/qa-qc/motrpac_pass1b-06_epigen-rrbs_qa-qc-metrics.csv>
+"METHYL_META"
+
+
+#' @title Multiplexed immunoassay metadata and QC
+#' @description Multiplexed immunoassay (IMMUNO) experimental and quantification QC metrics 
+#' @format A data frame with 1511 rows and 23 variables:
+#' \describe{
+#'   \item{\code{viallabel}}{character, sample identifier}
+#'   \item{\code{tissue_code}}{character, tissue code used in data release. See [MotrpacBicQC::bic_animal_tissue_code].}
+#'   \item{\code{bid}}{integer, biospecimen ID}
+#'   \item{\code{luminex_sample_name}}{character, sample name used by HIMC in raw data files}
+#'   \item{\code{panel_name}}{character, LUMINEX panel name}
+#'   \item{\code{plate_id}}{character, plate ID in format "[date]-[tissues]_[panel_name]"}
+#'   \item{\code{ppt_type}}{character, species}
+#'   \item{\code{weight_mg}}{integer, sample weight in mg (solid tissue only)}
+#'   \item{\code{volume_ul}}{integer, sample volume in uL (plasma only)}
+#'   \item{\code{date_extracted}}{character, date of protein extraction}
+#'   \item{\code{operators}}{character, initials of experimentalists}
+#'   \item{\code{protein_conc_mg_ml}}{double, protein concentration in mg/mL}
+#'   \item{\code{vol_plate1_ul}}{integer, volume (uL) of sample submitted in first master plate (plate used for LUMINEX assays)}
+#'   \item{\code{min_vol_plate2_ul}}{integer, volume (uL) of remaining sample submitted in second master plate (backup plate)}
+#'   \item{\code{comments}}{character, comments about protein extraction}
+#'   \item{\code{sample_well_position}}{character, well position in plates submitted to the HIMC}
+#'   \item{\code{luminex_well}}{character, well position for LUMINEX assay}
+#'   \item{\code{sex}}{character, "male" or "female"}
+#'   \item{\code{group}}{character, intervention group, one of "1w", "2w", "4w", "8w", "control"}
+#'   \item{\code{CHEX1}}{double, custom Assay CHEX control beads to monitor instrument performance}
+#'   \item{\code{CHEX2}}{double, custom Assay CHEX control beads to monitor application of the detection antibody}
+#'   \item{\code{CHEX3}}{double, custom Assay CHEX control beads to monitor application of the fluorescent reporter}
+#'   \item{\code{CHEX4}}{double, custom Assay CHEX control beads to monitor nonspecific binding} 
+#'}
+#' @details Protein extractions from the same sample/viallabel were used for multiple
+#'   panels, so metadata must be matched to unique samples using both \code{viallabel} and \code{panel_name}. 
+"IMMUNO_META"
+
+### Outliers ####
+
+#' @title Sample outliers
+#' @description Outliers excluded during differential analysis
+#' @format A data frame with 27 rows and 4 variables:
+#' \describe{
+#'   \item{\code{viallabel}}{character, sample identifier}
+#'   \item{\code{tissue}}{character, tissue abbreviation, one of [TISSUE_ABBREV]}
+#'   \item{\code{assay}}{character, assay abbreviation, one of [ASSAY_ABBREV]}
+#'   \item{\code{platform}}{character, LUMINEX panel if \code{assay} is IMMUNO}
+#'   \item{\code{pid}}{integer, participant ID, one per animal}
+#'   \item{\code{group}}{character, combination of sex and training time point that the sample belongs to, e.g., "female_1w"}
+#'   \item{\code{reason}}{character, reason(s) the sample was called an outlier} 
+#'}
+#' @details If the sample was an outlier in principal component (PC) space, \code{reason}
+#'   lists the PC(s) in which it was an outlier. See ome-specific details of outlier calling 
+#'   in the supplementary methods of the manuscript. 
+#' @source <https://docs.google.com/spreadsheets/d/1DetAMovcmMJqulEA41yBLd4I9Q1XSHPH1U8U2aVMShg/edit#gid=2057863805>
+"OUTLIERS"
+
+### Differential analysis results ####
 
 #' @title Differential analysis of RNA-seq datasets 
 #' @description Timewise summary statistics and training FDR from 
@@ -1150,13 +1622,12 @@
 #' @description Differential analysis results for training-regulated features at 5% FDR
 #' @format A data frame with 279002 rows and 18 variables:
 #' \describe{
-#'   \item{\code{feature}}{character, unique ID used for graphical clustering analysis, in the format 
-#'       \code{[ASSAY_ABBREV];[TISSUE_ABBREV];[(non_redundant)feature_ID]}}
-#'   \item{\code{assay}}{character, assay abbreviation, one of [ASSAY_ABBREV]}
-#'   \item{\code{assay_code}}{character, assay code used in data release. See [MotrpacBicQC::assay_codes].}
-#'   \item{\code{tissue}}{character, tissue abbreviation, one of [TISSUE_ABBREV]}
-#'   \item{\code{tissue_code}}{character, tissue code used in data release. See [MotrpacBicQC::bic_animal_tissue_code].}
-#'   \item{\code{feature_ID}}{character, feature identifier corresponding to MoTrPAC sample-level data}
+#'   \item{\code{feature}}{@eval feature()}
+#'   \item{\code{assay}}{@eval assay()}
+#'   \item{\code{assay_code}}{@eval assay_code()}
+#'   \item{\code{tissue}}{@eval tissue()}
+#'   \item{\code{tissue_code}}{@eval tissue_code()}
+#'   \item{\code{feature_ID}}{@eval feature_ID()}
 #'   \item{\code{non_redundant_feature_ID}}{character, non-redundant feature identifier defined for \code{feature_ID}s 
 #'       with measurements from multiple platforms. \code{feature} uses \code{non_redundant_feature_ID} 
 #'       when available and \code{feature_ID} otherwise. See [REPEATED_FEATURES] for more details.}
@@ -1167,7 +1638,7 @@
 #'       metab-t-amines, metab-t-oxylipneg, metab-t-tca, metab-t-nuc, metab-t-acoa, 
 #'       metab-t-ka) the feature was measured in. "meta-reg" specifies results from 
 #'       the metabolomics meta-regression for repeated features.}
-#'   \item{\code{sex}}{character, "male" or "female"}
+#'   \item{\code{sex}}{@eval sex()}
 #'   \item{\code{training_group}}{character, training time point in weeks, one of "1w", "2w", "4w", "8w". 
 #'       Corresponds to \code{comparison_group} in the \code{*_DA} tables.}
 #'   \item{\code{timewise_logFC}}{double, log fold-change of the training group specified by 
@@ -1197,6 +1668,8 @@
 #'}
 "TRAINING_REGULATED_FEATURES"
 
+
+## Graphical analysis ####
 
 #' @title \code{repfdr} state assignments 
 #' @description \code{repdfr} state assignments (up, down, or null) for each 
@@ -1399,353 +1872,3 @@
 #'   we define their edge set as the intersection of their analytes.
 #'   
 "REPFDR_RES"
-
-
-#' @title RNA-seq metadata and QC  
-#' @description RNA-seq experimental and quantification QC metrics for transcriptomic (TRNSCRPT) data
-#' @format A data frame with 935 rows and 82 variables:
-#' \describe{
-#'   \item{\code{vial_label}}{double, sample identifier}
-#'   \item{\code{2D_barcode}}{double, sample barcode}
-#'   \item{\code{Species}}{character, species}
-#'   \item{\code{BID}}{integer, biospecimen ID}
-#'   \item{\code{PID}}{double, participant ID, one per animal}
-#'   \item{\code{Tissue}}{character, tissue description}
-#'   \item{\code{Sample_category}}{character, study sample ("study") or reference standard ("ref)}
-#'   \item{\code{GET_site}}{character, which Genomics, Epigenomics, and Transcriptomics (GET) 
-#'     site performed the assay, "Stanford" or "MSSM" (Icahn School of Medicine at Mount Sinai)}
-#'   \item{\code{RNA_extr_plate_ID}}{character, RNA extraction plate ID}
-#'   \item{\code{RNA_extr_date}}{character, RNA extraction date}
-#'   \item{\code{RNA_extr_conc}}{double, RNA concentration (ng/uL)}
-#'   \item{\code{RIN}}{double, RNA Integrity Number}
-#'   \item{\code{r_260_280}}{double, 260/280 ratio}
-#'   \item{\code{r_260_230}}{double 260/230 ratio}
-#'   \item{\code{Lib_prep_date}}{character, library preparation date in MM/DD/YYYY format}
-#'   \item{\code{Lib_RNA_conc}}{double, RNA concentration used for library prep (ng/uL)}
-#'   \item{\code{Lib_RNA_vol}}{integer, RNA volume used for library prep (uL)}
-#'   \item{\code{Lib_robot}}{character, robot used for library prep}
-#'   \item{\code{Lib_vendor}}{character, library prep vendor}
-#'   \item{\code{Lib_type}}{character, library prep type}
-#'   \item{\code{Lib_kit_id}}{character, library prep kit ID}
-#'   \item{\code{Lib_batch_ID}}{character, library prep batch ID that distinguished different sample processing batches}
-#'   \item{\code{Lib_barcode_well}}{character, well}
-#'   \item{\code{Lib_index_1}}{character, i7 index}
-#'   \item{\code{Lib_index_2}}{character, i5 index}
-#'   \item{\code{Lib_adapter_1}}{character, Truseq I7 index with 16bp index}
-#'   \item{\code{Lib_adapter_2}}{character, Truseq I5 index with 8bp index}
-#'   \item{\code{Lib_UMI_cycle_num}}{integer, number of bases of UMI}
-#'   \item{\code{Lib_adapter_size}}{integer, total size of the two adapters}
-#'   \item{\code{Lib_frag_size}}{integer, average library fragment size (bp)}
-#'   \item{\code{Lib_DNA_conc}}{double, DNA concentration of original stock of the library (ng/uL)}
-#'   \item{\code{Lib_molarity}}{double, library molarity (nM)}
-#'   \item{\code{Seq_platform}}{character, sequencing platform}
-#'   \item{\code{Seq_date}}{integer, sequencing date, YYMMDD format}
-#'   \item{\code{Seq_machine_ID}}{character, serial number of the sequencer}
-#'   \item{\code{Seq_flowcell_ID}}{character, flow cell ID}
-#'   \item{\code{Seq_flowcell_run}}{integer, flow cell run}
-#'   \item{\code{Seq_flowcell_lane}}{character, flow cell lane}
-#'   \item{\code{Seq_flowcell_type}}{character, flow cell type, e.g., S4}
-#'   \item{\code{Seq_length}}{integer, read length}
-#'   \item{\code{Seq_end_type}}{integer, 1=single-end, 2=paired-end}
-#'   \item{\code{Phase}}{character, study phase, "PASS1B-06"}
-#'   \item{\code{Seq_batch}}{character, unique identifier for sequencing batch}
-#'   \item{\code{reads_raw}}{double, number of read pairs in the raw FASTQ}
-#'   \item{\code{pct_adapter_detected}}{double, percent of reads with adapter detected}
-#'   \item{\code{pct_trimmed}}{double, percent of reads that were trimmed}
-#'   \item{\code{pct_trimmed_bases}}{double, percent of bases that were trimmed}
-#'   \item{\code{reads}}{double, number of read pairs in the trimmed FASTQ files}
-#'   \item{\code{pct_GC}}{double, percent GC content in trimmed FASTQ files}
-#'   \item{\code{pct_dup_sequence}}{double, percent of duplicated sequences in trimmed FASTQ files}
-#'   \item{\code{pct_rRNA}}{double, percent of rRNA reads in trimmed FASTQ files}
-#'   \item{\code{pct_globin}}{double, percent of globin reads in trimmed FASTQ files}
-#'   \item{\code{pct_phix}}{double, percent of phix reads in trimmed FASTQ files}
-#'   \item{\code{pct_picard_dup}}{double, PCR duplication assessed by Picard’s tool MarkDuplicate}
-#'   \item{\code{pct_umi_dup}}{double, PCR duplication rate assessed using UMIs (Unique Molecular Identifiers)}
-#'   \item{\code{avg_input_read_length}}{double, average input read length}
-#'   \item{\code{uniquely_mapped}}{double, number of uniquely mapped reads}
-#'   \item{\code{pct_uniquely_mapped}}{double, percent of uniquely mapped reads}
-#'   \item{\code{avg_mapped_read_length}}{double, average input mapped length}
-#'   \item{\code{num_splices}}{double, number of splices}
-#'   \item{\code{num_annotated_splices}}{double, number of annotated splices}
-#'   \item{\code{num_GTAG_splices}}{double, number of GT/AG and CT/AC splices}
-#'   \item{\code{num_GCAG_splices}}{double, number of GC/AG and CT/GC splices}
-#'   \item{\code{num_ATAC_splices}}{double, number of AT/AC and GT/TA splices}
-#'   \item{\code{num_noncanonical_splices}}{double, number of non-canonical splices}
-#'   \item{\code{pct_multimapped}}{double, percent of reads that multimapped}
-#'   \item{\code{pct_multimapped_toomany}}{double, percent of reads that multimapped too many times}
-#'   \item{\code{pct_unmapped_mismatches}}{double, percent of unmapped reads due to mismatches}
-#'   \item{\code{pct_unmapped_tooshort}}{double, percent of unmapped reads due to shortness}
-#'   \item{\code{pct_unmapped_other}}{double, percent of unmapped reads for other reason}
-#'   \item{\code{pct_chimeric}}{double, percent chimeric reads}
-#'   \item{\code{pct_chrX}}{double, percent of reads mapped to chromosome X}
-#'   \item{\code{pct_chrY}}{double, percent of reads mapped to chromosome Y}
-#'   \item{\code{pct_chrM}}{double, percent of reads mapped to the mitochondrial genome}
-#'   \item{\code{pct_chrAuto}}{double, percent of reads mapped to autosomal chromosomes}
-#'   \item{\code{pct_contig}}{double, percent of reads mapped to contigs}
-#'   \item{\code{pct_coding}}{double, percent of bases mapped to coding}
-#'   \item{\code{pct_utr}}{double, percent of bases mapped to untranslated region}
-#'   \item{\code{pct_intronic}}{double, percent of bases mapped to introns}
-#'   \item{\code{pct_intergenic}}{double, percent of bases mapped to intergenic}
-#'   \item{\code{pct_mrna}}{double, percent of bases mapped to mRNA}
-#'   \item{\code{median_5_3_bias}}{double, median 5' to 3' bias} 
-#'}
-#' @source <gs://motrpac-data-freeze-pass/pass1b-06/v1.1/results/transcriptomics/qa-qc/motrpac_pass1b-06_transcript-rna-seq_qa-qc-metrics.csv>
-"TRNSCRPT_META"
-
-
-#' @title ATAC-seq metadata and QC 
-#' @description ATAC-seq experimental and quantification QC metrics for chromatin accessibility (ATAC) data 
-#' @format A data frame with 520 rows and 106 variables:
-#' \describe{
-#'   \item{\code{viallabel}}{double, sample identifier}
-#'   \item{\code{general.description}}{character, pipeline workflow description}
-#'   \item{\code{replicate}}{character, replicate in the pipeline workflow}
-#'   \item{\code{general.date}}{double, date the pipeline workflow was run}
-#'   \item{\code{general.title}}{character, pipeline workflow title}
-#'   \item{\code{general.pipeline_ver}}{character, ENCODE ATAC-seq pipeline version}
-#'   \item{\code{general.pipeline_type}}{character, "atac"}
-#'   \item{\code{general.genome}}{character, reference genome}
-#'   \item{\code{general.aligner}}{character, read aligner}
-#'   \item{\code{general.peak_caller}}{character, peak caller}
-#'   \item{\code{general.seq_endedness.paired_end}}{logical, are the reads paired-ended}
-#'   \item{\code{replication.num_peaks.num_peaks}}{integer, number of replication peaks (max 300000)}
-#'   \item{\code{peak_stat.peak_region_size.min_size}}{integer, minimum peak width}
-#'   \item{\code{peak_stat.peak_region_size.25_pct}}{integer, 25th percentile of peak width}
-#'   \item{\code{peak_stat.peak_region_size.50_pct}}{integer, 50th percentile of peak width}
-#'   \item{\code{peak_stat.peak_region_size.75_pct}}{integer, 75th percentile of peak width}
-#'   \item{\code{peak_stat.peak_region_size.max_size}}{integer, max peak width}
-#'   \item{\code{peak_stat.peak_region_size.mean}}{double, mean peak width}
-#'   \item{\code{peak_enrich.frac_reads_in_peaks.macs2.frip}}{double, fraction of reads in MACS2 peaks}
-#'   \item{\code{align.samstat.total_reads}}{integer, total number of alignments, including multimappers}
-#'   \item{\code{align.samstat.mapped_reads}}{integer, total number of mapped reads}
-#'   \item{\code{align.samstat.pct_mapped_reads}}{double, percent of reads that mapped}
-#'   \item{\code{align.samstat.paired_reads}}{integer, number of paired reads}
-#'   \item{\code{align.samstat.read1}}{integer, number of read 1 reads}
-#'   \item{\code{align.samstat.read2}}{integer, number of read 2 reads}
-#'   \item{\code{align.samstat.properly_paired_reads}}{integer, number of properly paired reads}
-#'   \item{\code{align.samstat.pct_properly_paired_reads}}{double, percent of reads that were properly paired}
-#'   \item{\code{align.samstat.with_itself}}{integer, number of reads paired with its pair}
-#'   \item{\code{align.samstat.singletons}}{integer, number of singleton reads}
-#'   \item{\code{align.samstat.pct_singletons}}{double, percent of reads that were singleton}
-#'   \item{\code{align.samstat.diff_chroms}}{integer}
-#'   \item{\code{align.dup.paired_reads}}{integer, number of paired reads for duplication step}
-#'   \item{\code{align.dup.paired_duplicate_reads}}{integer, number of duplicate paired reads}
-#'   \item{\code{align.dup.paired_optical_duplicate_reads}}{integer, number of optical duplicate paired reads}
-#'   \item{\code{align.dup.pct_duplicate_reads}}{double, percent of reads that are duplicate}
-#'   \item{\code{align.frac_mito.non_mito_reads}}{integer, percent of reads that align to non-mitochondrial DNA}
-#'   \item{\code{align.frac_mito.mito_reads}}{integer, number of reads that align to mitochondrial DNA}
-#'   \item{\code{align.frac_mito.frac_mito_reads}}{double, fraction of reads that align to mitochondrial DNA}
-#'   \item{\code{align.nodup_samstat.total_reads}}{integer, number of reads after applying all filters}
-#'   \item{\code{align.nodup_samstat.mapped_reads}}{integer, number of mapped reads after applying all filters}
-#'   \item{\code{align.nodup_samstat.paired_reads}}{integer, number of paired reads after applying all filters}
-#'   \item{\code{align.nodup_samstat.read1}}{integer, number of read 1 reads after applying all filters}
-#'   \item{\code{align.nodup_samstat.read2}}{integer, number of read 2 reads after applying all filters}
-#'   \item{\code{align.nodup_samstat.properly_paired_reads}}{integer, number of properly paired reads after applying all filters}
-#'   \item{\code{align.nodup_samstat.with_itself}}{integer, number of reads paired with its pair after applying all filters}
-#'   \item{\code{align.frag_len_stat.frac_reads_in_nfr}}{double, fraction of reads in nucelosome-free region. Should be a value greater than 0.4.}
-#'   \item{\code{align.frag_len_stat.frac_reads_in_nfr_qc_pass}}{logical, does \code{align.frag_len_stat.frac_reads_in_nfr} pass the cutoff?}
-#'   \item{\code{align.frag_len_stat.frac_reads_in_nfr_qc_reason}}{character, reason for \code{align.frag_len_stat.frac_reads_in_nfr_qc_pass}}
-#'   \item{\code{align.frag_len_stat.nfr_over_mono_nuc_reads}}{double, reads in nucleosome-free-region 
-#'     versus reads in mononucleosomal peak. Should be a value greater than 2.5.}
-#'   \item{\code{align.frag_len_stat.nfr_over_mono_nuc_reads_qc_pass}}{logical, does \code{align.frag_len_stat.frac_reads_in_nfr_qc_pass} pass the cutoff?}
-#'   \item{\code{align.frag_len_stat.nfr_over_mono_nuc_reads_qc_reason}}{character, reason for \code{align.frag_len_stat.nfr_over_mono_nuc_reads_qc_pass}}
-#'   \item{\code{align.frag_len_stat.nfr_peak_exists}}{logical, does a nucleosome-free peak exist?}
-#'   \item{\code{align.frag_len_stat.mono_nuc_peak_exists}}{logical, does a mono-nucleosomal peak exist?}
-#'   \item{\code{align.frag_len_stat.di_nuc_peak_exists}}{logical, does a di-nucleosomal peak exist?}
-#'   \item{\code{lib_complexity.lib_complexity.total_fragments}}{integer, total number of fragments}
-#'   \item{\code{lib_complexity.lib_complexity.distinct_fragments}}{integer, number of distinct fragments}
-#'   \item{\code{lib_complexity.lib_complexity.positions_with_one_read}}{integer, number of positions with one read}
-#'   \item{\code{lib_complexity.lib_complexity.NRF}}{double, non-reduandant fraction. Measure of library complexity. Ideally >0.9}
-#'   \item{\code{lib_complexity.lib_complexity.PBC1}}{double, PCR bottlenecking coefficient 1. Measure of library complexity. Ideally >0.9}
-#'   \item{\code{lib_complexity.lib_complexity.PBC2}}{double PCR bottlenecking coefficient 2. Measure of library complexity. Ideally >3}
-#'   \item{\code{align_enrich.tss_enrich.tss_enrich}}{double, transcription start site enrichment of peaks}
-#'   \item{\code{2D_barcode}}{double, sample barcode}
-#'   \item{\code{Tissue}}{character, tissue description}
-#'   \item{\code{Species}}{character, species}
-#'   \item{\code{Sample_category}}{character, study sample ("study") or reference standard ("ref)}
-#'   \item{\code{GET_site}}{character, which Genomics, Epigenomics, and Transcriptomics (GET) 
-#'     site performed the assay, "Stanford" or "MSSM" (Icahn School of Medicine at Mount Sinai)}
-#'   \item{\code{Sample_batch}}{integer, numeric batch number for batch in which this sample was manually processed}
-#'   \item{\code{Lib_adapter_1}}{character, Adapter sequence for read 1}
-#'   \item{\code{Lib_adapter_2}}{character, Adapter sequence for read 2}
-#'   \item{\code{Lib_index_1}}{character, i7 index}
-#'   \item{\code{Lib_index_2}}{character, i5 index}
-#'   \item{\code{Nuclei_extr_date}}{character, nuclei extraction date}
-#'   \item{\code{Nuclei_extr_count}}{integer, nuclei count}
-#'   \item{\code{Nuclei_tagmentation}}{integer, number of nuclei used in each tagmentation reaction}
-#'   \item{\code{Tagmentation_date}}{character, tagmentation date, MM/DD/YYYY format}
-#'   \item{\code{Tagmentation_enzyme_cat}}{integer, catalog number of tagmentation enzyme TDE1 (Tn5)}
-#'   \item{\code{Tagmentation_enzyme_lot}}{integer, lot number of tagmentation enzyme TDE1 (Tn5)}
-#'   \item{\code{Tagmentation_buffer_cat}}{integer, catalog number of tagmentation buffer}
-#'   \item{\code{Tagmentation_buffer_lot}}{integer, lot number of tagmentation buffer}
-#'   \item{\code{Tagmentation_reaction_vol}}{integer, volume of tagmentation (uL)}
-#'   \item{\code{Tagmentation_purification_kit}}{character, purification kit}
-#'   \item{\code{Tagmentation_purified_DNA_vol}}{double, volume of purified DNA (uL)}
-#'   \item{\code{PCR_date}}{character, PCR date, MM/DD/YYYY format}
-#'   \item{\code{PCR_cycle_nr}}{integer, number of PCR cycles}
-#'   \item{\code{PCR_purification_beads_ul}}{character, volume of SPRIselect beads for lower size selection}
-#'   \item{\code{Lib_DNA_conc}}{double, DNA concentration for the library (ng/uL)}
-#'   \item{\code{Lib_DNA_molarity}}{double, DNA molarity of library (nM)}
-#'   \item{\code{Lib_frag_size}}{integer, average library fragment size}
-#'   \item{\code{Lib_BA_quality}}{integer, visual inspection of the library quality with the Bioanalyzer track (1=good, 0=bad)}
-#'   \item{\code{Seq_DNA_molarity}}{double, DNA molarity for sequencing (nM)}
-#'   \item{\code{Seq_platform}}{character, sequencing platform}
-#'   \item{\code{Seq_date}}{integer, sequencing date, YYMMDD format}
-#'   \item{\code{Seq_machine_ID}}{character, serial number of the sequencer}
-#'   \item{\code{Seq_flowcell_ID}}{character, flow cell ID}
-#'   \item{\code{Seq_flowcell_run}}{integer, flow cell run}
-#'   \item{\code{Seq_flowcell_lane}}{character, flow cell lane}
-#'   \item{\code{Seq_flowcell_type}}{character, flow cell type, e.g., S4}
-#'   \item{\code{Seq_length}}{double, read length}
-#'   \item{\code{Seq_end_type}}{integer, 1=single-end, 2=paired-end}
-#'   \item{\code{total_primary_alignments}}{integer, number of primary alignments}
-#'   \item{\code{pct_chrX}}{double, number of reads mapped to chromosome X}
-#'   \item{\code{pct_chrY}}{double, number of reads mapped to chromosome Y}
-#'   \item{\code{pct_chrM}}{double, number of reads mapped to chromosome M}
-#'   \item{\code{pct_auto}}{double, number of reads mapped to autosomal chromosomes}
-#'   \item{\code{pct_contig}}{double, number of reads mapped to contigs}
-#'   \item{\code{Seq_batch}}{character, unique identifier for sequencing batch} 
-#'}
-#' @details The [ENCODE ATAC-seq pipeline v1.7.0](https://github.com/ENCODE-DCC/atac-seq-pipeline/tree/v1.7.0) was used to quantify ATAC-seq data. 
-#'   Columns with a period are QC metrics from this pipeline. Note that the ENCODE pipeline reports alignments per paired-end read, 
-#'   so \code{align.samstat.total_reads} reports the number of paired-end reads that align, which corresponds to twice the number of sequenced fragments.    
-#' 
-#' @source <gs://motrpac-data-freeze-pass/pass1b-06/v1.1/results/epigenomics/qa-qc/motrpac_pass1b-06_epigen-atac-seq_qa-qc-metrics.csv>
-"ATAC_META"
-
-
-#' @title RRBS metadata and QC
-#' @description RRBS experimental and quantification QC metrics for DNA methylation (METHYL) data 
-#' @format A data frame with 416 rows and 75 variables:
-#' \describe{
-#'   \item{\code{vial_label}}{double, sample identifier}
-#'   \item{\code{2D_barcode}}{double, sample barcode}
-#'   \item{\code{Species}}{character, species}
-#'   \item{\code{BID}}{integer, biospecimen ID}
-#'   \item{\code{PID}}{double, participant ID, one per animal}
-#'   \item{\code{Tissue}}{character, tissue description}
-#'   \item{\code{Sample_category}}{character, study sample ("study") or reference standard ("ref)}
-#'   \item{\code{GET_site}}{character, which Genomics, Epigenomics, and Transcriptomics (GET) 
-#'     site performed the assay, "Stanford" or "MSSM" (Icahn School of Medicine at Mount Sinai)}
-#'   \item{\code{DNA_extr_plate_ID}}{integer, DNA extraction plate ID}
-#'   \item{\code{DNA_extr_date}}{character, DNA extraction date}
-#'   \item{\code{DNA_extr_protocol}}{character, DNA extraction protocol}
-#'   \item{\code{DNA_extr_robot}}{character, robot used for DNA extraction}
-#'   \item{\code{DNA_conc}}{double, DNA concentration (ng/uL)}
-#'   \item{\code{A280/260}}{double, 280/260 ratio}
-#'   \item{\code{A260/230}}{double, 260/230 ratio}
-#'   \item{\code{Lib_prep_date}}{character, library preparation date}
-#'   \item{\code{Lib_DNA_mass}}{double, DNA mass used for library prep (ng)}
-#'   \item{\code{Lib_DNA_vol}}{double, volume of the library (uL)}
-#'   \item{\code{lambda_DNA_mass}}{double, spiked-in Lambda DNA mass (ng)}
-#'   \item{\code{Lib_robot}}{character, robot used for library prep}
-#'   \item{\code{Lib_kit_vendor}}{character, library prep vendor}
-#'   \item{\code{Lib_kit_type}}{character, library prep kit}
-#'   \item{\code{Lib_kit_ID}}{character, library kit ID}
-#'   \item{\code{Lib_batch_ID}}{character, library prep batch ID}
-#'   \item{\code{Lib_index_1}}{character, i7 index}
-#'   \item{\code{Lib_index_2}}{logical, i5 index}
-#'   \item{\code{Lib_adapter_1}}{character, Trueseq i7 index with 16 bp index}
-#'   \item{\code{Lib_adapter_2}}{character, include customized Metseq primer}
-#'   \item{\code{Lib_UMI_cycle_num}}{integer, number of bases of UMI}
-#'   \item{\code{Lib_adapter_size}}{integer, the total size of the two adapters}
-#'   \item{\code{Lib_conc}}{double, DNA concentration for the library (ng/uL)}
-#'   \item{\code{Lib_frag_size}}{integer, average library fragment size}
-#'   \item{\code{Lib_molarity}}{double, library molarity (nM)}
-#'   \item{\code{Seq_platform}}{character, sequencing platform}
-#'   \item{\code{Seq_date}}{integer, sequencing date}
-#'   \item{\code{Seq_machine_ID}}{character, serial number of the sequencing machine}
-#'   \item{\code{Seq_flowcell_ID}}{character, flow cell ID}
-#'   \item{\code{Seq_flowcell_run}}{integer, flow cell run}
-#'   \item{\code{Seq_flowcell_lane}}{character, flow cell lane}
-#'   \item{\code{Seq_flowcell_type}}{character, flow cell type, e.g., "S4"}
-#'   \item{\code{Seq_length}}{integer, read length}
-#'   \item{\code{Seq_end_type}}{integer, 1=single-end, 2=paired-end}
-#'   \item{\code{reads_raw}}{integer, number of raw read pairs}
-#'   \item{\code{pct_adapter_detected}}{double, percent of reads with adapter detected}
-#'   \item{\code{pct_trimmed}}{double, percent of trimmed reads from the initial trimming}
-#'   \item{\code{pct_no_MSPI}}{double, percent of reads with no MSPI present among the trimmed reads}
-#'   \item{\code{pct_trimmed_bases}}{double, percent of bases that were trimmed}
-#'   \item{\code{pct_removed}}{double, percent of reads that were removed due to adapter trimming or no presence of MSPI}
-#'   \item{\code{reads}}{integer, number of read pairs in the trimmed FASTQ files}
-#'   \item{\code{pct_GC}}{double, percent GC content in the trimmed FASTQ files}
-#'   \item{\code{pct_dup_sequence}}{double, percent of duplicated sequences in trimmed FASTQ files}
-#'   \item{\code{pct_phix}}{double, percent of phix reads in trimmed FASTQ files}
-#'   \item{\code{pct_chrX}}{double, percent of reads mapped to chromosome X}
-#'   \item{\code{pct_chrY}}{double, percent of reads mapped to chromosome Y}
-#'   \item{\code{pct_chrM}}{double, percent of reads mapped to the mitochondrial genome}
-#'   \item{\code{pct_chrAuto}}{double, percent of reads mapped to autosomal chromosomes}
-#'   \item{\code{pct_contig}}{double, percent of reads mapped to contigs}
-#'   \item{\code{pct_Uniq}}{double, percent of uniquely mapped reads}
-#'   \item{\code{pct_Unaligned}}{double, percent of unaligned reads}
-#'   \item{\code{pct_Ambi}}{double, percent of ambiguously mapped reads}
-#'   \item{\code{pct_OT}}{double, percent of mapped reads aligned to the original top stand}
-#'   \item{\code{pct_OB}}{double, percent of mapped reads aligned to the original bottom stand}
-#'   \item{\code{pct_CTOT}}{double, percent of mapped reads aligned to the complementary to original top strand}
-#'   \item{\code{pct_CTOB}}{double, percent of mapped reads aligned to the complementary to original bottom strand}
-#'   \item{\code{pct_umi_dup}}{double, PCR duplication rate assessed using UMIs (Unique Molecular Identifiers)}
-#'   \item{\code{pct_CpG}}{double, global CpG methylation level based on the deduplicated data}
-#'   \item{\code{pct_CHG}}{double, global CHG methylation level  based on the deduplicated data}
-#'   \item{\code{pct_CHH}}{double, global CHH methylation level  based on the deduplicated data}
-#'   \item{\code{lambda_pct_Uniq}}{double, percent of uniquely mapped reads to lambda}
-#'   \item{\code{lambda_pct_Ambi}}{double, percent of ambiguously mapped reads to lambda}
-#'   \item{\code{lambda_pct_umi_dup}}{double, PCR duplication rate assessed using UMIs (Unique Molecular Identifiers)}
-#'   \item{\code{lambda_pct_CpG}}{double, global CpG methylation level based on the deduplicated data}
-#'   \item{\code{lambda_pct_CHG}}{double, global CHG methylation level  based on the deduplicated data}
-#'   \item{\code{lambda_pct_CHH}}{double, global CHH methylation level  based on the deduplicated data}
-#'   \item{\code{Seq_batch}}{character, unique identifier for sequencing batch}
-#'}
-#' @source <gs://motrpac-data-freeze-pass/pass1b-06/v1.1/results/epigenomics/qa-qc/motrpac_pass1b-06_epigen-rrbs_qa-qc-metrics.csv>
-"METHYL_META"
-
-
-#' @title Multiplexed immunoassay metadata and QC
-#' @description Multiplexed immunoassay (IMMUNO) experimental and quantification QC metrics 
-#' @format A data frame with 1511 rows and 23 variables:
-#' \describe{
-#'   \item{\code{viallabel}}{character, sample identifier}
-#'   \item{\code{tissue_code}}{character, tissue code used in data release. See [MotrpacBicQC::bic_animal_tissue_code].}
-#'   \item{\code{bid}}{integer, biospecimen ID}
-#'   \item{\code{luminex_sample_name}}{character, sample name used by HIMC in raw data files}
-#'   \item{\code{panel_name}}{character, LUMINEX panel name}
-#'   \item{\code{plate_id}}{character, plate ID in format "[date]-[tissues]_[panel_name]"}
-#'   \item{\code{ppt_type}}{character, species}
-#'   \item{\code{weight_mg}}{integer, sample weight in mg (solid tissue only)}
-#'   \item{\code{volume_ul}}{integer, sample volume in uL (plasma only)}
-#'   \item{\code{date_extracted}}{character, date of protein extraction}
-#'   \item{\code{operators}}{character, initials of experimentalists}
-#'   \item{\code{protein_conc_mg_ml}}{double, protein concentration in mg/mL}
-#'   \item{\code{vol_plate1_ul}}{integer, volume (uL) of sample submitted in first master plate (plate used for LUMINEX assays)}
-#'   \item{\code{min_vol_plate2_ul}}{integer, volume (uL) of remaining sample submitted in second master plate (backup plate)}
-#'   \item{\code{comments}}{character, comments about protein extraction}
-#'   \item{\code{sample_well_position}}{character, well position in plates submitted to the HIMC}
-#'   \item{\code{luminex_well}}{character, well position for LUMINEX assay}
-#'   \item{\code{sex}}{character, "male" or "female"}
-#'   \item{\code{group}}{character, intervention group, one of "1w", "2w", "4w", "8w", "control"}
-#'   \item{\code{CHEX1}}{double, custom Assay CHEX control beads to monitor instrument performance}
-#'   \item{\code{CHEX2}}{double, custom Assay CHEX control beads to monitor application of the detection antibody}
-#'   \item{\code{CHEX3}}{double, custom Assay CHEX control beads to monitor application of the fluorescent reporter}
-#'   \item{\code{CHEX4}}{double, custom Assay CHEX control beads to monitor nonspecific binding} 
-#'}
-#' @details Protein extractions from the same sample/viallabel were used for multiple
-#'   panels, so metadata must be matched to unique samples using both \code{viallabel} and \code{panel_name}. 
-"IMMUNO_META"
-
-
-#' @title Sample outliers
-#' @description Outliers excluded during differential analysis
-#' @format A data frame with 27 rows and 4 variables:
-#' \describe{
-#'   \item{\code{viallabel}}{character, sample identifier}
-#'   \item{\code{tissue}}{character, tissue abbreviation, one of [TISSUE_ABBREV]}
-#'   \item{\code{assay}}{character, assay abbreviation, one of [ASSAY_ABBREV]}
-#'   \item{\code{platform}}{character, LUMINEX panel if \code{assay} is IMMUNO}
-#'   \item{\code{pid}}{integer, participant ID, one per animal}
-#'   \item{\code{group}}{character, combination of sex and training time point that the sample belongs to, e.g., "female_1w"}
-#'   \item{\code{reason}}{character, reason(s) the sample was called an outlier} 
-#'}
-#' @details If the sample was an outlier in principal component (PC) space, \code{reason}
-#'   lists the PC(s) in which it was an outlier. See ome-specific details of outlier calling 
-#'   in the supplementary methods of the manuscript. 
-#' @source <https://docs.google.com/spreadsheets/d/1DetAMovcmMJqulEA41yBLd4I9Q1XSHPH1U8U2aVMShg/edit#gid=2057863805>
-"OUTLIERS"
