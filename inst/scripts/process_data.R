@@ -240,13 +240,6 @@ for(ome in names(dea_directories)){
                            compress = "bzip2", compression_level = 9))
       print(outfile)
       print(head(get(new_name)))
-      
-      df = get(new_name)
-      df = df[df$selection_fdr < 0.05,]
-      new_name = paste0(c(assay_abbr, gsub("-","",tissue_abbreviation), "DA_0.05FDR"), collapse="_")
-      writeLines(new_name)
-      list_of_dfs = c(list_of_dfs, new_name)
-      assign(new_name, df) 
     }
     print(new_name)
     print(head(get(new_name)))
