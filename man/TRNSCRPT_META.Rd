@@ -7,6 +7,7 @@
 \format{
 A data frame with 935 rows and 82 variables:
 \describe{
+\item{\code{viallabel}}{@eval viallabel()}
 \item{\code{vial_label}}{double, sample identifier}
 \item{\code{2D_barcode}}{double, sample barcode}
 \item{\code{Species}}{character, species}
@@ -100,5 +101,24 @@ TRNSCRPT_META
 }
 \description{
 RNA-seq experimental and quantification QC metrics for transcriptomic (TRNSCRPT) data
+}
+\details{
+#' @title Combined metabolomics data used for visualization
+#' @description Combined sample-level metabolomics data used for visualization.
+#'   Data are equivalent to the data provided in \link{METAB_SAMPLE_DATA}. \link{METAB_SAMPLE_DATA} is compatible with the
+#'   differential analysis functions while this format is compatible with visualization functions.
+#' @format A data frame with 15116 rows and 55 variables:
+#' \describe{
+#'   \item{\code{feature}}{unique \code{feature} in the format \code{[ASSAY_ABBREV];[TISSUE_ABBREV];[feature_ID]},
+#'     where \code{feature_ID} is \code{new_feature_ID} when applicable. See \link{REPEATED_FEATURES} for details.}
+#' }
+#' @details
+#'   Analytes (\code{feature}) are in rows, and participants IDs (PIDs, i.e., unique animal IDs) are in columns.
+#'   When an metabolite was measured by more than one platform, the platform name is prepended to \code{feature_ID} to
+#'   provide unique feature identifiers. See \link{REPEATED_FEATURES} for details. For completeness, analytes are defined
+#'   both with the \code{feature_ID} used in the original sample-level data AND with the \code{feature} used in the
+#'   graphical analysis results, e.g., \link{GRAPH_STATES}.
+#'
+"METAB_VIZ_DATA"
 }
 \keyword{datasets}

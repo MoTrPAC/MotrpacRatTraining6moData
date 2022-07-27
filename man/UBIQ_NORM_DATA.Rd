@@ -9,7 +9,7 @@
 \format{
 A data frame with phosphosites in rows (\code{feature_ID}) and samples in columns (\code{viallabel})
 
-An object of class \code{data.frame} with 9344 rows and 61 columns.
+An object of class \code{data.frame} with 9344 rows and 64 columns.
 }
 \source{
 \code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/proteomics-untargeted/prot-ph/normalized-data/*med-mad-normalized-protein-corrected-logratio.txt}

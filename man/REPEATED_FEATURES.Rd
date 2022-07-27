@@ -7,16 +7,11 @@
 \format{
 A data frame with 825 rows and 10 variables:
 \describe{
-\item{\code{feature_ID}}{character, MoTrPAC feature identifier}
-\item{\code{assay_abbr}}{character, assay abbreviation}
-\item{\code{tissue_abbreviation}}{character, tissue abbreviation}
-\item{\code{dataset}}{character, platform for metabolomics features only.
-"meta-reg" indicates the feature came from the merged meta-regression results.
-See more details in \link[MotrpacBicQC:assay_codes]{MotrpacBicQC::assay_codes}.}
-\item{\code{panel}}{character, name of LUMINEX panel for immunoassay features only}
-\item{\code{selection_fdr}}{double, adjusted training p-value used to
-select training-regulated analytes. P-values are IHW-adjusted across all
-datasets within a given \code{assay} with \code{tissue} as a covariate.}
+\item{\code{feature_ID}}{@eval feature_ID()}
+\item{\code{assay}}{@eval assay()}
+\item{\code{tissue}}{@eval tissue()}
+\item{\code{dataset}}{@eval dataset()}
+\item{\code{selection_fdr}}{@eval selection_fdr()}
 \item{\code{metabolite_refmet}}{character, RefMet name of metabolite OR the site-given code for unnamed metabolites}
 \item{\code{feature}}{character, duplicated \code{feature} in the format \code{[ASSAY_ABBREV];[TISSUE_ABBREV];[feature_ID]}}
 \item{\code{new_feature_ID}}{character, new unique \code{feature_ID} with \code{panel} or \code{dataset} prepended}
@@ -34,7 +29,7 @@ unique identifiers were used in the graphical analysis.
 \details{
 91 IMMUNO and METAB features were measured on multiple platforms and have multiple differential analysis results.
 In order to distinguish between the different sets of results, these
-feature_IDs were prepended with \code{panel} (for IMMUNO) or \code{dataset} (for METAB).
+feature_IDs were prepended with \code{dataset}.
 For example, "BDNF" is separated into "rat-myokine:BDNF" and "rat-pituitary:BDNF".
 For completeness, both the modified and unmodified feature_IDs are included in both
 the feature-to-gene map and universe lists. Note that the graphical analysis

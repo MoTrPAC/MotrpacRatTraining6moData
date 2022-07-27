@@ -10,7 +10,9 @@ A data frame with CpG sites in rows (\code{feature_ID}) and samples in columns (
 \code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/epigenomics/epigen-rrbs/normalized-data/*normalized-log-M-window.txt}
 }
 \description{
-Normalized DNA methylation (METHYL) data used for visualization
+Normalized DNA methylation (METHYL) data used for visualization.
+Only for training-regulated features at 5\% IHW FDR. For sample-level data for \emph{all} features,
+see \link{METHYL_NORM_DATA} and TODO.
 }
 \details{
 Only CpG sites with methylation coverage of >=10 in all samples were included for downstream analysis,
@@ -23,5 +25,6 @@ The resulting sites/clusters were used as input for normalization and differenti
 To generate this normalized sample-level data, the methylation coverages of filtered sites/clusters were first log2-transformed,
 and normalization was performed using \code{\link[preprocessCore:normalize.quantiles.robust]{preprocessCore::normalize.quantiles.robust()}} (Bolstad, 2021).
 
-METHYL data is only available via download from the Cloud. See TODO.
+After performing differential analysis (see TODO), training-regulated features were selected at 5\% IHW FDR. The normalized data were
+filtered down to these features and provided here.
 }

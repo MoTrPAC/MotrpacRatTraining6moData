@@ -6,11 +6,10 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-## WARNING: this code is not self-contained. it requires access to the motrpac-mawg GitHub and gs://mawg-data GCP 
+## WARNING: this code is not self-contained. it requires access to the motrpac-mawg GitHub and gs://mawg-data GCS 
 
 library(data.table)
 library(MotrpacBicQC)
-library(MotrpacRatTraining6moData)
 library(dplyr)
 library(testit)
 library(usethis)
@@ -26,7 +25,8 @@ gsutil='~/google-cloud-sdk/bin/gsutil'
 
 source(sprintf("%s/motrpac-mawg/pass1b-06/tools/get_fx.R", gitdir))
 source(sprintf("%s/motrpac-mawg/pass1b-06/integrative/clustering/cluster_viz_fx.R", gitdir))
-load_all("../../../MotrpacRatTraining6mo/R") # viallabel_to_pid()
+
+load_all("../../R")
 ```
 
 ```{r load data}
@@ -59,8 +59,7 @@ combine_normalized_data = function(gsutil_path,
                                    add_filename_as_column=F,
                                    return_list=T,
                                    colname_type="viallabel",
-                                   rename_features=F,
-                                   add_more_columns=T){
+                                   rename_features=F){
   norm_list = list()
   
   if(is.null(file_list)){
@@ -206,6 +205,9 @@ viallabel_to_pid = function(viallabels){
 }
 ```
 
+## Normalized data
+
+### Load normalized data for TRNSCRPT, proteomics 
 ```{r read in for each ome}
 norm_data_list = list()
 
@@ -234,7 +236,7 @@ ph = combine_normalized_data("gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analy
 norm_data_list[['PHOSPHO']] = ph
 ```
 
-## Only differential features for ATAC, RRBS
+### Load ATAC, RRBS normalized data only for training-regulated features 
 ```{r}
 # atac
 atac = combine_normalized_data("gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/epigenomics/epigen-atac-seq/normalized-data", 
@@ -257,6 +259,7 @@ norm_data_list[['METHYL']] = rrbs
 save(norm_data_list, file=sprintf("%s/norm_data_list.RData", datadir))
 ```
 
+### Save one .rda per tissue per ome to R package
 ```{r save one per dataset}
 # save one table per ome and tissue
 load(file=sprintf("%s/norm_data_list.RData", datadir))
@@ -291,7 +294,11 @@ for(ome in names(norm_data_list)){
   }
 }
 ```
-## Handle IMMUNO data separately 
+
+### Handle IMMUNO normalized data separately 
+
+#### Nested IMMUNO data for DA and IMMUNO sample metadata 
+
 Protein extractions from the same viallabel were used in multiple panels. 
 Furthermore, not all assays were performed on every viallabel. 
 CHEX* variables are also well-specific measurements, where CHEX4 is used as a covariate in differential analysis. 
@@ -345,22 +352,31 @@ new_meta = rbindlist(list(new_meta, metadata[!vial_label %in% new_meta[,vial_lab
 setnames(new_meta, "vial_label", "viallabel")
 new_meta[new_meta==""] = NA
 
+# rename CHEX columns - these are already log2
+setnames(new_meta,
+         c("CHEX1","CHEX2","CHEX3","CHEX4"),
+         c("log2_CHEX1","log2_CHEX2","log2_CHEX3","log2_CHEX4"))
+
 # save data
 IMMUNO_META = as.data.frame(new_meta)
 usethis::use_data(IMMUNO_META, overwrite=T)
 sinew::makeOxygen(IMMUNO_META)
 
 # write metadata to file 
-write.table(IMMUNO_META, file=sprintf("%s/sample_metadata_20220713.csv",scratch), sep=",", col.names=T, row.names=F, quote=F)
+write.table(IMMUNO_META, file=sprintf("%s/sample_metadata_20220727.csv",scratch), sep=",", col.names=T, row.names=F, quote=F)
 system(sprintf("gsutil cp %s gs://mawg-data/pass1b-06/immunoassay/data/release/",
-               sprintf("%s/sample_metadata_20220713.csv",scratch)))
+               sprintf("%s/sample_metadata_20220727.csv",scratch)))
 
 # save the data in list format 
 IMMUNO_NORM_DATA_NESTED = imputed_data
 usethis::use_data(IMMUNO_NORM_DATA_NESTED, overwrite=T)
 ```
 
-### Create feature x pid tables for IMMUNO
+#### Single normalized data table
+
+Because there are multiple viallabels per animal per tissue for IMMUNO data,
+make a single normalized data table where column names are PID instead of viallabel. 
+
 ```{r format IMMUNO for viz}
 load("../../data/IMMUNO_NORM_DATA_NESTED.rda")
 load("../../data/REPEATED_FEATURES.rda")
@@ -409,166 +425,16 @@ IMMUNO_NORM_DATA_FLAT = as.data.frame(immuno_data)
 usethis::use_data(IMMUNO_NORM_DATA_FLAT, overwrite=T)
 ```
 
-<!-- ## Save METHYL to GCP bucket -->
-<!-- ```{r} -->
-<!-- # normalized data for viz -->
-<!-- rrbs = combine_normalized_data( -->
-<!--   "gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/epigenomics/epigen-rrbs/normalized-data", -->
-<!--   "normalized-log-M-window.txt", "METHYL", datadir, pheno=pheno) -->
-<!-- # rrbs = combine_normalized_data("gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/epigenomics/epigen-rrbs/normalized-data", "normalized-log-M-window.txt", "METHYL", datadir, pheno=pheno, features_to_keep = rownames(zs_smoothed)[grepl("METHYL", rownames(zs_smoothed))]) -->
-<!-- # length(rownames(zs_smoothed)[grepl("METHYL", rownames(zs_smoothed))]) -->
-<!-- # dim(rrbs) -->
-<!-- lapply(rrbs, head) -->
-<!-- # remove is_outlier row -->
-<!-- rrbs = lapply(rrbs, function(x){ -->
-<!--   return(x[2:nrow(x)]) -->
-<!-- }) -->
+### Handle METAB normalized data separately 
 
-<!-- METHYL_NORM_DATA = lapply(rrbs, function(norm_data){ -->
-<!--   # make sure values are numeric -->
-<!--   numeric_cols = colnames(norm_data)[2:ncol(norm_data)] -->
-<!--   norm_data[,(numeric_cols) := lapply(.SD, as.numeric), .SDcols = numeric_cols] -->
+#### Single normalized data table
 
-<!--   # convert to data.frame for others -->
-<!--   norm_data_df = as.data.frame(norm_data) -->
+Because there are multiple viallabels per animal per tissue for METAB data,
+make a single normalized data table where column names are PID instead of viallabel. 
 
-<!--   return(norm_data_df) -->
-<!-- }) -->
+Also save METAB metadata and a feature ID map to map across METAB datasets 
+(sample-level data, refmet, metabolite_name, DA tables, graphical analysis results). 
 
-<!-- save(METHYL_NORM_DATA, file="/oak/stanford/groups/smontgom/shared/motrpac/internal_releases/motrpac-data-freeze-pass/v1.1/extracted_sample_level_data/METHYL/METHYL_NORM_DATA.rda", compress = "bzip2", compression_level = 9) -->
-
-<!-- # save space -->
-<!-- rrbs=NULL -->
-<!-- METHYL_NORM_DATA=NULL -->
-
-<!-- # save in Dropbox instead: https://www.dropbox.com/sh/vx7vb77g9vctbjq/AADvbE3QJ2DDsC_5-AGg-P_ia?dl=0 -->
-<!-- ``` -->
-
-<!-- ```{r} -->
-<!-- # write one file per tissue instead  -->
-<!-- load("/oak/stanford/groups/smontgom/shared/motrpac/internal_releases/motrpac-data-freeze-pass/v1.1/extracted_sample_level_data/METHYL/METHYL_NORM_DATA.rda") -->
-<!-- #TODO -->
-<!-- ``` -->
-
-<!-- ```{r methyl raw counts} -->
-<!-- rrbs = combine_normalized_data( -->
-<!--   "gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/epigenomics/epigen-rrbs/normalized-data", -->
-<!--   "epigen-rrbs_counts-window.txt", "METHYL", datadir, pheno=pheno) -->
-
-<!-- METHYL_RAW_COUNTS = lapply(rrbs, function(norm_data){ -->
-<!--   # remove "is_outlier" row -->
-<!--   norm_data = norm_data[2:nrow(norm_data)] -->
-
-<!--   # make sure values are integer -->
-<!--   numeric_cols = colnames(norm_data)[2:ncol(norm_data)] -->
-<!--   norm_data[,(numeric_cols) := lapply(.SD, as.integer), .SDcols = numeric_cols] -->
-
-<!--   # convert to data.frame for others -->
-<!--   norm_data_df = as.data.frame(norm_data) -->
-
-<!--   return(norm_data_df) -->
-<!-- }) -->
-
-<!-- save(METHYL_RAW_COUNTS, file="/oak/stanford/groups/smontgom/shared/motrpac/internal_releases/motrpac-data-freeze-pass/v1.1/extracted_sample_level_data/METHYL/METHYL_RAW_COUNTS.rda", compress = "bzip2", compression_level = 9) -->
-
-<!-- # save space -->
-<!-- rrbs=NULL -->
-<!-- METHYL_RAW_COUNTS=NULL -->
-<!-- ``` -->
-
-<!-- ```{r} -->
-<!-- # write one file per tissue instead  -->
-<!-- load("/oak/stanford/groups/smontgom/shared/motrpac/internal_releases/motrpac-data-freeze-pass/v1.1/extracted_sample_level_data/METHYL/METHYL_RAW_COUNTS.rda") -->
-<!-- #TODO -->
-<!-- ``` -->
-
-## Save ATAC to GDrive
-```{r atac norm counts}
-# atac
-atac = combine_normalized_data(
-  "gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/epigenomics/epigen-atac-seq/normalized-data", 
-  "quant-norm", "ATAC", datadir, pheno=pheno, tissue_index = 4)
-
-# write one file per tissue
-ome="ATAC"
-for(tissue in names(atac)){
-  
-    norm_data = atac[[tissue]]
-    
-    # make sure values are numeric
-    numeric_cols = colnames(norm_data)[5:ncol(norm_data)]
-    norm_data[,(numeric_cols) := lapply(.SD, as.numeric), .SDcols = numeric_cols]
-    
-    # convert to data.frame for others
-    norm_data_df = as.data.frame(norm_data)
-    
-    # New name
-    new_name = sprintf("%s_%s_NORM_DATA",ome,gsub("-","",tissue))
-    writeLines(new_name)
-    assign(new_name, norm_data_df)
-    
-    outfile = sprintf("%s/ATAC/%s.rda", datadir, new_name)
-    print(outfile)
-    
-    print(dim(get(new_name)))
-    print(head(get(new_name)))
-
-    # save rda
-    do.call("save", list(as.name(new_name), 
-                         file = outfile, 
-                         compress = "bzip2", compression_level = 9))
-}
-# save space
-atac=NULL
-```
-
-```{r ATAC raw counts}
-# atac
-atac = combine_normalized_data(
-  "gs://motrpac-data-freeze-pass/pass1b-06/v1.1/results/epigenomics/*/epigen-atac-seq", 
-  "epigen-atac-seq_counts", "ATAC", datadir, pheno=pheno, tissue_index = 3)
-
-# write one file per tissue
-ome="ATAC"
-for(tissue in names(atac)){
-  
-    norm_data = atac[[tissue]]
-    
-    # remove refstd
-    to_remove = colnames(norm_data)[grepl("^8", colnames(norm_data))]
-    if(length(to_remove)>0){
-      norm_data[,c(to_remove) := NULL]
-    }
-    
-    # make sure values are integer
-    numeric_cols = colnames(norm_data)[5:ncol(norm_data)]
-    norm_data[,(numeric_cols) := lapply(.SD, as.integer), .SDcols = numeric_cols]
-
-    # convert to data.frame for others
-    norm_data_df = as.data.frame(norm_data)
-    
-    # New name
-    new_name = sprintf("%s_%s_RAW_COUNTS",ome,gsub("-","",tissue))
-    writeLines(new_name)
-    assign(new_name, norm_data_df)
-    
-    outfile = sprintf("%s/ATAC/%s.rda", datadir, new_name)
-    print(outfile)
-    
-    print(dim(get(new_name)))
-    print(head(get(new_name)))
-
-    # save rda
-    do.call("save", list(as.name(new_name), 
-                         file = outfile, 
-                         compress = "bzip2", compression_level = 9))
-}
-# save space
-atac=NULL
-```
-
-## Format METAB sample-level data
-### Create single feature x pid table for METAB
 ```{r collect metab data}
 # start with Pierre's .rda
 load("../../data/METAB_SAMPLE_DATA.rda")
@@ -704,7 +570,8 @@ table(unique(metab_dea[,metabolite_refmet]) %in% mdd[,refmet_name])
 # LOL 
 
 
-# original code
+# original code:
+
 # # GOAL: get the sample-level data to match `feature` in the states table, as well as `feature_ID` from the sample-level data 
 # differential_features = GRAPH_STATES$feature
 # # now, deal with duplicate metabolites
@@ -763,3 +630,187 @@ table(unique(metab_dea[,metabolite_refmet]) %in% mdd[,refmet_name])
 # usethis::use_data(METAB_VIZ_DATA, overwrite=T)
 ```
 
+## TRNSCRPT raw counts
+```{r}
+data_dir = "/oak/stanford/groups/smontgom/shared/motrpac/internal_releases/motrpac-data-freeze-pass/v1.1/results/transcriptomics"
+for(tissue_code in names(TISSUE_CODE_TO_ABBREV)){
+  file = sprintf("%s/%s/transcript-rna-seq/motrpac_pass1b-06_%s_transcript-rna-seq_rsem-genes-count.txt", data_dir, tissue_code, tissue_code)
+  if(file.exists(file)){
+    counts = fread(file, sep="\t", header=T)
+    
+    # add cols: feature, feature_ID, tissue (tissue abbreviation), assay (assay/ome abbreviation)
+    counts = data.table(cbind(feature = sprintf("TRNSCRPT;%s;%s", TISSUE_CODE_TO_ABBREV[[tissue_code]], counts[,gene_id]),
+                                 feature_ID = counts[,gene_id],
+                                 tissue = TISSUE_CODE_TO_ABBREV[[tissue_code]],
+                                 assay = "TRNSCRPT",
+                                 counts[,2:ncol(counts), with=F]))
+    
+    # remove ref stds
+    cols_to_remove = colnames(counts)[grepl("^8", colnames(counts))]
+    if(length(cols_to_remove)>0){
+      counts[,c(cols_to_remove) := NULL]
+    }
+    
+    # make sure values are integer
+    numeric_cols = colnames(counts)[5:ncol(counts)]
+    counts[,(numeric_cols) := lapply(.SD, as.integer), .SDcols = numeric_cols]
+    
+    # change to df for ease of use 
+    df = as.data.frame(counts)
+    
+    # change name
+    new_name = sprintf("TRNSCRPT_%s_RAW_COUNTS", gsub("-","",TISSUE_CODE_TO_ABBREV[[tissue_code]]))
+    writeLines(new_name)
+    assign(new_name, df)
+    # save .rda
+    do.call("use_data", list(as.name(new_name), overwrite = TRUE))
+  }else{
+    print(sprintf("file %s DNE", file))
+  }
+}
+```
+
+## Save full eipgenetic data sets to GCS
+
+### ATAC 
+
+#### Normalized data 
+```{r atac norm counts}
+# atac
+atac = combine_normalized_data(
+  "gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/epigenomics/epigen-atac-seq/normalized-data", 
+  "quant-norm", "ATAC", datadir, pheno=pheno, tissue_index = 4)
+
+# write one file per tissue
+ome="ATAC"
+for(tissue in names(atac)){
+  
+    norm_data = atac[[tissue]]
+    
+    # make sure values are numeric
+    numeric_cols = colnames(norm_data)[5:ncol(norm_data)]
+    norm_data[,(numeric_cols) := lapply(.SD, as.numeric), .SDcols = numeric_cols]
+    
+    # convert to data.frame for others
+    norm_data_df = as.data.frame(norm_data)
+    
+    # New name
+    new_name = sprintf("%s_%s_NORM_DATA",ome,gsub("-","",tissue))
+    writeLines(new_name)
+    assign(new_name, norm_data_df)
+    
+    outfile = sprintf("%s/ATAC/%s.rda", datadir, new_name)
+    print(outfile)
+    
+    print(dim(get(new_name)))
+    print(head(get(new_name)))
+
+    # save rda
+    do.call("save", list(as.name(new_name), 
+                         file = outfile, 
+                         compress = "bzip2", compression_level = 9))
+}
+# save space
+atac=NULL
+```
+
+#### Raw counts 
+```{r ATAC raw counts}
+# atac
+atac = combine_normalized_data(
+  "gs://motrpac-data-freeze-pass/pass1b-06/v1.1/results/epigenomics/*/epigen-atac-seq", 
+  "epigen-atac-seq_counts", "ATAC", datadir, pheno=pheno, tissue_index = 3)
+
+# write one file per tissue
+ome="ATAC"
+for(tissue in names(atac)){
+  
+    norm_data = atac[[tissue]]
+    
+    # remove refstd
+    to_remove = colnames(norm_data)[grepl("^8", colnames(norm_data))]
+    if(length(to_remove)>0){
+      norm_data[,c(to_remove) := NULL]
+    }
+    
+    # make sure values are integer
+    numeric_cols = colnames(norm_data)[5:ncol(norm_data)]
+    norm_data[,(numeric_cols) := lapply(.SD, as.integer), .SDcols = numeric_cols]
+
+    # convert to data.frame for others
+    norm_data_df = as.data.frame(norm_data)
+    
+    # New name
+    new_name = sprintf("%s_%s_RAW_COUNTS",ome,gsub("-","",tissue))
+    writeLines(new_name)
+    assign(new_name, norm_data_df)
+    
+    outfile = sprintf("%s/ATAC/%s.rda", datadir, new_name)
+    print(outfile)
+    
+    print(dim(get(new_name)))
+    print(head(get(new_name)))
+
+    # save rda
+    do.call("save", list(as.name(new_name), 
+                         file = outfile, 
+                         compress = "bzip2", compression_level = 9))
+}
+# save space
+atac=NULL
+# copy to gs://motrpac-rat-training-6mo-extdata
+```
+
+### METHYL 
+
+#### Normalized data
+
+David is separately adding the raw data to the GCS bucket. 
+```{r}
+# rrbs
+rrbs = combine_normalized_data(
+  "gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/epigenomics/epigen-rrbs/normalized-data", 
+  "epigen-rrbs_normalized-log-M-window", "METHYL", datadir, pheno=pheno, tissue_index = 3)
+
+# write one file per tissue
+ome="METHYL"
+for(tissue in names(rrbs)){
+  
+    norm_data = rrbs[[tissue]]
+    
+    # remove refstd
+    to_remove = colnames(norm_data)[grepl("^8", colnames(norm_data))]
+    if(length(to_remove)>0){
+      norm_data[,c(to_remove) := NULL]
+    }
+    
+    # remove outlier row
+    norm_data = norm_data[feature_ID != "is_outlier"]
+    
+    # make sure values are numeric 
+    numeric_cols = colnames(norm_data)[5:ncol(norm_data)]
+    norm_data[,(numeric_cols) := lapply(.SD, as.numeric), .SDcols = numeric_cols]
+    
+    # convert to data.frame for others
+    norm_data_df = as.data.frame(norm_data)
+    
+    # New name
+    new_name = sprintf("%s_%s_NORM_DATA",ome,gsub("-","",tissue))
+    writeLines(new_name)
+    assign(new_name, norm_data_df)
+    
+    outfile = sprintf("%s/METHYL/%s.rda", datadir, new_name)
+    print(outfile)
+    
+    print(dim(get(new_name)))
+    print(head(get(new_name)))
+
+    # save rda
+    do.call("save", list(as.name(new_name), 
+                         file = outfile, 
+                         compress = "bzip2", compression_level = 9))
+}
+# save space
+rrbs=NULL
+# copy to gs://motrpac-rat-training-6mo-extdata
+```

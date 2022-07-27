@@ -14,17 +14,17 @@
 \format{
 A data frame with phosphosites in rows (\code{feature_ID}) and samples in columns (\code{viallabel})
 
-An object of class \code{data.frame} with 29651 rows and 58 columns.
+An object of class \code{data.frame} with 29651 rows and 61 columns.
 
-An object of class \code{data.frame} with 40208 rows and 61 columns.
+An object of class \code{data.frame} with 40208 rows and 64 columns.
 
-An object of class \code{data.frame} with 30144 rows and 61 columns.
+An object of class \code{data.frame} with 30144 rows and 64 columns.
 
-An object of class \code{data.frame} with 47661 rows and 61 columns.
+An object of class \code{data.frame} with 47661 rows and 64 columns.
 
-An object of class \code{data.frame} with 43567 rows and 60 columns.
+An object of class \code{data.frame} with 43567 rows and 63 columns.
 
-An object of class \code{data.frame} with 30304 rows and 61 columns.
+An object of class \code{data.frame} with 30304 rows and 64 columns.
 }
 \source{
 \code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/proteomics-untargeted/prot-ph/normalized-data/*med-mad-normalized-logratio.txt}

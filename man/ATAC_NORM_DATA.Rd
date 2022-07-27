@@ -30,7 +30,9 @@ sample matrix of raw counts.
 
 The remaining steps were applied separately on raw counts from each tissue. Peaks from non-autosomal chromosomes were removed,
 as well as peaks that did not have at least 10 read counts in four samples. Filtered raw counts were then quantile-normalized with
-limma-voom (Law et al., 2014). This version of the normalized data is provided by this object.
+limma-voom (Law et al., 2014).
 
-ATAC data is only available via download from the Cloud. See TODO.
+This version of the normalized data is available via download from Google Cloud Storage. See TODO.
+
+For the subset of normalized data corresponding to training-regulated features at 5\% IHW FDR, see \link{ATAC_NORM_DATA_05FDR}.
 }

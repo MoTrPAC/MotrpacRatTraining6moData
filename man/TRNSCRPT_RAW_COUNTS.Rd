@@ -26,41 +26,41 @@
 \format{
 A data frame with 32883 rows and one column per viallabel
 
-An object of class \code{data.frame} with 32883 rows and 52 columns.
-
-An object of class \code{data.frame} with 32883 rows and 52 columns.
-
-An object of class \code{data.frame} with 32883 rows and 50 columns.
-
-An object of class \code{data.frame} with 32883 rows and 50 columns.
-
-An object of class \code{data.frame} with 32883 rows and 52 columns.
-
-An object of class \code{data.frame} with 32883 rows and 56 columns.
-
-An object of class \code{data.frame} with 32883 rows and 50 columns.
-
-An object of class \code{data.frame} with 32883 rows and 52 columns.
+An object of class \code{data.frame} with 32883 rows and 54 columns.
 
 An object of class \code{data.frame} with 32883 rows and 54 columns.
 
-An object of class \code{data.frame} with 32883 rows and 52 columns.
+An object of class \code{data.frame} with 32883 rows and 54 columns.
 
-An object of class \code{data.frame} with 32883 rows and 24 columns.
+An object of class \code{data.frame} with 32883 rows and 54 columns.
 
-An object of class \code{data.frame} with 32883 rows and 62 columns.
+An object of class \code{data.frame} with 32883 rows and 54 columns.
 
-An object of class \code{data.frame} with 32883 rows and 50 columns.
+An object of class \code{data.frame} with 32883 rows and 54 columns.
 
-An object of class \code{data.frame} with 32883 rows and 50 columns.
+An object of class \code{data.frame} with 32883 rows and 54 columns.
 
-An object of class \code{data.frame} with 32883 rows and 50 columns.
+An object of class \code{data.frame} with 32883 rows and 54 columns.
 
-An object of class \code{data.frame} with 32883 rows and 25 columns.
+An object of class \code{data.frame} with 32883 rows and 54 columns.
 
-An object of class \code{data.frame} with 32883 rows and 50 columns.
+An object of class \code{data.frame} with 32883 rows and 54 columns.
 
-An object of class \code{data.frame} with 32883 rows and 52 columns.
+An object of class \code{data.frame} with 32883 rows and 28 columns.
+
+An object of class \code{data.frame} with 32883 rows and 54 columns.
+
+An object of class \code{data.frame} with 32883 rows and 54 columns.
+
+An object of class \code{data.frame} with 32883 rows and 54 columns.
+
+An object of class \code{data.frame} with 32883 rows and 54 columns.
+
+An object of class \code{data.frame} with 32883 rows and 29 columns.
+
+An object of class \code{data.frame} with 32883 rows and 54 columns.
+
+An object of class \code{data.frame} with 32883 rows and 54 columns.
 }
 \usage{
 TRNSCRPT_ADRNL_RAW_COUNTS
