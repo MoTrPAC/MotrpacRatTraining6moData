@@ -24,72 +24,67 @@
 \alias{TRNSCRPT_WATSC_DA}
 \title{Differential analysis of RNA-seq datasets}
 \format{
-A data frame with >60000 rows and 20 variables:
+A data frame with 22 variables:
 \describe{
-\item{\code{feature_ID}}{character, analyte identifier}
-\item{\code{tissue}}{character, MoTrPAC tissue release code}
-\item{\code{sex}}{character, one of "male" or "female"}
-\item{\code{comparison_group}}{character, time point compared to the sex-matched
-sedentary control animals, one of "1w", "2w", "4w", "8w"}
-\item{\code{assay}}{character, MoTrPAC assay or "ome" code. "transcript-rna-seq" for RNA-seq datasets.}
-\item{\code{covariates}}{character, comma-separated list of covariates or NA}
-\item{\code{removed_samples}}{character, comma-separated list of vial labels excluded from differential analysis or NA}
-\item{\code{logFC}}{double, log fold-change where the numerator is \code{comparison_group}
-and the denominator is the group of sex-matched sedentary control animals}
-\item{\code{logFC_se}}{double, standard error of the log fold-change}
+\item{\code{feature}}{@eval feature()}
+\item{\code{assay}}{@eval assay()}
+\item{\code{assay_code}}{@eval assay_code()}
+\item{\code{tissue}}{@eval tissue()}
+\item{\code{tissue_code}}{@eval tissue_code()}
+\item{\code{feature_ID}}{@eval feature_ID()}
+\item{\code{sex}}{@eval sex()}
+\item{\code{comparison_group}}{@eval comparison_group()}
+\item{\code{p_value}}{@eval p_value()}
+\item{\code{adj_p_value}}{@eval adj_p_value()}
+\item{\code{logFC}}{@eval logFC()}
+\item{\code{logFC_se}}{@eval logFC_se()}
 \item{\code{shrunk_logFC}}{double, log fold-change with shrinkage applied}
 \item{\code{shrunk_logFC_se}}{double, standard error of the shrunken log fold-change}
-\item{\code{zscore}}{double, z statistic}
-\item{\code{p_value}}{double, unadjusted p-value for the difference between
-\code{comparison_group} and the group of sex-matched sedentary control animals}
-\item{\code{comparison_average_intensity}}{double, average intensity among the replicates in \code{comparison_group}}
-\item{\code{comparison_average_intensity_se}}{double, standard error of \code{comparison_average_intensity}}
-\item{\code{reference_average_intensity}}{double, average intensity among the
-replicates in the group of sex-matched sedentary control animals}
-\item{\code{reference_average_intensity_se}}{double, standard error of \code{reference_average_intensity}}
-\item{\code{adj_p_value}}{double, adjusted p-value from \code{p_value} column.
-P-values are BY-adjusted across all datasets within a given \code{assay}.}
-\item{\code{tissue_abbreviation}}{character, MoTrPAC tissue abbreviation used in manuscripts}
-\item{\code{selection_fdr}}{double, adjusted training p-value used to
-select training-regulated analytes. P-values are IHW-adjusted across all
-datasets within a given \code{assay} with \code{tissue} as a covariate.}
+\item{\code{zscore}}{@eval zscore()}
+\item{\code{covariates}}{@eval covariates()}
+\item{\code{removed_samples}}{@eval removed_samples()}
+\item{\code{comparison_average_intensity}}{@eval comparison_average_intensity()}
+\item{\code{comparison_average_intensity_se}}{@eval comparison_average_intensity_se()}
+\item{\code{reference_average_intensity}}{@eval reference_average_intensity()}
+\item{\code{reference_average_intensity_se}}{@eval reference_average_intensity_se()}
+\item{\code{selection_fdr}}{@eval selection_fdr()}
 }
 
-An object of class \code{data.frame} with 132864 rows and 20 columns.
+An object of class \code{data.frame} with 132864 rows and 22 columns.
 
-An object of class \code{data.frame} with 131544 rows and 20 columns.
+An object of class \code{data.frame} with 131544 rows and 22 columns.
 
-An object of class \code{data.frame} with 135640 rows and 20 columns.
+An object of class \code{data.frame} with 135640 rows and 22 columns.
 
-An object of class \code{data.frame} with 110192 rows and 20 columns.
+An object of class \code{data.frame} with 110192 rows and 22 columns.
 
-An object of class \code{data.frame} with 111784 rows and 20 columns.
+An object of class \code{data.frame} with 111784 rows and 22 columns.
 
-An object of class \code{data.frame} with 115560 rows and 20 columns.
+An object of class \code{data.frame} with 115560 rows and 22 columns.
 
-An object of class \code{data.frame} with 127848 rows and 20 columns.
+An object of class \code{data.frame} with 127848 rows and 22 columns.
 
-An object of class \code{data.frame} with 126472 rows and 20 columns.
+An object of class \code{data.frame} with 126472 rows and 22 columns.
 
-An object of class \code{data.frame} with 132448 rows and 20 columns.
+An object of class \code{data.frame} with 132448 rows and 22 columns.
 
-An object of class \code{data.frame} with 130552 rows and 20 columns.
+An object of class \code{data.frame} with 130552 rows and 22 columns.
 
-An object of class \code{data.frame} with 69436 rows and 20 columns.
+An object of class \code{data.frame} with 69436 rows and 22 columns.
 
-An object of class \code{data.frame} with 68140 rows and 20 columns.
+An object of class \code{data.frame} with 68140 rows and 22 columns.
 
-An object of class \code{data.frame} with 98028 rows and 20 columns.
+An object of class \code{data.frame} with 98028 rows and 22 columns.
 
-An object of class \code{data.frame} with 132040 rows and 20 columns.
+An object of class \code{data.frame} with 132040 rows and 22 columns.
 
-An object of class \code{data.frame} with 131288 rows and 20 columns.
+An object of class \code{data.frame} with 131288 rows and 22 columns.
 
-An object of class \code{data.frame} with 115496 rows and 20 columns.
+An object of class \code{data.frame} with 115496 rows and 22 columns.
 
-An object of class \code{data.frame} with 129232 rows and 20 columns.
+An object of class \code{data.frame} with 129232 rows and 22 columns.
 
-An object of class \code{data.frame} with 134112 rows and 20 columns.
+An object of class \code{data.frame} with 134112 rows and 22 columns.
 }
 \usage{
 TRNSCRPT_BLOOD_DA

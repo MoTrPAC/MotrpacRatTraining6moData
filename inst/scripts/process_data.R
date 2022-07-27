@@ -9,6 +9,7 @@ library(devtools)
 library(usethis)
 library(data.table)
 library(sinew)
+# library(MotrpacRatTraining6moData) use load_all instead
 
 setwd("/oak/stanford/groups/smontgom/nicolerg/src/MOTRPAC/MotrpacRatTraining6moData")
 data_dir = "/oak/stanford/groups/smontgom/shared/motrpac/internal_releases/motrpac-data-freeze-pass/v1.1/analysis"
@@ -132,25 +133,36 @@ dea_directories = c('TRNSCRPT' = sprintf("%s/transcriptomics/transcript-rna-seq/
                     'PHOSPHO' = sprintf("%s/proteomics-untargeted/prot-ph/dea", data_dir),
                     'ACETYL' = sprintf("%s/proteomics-untargeted/prot-ac/dea", data_dir),
                     'UBIQ' = sprintf("%s/proteomics-untargeted/prot-ub/dea", data_dir),
-                    #'METHYL' = sprintf("%s/epigenomics/epigen-rrbs/dea", data_dir),
-                    #'ATAC' = sprintf("%s/epigenomics/epigen-atac-seq/dea", data_dir),
+                    'METHYL' = sprintf("%s/epigenomics/epigen-rrbs/dea", data_dir),
+                    'ATAC' = sprintf("%s/epigenomics/epigen-atac-seq/dea", data_dir),
                     'IMMUNO' = sprintf("%s/proteomics-targeted/immunoassay-luminex/dea", data_dir),
-                    'METAB' = sprintf("%s/metabolomics-named-merged/dea", data_dir))
+                    'METAB' = sprintf("%s/metabolomics-named-merged/dea", data_dir),
+                    'metab-metareg' = sprintf("%s/metabolomics-named-merged/dea/meta-regression", data_dir))
 
 dea_patterns = c('TRNSCRPT' = 'timewise-dea-fdr',
                  'PROT' = 'prot-pr_timewise-dea-fdr',
                  'PHOSPHO' = 'prot-ph_timewise-dea-fdr',
                  'ACETYL' = 'prot-ac_timewise-dea-fdr',
                  'UBIQ' = 'prot-ub-protein-corrected_timewise-dea-fdr',
-                 #'METHYL' = '',
-                 #'ATAC' = '',
+                 'METHYL' = 'epigen-rrbs_timewise-dea-fdr',
+                 'ATAC' = 'epigen-atac-seq_timewise-dea-fdr',
                  'IMMUNO' = 'pass1b-06_immunoassay_timewise-dea-fdr_20211005.txt', # just one file
-                 'METAB' = 'metab_timewise-dea-fdr')                    
+                 'METAB' = 'metab_timewise-dea-fdr',
+                 'metab-metareg' = 'metab-meta-reg_timewise-dea-fdr')                    
 
 list_of_dfs = c()
+#system("gsutil cp gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/resources/master_feature_to_gene_20211116.RData /oak/stanford/groups/smontgom/nicolerg/tmp")
+load("/oak/stanford/groups/smontgom/nicolerg/tmp/master_feature_to_gene_20211116.RData")
+REPEATED_FEATURES = as.data.table(repeated_feature_map)
 
+rep = data.table(REPEATED_FEATURES)
 for(ome in names(dea_directories)){
   if(ome == "IMMUNO") next
+  if(ome == "metab-metareg"){
+    assay_abbr = "METAB"
+  }else{
+    assay_abbr = ome
+  }
   curr_ome_files = list.files(path = dea_directories[[ome]], 
                               pattern = dea_patterns[[ome]],
                               full.names = T)
@@ -159,36 +171,141 @@ for(ome in names(dea_directories)){
     if(length(file) == 0) next
     if(length(file) > 1) warning(sprintf("More than one file: %s", paste(file, collapse=", ")))
     dt = fread(file, sep="\t", header=T)
-    # Convert to data.frame for ease of use 
-    df = as.data.frame(dt) 
+    
     # Get tissue abbreviation
     tissue_abbreviation = MotrpacBicQC::tissue_abbr[[tissue]]
+    
+    # add columns
+    dt[,feature := sprintf("%s;%s;%s",
+                           assay_abbr,
+                           tissue_abbreviation,
+                           feature_ID)]
+    # rename some columns 
+    setnames(dt, 
+             old=c("tissue","assay","tissue_abbreviation"),
+             new=c("tissue_code","assay_code","tissue"))
+    dt[,assay := assay_abbr]
+    
+    if(ome=="METAB"){
+      # fix repeated features
+      features = dt[,feature]
+      if(any(features %in% rep[,feature])){
+        new_features = sprintf("METAB;%s;%s:%s", dt[,tissue], dt[,dataset], dt[,feature_ID])
+        print(new_features[new_features %in% rep[,new_feature]])
+        features[new_features %in% rep[,new_feature]] = new_features[new_features %in% rep[,new_feature]]
+        dt[,feature := features]
+      }
+    }
+    
+    # reorder columns 
+    col_order = c("feature","assay","assay_code","tissue","tissue_code","feature_ID",
+                  "dataset","site","is_targeted",
+                  "sex","comparison_group",
+                  "p_value","adj_p_value","logFC","logFC_se","shrunk_logFC","shrunk_logFC_se","tscore","zscore",
+                  "covariates","removed_samples","numNAs",
+                  "comparison_average_intensity","comparison_average_intensity_se",
+                  "reference_average_intensity","reference_average_intensity_se",
+                  "Chr", "Locus", "EntrezID", "Symbol", "fscore",
+                  "metabolite_refmet","cv","metabolite","control_cv","mz",      
+                  "rt","neutral_mass","meta_reg_het_p","meta_reg_pvalue",
+                  "selection_fdr")
+    
+    curr_cols = col_order[col_order %in% colnames(dt)]
+    other_cols = colnames(dt)[!colnames(dt) %in% curr_cols]
+    print(other_cols)
+    dt = dt[,c(curr_cols, other_cols), with=F]
+    
+    # Convert to data.frame for ease of use 
+    df = as.data.frame(dt) 
+
     # New name
-    new_name = paste0(c(ome, gsub("-","",tissue_abbreviation), "DA"), collapse="_")
+    if(ome == "metab-metareg"){
+      new_name = paste0(c(assay_abbr, gsub("-","",tissue_abbreviation), "DA_METAREG"), collapse="_")
+    }else{
+      new_name = paste0(c(assay_abbr, gsub("-","",tissue_abbreviation), "DA"), collapse="_")
+    }
+    
     writeLines(new_name)
     list_of_dfs = c(list_of_dfs, new_name)
     assign(new_name, df)
-    # Save .rda - this keeps giving me an error early in the loop
+    
+    if(assay_abbr %in% c("ATAC","METHYL")){
+      # copy full set to GCS
+      outfile = sprintf("%s/%s/%s.rda",
+                        "/oak/stanford/groups/smontgom/shared/motrpac/internal_releases/motrpac-data-freeze-pass/v1.1/extracted_sample_level_data",
+                        assay_abbr,
+                        new_name)
+      do.call("save", list(as.name(new_name),
+                           file = outfile,
+                           compress = "bzip2", compression_level = 9))
+      print(outfile)
+      print(head(get(new_name)))
+    }
+    print(new_name)
+    print(head(get(new_name)))
     do.call("use_data", list(as.name(new_name), overwrite = TRUE))
   }
 }
 
+
 ## Handle IMMUNO separately
 ome = "IMMUNO"
+assay_abbr = "IMMUNO"
 # Read in single results file 
 dt = fread(sprintf("%s/%s", dea_directories[[ome]], dea_patterns[[ome]]), sep='\t', header=T)
 for (curr_tissue in unique(dt[,tissue])){
-  dtsub = dt[tissue == curr_tissue]
-  # Convert to data.frame for ease of use 
-  df = as.data.frame(dtsub) 
+  dt_sub = dt[tissue == curr_tissue]
+  
   # Get tissue abbreviation
   tissue_abbreviation = MotrpacBicQC::tissue_abbr[[curr_tissue]]
-  # New name
-  new_name = paste0(c(ome, gsub("-","",tissue_abbreviation), "DA"), collapse="_")
+  
+  # add columns
+  dt_sub[,feature := sprintf("IMMUNO;%s;%s",
+                         tissue_abbreviation,
+                         feature_ID)]
+  # rename some columns 
+  setnames(dt_sub, 
+           old=c("tissue","assay","tissue_abbreviation","panel"),
+           new=c("tissue_code","assay_code","tissue","dataset"))
+  dt_sub[,assay := assay_abbr]
+  
+  # fix repeated features
+  features = dt_sub[,feature]
+  if(any(features %in% rep[,feature])){
+    new_features = sprintf("IMMUNO;%s;%s:%s", dt_sub[,tissue], dt_sub[,dataset], dt_sub[,feature_ID])
+    print(unique(new_features[new_features %in% rep[,new_feature]]))
+    features[new_features %in% rep[,new_feature]] = new_features[new_features %in% rep[,new_feature]]
+    dt_sub[,feature := features]
+  }
+  
+  # reorder columns 
+  col_order = c("feature","assay","assay_code","tissue","tissue_code","feature_ID",
+                "dataset","site","is_targeted",
+                "sex","comparison_group",
+                "p_value","adj_p_value","logFC","logFC_se","shrunk_logFC","shrunk_logFC_se","tscore","zscore",
+                "covariates","removed_samples","numNAs",
+                "comparison_average_intensity","comparison_average_intensity_se",
+                "reference_average_intensity","reference_average_intensity_se",
+                "Chr", "Locus", "EntrezID", "Symbol", "fscore",
+                "metabolite_refmet","cv","metabolite","control_cv","mz",      
+                "rt","neutral_mass","meta_reg_het_p","meta_reg_pvalue",
+                "selection_fdr")
+  
+  curr_cols = col_order[col_order %in% colnames(dt_sub)]
+  other_cols = colnames(dt_sub)[!colnames(dt_sub) %in% curr_cols]
+  print(other_cols)
+  dt_sub = dt_sub[,c(curr_cols, other_cols), with=F]
+  
+  # Convert to data.frame for ease of use 
+  df = as.data.frame(dt_sub) 
+
+  new_name = paste0(c(assay_abbr, gsub("-","",tissue_abbreviation), "DA"), collapse="_")
+  
   writeLines(new_name)
   list_of_dfs = c(list_of_dfs, new_name)
   assign(new_name, df)
-  # Save .rda - this keeps giving me an error early in the loop
+
+  print(head(get(new_name)))
   do.call("use_data", list(as.name(new_name), overwrite = TRUE))
 }
 
@@ -201,6 +318,7 @@ sinew::makeOxygen(ACETYL_HEART_DA)
 sinew::makeOxygen(UBIQ_HEART_DA)
 sinew::makeOxygen(METAB_PLASMA_DA)
 sinew::makeOxygen(IMMUNO_PLASMA_DA)
+sinew::makeOxygen(METAB_PLASMA_DA_METAREG)
 
 # Phenotypic data ---------------------------------------------------------------
 
@@ -303,6 +421,9 @@ tissue_dt = data.table(MotrpacBicQC::bic_animal_tissue_code)
 tissue_dt = tissue_dt[!is.na(abbreviation)]
 pass1b[,tissue := tissue_dt[match(pass1b[,tissue_code_no], bic_tissue_code), abbreviation]]
 
+# remove improperly calculated weight training var 
+pass1b[,calculated.variables.wgt_gain_after_train := NULL]
+
 # convert to data.frame
 pass1b = as.data.frame(pass1b)
 rownames(pass1b) = pass1b$viallabel
@@ -313,11 +434,18 @@ sinew::makeOxygen(PHENO)
  
 # Feature-to-gene map -----------------------------------------------------------
 
-system("gsutil cp gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/resources/master_feature_to_gene_20211116.RData /oak/stanford/groups/smontgom/nicolerg/tmp")
+#system("gsutil cp gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/resources/master_feature_to_gene_20211116.RData /oak/stanford/groups/smontgom/nicolerg/tmp")
 load("/oak/stanford/groups/smontgom/nicolerg/tmp/master_feature_to_gene_20211116.RData")
 
 FEATURE_TO_GENE = as.data.frame(master_feature_to_gene)
-REPEATED_FEATURES = as.data.frame(repeated_feature_map)
+REPEATED_FEATURES = repeated_feature_map
+
+# rename some columns for consistency 
+head(REPEATED_FEATURES)
+REPEATED_FEATURES[is.na(dataset) & !is.na(panel), dataset := panel]
+REPEATED_FEATURES[,panel := NULL]
+setnames(REPEATED_FEATURES, c("assay_abbr","tissue_abbreviation"), c("assay","tissue"))
+REPEATED_FEATURES = as.data.frame(REPEATED_FEATURES)
 
 usethis::use_data(FEATURE_TO_GENE, overwrite = TRUE)
 usethis::use_data(REPEATED_FEATURES, overwrite = TRUE)
@@ -333,30 +461,6 @@ RAT_TO_HUMAN_GENE = as.data.frame(rat_to_human)
 usethis::use_data(RAT_TO_HUMAN_GENE, overwrite = TRUE)
 sinew::makeOxygen(RAT_TO_HUMAN_GENE)
 
-# RNA-seq counts  ---------------------------------------------------------------
-
-data_dir = "/oak/stanford/groups/smontgom/shared/motrpac/internal_releases/motrpac-data-freeze-pass/v1.1/results/transcriptomics"
-for(tissue_code in names(TISSUE_CODE_TO_ABBREV)){
-  file = sprintf("%s/%s/transcript-rna-seq/motrpac_pass1b-06_%s_transcript-rna-seq_rsem-genes-count.txt", data_dir, tissue_code, tissue_code)
-  if(file.exists(file)){
-    counts = fread(file, sep="\t", header=T)
-    # set row names
-    counts = as.data.frame(counts)
-    rownames(counts) = counts$gene_id
-    counts$gene_id = NULL
-    # coerce values to int
-    counts_round = as.data.frame(apply(counts, c(1,2), as.integer)) 
-    # change name
-    new_name = sprintf("TRNSCRPT_%s_RAW_COUNTS", gsub("-","",TISSUE_CODE_TO_ABBREV[[tissue_code]]))
-    writeLines(new_name)
-    assign(new_name, counts_round)
-    # save .rda
-    do.call("use_data", list(as.name(new_name), overwrite = TRUE))
-  }else{
-    print(sprintf("file %s DNE", file))
-  }
-}
-
 # GET data type QC metrics ------------------------------------------------------
 
 TRNSCRPT_META = as.data.frame(dl_read_gcp("gs://motrpac-data-freeze-pass/pass1b-06/v1.1/results/transcriptomics/qa-qc/motrpac_pass1b-06_transcript-rna-seq_qa-qc-metrics.csv", sep=","))
@@ -365,6 +469,18 @@ ATAC_META = as.data.frame(dl_read_gcp("gs://motrpac-data-freeze-pass/pass1b-06/v
 colnames(ATAC_META) = gsub(" .*","",colnames(ATAC_META))
 METHYL_META = as.data.frame(dl_read_gcp("gs://motrpac-data-freeze-pass/pass1b-06/v1.1/results/epigenomics/qa-qc/motrpac_pass1b-06_epigen-rrbs_qa-qc-metrics.csv", sep=","))
 colnames(METHYL_META) = gsub(" .*","",colnames(METHYL_META))
+
+# refactor viallabel
+TRNSCRPT_META = as.data.frame(cbind(viallabel = as.character(TRNSCRPT_META$vial_label),
+                                    TRNSCRPT_META))
+ATAC_META$viallabel = as.character(ATAC_META$viallabel)
+METHYL_META = as.data.frame(cbind(viallabel = as.character(METHYL_META$vial_label),
+                                  METHYL_META))
+
+# remove ref stds 
+TRNSCRPT_META = TRNSCRPT_META[!grepl("^8",TRNSCRPT_META$viallabel),]
+ATAC_META = ATAC_META[!grepl("^8",ATAC_META$viallabel),]
+METHYL_META = METHYL_META[!grepl("^8",METHYL_META$viallabel),]
 
 usethis::use_data(TRNSCRPT_META, ATAC_META, METHYL_META, internal = FALSE, overwrite = TRUE)
 sinew::makeOxygen(TRNSCRPT_META)

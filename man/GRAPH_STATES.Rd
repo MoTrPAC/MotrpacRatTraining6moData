@@ -7,15 +7,12 @@
 \format{
 A data frame with 34244 rows and 10 variables:
 \describe{
-\item{\code{feature}}{character, unique differential feature identifier,
-i.e., semi-colon-separated ome abbreviation, tissue abbreviation, and feature_ID}
-\item{\code{ome}}{character, assay abbreviation, one of \link{ASSAY_ABBREV}}
-\item{\code{tissue}}{character, tissue abbreviation, one of: "ADRNL", "BAT", "BLOOD",
-"COLON", "CORTEX", "HEART", "HIPPOC", "HYPOTH", "KIDNEY", "LIVER", "LUNG", "PLASMA", "SKM-GN",
-"SKM-VL", "SMLINT", "SPLEEN", "WAT-SC". note that VENACV, OVARY, TESTES,
+\item{\code{feature}}{@eval feature()}
+\item{\code{ome}}{@eval assay()}
+\item{\code{tissue}}{@eval tissue(). Note that VENACV, OVARY, TESTES,
 were not included in the graphical representation of differential
 features due to missing groups (e.g., females trained for 1 week).}
-\item{\code{feature_ID}}{character, feature identifier}
+\item{\code{feature_ID}}{@eval feature_ID()}
 \item{\code{state_1w}}{character, state (1, up-regulated; 0, null; -1, down-regulated)
 of the feature in each sex (F, females; M, males) at the 1-week training time point,
 relative to sex-matched untrained animals}

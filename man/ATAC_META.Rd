@@ -7,7 +7,7 @@
 \format{
 A data frame with 520 rows and 106 variables:
 \describe{
-\item{\code{viallabel}}{double, sample identifier}
+\item{\code{viallabel}}{@eval viallabel()}
 \item{\code{general.description}}{character, pipeline workflow description}
 \item{\code{replicate}}{character, replicate in the pipeline workflow}
 \item{\code{general.date}}{double, date the pipeline workflow was run}

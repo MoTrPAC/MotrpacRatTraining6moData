@@ -9,7 +9,7 @@
 \format{
 A data frame with acetylsites in rows (\code{feature_ID}) and samples in columns (\code{viallabel})
 
-An object of class \code{data.frame} with 9750 rows and 54 columns.
+An object of class \code{data.frame} with 9750 rows and 57 columns.
 }
 \source{
 \code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/proteomics-untargeted/prot-ac/normalized-data/*med-mad-normalized-logratio.txt}

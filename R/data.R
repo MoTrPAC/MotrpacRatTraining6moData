@@ -1,3 +1,5 @@
+## Colors and abbreviations ####
+
 #' @title Tissue abbreviations 
 #' @description Tissue abbreviations used in tables and figures 
 #' @format Unnamed character vector
@@ -63,6 +65,8 @@
 "TISSUE_ORDER"
 
 
+## Gene mappings ####
+
 #' @name FEATURE_TO_GENE
 #' @title Feature-to-gene map
 #' @description This feature-to-gene map associates every feature tested in 
@@ -70,7 +74,7 @@
 #' @format A data frame with 4044034 rows and 9 variables:
 #' \describe{
 #'   \item{\code{entrez_gene}}{double, Entrez gene ID}
-#'   \item{\code{feature_ID}}{character, MoTrPAC feature identifier}
+#'   \item{\code{feature_ID}}{@eval feature_ID()}
 #'   \item{\code{rgd_gene}}{integer, RGD gene ID}
 #'   \item{\code{gene_symbol}}{character, official gene symbol}
 #'   \item{\code{old_gene_symbol}}{character, semicolon-separated list of deprecated or alias gene symbols}
@@ -84,7 +88,7 @@
 #'     is always less than "geneEnd", even if the gene is on the negative strand ("geneStrand" == 2).}
 #'   \item{\code{custom_annotation}}{character, a version of the \code{ChIPseeker} annotations with many corrections. Values include:
 #'     "Distal Intergenic", "Promoter (<=1kb)", "Exon", "Promoter (1-2kb)", "Downstream (<5kb)", "Upstream (<5kb)", "5' UTR", "Intron", "3' UTR", "Overlaps Gene"}
-#'   \item{\code{kegg_id}}{character, KEGG ID for METAB features only. See [MotrpacBicQC::get_and_validate_mdd()] for more details.} 
+#'   \item{\code{kegg_id}}{character, KEGG ID for METAB features only. See [MotrpacBicQC::metabolomics_data_dictionary] for more details.} 
 #'}
 #' @details All proteomics feature IDs (RefSeq accessions) were mapped to gene 
 #'     symbols and Entrez IDs using NCBI’s "gene2refseq" mapping files 
@@ -145,16 +149,11 @@
 #'     unique identifiers were used in the graphical analysis. 
 #' @format A data frame with 825 rows and 10 variables:
 #' \describe{
-#'   \item{\code{feature_ID}}{character, MoTrPAC feature identifier}
-#'   \item{\code{assay_abbr}}{character, assay abbreviation}
-#'   \item{\code{tissue_abbreviation}}{character, tissue abbreviation}
-#'   \item{\code{dataset}}{character, platform for metabolomics features only. 
-#'       "meta-reg" indicates the feature came from the merged meta-regression results.
-#'       See more details in [MotrpacBicQC::assay_codes].}
-#'   \item{\code{panel}}{character, name of LUMINEX panel for immunoassay features only}
-#'   \item{\code{selection_fdr}}{double, adjusted training p-value used to 
-#'       select training-regulated analytes. P-values are IHW-adjusted across all 
-#'       datasets within a given \code{assay} with \code{tissue} as a covariate.}
+#'   \item{\code{feature_ID}}{@eval feature_ID()}
+#'   \item{\code{assay}}{@eval assay()}
+#'   \item{\code{tissue}}{@eval tissue()}
+#'   \item{\code{dataset}}{@eval dataset()}
+#'   \item{\code{selection_fdr}}{@eval selection_fdr()}
 #'   \item{\code{metabolite_refmet}}{character, RefMet name of metabolite OR the site-given code for unnamed metabolites}
 #'   \item{\code{feature}}{character, duplicated \code{feature} in the format \code{[ASSAY_ABBREV];[TISSUE_ABBREV];[feature_ID]}}
 #'   \item{\code{new_feature_ID}}{character, new unique \code{feature_ID} with \code{panel} or \code{dataset} prepended}
@@ -162,13 +161,15 @@
 #'}
 #' @details 91 IMMUNO and METAB features were measured on multiple platforms and have multiple differential analysis results. 
 #'     In order to distinguish between the different sets of results, these 
-#'     feature_IDs were prepended with \code{panel} (for IMMUNO) or \code{dataset} (for METAB). 
+#'     feature_IDs were prepended with \code{dataset}. 
 #'     For example, "BDNF" is separated into "rat-myokine:BDNF" and "rat-pituitary:BDNF". 
 #'     For completeness, both the modified and unmodified feature_IDs are included in both 
 #'     the feature-to-gene map and universe lists. Note that the graphical analysis
 #'     uses the modified feature_IDs; differential analysis results use the unmodified feature_IDs.
 "REPEATED_FEATURES"
 
+
+## Phenotypic data ####
 
 #' @title Phenotypic data 
 #' @description Phenotypic data for samples from the MoTrPAC endurance exercise 
@@ -179,7 +180,7 @@
 #'   \item{\code{bid}}{integer, unique, randomly generated 8 digit numeric identifier used in linkage to phenotypic data}
 #'   \item{\code{labelid}}{double, unique 11 digit identifier for specimen label ID, originating at the collection site, 
 #'       that provides a link to specimen processing and used for shipments to the biorepository (same as 
-#'       \code{vialLabel} only in instances where aliquots were not further processed at the biorepository)}
+#'       \code{viallabel} only in instances where aliquots were not further processed at the biorepository)}
 #'   \item{\code{viallabel}}{character, unique 11 digit numeric identifier of a sample vial made up of \code{bid}, 
 #'       \code{key.sacrificetime}, \code{specimen.processing.sampletypedescription}, and aliquot number}
 #'   \item{\code{key.protocol}}{character, protocol in which the procedures for sample collection were outlined}
@@ -339,8 +340,6 @@
 #'   \item{\code{specimen.processing.t_edtaspin}}{character, EDTA spin time}
 #'   \item{\code{specimen.processing.t_freeze}}{character, specimen freeze time}
 #'   \item{\code{specimen.processing.techid}}{character, specimen processing tech ID}
-#'   \item{\code{calculated.variables.wgt_gain_after_train}}{double, weight gain after training: 
-#'       \code{max(nmr.testing.nmr_weight_2, nmr.testing.nmr_weight_1) - registration.weight}}
 #'   \item{\code{calculated.variables.pct_body_fat_change}}{double, percent body fat change after training: 
 #'       \code{nmr.testing.nmr_fat_2 - nmr.testing.nmr_fat_1}}
 #'   \item{\code{calculated.variables.pct_body_lean_change}}{double, percent body lean change after training:
@@ -361,13 +360,15 @@
 #'   \item{\code{sacrificetime}}{character, sacrifice time point in weeks, one of "1w", "2w", "4w", "8w"}
 #'   \item{\code{intervention}}{character, intervention, one of "training", "control"}
 #'   \item{\code{group}}{character, intervention group, one of "1w", "2w", "4w", "8w", "control"}
-#'   \item{\code{sex}}{character, sex, one of "male", "female"}
+#'   \item{\code{sex}}{@eval sex()}
 #'   \item{\code{time_to_freeze}}{integer, sample time to freeze, \code{calculated.variables.frozetime_after_train - calculated.variables.deathtime_after_train}} 
 #'   \item{\code{tissue_code_no}}{character, BIC tissue code. See [MotrpacBicQC::bic_animal_tissue_code].}
-#'   \item{\code{tissue}}{character, tissue abbreviation, one of [TISSUE_ABBREV]} 
+#'   \item{\code{tissue}}{@eval tissue()} 
 #'}
 "PHENO"
 
+
+## RNA-seq sample-level data ####
 
 #' @title RNA-seq raw counts
 #' @description RNA-seq raw counts as quantified by RSEM
@@ -501,118 +502,179 @@
 "TRNSCRPT_WATSC_NORM_DATA"
 
 
-#' #' @title Normalized ATAC-seq data
-#' #' @description Normalized sample-level ATAC-seq (ATAC) data used for visualization and differential analysis
-#' #' @format A data frame with peaks in rows (\code{feature_ID}) and samples in columns (\code{viallabel}) 
-#' #' @details Data was processed with the [ENCODE ATAC-seq pipeline (v1.7.0)](https://github.com/ENCODE-DCC/atac-seq-pipeline). 
-#' #'   Samples from a single sex and training time point, e.g., males trained for 2 weeks, were analyzed together as biological 
-#' #'   replicates in a single workflow. Briefly, adapters were trimmed with cutadapt v2.5 (Martin, 2011) and aligned to release 96 
-#' #'   of the Ensembl Rattus norvegicus (rn6) genome (Dobin et al., 2013) with Bowtie 2 v2.3.4.3 (Langmead and Salzberg, 2012). 
-#' #'   Duplicate reads and reads mapping to the mitochondrial chromosome were removed. Signal files and peak calls were generated 
-#' #'   using MACS2 v2.2.4 (Gaspar, 2018), both from reads from each sample and pooled reads from all biological replicates. 
-#' #'   Pooled peaks were compared with the peaks called for each replicate individually using Irreproducibility Discovery Rate (Li et al., 2011) 
-#' #'   and thresholded to generate an optimal set of peaks. 
-#' #'   
-#' #'   The cloud implementation of the ENCODE ATAC-seq pipeline and source code for the post-processing steps are available at <https://github.com/MoTrPAC/motrpac-atac-seq-pipeline>. 
-#' #'   Optimal peaks (overlap.optimal_peak.narrowPeak.bed.gz) from all workflows were concatenated, trimmed to 200 base pairs around the summit, 
-#' #'   and sorted and merged with bedtools v2.29.0 (Quinlan and Hall, 2010) to generate a master peak list. This peak list was intersected with 
-#' #'   the filtered alignments from each sample using bedtools coverage with options \code{-nonamecheck} and \code{-counts} to generate a peak by 
-#' #'   sample matrix of raw counts. 
-#' #'   
-#' #'   The remaining steps were applied separately on raw counts from each tissue. Peaks from non-autosomal chromosomes were removed, 
-#' #'   as well as peaks that did not have at least 10 read counts in four samples. Filtered raw counts were then quantile-normalized with 
-#' #'   limma-voom (Law et al., 2014). This version of the normalized data is provided by this object.
-#' #'   
-#' #' @source \code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/epigenomics/epigen-atac-seq/normalized-data/*quant-norm*}
-#' #' @name ATAC_NORM_DATA
-#' "ATAC_HIPPOC_NORM_DATA"
-#' 
-#' #' @rdname ATAC_NORM_DATA
-#' "ATAC_SKMGN_NORM_DATA"
-#' 
-#' #' @rdname ATAC_NORM_DATA
-#' "ATAC_HEART_NORM_DATA"
-#' 
-#' #' @rdname ATAC_NORM_DATA
-#' "ATAC_KIDNEY_NORM_DATA"
-#' 
-#' #' @rdname ATAC_NORM_DATA
-#' "ATAC_LUNG_NORM_DATA"
-#' 
-#' #' @rdname ATAC_NORM_DATA
-#' "ATAC_LIVER_NORM_DATA"
-#' 
-#' #' @rdname ATAC_NORM_DATA
-#' "ATAC_BAT_NORM_DATA"
-#' 
-#' #' @rdname ATAC_NORM_DATA
-#' "ATAC_WATSC_NORM_DATA"
-#' 
-#' 
-#' #' @title Normalized DNA methylation data
-#' #' @description Normalized DNA methylation (METHYL) data used for visualization
-#' #' @format A data frame with CpG sites in rows (\code{feature_ID}) and samples in columns (\code{viallabel}) 
-#' #' @details Only CpG sites with methylation coverage of >=10 in all samples were included for downstream analysis, 
-#' #'   and normalization was performed separately in each tissue. Individual CpG sites were divided into 500 base-pair 
-#' #'   windows and were clustered using the Markov Clustering algorithm via the MCL R package (Jager, 2015). To apply MCL, 
-#' #'   for each 500 base-pair window an undirected graph was constructed, linking individual sites if their correlation 
-#' #'   was >=0.7. MCL was chosen for this task as it: (1) determines the number of clusters internally, (2) identifies 
-#' #'   homogeneous clusters, and (3) keeps single sites that are not correlated with either sites as singletons (clusters of size one). 
-#' #'   The resulting sites/clusters were used as input for normalization and differential analysis with edgeR (Robinson et al., 2010). 
-#' #'   To generate this normalized sample-level data, the methylation coverages of filtered sites/clusters were first log2-transformed, 
-#' #'   and normalization was performed using [preprocessCore::normalize.quantiles.robust()] (Bolstad, 2021).
-#' #'   
-#' #'   In order to stay under the 50MB GitHub file limit, data frames with more than 500k rows were split in half and saved in two 
-#' #'   files, e.g. [METHYL_BAT_NORM_DATA_P1] and [METHYL_BAT_NORM_DATA_P2]
-#' #' @source \code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/epigenomics/epigen-rrbs/normalized-data/*normalized-log-M-window.txt}
-#' #' @name METHYL_NORM_DATA
-#' "METHYL_BAT_NORM_DATA_P1"
-#' 
-#' #' @rdname METHYL_NORM_DATA
-#' "METHYL_BAT_NORM_DATA_P2"
-#' 
-#' #' @rdname METHYL_NORM_DATA
-#' "METHYL_HEART_NORM_DATA_P1"
-#' 
-#' #' @rdname METHYL_NORM_DATA
-#' "METHYL_HEART_NORM_DATA_P2"
-#' 
-#' #' @rdname METHYL_NORM_DATA
-#' "METHYL_HIPPOC_NORM_DATA_P1"
-#' 
-#' #' @rdname METHYL_NORM_DATA
-#' "METHYL_HIPPOC_NORM_DATA_P2"
-#' 
-#' #' @rdname METHYL_NORM_DATA
-#' "METHYL_KIDNEY_NORM_DATA_P1"
-#' 
-#' #' @rdname METHYL_NORM_DATA
-#' "METHYL_KIDNEY_NORM_DATA_P2"
-#' 
-#' #' @rdname METHYL_NORM_DATA
-#' "METHYL_LIVER_NORM_DATA_P1"
-#' 
-#' #' @rdname METHYL_NORM_DATA
-#' "METHYL_LIVER_NORM_DATA_P2"
-#' 
-#' #' @rdname METHYL_NORM_DATA
-#' "METHYL_LUNG_NORM_DATA_P1"
-#' 
-#' #' @rdname METHYL_NORM_DATA
-#' "METHYL_LUNG_NORM_DATA_P2"
-#' 
-#' #' @rdname METHYL_NORM_DATA
-#' "METHYL_SKMGN_NORM_DATA_P1"
-#' 
-#' #' @rdname METHYL_NORM_DATA
-#' "METHYL_SKMGN_NORM_DATA_P2"
-#' 
-#' #' @rdname METHYL_NORM_DATA
-#' "METHYL_WATSC_NORM_DATA_P1"
-#' 
-#' #' @rdname METHYL_NORM_DATA
-#' "METHYL_WATSC_NORM_DATA_P2"
+## ATAC-seq sample-level data ####
 
+#' @title ATAC-seq raw counts
+#' @description TODO
+#' @format TODO
+#' @details TODO
+#'   ATAC raw counts data are only available via download from the Cloud. See TODO.
+#' @name ATAC_RAW_COUNTS
+NULL
+
+
+#' @title Normalized ATAC-seq data
+#' @description Normalized sample-level ATAC-seq (ATAC) data used for visualization and differential analysis
+#' @format A data frame with peaks in rows (\code{feature_ID}) and samples in columns (\code{viallabel})
+#' @details Data was processed with the [ENCODE ATAC-seq pipeline (v1.7.0)](https://github.com/ENCODE-DCC/atac-seq-pipeline).
+#'   Samples from a single sex and training time point, e.g., males trained for 2 weeks, were analyzed together as biological
+#'   replicates in a single workflow. Briefly, adapters were trimmed with cutadapt v2.5 (Martin, 2011) and aligned to release 96
+#'   of the Ensembl Rattus norvegicus (rn6) genome (Dobin et al., 2013) with Bowtie 2 v2.3.4.3 (Langmead and Salzberg, 2012).
+#'   Duplicate reads and reads mapping to the mitochondrial chromosome were removed. Signal files and peak calls were generated
+#'   using MACS2 v2.2.4 (Gaspar, 2018), both from reads from each sample and pooled reads from all biological replicates.
+#'   Pooled peaks were compared with the peaks called for each replicate individually using Irreproducibility Discovery Rate (Li et al., 2011)
+#'   and thresholded to generate an optimal set of peaks.
+#'
+#'   The cloud implementation of the ENCODE ATAC-seq pipeline and source code for the post-processing steps are available at <https://github.com/MoTrPAC/motrpac-atac-seq-pipeline>.
+#'   Optimal peaks (overlap.optimal_peak.narrowPeak.bed.gz) from all workflows were concatenated, trimmed to 200 base pairs around the summit,
+#'   and sorted and merged with bedtools v2.29.0 (Quinlan and Hall, 2010) to generate a master peak list. This peak list was intersected with
+#'   the filtered alignments from each sample using bedtools coverage with options \code{-nonamecheck} and \code{-counts} to generate a peak by
+#'   sample matrix of raw counts.
+#'
+#'   The remaining steps were applied separately on raw counts from each tissue. Peaks from non-autosomal chromosomes were removed,
+#'   as well as peaks that did not have at least 10 read counts in four samples. Filtered raw counts were then quantile-normalized with
+#'   limma-voom (Law et al., 2014). 
+#'   
+#'   This version of the normalized data is available via download from Google Cloud Storage. See TODO. 
+#'   
+#'   For the subset of normalized data corresponding to training-regulated features at 5% IHW FDR, see [ATAC_NORM_DATA_05FDR].
+#'
+#' @source \code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/epigenomics/epigen-atac-seq/normalized-data/*quant-norm*}
+#' @name ATAC_NORM_DATA
+NULL
+
+
+#' @title Normalized ATAC-seq data for training-regulated features
+#' @description Normalized sample-level ATAC-seq (ATAC) data used for visualization and differential analysis.
+#'   Only for training-regulated features at 5% IHW FDR. For sample-level data for \emph{all} features, 
+#'   see [ATAC_NORM_DATA] and TODO.
+#' @format A data frame with peaks in rows (\code{feature_ID}) and samples in columns (\code{viallabel})
+#' @details Data was processed with the [ENCODE ATAC-seq pipeline (v1.7.0)](https://github.com/ENCODE-DCC/atac-seq-pipeline).
+#'   Samples from a single sex and training time point, e.g., males trained for 2 weeks, were analyzed together as biological
+#'   replicates in a single workflow. Briefly, adapters were trimmed with cutadapt v2.5 (Martin, 2011) and aligned to release 96
+#'   of the Ensembl Rattus norvegicus (rn6) genome (Dobin et al., 2013) with Bowtie 2 v2.3.4.3 (Langmead and Salzberg, 2012).
+#'   Duplicate reads and reads mapping to the mitochondrial chromosome were removed. Signal files and peak calls were generated
+#'   using MACS2 v2.2.4 (Gaspar, 2018), both from reads from each sample and pooled reads from all biological replicates.
+#'   Pooled peaks were compared with the peaks called for each replicate individually using Irreproducibility Discovery Rate (Li et al., 2011)
+#'   and thresholded to generate an optimal set of peaks.
+#'
+#'   The cloud implementation of the ENCODE ATAC-seq pipeline and source code for the post-processing steps are available at 
+#'   <https://github.com/MoTrPAC/motrpac-atac-seq-pipeline>.
+#'   Optimal peaks (overlap.optimal_peak.narrowPeak.bed.gz) from all workflows were concatenated, trimmed to 200 base pairs around the summit,
+#'   and sorted and merged with bedtools v2.29.0 (Quinlan and Hall, 2010) to generate a master peak list. This peak list was intersected with
+#'   the filtered alignments from each sample using bedtools coverage with options \code{-nonamecheck} and \code{-counts} to generate a peak by
+#'   sample matrix of raw counts.
+#'
+#'   The remaining steps were applied separately on raw counts from each tissue. Peaks from non-autosomal chromosomes were removed,
+#'   as well as peaks that did not have at least 10 read counts in four samples. Filtered raw counts were then quantile-normalized with
+#'   limma-voom (Law et al., 2014). 
+#'   
+#'   After performing differential analysis (see TODO), training-regulated features were selected at 5% IHW FDR. The normalized data were
+#'   filtered down to these features and provided here. 
+#'   
+#'   For the full set of normalized sample-level data, see TODO. 
+#'
+#' @source \code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/epigenomics/epigen-atac-seq/normalized-data/*quant-norm*}
+#' @name ATAC_NORM_DATA_05FDR
+"ATAC_HIPPOC_NORM_DATA_05FDR"
+
+#' @rdname ATAC_NORM_DATA_05FDR
+"ATAC_SKMGN_NORM_DATA_05FDR"
+
+#' @rdname ATAC_NORM_DATA_05FDR
+"ATAC_HEART_NORM_DATA_05FDR"
+
+#' @rdname ATAC_NORM_DATA_05FDR
+"ATAC_KIDNEY_NORM_DATA_05FDR"
+
+#' @rdname ATAC_NORM_DATA_05FDR
+"ATAC_LUNG_NORM_DATA_05FDR"
+
+#' @rdname ATAC_NORM_DATA_05FDR
+"ATAC_LIVER_NORM_DATA_05FDR"
+
+#' @rdname ATAC_NORM_DATA_05FDR
+"ATAC_BAT_NORM_DATA_05FDR"
+
+#' @rdname ATAC_NORM_DATA_05FDR
+"ATAC_WATSC_NORM_DATA_05FDR"
+
+
+## RRBS sample-level data ####
+
+#' @title RRBS raw data
+#' @description TODO
+#' @format TODO
+#' @details TODO
+#'   Raw METHYL data is only available via download from the Cloud. See TODO.
+#' @name METHYL_RAW_DATA
+NULL
+
+
+#' @title Normalized DNA methylation data
+#' @description Normalized DNA methylation (METHYL) data used for visualization.
+#'   Only for training-regulated features at 5% IHW FDR. For sample-level data for \emph{all} features, 
+#'   see [METHYL_NORM_DATA] and TODO.
+#' @format A data frame with CpG sites in rows (\code{feature_ID}) and samples in columns (\code{viallabel})
+#' @details Only CpG sites with methylation coverage of >=10 in all samples were included for downstream analysis,
+#'   and normalization was performed separately in each tissue. Individual CpG sites were divided into 500 base-pair
+#'   windows and were clustered using the Markov Clustering algorithm via the MCL R package (Jager, 2015). To apply MCL,
+#'   for each 500 base-pair window an undirected graph was constructed, linking individual sites if their correlation
+#'   was >=0.7. MCL was chosen for this task as it: (1) determines the number of clusters internally, (2) identifies
+#'   homogeneous clusters, and (3) keeps single sites that are not correlated with either sites as singletons (clusters of size one).
+#'   The resulting sites/clusters were used as input for normalization and differential analysis with edgeR (Robinson et al., 2010).
+#'   To generate this normalized sample-level data, the methylation coverages of filtered sites/clusters were first log2-transformed,
+#'   and normalization was performed using [preprocessCore::normalize.quantiles.robust()] (Bolstad, 2021).
+#'   
+#'   After performing differential analysis (see TODO), training-regulated features were selected at 5% IHW FDR. The normalized data were
+#'   filtered down to these features and provided here. 
+#'   
+#' @source \code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/epigenomics/epigen-rrbs/normalized-data/*normalized-log-M-window.txt}
+#' @name METHYL_NORM_DATA
+NULL
+
+
+#' @title Normalized DNA methylation data for training-regulated features
+#' @description Normalized DNA methylation (METHYL) data used for visualization
+#' @format A data frame with CpG sites in rows (\code{feature_ID}) and samples in columns (\code{viallabel})
+#' @details Only CpG sites with methylation coverage of >=10 in all samples were included for downstream analysis,
+#'   and normalization was performed separately in each tissue. Individual CpG sites were divided into 500 base-pair
+#'   windows and were clustered using the Markov Clustering algorithm via the MCL R package (Jager, 2015). To apply MCL,
+#'   for each 500 base-pair window an undirected graph was constructed, linking individual sites if their correlation
+#'   was >=0.7. MCL was chosen for this task as it: (1) determines the number of clusters internally, (2) identifies
+#'   homogeneous clusters, and (3) keeps single sites that are not correlated with either sites as singletons (clusters of size one).
+#'   The resulting sites/clusters were used as input for normalization and differential analysis with edgeR (Robinson et al., 2010).
+#'   To generate this normalized sample-level data, the methylation coverages of filtered sites/clusters were first log2-transformed,
+#'   and normalization was performed using [preprocessCore::normalize.quantiles.robust()] (Bolstad, 2021).
+#'   
+#'   METHYL data is only available via download from the Cloud. See TODO.
+#' @source \code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/epigenomics/epigen-rrbs/normalized-data/*normalized-log-M-window.txt}
+#' @name METHYL_NORM_DATA_05FDR
+"METHYL_HIPPOC_NORM_DATA_05FDR"
+
+#' @rdname METHYL_NORM_DATA_05FDR
+"METHYL_SKMGN_NORM_DATA_05FDR"
+
+#' @rdname METHYL_NORM_DATA_05FDR
+"METHYL_HEART_NORM_DATA_05FDR"
+
+#' @rdname METHYL_NORM_DATA_05FDR
+"METHYL_KIDNEY_NORM_DATA_05FDR"
+
+#' @rdname METHYL_NORM_DATA_05FDR
+"METHYL_LUNG_NORM_DATA_05FDR"
+
+#' @rdname METHYL_NORM_DATA_05FDR
+"METHYL_LIVER_NORM_DATA_05FDR"
+
+#' @rdname METHYL_NORM_DATA_05FDR
+"METHYL_BAT_NORM_DATA_05FDR"
+
+#' @rdname METHYL_NORM_DATA_05FDR
+"METHYL_WATSC_NORM_DATA_05FDR"
+
+
+## Proteomics sample-level data ####
 
 #' @title Normalized protein expression data
 #' @description Median-MAD normalized protein expression (PROT) data used for visualization and differential analysis
@@ -709,6 +771,8 @@
 "UBIQ_LIVER_NORM_DATA"
 
 
+## Immunoassay sample-level data ####
+
 #' @title Processed immunoassay data used for differential analysis
 #' @description Normalized, imputed, and filtered multiplexed immunoassay data used for differential analysis  
 #' @format A nested list of data frames
@@ -733,34 +797,36 @@
 #'   Hence, in some places \code{panel} refers to "rat-adipokine" while in other places, 
 #'   like here, \code{panel} refers to "SERPIN-E" or "ADIPONECTIN", among others. 
 #' @source \code{gs://mawg-data/pass1b-06/immunoassay/data/release/pass1b-06*_mfi-log2-filt-imputed-na-outliers.txt} 
-"IMMUNO_NORM_DATA"
+"IMMUNO_NORM_DATA_NESTED"
 
 
 #' @title Combined immunoassay data used for visualization
-#' @description Normalized, imputed, and filtered multiplexed immunoassay data used for visualization  
-#' @format A data frame with 720 rows and 60 variables:
+#' @description Normalized, imputed, and filtered multiplexed immunoassay data used for visualization.
+#'   Data are equivalent to the data provided in [IMMUNO_NORM_DATA_NESTED]. [IMMUNO_NORM_DATA_NESTED] is compatible with the 
+#'   differential analysis functions while this format is compatible with visualization functions. 
+#' @format A data frame with 720 rows and 64 variables:
 #' \describe{
-#'   \item{\code{feature}}{unique \code{feature} in the format \code{[ASSAY_ABBREV];[TISSUE_ABBREV];[feature_ID]},
-#'     where \code{feature_ID} is \code{new_feature_ID} when applicable. See [REPEATED_FEATURES] for details.}
+#'   \item{\code{feature}}{@eval feature()}
+#'   \item{\code{feature_ID}}{@eval feature_ID()}
+#'   \item{\code{tissue}}{@eval tissue()}
+#'   \item{\code{assay}}{@eval assay()}
+#'   \item{\code{dataset}}{character, LUMINEX panel}
 #' }
 #' @details 
-#'   Analytes (\code{feature}) are in rows, and participants IDs (PIDs, i.e., unique animal IDs) are in columns. 
-#'   When an analyte was measured by more than one panel, the panel name is prepended to \code{feature_ID} to 
-#'   provide unique feature identifiers. See [REPEATED_FEATURES] for details. 
-#'   
-#'   Data are equivalent to the data provided in [IMMUNO_NORM_DATA]. [IMMUNO_NORM_DATA] is compatible with the 
-#'   differential analysis functions while this format is compatible with visualization functions. 
+#'   Analytes are in rows, and participants IDs (PIDs, i.e., unique animal IDs) are in columns.
 #'   
 #' @source \code{gs://mawg-data/pass1b-06/immunoassay/data/release/pass1b-06*_mfi-log2-filt-imputed-na-outliers.txt} 
-"IMMUNO_VIZ_DATA"
+"IMMUNO_NORM_DATA_FLAT"
 
 
-#' @title Normalized metabolomics data
+## Metabolomics sample-level data ####
+
+#' @title Nested metabolomics data used for differential analysis
 #' @description Combined sample-level data organized by metabolomics platforms and tissue used for differential analysis
 #' @format A tibble with 113 rows and 5 variables:
 #' \describe{
-#'   \item{\code{tissue}}{character, tissue code used in data release. See [MotrpacBicQC::bic_animal_tissue_code].}
-#'   \item{\code{assay_code}}{character, assay code used in data release. See [MotrpacBicQC::assay_codes].}
+#'   \item{\code{tissue}}{@eval tissue_code()}
+#'   \item{\code{assay_code}}{@eval assay_code()}
 #'   \item{\code{sample_data}}{list where first element is a tibble of feature by viallabel normalized sample-level data}
 #'   \item{\code{pheno}}{list, phenotypic data important for differential abundance analysis}
 #'   \item{\code{feature_metadata}}{list, feature metadata important for differntial abundance analysis} 
@@ -769,642 +835,34 @@
 "METAB_SAMPLE_DATA"
 
 
-#' @title Combined metabolomics data
-#' @description Combined sample-level metabolomics data used for visualization
-#' @format A data frame with 15116 rows and 55 variables:
-#' \describe{
-#'   \item{\code{feature}}{unique \code{feature} in the format \code{[ASSAY_ABBREV];[TISSUE_ABBREV];[feature_ID]},
-#'     where \code{feature_ID} is \code{new_feature_ID} when applicable. See [REPEATED_FEATURES] for details.}
-#' }
-#' @details
-#'   Analytes (\code{feature}) are in rows, and participants IDs (PIDs, i.e., unique animal IDs) are in columns. 
-#'   When an metabolite was measured by more than one platform, the platform name is prepended to \code{feature_ID} to 
-#'   provide unique feature identifiers. See [REPEATED_FEATURES] for details. For completeness, analytes are defined 
-#'   both with the \code{feature_ID} used in the original sample-level data AND with the \code{feature} used in the 
-#'   graphical analysis results, e.g., [GRAPH_STATES]. 
-#'   
-#'   Data are equivalent to the data provided in [METAB_SAMPLE_DATA]. [METAB_SAMPLE_DATA] is compatible with the 
-#'   differential analysis functions while this format is compatible with visualization functions. 
-"METAB_VIZ_DATA"
-
-
-#' @title Differential analysis of RNA-seq datasets 
-#' @description Timewise summary statistics and training FDR from 
-#'     differential analysis (DA) that tests the effect of training on the 
-#'     expression of each gene within each sex. One data frame per tissue.   
-#' @format A data frame with >60000 rows and 20 variables:
-#' \describe{
-#'   \item{\code{feature_ID}}{character, analyte identifier}
-#'   \item{\code{tissue}}{character, MoTrPAC tissue release code}
-#'   \item{\code{sex}}{character, one of "male" or "female"}
-#'   \item{\code{comparison_group}}{character, time point compared to the sex-matched 
-#'       sedentary control animals, one of "1w", "2w", "4w", "8w"}
-#'   \item{\code{assay}}{character, MoTrPAC assay or "ome" code. "transcript-rna-seq" for RNA-seq datasets.}
-#'   \item{\code{covariates}}{character, comma-separated list of covariates or NA}
-#'   \item{\code{removed_samples}}{character, comma-separated list of vial labels excluded from differential analysis or NA}
-#'   \item{\code{logFC}}{double, log fold-change where the numerator is \code{comparison_group} 
-#'       and the denominator is the group of sex-matched sedentary control animals}
-#'   \item{\code{logFC_se}}{double, standard error of the log fold-change}
-#'   \item{\code{shrunk_logFC}}{double, log fold-change with shrinkage applied}
-#'   \item{\code{shrunk_logFC_se}}{double, standard error of the shrunken log fold-change}
-#'   \item{\code{zscore}}{double, z statistic}
-#'   \item{\code{p_value}}{double, unadjusted p-value for the difference between 
-#'       \code{comparison_group} and the group of sex-matched sedentary control animals}
-#'   \item{\code{comparison_average_intensity}}{double, average intensity among the replicates in \code{comparison_group}}
-#'   \item{\code{comparison_average_intensity_se}}{double, standard error of \code{comparison_average_intensity}}
-#'   \item{\code{reference_average_intensity}}{double, average intensity among the 
-#'       replicates in the group of sex-matched sedentary control animals}
-#'   \item{\code{reference_average_intensity_se}}{double, standard error of \code{reference_average_intensity}}
-#'   \item{\code{adj_p_value}}{double, adjusted p-value from \code{p_value} column. 
-#'       P-values are BY-adjusted across all datasets within a given \code{assay}.}
-#'   \item{\code{tissue_abbreviation}}{character, MoTrPAC tissue abbreviation used in manuscripts}
-#'   \item{\code{selection_fdr}}{double, adjusted training p-value used to 
-#'       select training-regulated analytes. P-values are IHW-adjusted across all 
-#'       datasets within a given \code{assay} with \code{tissue} as a covariate.} 
-#' }
-#' @name TRNSCRPT_DA
-"TRNSCRPT_BLOOD_DA"
-
-#' @rdname TRNSCRPT_DA
-"TRNSCRPT_HIPPOC_DA"
-
-#' @rdname TRNSCRPT_DA
-"TRNSCRPT_CORTEX_DA"
-
-#' @rdname TRNSCRPT_DA
-"TRNSCRPT_HYPOTH_DA"
-
-#' @rdname TRNSCRPT_DA
-"TRNSCRPT_SKMGN_DA"
-
-#' @rdname TRNSCRPT_DA
-"TRNSCRPT_SKMVL_DA"
-
-#' @rdname TRNSCRPT_DA
-"TRNSCRPT_HEART_DA"
-
-#' @rdname TRNSCRPT_DA
-"TRNSCRPT_KIDNEY_DA"
-
-#' @rdname TRNSCRPT_DA
-"TRNSCRPT_ADRNL_DA"
-
-#' @rdname TRNSCRPT_DA
-"TRNSCRPT_COLON_DA"
-
-#' @rdname TRNSCRPT_DA
-"TRNSCRPT_SPLEEN_DA"
-
-#' @rdname TRNSCRPT_DA
-"TRNSCRPT_TESTES_DA"
-
-#' @rdname TRNSCRPT_DA
-"TRNSCRPT_OVARY_DA"
-
-#' @rdname TRNSCRPT_DA
-"TRNSCRPT_VENACV_DA"
-
-#' @rdname TRNSCRPT_DA
-"TRNSCRPT_LUNG_DA"
-
-#' @rdname TRNSCRPT_DA
-"TRNSCRPT_SMLINT_DA"
-
-#' @rdname TRNSCRPT_DA
-"TRNSCRPT_LIVER_DA"
-
-#' @rdname TRNSCRPT_DA
-"TRNSCRPT_BAT_DA"
-
-#' @rdname TRNSCRPT_DA
-"TRNSCRPT_WATSC_DA"
-
-
-#' @title Differential analysis of proteomics datasets 
-#' @description Timewise summary statistics and training FDR from 
-#'     differential analysis (DA) that tests the effect of training on each 
-#'     proteomics feature (protein, phosphosite, acetylsite, ubiquitlsite) 
-#'     within each sex. One data frame per data type per tissue.  
-#' @format A data frame with >40000 rows and 16 variables:
-#' \describe{
-#'   \item{\code{feature_ID}}{character, analyte identifier}
-#'   \item{\code{tissue}}{character, MoTrPAC tissue release code}
-#'   \item{\code{assay}}{character, MoTrPAC assay or "ome" code. "prot-pr" for 
-#'       global proteomics; "prot-ph" for phosphoproteomics; "prot-ac" for
-#'       acetylomics; "prot-ub" for ubiquitylomics.}
-#'   \item{\code{sex}}{character, one of "male" or "female"}
-#'   \item{\code{logFC}}{double, log fold-change where the numerator is \code{comparison_group} 
-#'       and the denominator is the group of sex-matched sedentary control animals}
-#'   \item{\code{logFC_se}}{double, standard error of the log fold-change}
-#'   \item{\code{tscore}}{double, t statistic}
-#'   \item{\code{covariates}}{character, comma-separated list of covariates or NA}
-#'   \item{\code{comparison_group}}{character, time point compared to the sex-matched 
-#'       sedentary control animals, one of "1w", "2w", "4w", "8w"}
-#'   \item{\code{p_value}}{double, unadjusted p-value for the difference between 
-#'       \code{comparison_group} and the group of sex-matched sedentary control animals}
-#'   \item{\code{comparison_average_intensity}}{double, average intensity among the replicates in \code{comparison_group}}
-#'   \item{\code{reference_average_intensity}}{double, average intensity among the 
-#'       replicates in the group of sex-matched sedentary control animals}
-#'   \item{\code{numNAs}}{integer, number of missing values in the current 
-#'       \code{comparison_group} and sex-matched sedentary control animals}
-#'   \item{\code{adj_p_value}}{double, adjusted p-value from \code{p_value} column. 
-#'       P-values are BY-adjusted across all datasets within a given \code{assay}.}
-#'   \item{\code{tissue_abbreviation}}{character, MoTrPAC tissue abbreviation used in manuscripts}
-#'   \item{\code{selection_fdr}}{double, adjusted training p-value used to 
-#'       select training-regulated analytes. P-values are IHW-adjusted across all 
-#'       datasets within a given \code{assay} with \code{tissue} as a covariate.} 
-#'}
-#' @name PROTEOME_DA
-"PROT_CORTEX_DA"
-
-#' @rdname PROTEOME_DA
-"PROT_SKMGN_DA"
-
-#' @rdname PROTEOME_DA
-"PROT_HEART_DA"
-
-#' @rdname PROTEOME_DA
-"PROT_KIDNEY_DA"
-
-#' @rdname PROTEOME_DA
-"PROT_LUNG_DA"
-
-#' @rdname PROTEOME_DA
-"PROT_LIVER_DA"
-
-#' @rdname PROTEOME_DA
-"PROT_WATSC_DA"
-
-#' @rdname PROTEOME_DA
-"PHOSPHO_CORTEX_DA"
-
-#' @rdname PROTEOME_DA
-"PHOSPHO_SKMGN_DA"
-
-#' @rdname PROTEOME_DA
-"PHOSPHO_HEART_DA"
-
-#' @rdname PROTEOME_DA
-"PHOSPHO_KIDNEY_DA"
-
-#' @rdname PROTEOME_DA
-"PHOSPHO_LUNG_DA"
-
-#' @rdname PROTEOME_DA
-"PHOSPHO_LIVER_DA"
-
-#' @rdname PROTEOME_DA
-"PHOSPHO_WATSC_DA"
-
-#' @rdname PROTEOME_DA
-"ACETYL_HEART_DA"
-
-#' @rdname PROTEOME_DA
-"ACETYL_LIVER_DA"
-
-#' @rdname PROTEOME_DA
-"UBIQ_HEART_DA"
-
-#' @rdname PROTEOME_DA
-"UBIQ_LIVER_DA"
-
-
-#' @title Differential analysis of merged metabolomics datasets 
-#' @description Timewise summary statistics and training FDR from 
-#'     differential analysis (DA) that tests the effect of training on each 
-#'     metabolite within each sex. One data frame per tissue.  
-#' @format A data frame with >800 rows and 25 variables:
-#' \describe{
-#'   \item{\code{feature_ID}}{character, analyte identifier}
-#'   \item{\code{tissue}}{character, MoTrPAC tissue release code}
-#'   \item{\code{dataset}}{character, mame of platform used by the site, e.g. "metab-u-hilicpos"}
-#'   \item{\code{assay}}{character, MoTrPAC assay or "ome" code. "metab" for metabolomics datasets.}
-#'   \item{\code{sex}}{character, one of "male" or "female"}
-#'   \item{\code{is_targeted}}{logical, is this a targeted platform?}
-#'   \item{\code{site}}{character, Chemical Analysis Site (CAS) name}
-#'   \item{\code{metabolite}}{character, name of metabolite as appears in the CAS's data}
-#'   \item{\code{metabolite_refmet}}{character, RefMet name of metabolite OR the site-given code for unnamed metabolites}
-#'   \item{\code{logFC}}{double, log fold-change where the numerator is \code{comparison_group} 
-#'       and the denominator is the group of sex-matched sedentary control animals}
-#'   \item{\code{logFC_se}}{double, standard error of the log fold-change}
-#'   \item{\code{tscore}}{double, t statistic}
-#'   \item{\code{cv}}{double, feature coefficient of variation in the dataset}
-#'   \item{\code{control_cv}}{double, feature coffeicient of variation in the control samples}
-#'   \item{\code{covariates}}{character, comma-separated list of covariates or NA}
-#'   \item{\code{comparison_group}}{character, time point compared to the sex-matched 
-#'       sedentary control animals, one of "1w", "2w", "4w", "8w"}
-#'   \item{\code{p_value}}{double, unadjusted p-value for the difference between 
-#'       \code{comparison_group} and the group of sex-matched sedentary control animals}
-#'   \item{\code{comparison_average_intensity}}{double, average intensity among the replicates in \code{comparison_group}}
-#'   \item{\code{reference_average_intensity}}{double, average intensity among the 
-#'       replicates in the group of sex-matched sedentary control animals}
-#'   \item{\code{tissue_abbreviation}}{character, MoTrPAC tissue abbreviation used in manuscripts}
-#'   \item{\code{mz}}{double, mass over charge}
-#'   \item{\code{rt}}{double, retention time}
-#'   \item{\code{neutral_mass}}{double, neutral mass}
-#'   \item{\code{adj_p_value}}{double, adjusted p-value from \code{p_value} column. 
-#'       P-values are BY-adjusted across all datasets within a given \code{assay}.}
-#'   \item{\code{selection_fdr}}{double, adjusted training p-value used to 
-#'       select training-regulated analytes. P-values are IHW-adjusted across all 
-#'       datasets within a given \code{assay} with \code{tissue} as a covariate.}  
-#'}
-#' @name METAB_DA
-"METAB_PLASMA_DA"
-
-#' @rdname METAB_DA
-"METAB_HIPPOC_DA"
-
-#' @rdname METAB_DA
-"METAB_CORTEX_DA"
-
-#' @rdname METAB_DA
-"METAB_HYPOTH_DA"
-
-#' @rdname METAB_DA
-"METAB_SKMGN_DA"
-
-#' @rdname METAB_DA
-"METAB_SKMVL_DA"
-
-#' @rdname METAB_DA
-"METAB_HEART_DA"
-
-#' @rdname METAB_DA
-"METAB_KIDNEY_DA"
-
-#' @rdname METAB_DA
-"METAB_ADRNL_DA"
-
-#' @rdname METAB_DA
-"METAB_COLON_DA"
-
-#' @rdname METAB_DA
-"METAB_SPLEEN_DA"
-
-#' @rdname METAB_DA
-"METAB_TESTES_DA"
-
-#' @rdname METAB_DA
-"METAB_OVARY_DA"
-
-#' @rdname METAB_DA
-"METAB_VENACV_DA"
-
-#' @rdname METAB_DA
-"METAB_LUNG_DA"
-
-#' @rdname METAB_DA
-"METAB_SMLINT_DA"
-
-#' @rdname METAB_DA
-"METAB_LIVER_DA"
-
-#' @rdname METAB_DA
-"METAB_BAT_DA"
-
-#' @rdname METAB_DA
-"METAB_WATSC_DA"
-
-
-#' @title Differential analysis of multiplexed immunoassays 
-#' @description Timewise summary statistics and training FDR from 
-#'     differential analysis (DA) that tests the effect of training on each 
-#'     immunoassay analyte within each sex. One data frame per tissue. 
-#' @format A data frame with >180 rows and 15 variables:
-#' \describe{
-#'   \item{\code{feature_ID}}{character, analyte identifier}
-#'   \item{\code{panel}}{character, name of LUMINEX panel, e.g., "rat-mag27plex"}
-#'   \item{\code{tissue}}{character, MoTrPAC tissue release code}
-#'   \item{\code{assay}}{character, MoTrPAC assay or "ome" code. "immunoassay" for multiplexed immunoassay datasets.}
-#'   \item{\code{comparison_group}}{character, time point compared to the sex-matched 
-#'       sedentary control animals, one of "1w", "2w", "4w", "8w"}
-#'   \item{\code{logFC}}{double, log fold-change where the numerator is \code{comparison_group} 
-#'       and the denominator is the group of sex-matched sedentary control animals}
-#'   \item{\code{logFC_se}}{double, standard error of the log fold-change}
-#'   \item{\code{p_value}}{double, unadjusted p-value for the difference between 
-#'       \code{comparison_group} and the group of sex-matched sedentary control animals}
-#'   \item{\code{reference_average_intensity_se}}{double, standard error of \code{reference_average_intensity}}
-#'   \item{\code{comparison_average_intensity}}{double, average intensity among the replicates in \code{comparison_group}}
-#'   \item{\code{sex}}{character, one of "male" or "female"}
-#'   \item{\code{covariates}}{character, comma-separated list of covariates or NA}
-#'   \item{\code{adj_p_value}}{double, adjusted p-value from \code{p_value} column. 
-#'       P-values are BY-adjusted across all datasets within a given \code{assay}.}
-#'   \item{\code{tissue_abbreviation}}{character, MoTrPAC tissue abbreviation used in manuscripts}
-#'   \item{\code{selection_fdr}}{double, adjusted training p-value used to 
-#'       select training-regulated analytes. P-values are IHW-adjusted across all 
-#'       datasets within a given \code{assay} with \code{tissue} as a covariate.} 
-#'}
-#' @name IMMUNO_DA
-"IMMUNO_PLASMA_DA"
-
-#' @rdname IMMUNO_DA
-"IMMUNO_HIPPOC_DA"
-
-#' @rdname IMMUNO_DA
-"IMMUNO_CORTEX_DA"
-
-#' @rdname IMMUNO_DA
-"IMMUNO_ADRNL_DA"
-
-#' @rdname IMMUNO_DA
-"IMMUNO_TESTES_DA"
-
-#' @rdname IMMUNO_DA
-"IMMUNO_OVARY_DA"
-
-#' @rdname IMMUNO_DA
-"IMMUNO_SKMGN_DA"
-
-#' @rdname IMMUNO_DA
-"IMMUNO_BAT_DA"
-
-#' @rdname IMMUNO_DA
-"IMMUNO_WATSC_DA"
-
-#' @rdname IMMUNO_DA
-"IMMUNO_COLON_DA"
-
-#' @rdname IMMUNO_DA
-"IMMUNO_SMLINT_DA"
-
-#' @rdname IMMUNO_DA
-"IMMUNO_LIVER_DA"
-
-#' @rdname IMMUNO_DA
-"IMMUNO_SKMVL_DA"
-
-#' @rdname IMMUNO_DA
-"IMMUNO_HEART_DA"
-
-#' @rdname IMMUNO_DA
-"IMMUNO_KIDNEY_DA"
-
-#' @rdname IMMUNO_DA
-"IMMUNO_SPLEEN_DA"
-
-#' @rdname IMMUNO_DA
-"IMMUNO_LUNG_DA"
-
-
-#' @title Training-regulated features
-#' @description Differential analysis results for training-regulated features at 5% FDR
-#' @format A data frame with 279002 rows and 18 variables:
-#' \describe{
-#'   \item{\code{feature}}{character, unique ID used for graphical clustering analysis, in the format 
-#'       \code{[ASSAY_ABBREV];[TISSUE_ABBREV];[(non_redundant)feature_ID]}}
-#'   \item{\code{assay}}{character, assay abbreviation, one of [ASSAY_ABBREV]}
-#'   \item{\code{assay_code}}{character, assay code used in data release. See [MotrpacBicQC::assay_codes].}
-#'   \item{\code{tissue}}{character, tissue abbreviation, one of [TISSUE_ABBREV]}
-#'   \item{\code{tissue_code}}{character, tissue code used in data release. See [MotrpacBicQC::bic_animal_tissue_code].}
-#'   \item{\code{feature_ID}}{character, feature identifier corresponding to MoTrPAC sample-level data}
-#'   \item{\code{non_redundant_feature_ID}}{character, non-redundant feature identifier defined for \code{feature_ID}s 
-#'       with measurements from multiple platforms. \code{feature} uses \code{non_redundant_feature_ID} 
-#'       when available and \code{feature_ID} otherwise. See [REPEATED_FEATURES] for more details.}
-#'   \item{\code{platform}}{character, for immunoassay and metabolomics features, 
-#'       this variable specifies the immune panel (rat-myokine, rat-pituitary, rat-mag27plex, 
-#'       rat-metabolic, ADIPONECTIN, SERPIN-E) or metabolomics platform (metab-u-ionpneg, 
-#'       metab-u-lrpneg, metab-u-lrppos, metab-u-hilicpos, metab-u-rpneg, metab-u-rppos, 
-#'       metab-t-amines, metab-t-oxylipneg, metab-t-tca, metab-t-nuc, metab-t-acoa, 
-#'       metab-t-ka) the feature was measured in. "meta-reg" specifies results from 
-#'       the metabolomics meta-regression for repeated features.}
-#'   \item{\code{sex}}{character, "male" or "female"}
-#'   \item{\code{training_group}}{character, training time point in weeks, one of "1w", "2w", "4w", "8w". 
-#'       Corresponds to \code{comparison_group} in the \code{*_DA} tables.}
-#'   \item{\code{timewise_logFC}}{double, log fold-change of the training group specified by 
-#'       \code{sex} and \code{training_group} (e.g., 1-week females) relative to 
-#'       the sex-matched sedentary controls. Corresponds to \code{logFC} in the \code{*_DA} tables.}
-#'   \item{\code{timewise_logFC_se}}{double, standard error of \code{timewise_logFC}.
-#'       Corresponds to \code{logFC_se} in the \code{*_DA} tables.}
-#'   \item{\code{timewise_p_value}}{double, timewise p-value corresponding to the 
-#'       contrast between the training group (e.g., 1-week females) and the sex-matched 
-#'       sedentary controls. Corresponds to \code{p_value} in the \code{*_DA} tables.}
-#'   \item{\code{timewise_zscore}}{double, smoothed z-score corresponding to 
-#'       \code{timewise_p_value} used for graphical clustering.
-#'       Corresponds to \code{zscore} or \code{tscore} in the \code{*_DA} tables.}
-#'   \item{\code{meta_reg_het_p}}{double, for metabolites with multiple measurements, 
-#'       the meta-regression heterogeneity p-value, where a smaller p-value indicates more 
-#'       disagreement between platforms. One value per feature (not per training group)}
-#'   \item{\code{meta_reg_pvalue}}{double, for metabolites with multiple measurements, 
-#'       the meta-regression p-value. one value per feature (not per training group)}
-#'   \item{\code{training_p_value}}{double, combined training p-value determined from 
-#'       F-tests or LRTs comparing a full model with ome-specific technical covariates 
-#'       and training group as a factor variable against a reduced model with only 
-#'       technical covariates. Sex-specific training p-values were merged using the 
-#'       sum of logs. One value per features (not per training group)}
-#'   \item{\code{training_q}}{double, IHW FDR-adjusted \code{training_p_value}; 
-#'       training-regulated features were defined by \code{training_q < 0.05}.
-#'       Corresponds to \code{selection_fdr} in the \code{*_DA} tables.}
-#'}
-"TRAINING_REGULATED_FEATURES"
-
-
-#' @title \code{repfdr} state assignments 
-#' @description \code{repdfr} state assignments (up, down, or null) for each 
-#'   training-regulated feature (5% FDR) for each sex at each time point, 
-#'   which specify node assignments for each differential feature. 
-#'   Missing values indicate that the \code{repfdr} posterior probabilities 
-#'   did not meet the cutoff for that feature.
-#' @format A data frame with 34244 rows and 10 variables:
-#' \describe{
-#'   \item{\code{feature}}{character, unique differential feature identifier, 
-#'     i.e., semi-colon-separated ome abbreviation, tissue abbreviation, and feature_ID}
-#'   \item{\code{ome}}{character, assay abbreviation, one of [ASSAY_ABBREV]}
-#'   \item{\code{tissue}}{character, tissue abbreviation, one of: "ADRNL", "BAT", "BLOOD", 
-#'     "COLON", "CORTEX", "HEART", "HIPPOC", "HYPOTH", "KIDNEY", "LIVER", "LUNG", "PLASMA", "SKM-GN", 
-#'     "SKM-VL", "SMLINT", "SPLEEN", "WAT-SC". note that VENACV, OVARY, TESTES, 
-#'     were not included in the graphical representation of differential 
-#'     features due to missing groups (e.g., females trained for 1 week).}
-#'   \item{\code{feature_ID}}{character, feature identifier}
-#'   \item{\code{state_1w}}{character, state (1, up-regulated; 0, null; -1, down-regulated) 
-#'     of the feature in each sex (F, females; M, males) at the 1-week training time point, 
-#'     relative to sex-matched untrained animals}
-#'   \item{\code{state_2w}}{character, state of the feature in each sex at the 2-week training time point}
-#'   \item{\code{state_4w}}{character, state of the feature in each sex at the 4-week training time point}
-#'   \item{\code{state_8w}}{character, state of the feature in each sex at the 8-week training time point}
-#'   \item{\code{path}}{character, assigned states from weeks 1-8, separated by "->". 
-#'     This represents a feature's full path through the graph. 
-#'     NA if the state at any of the four time points is NA.}
-#'   \item{\code{tissue_path}}{character, assigned states from weeks 1-8, separated by "->". 
-#'     This represents a feature's full path through the graph. 
-#'     NA if the state at any of the four time points is NA.} 
-#'}
-#' @details 
-#'   TODO
-#'   See [Supplementary Methods](https://docs.google.com/document/d/1i5jLyy2K9-N3yMCOvSwnws-5ny77jQPaBtC50TsUZ_g/edit#heading=h.2zazg4neamea). 
-"GRAPH_STATES"
-
-
-#' @title KEGG and Reactome parent pathways 
-#' @description List where names are KEGG or Reactome terms IDs and values are 
-#'   the parent pathway(s)
-#' @format List of length 21697
-#' @details 
-#'   Pathway hierarchies for KEGG were retrieved with [KEGGREST::keggGet()], e.g. \code{keggGet(kegg_query)[[1]]$CLASS}. 
-#'   Reactome pathway parents were extracted from <https://reactome.org/download/current/ReactomePathwaysRelation.txt>. 
-"PATHWAY_PARENTS"
-
-
-#' @title Graph pathway enrichment results 
-#' @description Pathway enrichment results for graphical clusters (nodes, edges, and paths) of interest
-#' @format A data frame with 156906 rows and 22 variables:
-#' \describe{
-#'   \item{\code{query}}{character, not used, carried over from [gprofiler2::gost()] output}
-#'   \item{\code{significant}}{logical, not used, carried over from [gprofiler2::gost()] output}
-#'   \item{\code{term_size}}{double, effective pathway size from [gprofiler2::gost()] output}
-#'   \item{\code{query_size}}{integer, size of input, i.e. list of Ensembl genes associated with differential features}
-#'   \item{\code{intersection_size}}{double, size of the intersection between the input and the pathway members}
-#'   \item{\code{precision}}{double, the proportion of genes in the input list that are annotated to the function (defined as \code{intersection_size/query_size})}
-#'   \item{\code{recall}}{double, the proportion of functionally annotated genes that the query recovers (defined as \code{intersection_size/term_size})}
-#'   \item{\code{term_id}}{character, pathway term ID}
-#'   \item{\code{source}}{character, database corresponding to the pathway, one of: "KEGG", "REAC"}
-#'   \item{\code{term_name}}{character, pathway name}
-#'   \item{\code{effective_domain_size}}{integer, size of the custom background Ensembl gene set}
-#'   \item{\code{source_order}}{integer, not used, carried over from [gprofiler2::gost()] output}
-#'   \item{\code{parents}}{list, pathway parent(s)}
-#'   \item{\code{evidence_codes}}{character, not used, carried over from [gprofiler2::gost()] output}
-#'   \item{\code{intersection}}{character, intersection between input and pathway (Ensembl IDs). NA for metabolomics enrichments}
-#'   \item{\code{gost_adj_p_value}}{double, BH-adjusted p-value returned by [gprofiler2::gost()], 
-#'     ignored because p-values are only adjusted within each tissue/ome/cluster combination. Use the \code{adj_p_value} column instead.}
-#'   \item{\code{computed_p_value}}{double, nominal hypergeometric p-value, computed from the [gprofiler2::gost()] output}
-#'   \item{\code{cluster}}{character, graphical cluster (node, edge, or path) name}
-#'   \item{\code{tissue}}{character, tissue abbreviation, one of: "ADRNL", "BAT", "BLOOD", 
-#'     "COLON", "CORTEX", "HEART", "HIPPOC", "HYPOTH", "KIDNEY", "LIVER", "LUNG", "PLASMA", "SKM-GN", 
-#'     "SKM-VL", "SMLINT", "SPLEEN", "WAT-SC". note that VENACV, OVARY, TESTES, 
-#'     were not included in the graphical representation of differential 
-#'     features due to missing groups (e.g., females trained for 1 week).}
-#'   \item{\code{ome}}{character, assay abbreviation, one of [ASSAY_ABBREV]}
-#'   \item{\code{kegg_id}}{character, pathway ID returned from [FELLA::enrich()]}
-#'   \item{\code{adj_p_value}}{double, IHW FDR, calculated using [IHW::ihw()] with \code{tissue} as a covariate} 
-#'}
-#' @details All non-metabolite training-regulated features (5% FDR) were mapped 
-#'   to Ensembl gene symbols using [FEATURE_TO_GENE]. Training-regulated metabolites 
-#'   were mapped to KEGG IDs. For each graphical cluster of interest (i.e., 
-#'   the ten largest paths, two largest nodes, and two largest single edges with 
-#'   at least 20 features in each tissue, as well as all 8-week nodes), 
-#'   we performed pathway enrichment analysis separately for the Ensembl genes 
-#'   (or KEGG IDs for metabolites) associated with differential features in each ome. 
-#'   
-#'   For gene-centric omes (i.e., all but metabolomics) 
-#'   we performed enrichment analysis of KEGG and REACTOME rat pathways (organism "rnorvegicus") 
-#'   using [gprofiler2::gost()] with custom backgrounds defined by [GENE_UNIVERSES].  
-#'   Only pathways with at least 10 and up to 200 members were tested. Because [gprofiler2::gost()]
-#'   only returns adjusted p-values, we recalculated nominal p-values using a one-tailed hypergeometric test, 
-#'   which is consistent with how [gprofiler2::gost()] calculates enrichments. See [cluster_pathway_enrichment()] for implementation. 
-#'   
-#'   For metabolites, 
-#'   we performed enrichment of KEGG pathways using the hypergeometric method in [FELLA::enrich()] 
-#'   with custom backgrounds defined by [GENE_UNIVERSES]. See [run_fella()] for implementation. 
-#'   
-#'   Pathway enrichment analysis p-values 
-#'   were adjusted across all results using Independent Hypothesis Weighting (IHW) with tissue as a covariate.
-#'    
-"GRAPH_PW_ENRICH"
-
-
-#' @title Gene-centric universes
-#' @description Nested vectors of the set of genes tested for each dataset used to specify custom backgrounds for enrichment analyses 
-#' @format A list of lists of lists of vectors. Access a vector of measured/tested genes with \code{GENE_UNIVERSES[[gene_identifier]][[ome]][[tissue]]}, where:
-#' \describe{
-#'   \item{\code{gene_identifier}}{one of "entrez_gene", "gene_symbol", "ensembl_gene", "rgd_gene"}
-#'   \item{\code{ome}}{assay abbreviation, one of [ASSAY_ABBREV]}
-#'   \item{\code{tissue}}{tissue abbreviation, one of [TISSUE_ABBREV]}
-#'}
-#' @details If you are performing any kind of enrichment test that does not accept the 
-#'   full set of measured features as the input, you should specify a custom background. 
-#'   For example, if you are performing enrichment for an unordered list of differential 
-#'   features, then the background should specify the full set of features tested during 
-#'   differential analysis. This object provides the gene-centric lists of "expressed" 
-#'   features, i.e. those tested during differential analysis, for all assay and 
-#'   tissue combinations. 
-#' 
-#'   For convenience, universes are specified with four different types of gene identifers: 
-#'   Entrez/NCBI IDs ("entrez_gene"), gene symbols ("gene_symbol"), Ensembl IDs ("ensembl_gene"), 
-#'   and RGD IDs ("rgd_gene"). This object is a list of lists, with one list per type of gene identifier. 
-#'   List structure is \emph{gene identifier > assay abbreviation > tissue abbreviation}, 
-#'   e.g. \code{GENE_UNIVERSES$entrez_gene$PHOSPHO$HEART} is the unique list of Entrez genes associated 
-#'   with all measured phosphosites in the heart.
-#' 
-#'   Universes for ATAC and METHYL correspond to the universe of expressed genes, 
-#'   i.e. TRNSCRPT, not actually the full set of genes associated with any features 
-#'   measured in these epigenetic assays.
-#' 
-#'   Regardless of the gene identifier, features in METAB universe lists are always KEGG IDs, 
-#'   not actually gene identifiers.
-#'   
-"GENE_UNIVERSES"
-
-
-#' @title \code{repfdr} inputs
-#' @description Feature by state data frames that define the input for \code{repfdr} 
-#' @format List of data frames:
-#' \describe{
-#'   \item{\code{zs_info}}{feature-level metadata for training-regulated features included in graphical analysis}
-#'   \item{\code{zs_smoothed}}{feature by state data frame where values are smoothed timewise z-scores} 
-#'   \item{\code{nominal_ps}}{feature by state data frame where values are timewise nominal p-values}
-#'   \item{\code{effects}}{feature by state data frame where values are timewise effects or log fold-changes}
-#' } 
-#'
-"REPFDR_INPUTS"
-
-
-#' @title Graph components 
-#' @description The feature sets selected using the \code{repfdr} results. Each 
-#'   value is a named list, where the name is the label for the edge or node, 
-#'   and the members are all of the features that belong to that label, 
-#'   in the format \code{[ASSAY_ABBREV];[TISSUE_ABBREV];[feature_ID]}. 
-#' @format List of lists: 
-#' \describe{
-#'   \item{\code{edge_sets}}{named list, where the name is the label for the edge in the 
-#'     format \code{[fromNode]---[toNode]} and the value is a vector of features that belong to that edge}
-#'   \item{\code{node_sets}}{named list, where the name is the label for the node in the 
-#'     format \code{[week]w_F[state]_M[state]} and the value is a vector of features that belong to that edge} 
-#' }
-#' @details Nodes are named in the format \code{[week]w_F[state]_M[state]}, where 
-#'   \code{[week]} is one of 1, 2, 4, or 8 to specify the training point, \code{[state]} 
-#'   takes a value of 0 (null), 1 (up-regulated), or -1 (down-regulated). Altogether, 
-#'   then name of a node specifies the state of a feature in each sex at a specific 
-#'   time point. For example, the node \code{1w_F-1_M-1} specifies all features that 
-#'   are down-regulated in females (\code{F-1}) and males (\code{M-1}) at the 1-week
-#'   training time point (\code{1w}). 
-#'   
-"GRAPH_COMPONENTS"
-
-
-#' @title \code{repfdr} results  
-#' @description Raw \code{repfdr} results from which the graphical state assignments were determined
-#' @format List:
-#' \describe{
-#'   \item{\code{repfdr_em_res}}{a list with \code{repfdr}'s EM results}
-#'   \item{\code{repfdr_clusters}}{\code{repfdr}'s configurations} 
-#'   \item{\code{repfdr_clusters_str}}{\code{repfdr}'s configurations, string representation}
-#'   \item{\code{repfdr_clusters_pi}}{configuration's inferred priors} 
-#'}
-#' @details \code{repfdr} is an algorithm suggested by Yekutieli and Heller in 2014 
-#'   (Bioinformatics) for analysis of p-values or z-scores from different resources. 
-#'   It is based on the assumption that z-scores from each resource (a time point 
-#'   from a specific sex in our case) is either positive, null, or negative. 
-#'   Then the algorithm internally learns the mixture distribution in each resource 
-#'   and the dependencies among them. In the process, a simplifying assumption is 
-#'   made about conditional independence between the z-scores given their state 
-#'   (so for example, two high scores from weeks 4 and 8 in males are independent 
-#'   given that we know that they are positive, non-null cases). 
-#'   
-#'   Our analysis pipeline is as follows: we run \code{repfdr} on the z-score data matrix 
-#'   of all training-regulated features at 5% IWH FDR (see [REPFDR_INPUTS]). Then we use the output to extract 
-#'   the analytes of each state in each time point. Here a state means one of 
-#'   (male up, male null, male down) x (female up, female null, female down) 
-#'   for each time point. Once these are selected we call them the \code{node_sets}. 
-#'   Then, for each pair of node \code{(x,y)} such that \code{y} is from a time point that is adjacent 
-#'   and after \code{x} (e.g., \code{x} is a node from week 4 and \code{y} is a node from week 8), 
-#'   we define their edge set as the intersection of their analytes.
-#'   
-"REPFDR_RES"
-
+#' #' @title Combined metabolomics data used for visualization
+#' #' @description Combined sample-level metabolomics data used for visualization.
+#' #'   Data are equivalent to the data provided in [METAB_SAMPLE_DATA]. [METAB_SAMPLE_DATA] is compatible with the 
+#' #'   differential analysis functions while this format is compatible with visualization functions. 
+#' #' @format A data frame with 15116 rows and 55 variables:
+#' #' \describe{
+#' #'   \item{\code{feature}}{unique \code{feature} in the format \code{[ASSAY_ABBREV];[TISSUE_ABBREV];[feature_ID]},
+#' #'     where \code{feature_ID} is \code{new_feature_ID} when applicable. See [REPEATED_FEATURES] for details.}
+#' #' }
+#' #' @details
+#' #'   Analytes (\code{feature}) are in rows, and participants IDs (PIDs, i.e., unique animal IDs) are in columns. 
+#' #'   When an metabolite was measured by more than one platform, the platform name is prepended to \code{feature_ID} to 
+#' #'   provide unique feature identifiers. See [REPEATED_FEATURES] for details. For completeness, analytes are defined 
+#' #'   both with the \code{feature_ID} used in the original sample-level data AND with the \code{feature} used in the 
+#' #'   graphical analysis results, e.g., [GRAPH_STATES]. 
+#' #'   
+#' "METAB_VIZ_DATA"
+
+
+## Differential analysis ####
+
+### Ome-specific metadata ####
 
 #' @title RNA-seq metadata and QC  
 #' @description RNA-seq experimental and quantification QC metrics for transcriptomic (TRNSCRPT) data
 #' @format A data frame with 935 rows and 82 variables:
 #' \describe{
+#'   \item{\code{viallabel}}{@eval viallabel()}
 #'   \item{\code{vial_label}}{double, sample identifier}
 #'   \item{\code{2D_barcode}}{double, sample barcode}
 #'   \item{\code{Species}}{character, species}
@@ -1497,7 +955,7 @@
 #' @description ATAC-seq experimental and quantification QC metrics for chromatin accessibility (ATAC) data 
 #' @format A data frame with 520 rows and 106 variables:
 #' \describe{
-#'   \item{\code{viallabel}}{double, sample identifier}
+#'   \item{\code{viallabel}}{@eval viallabel()}
 #'   \item{\code{general.description}}{character, pipeline workflow description}
 #'   \item{\code{replicate}}{character, replicate in the pipeline workflow}
 #'   \item{\code{general.date}}{double, date the pipeline workflow was run}
@@ -1618,6 +1076,7 @@
 #' @description RRBS experimental and quantification QC metrics for DNA methylation (METHYL) data 
 #' @format A data frame with 416 rows and 75 variables:
 #' \describe{
+#'   \item{\code{viallabel}}{@eval viallabel()}
 #'   \item{\code{vial_label}}{double, sample identifier}
 #'   \item{\code{2D_barcode}}{double, sample barcode}
 #'   \item{\code{Species}}{character, species}
@@ -1703,8 +1162,8 @@
 #' @description Multiplexed immunoassay (IMMUNO) experimental and quantification QC metrics 
 #' @format A data frame with 1511 rows and 23 variables:
 #' \describe{
-#'   \item{\code{viallabel}}{character, sample identifier}
-#'   \item{\code{tissue_code}}{character, tissue code used in data release. See [MotrpacBicQC::bic_animal_tissue_code].}
+#'   \item{\code{viallabel}}{@eval viallabel()}
+#'   \item{\code{tissue_code}}{@eval tissue_code()}
 #'   \item{\code{bid}}{integer, biospecimen ID}
 #'   \item{\code{luminex_sample_name}}{character, sample name used by HIMC in raw data files}
 #'   \item{\code{panel_name}}{character, LUMINEX panel name}
@@ -1720,17 +1179,18 @@
 #'   \item{\code{comments}}{character, comments about protein extraction}
 #'   \item{\code{sample_well_position}}{character, well position in plates submitted to the HIMC}
 #'   \item{\code{luminex_well}}{character, well position for LUMINEX assay}
-#'   \item{\code{sex}}{character, "male" or "female"}
+#'   \item{\code{sex}}{@eval sex()}
 #'   \item{\code{group}}{character, intervention group, one of "1w", "2w", "4w", "8w", "control"}
-#'   \item{\code{CHEX1}}{double, custom Assay CHEX control beads to monitor instrument performance}
-#'   \item{\code{CHEX2}}{double, custom Assay CHEX control beads to monitor application of the detection antibody}
-#'   \item{\code{CHEX3}}{double, custom Assay CHEX control beads to monitor application of the fluorescent reporter}
-#'   \item{\code{CHEX4}}{double, custom Assay CHEX control beads to monitor nonspecific binding} 
+#'   \item{\code{log2_CHEX1}}{double, custom Assay CHEX control beads to monitor instrument performance, log-transformed}
+#'   \item{\code{log2_CHEX2}}{double, custom Assay CHEX control beads to monitor application of the detection antibody, log-transformed}
+#'   \item{\code{log2_CHEX3}}{double, custom Assay CHEX control beads to monitor application of the fluorescent reporter, log-transformed}
+#'   \item{\code{log2_CHEX4}}{double, custom Assay CHEX control beads to monitor nonspecific binding, log-transformed} 
 #'}
-#' @details Protein extractions from the same sample/viallabel were used for multiple
+#' @details Protein extractions from the same sample/vial label were used for multiple
 #'   panels, so metadata must be matched to unique samples using both \code{viallabel} and \code{panel_name}. 
 "IMMUNO_META"
 
+### Outliers ####
 
 #' @title Sample outliers
 #' @description Outliers excluded during differential analysis
@@ -1749,3 +1209,705 @@
 #'   in the supplementary methods of the manuscript. 
 #' @source <https://docs.google.com/spreadsheets/d/1DetAMovcmMJqulEA41yBLd4I9Q1XSHPH1U8U2aVMShg/edit#gid=2057863805>
 "OUTLIERS"
+
+### Differential analysis results ####
+
+#' @title Differential analysis of RNA-seq datasets 
+#' @description Timewise summary statistics and training FDR from 
+#'     differential analysis (DA) that tests the effect of training on the 
+#'     expression of each gene within each sex. One data frame per tissue.   
+#' @format A data frame with 22 variables:
+#' \describe{
+#'   \item{\code{feature}}{@eval feature()}
+#'   \item{\code{assay}}{@eval assay()}
+#'   \item{\code{assay_code}}{@eval assay_code()}
+#'   \item{\code{tissue}}{@eval tissue()}
+#'   \item{\code{tissue_code}}{@eval tissue_code()}
+#'   \item{\code{feature_ID}}{@eval feature_ID()}
+#'   \item{\code{sex}}{@eval sex()}
+#'   \item{\code{comparison_group}}{@eval comparison_group()}
+#'   \item{\code{p_value}}{@eval p_value()}
+#'   \item{\code{adj_p_value}}{@eval adj_p_value()}
+#'   \item{\code{logFC}}{@eval logFC()}
+#'   \item{\code{logFC_se}}{@eval logFC_se()}
+#'   \item{\code{shrunk_logFC}}{double, log fold-change with shrinkage applied}
+#'   \item{\code{shrunk_logFC_se}}{double, standard error of the shrunken log fold-change}
+#'   \item{\code{zscore}}{@eval zscore()}
+#'   \item{\code{covariates}}{@eval covariates()}
+#'   \item{\code{removed_samples}}{@eval removed_samples()}
+#'   \item{\code{comparison_average_intensity}}{@eval comparison_average_intensity()}
+#'   \item{\code{comparison_average_intensity_se}}{@eval comparison_average_intensity_se()}
+#'   \item{\code{reference_average_intensity}}{@eval reference_average_intensity()}
+#'   \item{\code{reference_average_intensity_se}}{@eval reference_average_intensity_se()}
+#'   \item{\code{selection_fdr}}{@eval selection_fdr()} 
+#' }
+#' @name TRNSCRPT_DA
+"TRNSCRPT_BLOOD_DA"
+
+#' @rdname TRNSCRPT_DA
+"TRNSCRPT_HIPPOC_DA"
+
+#' @rdname TRNSCRPT_DA
+"TRNSCRPT_CORTEX_DA"
+
+#' @rdname TRNSCRPT_DA
+"TRNSCRPT_HYPOTH_DA"
+
+#' @rdname TRNSCRPT_DA
+"TRNSCRPT_SKMGN_DA"
+
+#' @rdname TRNSCRPT_DA
+"TRNSCRPT_SKMVL_DA"
+
+#' @rdname TRNSCRPT_DA
+"TRNSCRPT_HEART_DA"
+
+#' @rdname TRNSCRPT_DA
+"TRNSCRPT_KIDNEY_DA"
+
+#' @rdname TRNSCRPT_DA
+"TRNSCRPT_ADRNL_DA"
+
+#' @rdname TRNSCRPT_DA
+"TRNSCRPT_COLON_DA"
+
+#' @rdname TRNSCRPT_DA
+"TRNSCRPT_SPLEEN_DA"
+
+#' @rdname TRNSCRPT_DA
+"TRNSCRPT_TESTES_DA"
+
+#' @rdname TRNSCRPT_DA
+"TRNSCRPT_OVARY_DA"
+
+#' @rdname TRNSCRPT_DA
+"TRNSCRPT_VENACV_DA"
+
+#' @rdname TRNSCRPT_DA
+"TRNSCRPT_LUNG_DA"
+
+#' @rdname TRNSCRPT_DA
+"TRNSCRPT_SMLINT_DA"
+
+#' @rdname TRNSCRPT_DA
+"TRNSCRPT_LIVER_DA"
+
+#' @rdname TRNSCRPT_DA
+"TRNSCRPT_BAT_DA"
+
+#' @rdname TRNSCRPT_DA
+"TRNSCRPT_WATSC_DA"
+
+
+#' @title Differential analysis of proteomics datasets 
+#' @description Timewise summary statistics and training FDR from 
+#'     differential analysis (DA) that tests the effect of training on each 
+#'     proteomics feature (protein, phosphosite, acetylsite, ubiquitlsite) 
+#'     within each sex. One data frame per data type per tissue.  
+#' @format A data frame 18 variables:
+#' \describe{
+#'   \item{\code{feature}}{@eval feature()}
+#'   \item{\code{assay}}{@eval assay()}
+#'   \item{\code{assay_code}}{@eval assay_code()}
+#'   \item{\code{tissue}}{@eval tissue()}
+#'   \item{\code{tissue_code}}{@eval tissue_code()}
+#'   \item{\code{feature_ID}}{@eval feature_ID()}
+#'   \item{\code{sex}}{@eval sex()}
+#'   \item{\code{comparison_group}}{@eval comparison_group()}
+#'   \item{\code{p_value}}{@eval p_value_da()}
+#'   \item{\code{adj_p_value}}{@eval adj_p_value_da()}
+#'   \item{\code{logFC}}{@eval logFC()}
+#'   \item{\code{logFC_se}}{@eval logFC_se()}
+#'   \item{\code{tscore}}{@eval tscore()}
+#'   \item{\code{covariates}}{@eval covariates()}
+#'   \item{\code{numNAs}}{@eval numNAs()}
+#'   \item{\code{comparison_average_intensity}}{@eval comparison_average_intensity()}
+#'   \item{\code{reference_average_intensity}}{@eval reference_average_intensity()}
+#'   \item{\code{selection_fdr}}{@eval selection_fdr()} 
+#'}
+#' @name PROTEOME_DA
+"PROT_CORTEX_DA"
+
+#' @rdname PROTEOME_DA
+"PROT_SKMGN_DA"
+
+#' @rdname PROTEOME_DA
+"PROT_HEART_DA"
+
+#' @rdname PROTEOME_DA
+"PROT_KIDNEY_DA"
+
+#' @rdname PROTEOME_DA
+"PROT_LUNG_DA"
+
+#' @rdname PROTEOME_DA
+"PROT_LIVER_DA"
+
+#' @rdname PROTEOME_DA
+"PROT_WATSC_DA"
+
+#' @rdname PROTEOME_DA
+"PHOSPHO_CORTEX_DA"
+
+#' @rdname PROTEOME_DA
+"PHOSPHO_SKMGN_DA"
+
+#' @rdname PROTEOME_DA
+"PHOSPHO_HEART_DA"
+
+#' @rdname PROTEOME_DA
+"PHOSPHO_KIDNEY_DA"
+
+#' @rdname PROTEOME_DA
+"PHOSPHO_LUNG_DA"
+
+#' @rdname PROTEOME_DA
+"PHOSPHO_LIVER_DA"
+
+#' @rdname PROTEOME_DA
+"PHOSPHO_WATSC_DA"
+
+#' @rdname PROTEOME_DA
+"ACETYL_HEART_DA"
+
+#' @rdname PROTEOME_DA
+"ACETYL_LIVER_DA"
+
+#' @rdname PROTEOME_DA
+"UBIQ_HEART_DA"
+
+#' @rdname PROTEOME_DA
+"UBIQ_LIVER_DA"
+
+
+#' @title Differential analysis of merged metabolomics datasets 
+#' @description Timewise summary statistics and training FDR from 
+#'     differential analysis (DA) that tests the effect of training on each 
+#'     metabolite within each sex. One data frame per tissue.  
+#' @format A data frame with 27 variables:
+#' \describe{
+#'   \item{\code{feature}}{@eval feature()}
+#'   \item{\code{assay}}{@eval assay()}
+#'   \item{\code{assay_code}}{@eval assay_code()}
+#'   \item{\code{tissue}}{@eval tissue()}
+#'   \item{\code{tissue_code}}{@eval tissue_code()}
+#'   \item{\code{feature_ID}}{@eval feature_ID()}
+#'   \item{\code{dataset}}{character, mame of platform used by the site, e.g. 'metab-u-hilicpos'}
+#'   \item{\code{site}}{character, Chemical Analysis Site (CAS) name}
+#'   \item{\code{is_targeted}}{logical, is this a targeted platform?}
+#'   \item{\code{sex}}{@eval sex()}
+#'   \item{\code{comparison_group}}{@eval comparison_group()}
+#'   \item{\code{p_value}}{@eval p_value()}
+#'   \item{\code{adj_p_value}}{@eval adj_p_value()}
+#'   \item{\code{logFC}}{@eval logFC()}
+#'   \item{\code{logFC_se}}{@eval logFC_se()}
+#'   \item{\code{tscore}}{@eval tscore()}
+#'   \item{\code{covariates}}{@eval covariates()}
+#'   \item{\code{comparison_average_intensity}}{@eval comparison_average_intensity()}
+#'   \item{\code{reference_average_intensity}}{@eval reference_average_intensity()}
+#'   \item{\code{metabolite_refmet}}{character, RefMet name of metabolite OR the site-given code for unnamed metabolites}
+#'   \item{\code{cv}}{double, feature coefficient of variation in the dataset}
+#'   \item{\code{metabolite}}{character, name of metabolite as appears in the CAS's data}
+#'   \item{\code{control_cv}}{double, feature coefficient of variation in the dataset}
+#'   \item{\code{mz}}{double, mass over charge}
+#'   \item{\code{rt}}{double, retention time}
+#'   \item{\code{neutral_mass}}{double, neutral mass}
+#'   \item{\code{selection_fdr}}{@eval selection_fdr()} 
+#'}
+#' @name METAB_DA
+"METAB_PLASMA_DA"
+
+#' @rdname METAB_DA
+"METAB_HIPPOC_DA"
+
+#' @rdname METAB_DA
+"METAB_CORTEX_DA"
+
+#' @rdname METAB_DA
+"METAB_HYPOTH_DA"
+
+#' @rdname METAB_DA
+"METAB_SKMGN_DA"
+
+#' @rdname METAB_DA
+"METAB_SKMVL_DA"
+
+#' @rdname METAB_DA
+"METAB_HEART_DA"
+
+#' @rdname METAB_DA
+"METAB_KIDNEY_DA"
+
+#' @rdname METAB_DA
+"METAB_ADRNL_DA"
+
+#' @rdname METAB_DA
+"METAB_COLON_DA"
+
+#' @rdname METAB_DA
+"METAB_SPLEEN_DA"
+
+#' @rdname METAB_DA
+"METAB_TESTES_DA"
+
+#' @rdname METAB_DA
+"METAB_OVARY_DA"
+
+#' @rdname METAB_DA
+"METAB_VENACV_DA"
+
+#' @rdname METAB_DA
+"METAB_LUNG_DA"
+
+#' @rdname METAB_DA
+"METAB_SMLINT_DA"
+
+#' @rdname METAB_DA
+"METAB_LIVER_DA"
+
+#' @rdname METAB_DA
+"METAB_BAT_DA"
+
+#' @rdname METAB_DA
+"METAB_WATSC_DA"
+
+
+#' @title Meta-regression of metabolomics differential analysis results
+#' @description Timewise summary statistics and training FDR from 
+#'   differential analysis (DA) that tests the effect of training on each 
+#'   metabolite within each sex. One data frame per tissue.
+#'   
+#'   For metabolites measured on more than one 
+#'   platform, the consensus result may be provided. For metabolites measured 
+#'   on a single platform, these results are identical to [METAB_DA]. 
+#'      
+#' @format A data frame with 30 variables:
+#' \describe{
+#'   \item{\code{feature}}{@eval feature()}
+#'   \item{\code{assay}}{@eval assay()}
+#'   \item{\code{assay_code}}{@eval assay_code()}
+#'   \item{\code{tissue}}{@eval tissue()}
+#'   \item{\code{tissue_code}}{@eval tissue_code()}
+#'   \item{\code{feature_ID}}{@eval feature_ID()}
+#'   \item{\code{dataset}}{character, mame of platform used by the site, e.g. 'metab-u-hilicpos'}
+#'   \item{\code{site}}{character, Chemical Analysis Site (CAS) name}
+#'   \item{\code{is_targeted}}{logical, is this a targeted platform?}
+#'   \item{\code{sex}}{@eval sex()}
+#'   \item{\code{comparison_group}}{@eval comparison_group()}
+#'   \item{\code{p_value}}{@eval p_value()}
+#'   \item{\code{adj_p_value}}{@eval adj_p_value()}
+#'   \item{\code{logFC}}{@eval logFC()}
+#'   \item{\code{logFC_se}}{@eval logFC_se()}
+#'   \item{\code{tscore}}{@eval tscore()}
+#'   \item{\code{zscore}}{@eval zscore()}
+#'   \item{\code{covariates}}{@eval covariates()}
+#'   \item{\code{comparison_average_intensity}}{@eval comparison_average_intensity()}
+#'   \item{\code{reference_average_intensity}}{@eval reference_average_intensity()}
+#'   \item{\code{metabolite_refmet}}{character, RefMet name of metabolite OR the site-given code for unnamed metabolites}
+#'   \item{\code{cv}}{double, feature coefficient of variation in the dataset}
+#'   \item{\code{metabolite}}{character, name of metabolite as appears in the CAS's data}
+#'   \item{\code{control_cv}}{double, feature coefficient of variation in the dataset}
+#'   \item{\code{mz}}{double, mass over charge}
+#'   \item{\code{rt}}{double, retention time}
+#'   \item{\code{neutral_mass}}{double, neutral mass}
+#'   \item{\code{meta_reg_het_p}}{@eval meta_reg_het_p()}
+#'   \item{\code{meta_reg_pvalue}}{@eval meta_reg_pvalue()}
+#'   \item{\code{selection_fdr}}{@eval selection_fdr()} 
+#'}
+#' @details DETAILS
+#' @name METAB_DA_METAREG
+"METAB_ADRNL_DA_METAREG"
+
+#' @rdname METAB_DA_METAREG
+"METAB_BAT_DA_METAREG"
+
+#' @rdname METAB_DA_METAREG
+"METAB_COLON_DA_METAREG"
+
+#' @rdname METAB_DA_METAREG
+"METAB_CORTEX_DA_METAREG"
+
+#' @rdname METAB_DA_METAREG
+"METAB_HEART_DA_METAREG"
+
+#' @rdname METAB_DA_METAREG
+"METAB_HIPPOC_DA_METAREG"
+
+#' @rdname METAB_DA_METAREG
+"METAB_HYPOTH_DA_METAREG"
+
+#' @rdname METAB_DA_METAREG
+"METAB_KIDNEY_DA_METAREG"
+
+#' @rdname METAB_DA_METAREG
+"METAB_LIVER_DA_METAREG"
+
+#' @rdname METAB_DA_METAREG
+"METAB_LUNG_DA_METAREG"
+
+#' @rdname METAB_DA_METAREG
+"METAB_OVARY_DA_METAREG"
+
+#' @rdname METAB_DA_METAREG
+"METAB_PLASMA_DA_METAREG"
+
+#' @rdname METAB_DA_METAREG
+"METAB_SKMGN_DA_METAREG"
+
+#' @rdname METAB_DA_METAREG
+"METAB_SKMVL_DA_METAREG"
+
+#' @rdname METAB_DA_METAREG
+"METAB_SMLINT_DA_METAREG"
+
+#' @rdname METAB_DA_METAREG
+"METAB_SPLEEN_DA_METAREG"
+
+#' @rdname METAB_DA_METAREG
+"METAB_TESTES_DA_METAREG"
+
+#' @rdname METAB_DA_METAREG
+"METAB_VENACV_DA_METAREG"
+
+#' @rdname METAB_DA_METAREG
+"METAB_WATSC_DA_METAREG"
+
+
+#' @title Differential analysis of multiplexed immunoassays 
+#' @description Timewise summary statistics and training FDR from 
+#'     differential analysis (DA) that tests the effect of training on each 
+#'     immunoassay analyte within each sex. One data frame per tissue. 
+#' @format A data frame with 17 variables:
+#' \describe{
+#'   \item{\code{feature}}{@eval feature()}
+#'   \item{\code{assay}}{@eval assay()}
+#'   \item{\code{assay_code}}{@eval assay_code()}
+#'   \item{\code{tissue}}{@eval tissue()}
+#'   \item{\code{tissue_code}}{@eval tissue_code()}
+#'   \item{\code{feature_ID}}{@eval feature_ID()}
+#'   \item{\code{dataset}}{character, name of LUMINEX panel, e.g., 'rat-mag27plex'}
+#'   \item{\code{sex}}{@eval sex()}
+#'   \item{\code{comparison_group}}{@eval comparison_group()}
+#'   \item{\code{p_value}}{@eval p_value()}
+#'   \item{\code{adj_p_value}}{@eval adj_p_value()}
+#'   \item{\code{logFC}}{@eval logFC()}
+#'   \item{\code{logFC_se}}{@eval logFC_se()}
+#'   \item{\code{covariates}}{@eval covariates()}
+#'   \item{\code{comparison_average_intensity}}{@eval comparison_average_intensity()}
+#'   \item{\code{reference_average_intensity}}{@eval reference_average_intensity()}
+#'   \item{\code{selection_fdr}}{@eval selection_fdr()} 
+#'}
+#' @name IMMUNO_DA
+"IMMUNO_PLASMA_DA"
+
+#' @rdname IMMUNO_DA
+"IMMUNO_HIPPOC_DA"
+
+#' @rdname IMMUNO_DA
+"IMMUNO_CORTEX_DA"
+
+#' @rdname IMMUNO_DA
+"IMMUNO_ADRNL_DA"
+
+#' @rdname IMMUNO_DA
+"IMMUNO_TESTES_DA"
+
+#' @rdname IMMUNO_DA
+"IMMUNO_OVARY_DA"
+
+#' @rdname IMMUNO_DA
+"IMMUNO_SKMGN_DA"
+
+#' @rdname IMMUNO_DA
+"IMMUNO_BAT_DA"
+
+#' @rdname IMMUNO_DA
+"IMMUNO_WATSC_DA"
+
+#' @rdname IMMUNO_DA
+"IMMUNO_COLON_DA"
+
+#' @rdname IMMUNO_DA
+"IMMUNO_SMLINT_DA"
+
+#' @rdname IMMUNO_DA
+"IMMUNO_LIVER_DA"
+
+#' @rdname IMMUNO_DA
+"IMMUNO_SKMVL_DA"
+
+#' @rdname IMMUNO_DA
+"IMMUNO_HEART_DA"
+
+#' @rdname IMMUNO_DA
+"IMMUNO_KIDNEY_DA"
+
+#' @rdname IMMUNO_DA
+"IMMUNO_SPLEEN_DA"
+
+#' @rdname IMMUNO_DA
+"IMMUNO_LUNG_DA"
+
+
+#' @title Differential analysis of ATAC-seq data
+#' @description TODO
+#' @format TODO
+#' @details TODO
+#'   Full ATAC differential analysis results are only available via download from the Cloud. See TODO.
+#'   
+#'   For training-regulated ATAC features at 5% FDR, see [TRAINING_REGULATED_FEATURES].
+#' @name ATAC_DA
+NULL
+
+
+#' @title Differential analysis of RRBS data
+#' @description TODO
+#' @format TODO
+#' @details TODO
+#'   Full METHYL differential analysis results are only available via download from the Cloud. See TODO.
+#'   
+#'   For training-regulated METHYL features at 5% FDR, see [TRAINING_REGULATED_FEATURES].
+#' @name METHYL_DA
+NULL
+
+
+#' @title Training-regulated features
+#' @description Differential analysis results for training-regulated features at 5% FDR
+#' @format A data frame with 279002 rows and 18 variables:
+#' \describe{
+#'   \item{\code{feature}}{@eval feature()}
+#'   \item{\code{assay}}{@eval assay()}
+#'   \item{\code{assay_code}}{@eval assay_code()}
+#'   \item{\code{tissue}}{@eval tissue()}
+#'   \item{\code{tissue_code}}{@eval tissue_code()}
+#'   \item{\code{feature_ID}}{@eval feature_ID()}
+#'   \item{\code{non_redundant_feature_ID}}{character, non-redundant feature identifier defined for \code{feature_ID}s 
+#'       with measurements from multiple platforms. \code{feature} uses \code{non_redundant_feature_ID} 
+#'       when available and \code{feature_ID} otherwise. See [REPEATED_FEATURES] for more details.}
+#'   \item{\code{platform}}{@eval dataset()}
+#'   \item{\code{sex}}{@eval sex()}
+#'   \item{\code{training_group}}{character, training time point in weeks, one of "1w", "2w", "4w", "8w". 
+#'       Corresponds to \code{comparison_group} in the \code{*_DA} tables.}
+#'   \item{\code{timewise_logFC}}{double, log fold-change of the training group specified by 
+#'       \code{sex} and \code{training_group} (e.g., 1-week females) relative to 
+#'       the sex-matched sedentary controls. Corresponds to \code{logFC} in the \code{*_DA} tables.}
+#'   \item{\code{timewise_logFC_se}}{double, standard error of \code{timewise_logFC}.
+#'       Corresponds to \code{logFC_se} in the \code{*_DA} tables.}
+#'   \item{\code{timewise_p_value}}{double, timewise p-value corresponding to the 
+#'       contrast between the training group (e.g., 1-week females) and the sex-matched 
+#'       sedentary controls. Corresponds to \code{p_value} in the \code{*_DA} tables.}
+#'   \item{\code{timewise_zscore}}{double, smoothed z-score corresponding to 
+#'       \code{timewise_p_value} used for graphical clustering.
+#'       Corresponds to \code{zscore} or \code{tscore} in the \code{*_DA} tables.}
+#'   \item{\code{meta_reg_het_p}}{@eval meta_reg_het_p()}
+#'   \item{\code{meta_reg_pvalue}}{@eval meta_reg_pvalue()}
+#'   \item{\code{training_p_value}}{double, combined training p-value determined from 
+#'       F-tests or LRTs comparing a full model with ome-specific technical covariates 
+#'       and training group as a factor variable against a reduced model with only 
+#'       technical covariates. Sex-specific training p-values were merged using the 
+#'       sum of logs. One value per features (not per training group)}
+#'   \item{\code{training_q}}{double, IHW FDR-adjusted \code{training_p_value}; 
+#'       training-regulated features were defined by \code{training_q < 0.05}.
+#'       Corresponds to \code{selection_fdr} in the \code{*_DA} tables.}
+#'}
+"TRAINING_REGULATED_FEATURES"
+
+
+## Graphical analysis ####
+
+#' @title \code{repfdr} state assignments 
+#' @description \code{repdfr} state assignments (up, down, or null) for each 
+#'   training-regulated feature (5% FDR) for each sex at each time point, 
+#'   which specify node assignments for each differential feature. 
+#'   Missing values indicate that the \code{repfdr} posterior probabilities 
+#'   did not meet the cutoff for that feature.
+#' @format A data frame with 34244 rows and 10 variables:
+#' \describe{
+#'   \item{\code{feature}}{@eval feature()}
+#'   \item{\code{ome}}{@eval assay()}
+#'   \item{\code{tissue}}{@eval tissue(). Note that VENACV, OVARY, TESTES, 
+#'     were not included in the graphical representation of differential 
+#'     features due to missing groups (e.g., females trained for 1 week).}
+#'   \item{\code{feature_ID}}{@eval feature_ID()}
+#'   \item{\code{state_1w}}{character, state (1, up-regulated; 0, null; -1, down-regulated) 
+#'     of the feature in each sex (F, females; M, males) at the 1-week training time point, 
+#'     relative to sex-matched untrained animals}
+#'   \item{\code{state_2w}}{character, state of the feature in each sex at the 2-week training time point}
+#'   \item{\code{state_4w}}{character, state of the feature in each sex at the 4-week training time point}
+#'   \item{\code{state_8w}}{character, state of the feature in each sex at the 8-week training time point}
+#'   \item{\code{path}}{character, assigned states from weeks 1-8, separated by "->". 
+#'     This represents a feature's full path through the graph. 
+#'     NA if the state at any of the four time points is NA.}
+#'   \item{\code{tissue_path}}{character, assigned states from weeks 1-8, separated by "->". 
+#'     This represents a feature's full path through the graph. 
+#'     NA if the state at any of the four time points is NA.} 
+#'}
+#' @details 
+#'   TODO
+#'   See [Supplementary Methods](https://docs.google.com/document/d/1i5jLyy2K9-N3yMCOvSwnws-5ny77jQPaBtC50TsUZ_g/edit#heading=h.2zazg4neamea). 
+"GRAPH_STATES"
+
+
+#' @title KEGG and Reactome parent pathways 
+#' @description List where names are KEGG or Reactome terms IDs and values are 
+#'   the parent pathway(s)
+#' @format List of length 21697
+#' @details 
+#'   Pathway hierarchies for KEGG were retrieved with [KEGGREST::keggGet()], e.g. \code{keggGet(kegg_query)[[1]]$CLASS}. 
+#'   Reactome pathway parents were extracted from <https://reactome.org/download/current/ReactomePathwaysRelation.txt>. 
+"PATHWAY_PARENTS"
+
+
+#' @title Graph pathway enrichment results 
+#' @description Pathway enrichment results for graphical clusters (nodes, edges, and paths) of interest
+#' @format A data frame with 156906 rows and 22 variables:
+#' \describe{
+#'   \item{\code{query}}{character, not used, carried over from [gprofiler2::gost()] output}
+#'   \item{\code{significant}}{logical, not used, carried over from [gprofiler2::gost()] output}
+#'   \item{\code{term_size}}{double, effective pathway size from [gprofiler2::gost()] output}
+#'   \item{\code{query_size}}{integer, size of input, i.e. list of Ensembl genes associated with differential features}
+#'   \item{\code{intersection_size}}{double, size of the intersection between the input and the pathway members}
+#'   \item{\code{precision}}{double, the proportion of genes in the input list that are annotated to the function (defined as \code{intersection_size/query_size})}
+#'   \item{\code{recall}}{double, the proportion of functionally annotated genes that the query recovers (defined as \code{intersection_size/term_size})}
+#'   \item{\code{term_id}}{character, pathway term ID}
+#'   \item{\code{source}}{character, database corresponding to the pathway, one of: "KEGG", "REAC"}
+#'   \item{\code{term_name}}{character, pathway name}
+#'   \item{\code{effective_domain_size}}{integer, size of the custom background Ensembl gene set}
+#'   \item{\code{source_order}}{integer, not used, carried over from [gprofiler2::gost()] output}
+#'   \item{\code{parents}}{list, pathway parent(s)}
+#'   \item{\code{evidence_codes}}{character, not used, carried over from [gprofiler2::gost()] output}
+#'   \item{\code{intersection}}{character, intersection between input and pathway (Ensembl IDs). NA for metabolomics enrichments}
+#'   \item{\code{gost_adj_p_value}}{double, BH-adjusted p-value returned by [gprofiler2::gost()], 
+#'     ignored because p-values are only adjusted within each tissue/ome/cluster combination. Use the \code{adj_p_value} column instead.}
+#'   \item{\code{computed_p_value}}{double, nominal hypergeometric p-value, computed from the [gprofiler2::gost()] output}
+#'   \item{\code{cluster}}{character, graphical cluster (node, edge, or path) name}
+#'   \item{\code{tissue}}{@eval tissue(). Note that VENACV, OVARY, TESTES, 
+#'     were not included in the graphical representation of differential 
+#'     features due to missing groups (e.g., females trained for 1 week).}
+#'   \item{\code{ome}}{@eval assay()}
+#'   \item{\code{kegg_id}}{character, pathway ID returned from [FELLA::enrich()]}
+#'   \item{\code{adj_p_value}}{double, IHW FDR, calculated using [IHW::ihw()] with \code{tissue} as a covariate} 
+#'}
+#' @details All non-metabolite training-regulated features (5% FDR) were mapped 
+#'   to Ensembl gene symbols using [FEATURE_TO_GENE]. Training-regulated metabolites 
+#'   were mapped to KEGG IDs. For each graphical cluster of interest (i.e., 
+#'   the ten largest paths, two largest nodes, and two largest single edges with 
+#'   at least 20 features in each tissue, as well as all 8-week nodes), 
+#'   we performed pathway enrichment analysis separately for the Ensembl genes 
+#'   (or KEGG IDs for metabolites) associated with differential features in each ome. 
+#'   
+#'   For gene-centric omes (i.e., all but metabolomics) 
+#'   we performed enrichment analysis of KEGG and REACTOME rat pathways (organism "rnorvegicus") 
+#'   using [gprofiler2::gost()] with custom backgrounds defined by [GENE_UNIVERSES].  
+#'   Only pathways with at least 10 and up to 200 members were tested. Because [gprofiler2::gost()]
+#'   only returns adjusted p-values, we recalculated nominal p-values using a one-tailed hypergeometric test, 
+#'   which is consistent with how [gprofiler2::gost()] calculates enrichments. See [cluster_pathway_enrichment()] for implementation. 
+#'   
+#'   For metabolites, 
+#'   we performed enrichment of KEGG pathways using the hypergeometric method in [FELLA::enrich()] 
+#'   with custom backgrounds defined by [GENE_UNIVERSES]. See [run_fella()] for implementation. 
+#'   
+#'   Pathway enrichment analysis p-values 
+#'   were adjusted across all results using Independent Hypothesis Weighting (IHW) with tissue as a covariate.
+#'    
+"GRAPH_PW_ENRICH"
+
+
+#' @title Gene-centric universes
+#' @description Nested vectors of the set of genes tested for each dataset used to specify custom backgrounds for enrichment analyses 
+#' @format A list of lists of lists of vectors. Access a vector of measured/tested genes with \code{GENE_UNIVERSES[[gene_identifier]][[ome]][[tissue]]}, where:
+#' \describe{
+#'   \item{\code{gene_identifier}}{one of "entrez_gene", "gene_symbol", "ensembl_gene", "rgd_gene"}
+#'   \item{\code{ome}}{@eval assay()}
+#'   \item{\code{tissue}}{@eval tissue()}
+#'}
+#' @details If you are performing any kind of enrichment test that does not accept the 
+#'   full set of measured features as the input, you should specify a custom background. 
+#'   For example, if you are performing enrichment for an unordered list of differential 
+#'   features, then the background should specify the full set of features tested during 
+#'   differential analysis. This object provides the gene-centric lists of "expressed" 
+#'   features, i.e. those tested during differential analysis, for all assay and 
+#'   tissue combinations. 
+#' 
+#'   For convenience, universes are specified with four different types of gene identifers: 
+#'   Entrez/NCBI IDs ("entrez_gene"), gene symbols ("gene_symbol"), Ensembl IDs ("ensembl_gene"), 
+#'   and RGD IDs ("rgd_gene"). This object is a list of lists, with one list per type of gene identifier. 
+#'   List structure is \emph{gene identifier > assay abbreviation > tissue abbreviation}, 
+#'   e.g. \code{GENE_UNIVERSES$entrez_gene$PHOSPHO$HEART} is the unique list of Entrez genes associated 
+#'   with all measured phosphosites in the heart.
+#' 
+#'   Universes for ATAC and METHYL correspond to the universe of expressed genes, 
+#'   i.e. TRNSCRPT, not actually the full set of genes associated with any features 
+#'   measured in these epigenetic assays.
+#' 
+#'   Regardless of the gene identifier, features in METAB universe lists are always KEGG IDs, 
+#'   not actually gene identifiers.
+#'   
+"GENE_UNIVERSES"
+
+
+#' @title \code{repfdr} inputs
+#' @description Feature by state data frames that define the input for \code{repfdr} 
+#' @format List of data frames:
+#' \describe{
+#'   \item{\code{zs_info}}{feature-level metadata for training-regulated features included in graphical analysis}
+#'   \item{\code{zs_smoothed}}{feature by state data frame where values are smoothed timewise z-scores} 
+#'   \item{\code{nominal_ps}}{feature by state data frame where values are timewise nominal p-values}
+#'   \item{\code{effects}}{feature by state data frame where values are timewise effects or log fold-changes}
+#' } 
+#'
+"REPFDR_INPUTS"
+
+
+#' @title Graph components 
+#' @description The feature sets selected using the \code{repfdr} results. Each 
+#'   value is a named list, where the name is the label for the edge or node, 
+#'   and the members are all of the features that belong to that label, 
+#'   in the format \code{[ASSAY_ABBREV];[TISSUE_ABBREV];[feature_ID]}. 
+#' @format List of lists: 
+#' \describe{
+#'   \item{\code{edge_sets}}{named list, where the name is the label for the edge in the 
+#'     format \code{[fromNode]---[toNode]} and the value is a vector of features that belong to that edge}
+#'   \item{\code{node_sets}}{named list, where the name is the label for the node in the 
+#'     format \code{[week]w_F[state]_M[state]} and the value is a vector of features that belong to that edge} 
+#' }
+#' @details Nodes are named in the format \code{[week]w_F[state]_M[state]}, where 
+#'   \code{[week]} is one of 1, 2, 4, or 8 to specify the training point, \code{[state]} 
+#'   takes a value of 0 (null), 1 (up-regulated), or -1 (down-regulated). Altogether, 
+#'   then name of a node specifies the state of a feature in each sex at a specific 
+#'   time point. For example, the node \code{1w_F-1_M-1} specifies all features that 
+#'   are down-regulated in females (\code{F-1}) and males (\code{M-1}) at the 1-week
+#'   training time point (\code{1w}). 
+#'   
+"GRAPH_COMPONENTS"
+
+
+#' @title \code{repfdr} results  
+#' @description Raw \code{repfdr} results from which the graphical state assignments were determined
+#' @format List:
+#' \describe{
+#'   \item{\code{repfdr_em_res}}{a list with \code{repfdr}'s EM results}
+#'   \item{\code{repfdr_clusters}}{\code{repfdr}'s configurations} 
+#'   \item{\code{repfdr_clusters_str}}{\code{repfdr}'s configurations, string representation}
+#'   \item{\code{repfdr_clusters_pi}}{configuration's inferred priors} 
+#'}
+#' @details \code{repfdr} is an algorithm suggested by Yekutieli and Heller in 2014 
+#'   (Bioinformatics) for analysis of p-values or z-scores from different resources. 
+#'   It is based on the assumption that z-scores from each resource (a time point 
+#'   from a specific sex in our case) is either positive, null, or negative. 
+#'   Then the algorithm internally learns the mixture distribution in each resource 
+#'   and the dependencies among them. In the process, a simplifying assumption is 
+#'   made about conditional independence between the z-scores given their state 
+#'   (so for example, two high scores from weeks 4 and 8 in males are independent 
+#'   given that we know that they are positive, non-null cases). 
+#'   
+#'   Our analysis pipeline is as follows: we run \code{repfdr} on the z-score data matrix 
+#'   of all training-regulated features at 5% IWH FDR (see [REPFDR_INPUTS]). Then we use the output to extract 
+#'   the analytes of each state in each time point. Here a state means one of 
+#'   (male up, male null, male down) x (female up, female null, female down) 
+#'   for each time point. Once these are selected we call them the \code{node_sets}. 
+#'   Then, for each pair of node \code{(x,y)} such that \code{y} is from a time point that is adjacent 
+#'   and after \code{x} (e.g., \code{x} is a node from week 4 and \code{y} is a node from week 8), 
+#'   we define their edge set as the intersection of their analytes.
+#'   
+"REPFDR_RES"
