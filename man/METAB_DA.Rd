@@ -24,77 +24,72 @@
 \alias{METAB_WATSC_DA}
 \title{Differential analysis of merged metabolomics datasets}
 \format{
-A data frame with >800 rows and 25 variables:
+A data frame with 27 variables:
 \describe{
-\item{\code{feature_ID}}{character, analyte identifier}
-\item{\code{tissue}}{character, MoTrPAC tissue release code}
-\item{\code{dataset}}{character, mame of platform used by the site, e.g. "metab-u-hilicpos"}
-\item{\code{assay}}{character, MoTrPAC assay or "ome" code. "metab" for metabolomics datasets.}
-\item{\code{sex}}{character, one of "male" or "female"}
-\item{\code{is_targeted}}{logical, is this a targeted platform?}
+\item{\code{feature}}{@eval feature()}
+\item{\code{assay}}{@eval assay()}
+\item{\code{assay_code}}{@eval assay_code()}
+\item{\code{tissue}}{@eval tissue()}
+\item{\code{tissue_code}}{@eval tissue_code()}
+\item{\code{feature_ID}}{@eval feature_ID()}
+\item{\code{dataset}}{character, mame of platform used by the site, e.g. 'metab-u-hilicpos'}
 \item{\code{site}}{character, Chemical Analysis Site (CAS) name}
-\item{\code{metabolite}}{character, name of metabolite as appears in the CAS's data}
+\item{\code{is_targeted}}{logical, is this a targeted platform?}
+\item{\code{sex}}{@eval sex()}
+\item{\code{comparison_group}}{@eval comparison_group()}
+\item{\code{p_value}}{@eval p_value()}
+\item{\code{adj_p_value}}{@eval adj_p_value()}
+\item{\code{logFC}}{@eval logFC()}
+\item{\code{logFC_se}}{@eval logFC_se()}
+\item{\code{tscore}}{@eval tscore()}
+\item{\code{covariates}}{@eval covariates()}
+\item{\code{comparison_average_intensity}}{@eval comparison_average_intensity()}
+\item{\code{reference_average_intensity}}{@eval reference_average_intensity()}
 \item{\code{metabolite_refmet}}{character, RefMet name of metabolite OR the site-given code for unnamed metabolites}
-\item{\code{logFC}}{double, log fold-change where the numerator is \code{comparison_group}
-and the denominator is the group of sex-matched sedentary control animals}
-\item{\code{logFC_se}}{double, standard error of the log fold-change}
-\item{\code{tscore}}{double, t statistic}
 \item{\code{cv}}{double, feature coefficient of variation in the dataset}
-\item{\code{control_cv}}{double, feature coffeicient of variation in the control samples}
-\item{\code{covariates}}{character, comma-separated list of covariates or NA}
-\item{\code{comparison_group}}{character, time point compared to the sex-matched
-sedentary control animals, one of "1w", "2w", "4w", "8w"}
-\item{\code{p_value}}{double, unadjusted p-value for the difference between
-\code{comparison_group} and the group of sex-matched sedentary control animals}
-\item{\code{comparison_average_intensity}}{double, average intensity among the replicates in \code{comparison_group}}
-\item{\code{reference_average_intensity}}{double, average intensity among the
-replicates in the group of sex-matched sedentary control animals}
-\item{\code{tissue_abbreviation}}{character, MoTrPAC tissue abbreviation used in manuscripts}
+\item{\code{metabolite}}{character, name of metabolite as appears in the CAS's data}
+\item{\code{control_cv}}{double, feature coefficient of variation in the dataset}
 \item{\code{mz}}{double, mass over charge}
 \item{\code{rt}}{double, retention time}
 \item{\code{neutral_mass}}{double, neutral mass}
-\item{\code{adj_p_value}}{double, adjusted p-value from \code{p_value} column.
-P-values are BY-adjusted across all datasets within a given \code{assay}.}
-\item{\code{selection_fdr}}{double, adjusted training p-value used to
-select training-regulated analytes. P-values are IHW-adjusted across all
-datasets within a given \code{assay} with \code{tissue} as a covariate.}
+\item{\code{selection_fdr}}{@eval selection_fdr()}
 }
 
-An object of class \code{data.frame} with 10000 rows and 25 columns.
+An object of class \code{data.frame} with 10000 rows and 27 columns.
 
-An object of class \code{data.frame} with 1672 rows and 25 columns.
+An object of class \code{data.frame} with 1672 rows and 27 columns.
 
-An object of class \code{data.frame} with 1736 rows and 25 columns.
+An object of class \code{data.frame} with 1736 rows and 27 columns.
 
-An object of class \code{data.frame} with 9880 rows and 25 columns.
+An object of class \code{data.frame} with 9880 rows and 27 columns.
 
-An object of class \code{data.frame} with 1584 rows and 25 columns.
+An object of class \code{data.frame} with 1584 rows and 27 columns.
 
-An object of class \code{data.frame} with 11440 rows and 25 columns.
+An object of class \code{data.frame} with 11440 rows and 27 columns.
 
-An object of class \code{data.frame} with 11952 rows and 25 columns.
+An object of class \code{data.frame} with 11952 rows and 27 columns.
 
-An object of class \code{data.frame} with 1752 rows and 25 columns.
+An object of class \code{data.frame} with 1752 rows and 27 columns.
 
-An object of class \code{data.frame} with 1888 rows and 25 columns.
+An object of class \code{data.frame} with 1888 rows and 27 columns.
 
-An object of class \code{data.frame} with 1816 rows and 25 columns.
+An object of class \code{data.frame} with 1816 rows and 27 columns.
 
-An object of class \code{data.frame} with 872 rows and 25 columns.
+An object of class \code{data.frame} with 872 rows and 27 columns.
 
-An object of class \code{data.frame} with 912 rows and 25 columns.
+An object of class \code{data.frame} with 912 rows and 27 columns.
 
-An object of class \code{data.frame} with 1278 rows and 25 columns.
+An object of class \code{data.frame} with 1278 rows and 27 columns.
 
-An object of class \code{data.frame} with 11736 rows and 25 columns.
+An object of class \code{data.frame} with 11736 rows and 27 columns.
 
-An object of class \code{data.frame} with 1800 rows and 25 columns.
+An object of class \code{data.frame} with 1800 rows and 27 columns.
 
-An object of class \code{data.frame} with 11896 rows and 25 columns.
+An object of class \code{data.frame} with 11896 rows and 27 columns.
 
-An object of class \code{data.frame} with 10402 rows and 25 columns.
+An object of class \code{data.frame} with 10402 rows and 27 columns.
 
-An object of class \code{data.frame} with 10288 rows and 25 columns.
+An object of class \code{data.frame} with 10288 rows and 27 columns.
 }
 \usage{
 METAB_PLASMA_DA

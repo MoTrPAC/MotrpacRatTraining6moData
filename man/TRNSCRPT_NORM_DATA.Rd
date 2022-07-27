@@ -26,41 +26,41 @@
 \format{
 A data frame with genes in rows (\code{feature_ID}) and samples in columns (\code{viallabel})
 
-An object of class \code{data.frame} with 16608 rows and 51 columns.
+An object of class \code{data.frame} with 16608 rows and 54 columns.
 
-An object of class \code{data.frame} with 16443 rows and 51 columns.
+An object of class \code{data.frame} with 16443 rows and 54 columns.
 
-An object of class \code{data.frame} with 16955 rows and 51 columns.
+An object of class \code{data.frame} with 16955 rows and 54 columns.
 
-An object of class \code{data.frame} with 13774 rows and 51 columns.
+An object of class \code{data.frame} with 13774 rows and 54 columns.
 
-An object of class \code{data.frame} with 13973 rows and 51 columns.
+An object of class \code{data.frame} with 13973 rows and 54 columns.
 
-An object of class \code{data.frame} with 14445 rows and 51 columns.
+An object of class \code{data.frame} with 14445 rows and 54 columns.
 
-An object of class \code{data.frame} with 15981 rows and 51 columns.
+An object of class \code{data.frame} with 15981 rows and 54 columns.
 
-An object of class \code{data.frame} with 15809 rows and 51 columns.
+An object of class \code{data.frame} with 15809 rows and 54 columns.
 
-An object of class \code{data.frame} with 16556 rows and 51 columns.
+An object of class \code{data.frame} with 16556 rows and 54 columns.
 
-An object of class \code{data.frame} with 16319 rows and 51 columns.
+An object of class \code{data.frame} with 16319 rows and 54 columns.
 
-An object of class \code{data.frame} with 17359 rows and 26 columns.
+An object of class \code{data.frame} with 17359 rows and 29 columns.
 
-An object of class \code{data.frame} with 17035 rows and 25 columns.
+An object of class \code{data.frame} with 17035 rows and 28 columns.
 
-An object of class \code{data.frame} with 16338 rows and 51 columns.
+An object of class \code{data.frame} with 16338 rows and 54 columns.
 
-An object of class \code{data.frame} with 16505 rows and 51 columns.
+An object of class \code{data.frame} with 16505 rows and 54 columns.
 
-An object of class \code{data.frame} with 16411 rows and 51 columns.
+An object of class \code{data.frame} with 16411 rows and 54 columns.
 
-An object of class \code{data.frame} with 14437 rows and 51 columns.
+An object of class \code{data.frame} with 14437 rows and 54 columns.
 
-An object of class \code{data.frame} with 16154 rows and 51 columns.
+An object of class \code{data.frame} with 16154 rows and 54 columns.
 
-An object of class \code{data.frame} with 16764 rows and 51 columns.
+An object of class \code{data.frame} with 16764 rows and 54 columns.
 }
 \source{
 \code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/transcriptomics/transcript-rna-seq/normalized-data/*normalized-log-cpm*}

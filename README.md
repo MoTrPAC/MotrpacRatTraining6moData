@@ -5,22 +5,61 @@ Data for analysis of the MoTrPAC endurance exercise training study in 6-month-ol
 ```r
 devtools::install_github("MoTrPAC/MotrpacRatTraining6moData")
 ```
-Note that the `*** moving datasets to lazyload DB` step takes the longest (~5 minutes). 
+
+The output for a successful installation looks something like this. 
+Note that the `*** moving datasets to lazyload DB` step takes the longest (~5 minutes):
+```
+Downloading GitHub repo MoTrPAC/MotrpacRatTraining6moData@HEAD
+✓  checking for file ‘.../MoTrPAC-MotrpacRatTraining6moData-1c6478a/DESCRIPTION’ ...
+─  preparing ‘MotrpacRatTraining6moData’:
+✓  checking DESCRIPTION meta-information
+─  checking for LF line-endings in source and make files and shell scripts
+─  checking for empty or unneeded directories
+─  building ‘MotrpacRatTraining6moData_1.0.0.tar.gz’ (1.3s)
+   
+* installing *source* package ‘MotrpacRatTraining6moData’ ...
+** using staged installation
+** R
+** data
+*** moving datasets to lazyload DB
+** inst
+** byte-compile and prepare package for lazy loading
+** help
+*** installing help indices
+** building package indices
+** testing if installed package can be loaded from temporary location
+** testing if installed package can be loaded from final location
+** testing if installed package keeps a record of temporary installation path
+* DONE (MotrpacRatTraining6moData)
+```
 
 ### Troubleshooting
-If you get this error:
+If you get this error:  
 ```
 Downloading GitHub repo MoTrPAC/MotrpacRatTraining6moData@HEAD
 Error in utils::download.file(url, path, method = method, quiet = quiet,  : 
   download from 'https://api.github.com/repos/MoTrPAC/MotrpacRatTraining6moData/tarball/HEAD' failed
 ```
-Try extending the timeout: 
+Try extending the timeout:  
 ```r
 devtools::install_github("MoTrPAC/MotrpacRatTraining6moData", timeout=1e5)
 ```
 
+If you get this error after extending the `timeout`:  
+```
+Downloading GitHub repo MoTrPAC/MotrpacRatTraining6moData@HEAD
+Error in utils::download.file(url, path, method = method, quiet = quiet,  : 
+  download from 'https://api.github.com/repos/MoTrPAC/MotrpacRatTraining6moData/tarball/HEAD' failed
+Error in `action()`:
+! `class` is absent but must be supplied.
+Run `rlang::last_error()` to see where the error occurred.
+```
+...this seems to be an intermittent issue that was resolved by running the same command 30 minutes later. 
+Note that this error was seen only on Mac, not Linux. In fact, on Mac, sometimes a successful installation
+of the package is followed by the same `rlang` error. 
+
 ### Last resort
-If you can't get `devtools::install_github("MoTrPAC/MotrpacRatTraining6moData")` to work, try this:  
+If you can't get `devtools::install_github("MoTrPAC/MotrpacRatTraining6moData", timeout=1e5)` to work, try this:  
 
 1. Go to <https://api.github.com/repos/MoTrPAC/MotrpacRatTraining6moData/tarball/HEAD>, which will automatically start downloading this repository in a tarball 
 2. Install the package from source: 
@@ -43,6 +82,7 @@ Load a data object into your environment using `data()`:
 ```r
 data(TRNSCRPT_LIVER_DA)
 ```
+
 List of current sets:
 ```
 ACETYL_HEART_DA                                Differential analysis of proteomics datasets
@@ -54,7 +94,15 @@ ASSAY_ABBREV_TO_CODE                           Assay abbreviation-to-code mappin
 ASSAY_CODE_TO_ABBREV                           Assay code-to-abbreviation mapping
 ASSAY_COLORS                                   Assay colors
 ASSAY_ORDER                                    Assay order
+ATAC_BAT_NORM_DATA_05FDR                       Normalized ATAC-seq data for training-regulated features
+ATAC_HEART_NORM_DATA_05FDR                     Normalized ATAC-seq data for training-regulated features
+ATAC_HIPPOC_NORM_DATA_05FDR                    Normalized ATAC-seq data for training-regulated features
+ATAC_KIDNEY_NORM_DATA_05FDR                    Normalized ATAC-seq data for training-regulated features
+ATAC_LIVER_NORM_DATA_05FDR                     Normalized ATAC-seq data for training-regulated features
+ATAC_LUNG_NORM_DATA_05FDR                      Normalized ATAC-seq data for training-regulated features
 ATAC_META                                      ATAC-seq metadata and QC
+ATAC_SKMGN_NORM_DATA_05FDR                     Normalized ATAC-seq data for training-regulated features
+ATAC_WATSC_NORM_DATA_05FDR                     Normalized ATAC-seq data for training-regulated features
 FEATURE_TO_GENE                                Feature-to-gene map
 GENE_UNIVERSES                                 Gene-centric universes
 GRAPH_COMPONENTS                               Graph components
@@ -71,7 +119,8 @@ IMMUNO_KIDNEY_DA                               Differential analysis of multiple
 IMMUNO_LIVER_DA                                Differential analysis of multiplexed immunoassays
 IMMUNO_LUNG_DA                                 Differential analysis of multiplexed immunoassays
 IMMUNO_META                                    Multiplexed immunoassay metadata and QC
-IMMUNO_NORM_DATA                               Processed immunoassay data used for differential analysis
+IMMUNO_NORM_DATA_FLAT                          Combined immunoassay data used for visualization
+IMMUNO_NORM_DATA_NESTED                        Processed immunoassay data used for differential analysis
 IMMUNO_OVARY_DA                                Differential analysis of multiplexed immunoassays
 IMMUNO_PLASMA_DA                               Differential analysis of multiplexed immunoassays
 IMMUNO_SKMGN_DA                                Differential analysis of multiplexed immunoassays
@@ -79,30 +128,56 @@ IMMUNO_SKMVL_DA                                Differential analysis of multiple
 IMMUNO_SMLINT_DA                               Differential analysis of multiplexed immunoassays
 IMMUNO_SPLEEN_DA                               Differential analysis of multiplexed immunoassays
 IMMUNO_TESTES_DA                               Differential analysis of multiplexed immunoassays
-IMMUNO_VIZ_DATA                                Combined immunoassay data used for visualization
 IMMUNO_WATSC_DA                                Differential analysis of multiplexed immunoassays
 METAB_ADRNL_DA                                 Differential analysis of merged metabolomics datasets
+METAB_ADRNL_DA_METAREG                         Meta-regression of metabolomics differential analysis results
 METAB_BAT_DA                                   Differential analysis of merged metabolomics datasets
+METAB_BAT_DA_METAREG                           Meta-regression of metabolomics differential analysis results
 METAB_COLON_DA                                 Differential analysis of merged metabolomics datasets
+METAB_COLON_DA_METAREG                         Meta-regression of metabolomics differential analysis results
 METAB_CORTEX_DA                                Differential analysis of merged metabolomics datasets
+METAB_CORTEX_DA_METAREG                        Meta-regression of metabolomics differential analysis results
 METAB_HEART_DA                                 Differential analysis of merged metabolomics datasets
+METAB_HEART_DA_METAREG                         Meta-regression of metabolomics differential analysis results
 METAB_HIPPOC_DA                                Differential analysis of merged metabolomics datasets
+METAB_HIPPOC_DA_METAREG                        Meta-regression of metabolomics differential analysis results
 METAB_HYPOTH_DA                                Differential analysis of merged metabolomics datasets
+METAB_HYPOTH_DA_METAREG                        Meta-regression of metabolomics differential analysis results
 METAB_KIDNEY_DA                                Differential analysis of merged metabolomics datasets
+METAB_KIDNEY_DA_METAREG                        Meta-regression of metabolomics differential analysis results
 METAB_LIVER_DA                                 Differential analysis of merged metabolomics datasets
+METAB_LIVER_DA_METAREG                         Meta-regression of metabolomics differential analysis results
 METAB_LUNG_DA                                  Differential analysis of merged metabolomics datasets
+METAB_LUNG_DA_METAREG                          Meta-regression of metabolomics differential analysis results
 METAB_OVARY_DA                                 Differential analysis of merged metabolomics datasets
+METAB_OVARY_DA_METAREG                         Meta-regression of metabolomics differential analysis results
 METAB_PLASMA_DA                                Differential analysis of merged metabolomics datasets
-METAB_SAMPLE_DATA                              Normalized metabolomics data
+METAB_PLASMA_DA_METAREG                        Meta-regression of metabolomics differential analysis results
+METAB_SAMPLE_DATA                              Nested metabolomics data used for differential analysis
 METAB_SKMGN_DA                                 Differential analysis of merged metabolomics datasets
+METAB_SKMGN_DA_METAREG                         Meta-regression of metabolomics differential analysis results
 METAB_SKMVL_DA                                 Differential analysis of merged metabolomics datasets
+METAB_SKMVL_DA_METAREG                         Meta-regression of metabolomics differential analysis results
 METAB_SMLINT_DA                                Differential analysis of merged metabolomics datasets
+METAB_SMLINT_DA_METAREG                        Meta-regression of metabolomics differential analysis results
 METAB_SPLEEN_DA                                Differential analysis of merged metabolomics datasets
+METAB_SPLEEN_DA_METAREG                        Meta-regression of metabolomics differential analysis results
 METAB_TESTES_DA                                Differential analysis of merged metabolomics datasets
+METAB_TESTES_DA_METAREG                        Meta-regression of metabolomics differential analysis results
 METAB_VENACV_DA                                Differential analysis of merged metabolomics datasets
-METAB_VIZ_DATA                                 Combined metabolomics data
+METAB_VENACV_DA_METAREG                        Meta-regression of metabolomics differential analysis results
+METAB_VIZ_DATA                                 
 METAB_WATSC_DA                                 Differential analysis of merged metabolomics datasets
+METAB_WATSC_DA_METAREG                         Meta-regression of metabolomics differential analysis results
+METHYL_BAT_NORM_DATA_05FDR                     Normalized DNA methylation data for training-regulated features
+METHYL_HEART_NORM_DATA_05FDR                   Normalized DNA methylation data for training-regulated features
+METHYL_HIPPOC_NORM_DATA_05FDR                  Normalized DNA methylation data for training-regulated features
+METHYL_KIDNEY_NORM_DATA_05FDR                  Normalized DNA methylation data for training-regulated features
+METHYL_LIVER_NORM_DATA_05FDR                   Normalized DNA methylation data for training-regulated features
+METHYL_LUNG_NORM_DATA_05FDR                    Normalized DNA methylation data for training-regulated features
 METHYL_META                                    RRBS metadata and QC
+METHYL_SKMGN_NORM_DATA_05FDR                   Normalized DNA methylation data for training-regulated features
+METHYL_WATSC_NORM_DATA_05FDR                   Normalized DNA methylation data for training-regulated features
 OUTLIERS                                       Sample outliers
 PATHWAY_PARENTS                                KEGG and Reactome parent pathways
 PHENO                                          Phenotypic data

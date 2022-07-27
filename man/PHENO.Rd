@@ -11,7 +11,7 @@ A data frame with 5955 rows and 509 variables:
 \item{\code{bid}}{integer, unique, randomly generated 8 digit numeric identifier used in linkage to phenotypic data}
 \item{\code{labelid}}{double, unique 11 digit identifier for specimen label ID, originating at the collection site,
 that provides a link to specimen processing and used for shipments to the biorepository (same as
-\code{vialLabel} only in instances where aliquots were not further processed at the biorepository)}
+\code{viallabel} only in instances where aliquots were not further processed at the biorepository)}
 \item{\code{viallabel}}{character, unique 11 digit numeric identifier of a sample vial made up of \code{bid},
 \code{key.sacrificetime}, \code{specimen.processing.sampletypedescription}, and aliquot number}
 \item{\code{key.protocol}}{character, protocol in which the procedures for sample collection were outlined}
@@ -171,8 +171,6 @@ that provides a link to specimen processing and used for shipments to the biorep
 \item{\code{specimen.processing.t_edtaspin}}{character, EDTA spin time}
 \item{\code{specimen.processing.t_freeze}}{character, specimen freeze time}
 \item{\code{specimen.processing.techid}}{character, specimen processing tech ID}
-\item{\code{calculated.variables.wgt_gain_after_train}}{double, weight gain after training:
-\code{max(nmr.testing.nmr_weight_2, nmr.testing.nmr_weight_1) - registration.weight}}
 \item{\code{calculated.variables.pct_body_fat_change}}{double, percent body fat change after training:
 \code{nmr.testing.nmr_fat_2 - nmr.testing.nmr_fat_1}}
 \item{\code{calculated.variables.pct_body_lean_change}}{double, percent body lean change after training:
@@ -193,10 +191,10 @@ specimen collection date and freeze time - last time trained}
 \item{\code{sacrificetime}}{character, sacrifice time point in weeks, one of "1w", "2w", "4w", "8w"}
 \item{\code{intervention}}{character, intervention, one of "training", "control"}
 \item{\code{group}}{character, intervention group, one of "1w", "2w", "4w", "8w", "control"}
-\item{\code{sex}}{character, sex, one of "male", "female"}
+\item{\code{sex}}{@eval sex()}
 \item{\code{time_to_freeze}}{integer, sample time to freeze, \code{calculated.variables.frozetime_after_train - calculated.variables.deathtime_after_train}}
 \item{\code{tissue_code_no}}{character, BIC tissue code. See \link[MotrpacBicQC:bic_animal_tissue_code]{MotrpacBicQC::bic_animal_tissue_code}.}
-\item{\code{tissue}}{character, tissue abbreviation, one of \link{TISSUE_ABBREV}}
+\item{\code{tissue}}{@eval tissue()}
 }
 }
 \usage{
