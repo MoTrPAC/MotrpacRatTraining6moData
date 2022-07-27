@@ -11,5 +11,5 @@ TODO
 }
 \details{
 TODO
-ATAC data is only available via download from the Cloud. See TODO.
+ATAC raw counts data are only available via download from the Cloud. See TODO.
 }

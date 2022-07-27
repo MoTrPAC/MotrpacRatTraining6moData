@@ -14,17 +14,17 @@
 \format{
 A data frame with protein IDs in rows (\code{feature_ID}) and samples in columns (\code{viallabel})
 
-An object of class \code{data.frame} with 5999 rows and 58 columns.
+An object of class \code{data.frame} with 5999 rows and 61 columns.
 
-An object of class \code{data.frame} with 9184 rows and 61 columns.
+An object of class \code{data.frame} with 9184 rows and 64 columns.
 
-An object of class \code{data.frame} with 9852 rows and 61 columns.
+An object of class \code{data.frame} with 9852 rows and 64 columns.
 
-An object of class \code{data.frame} with 10877 rows and 61 columns.
+An object of class \code{data.frame} with 10877 rows and 64 columns.
 
-An object of class \code{data.frame} with 9791 rows and 60 columns.
+An object of class \code{data.frame} with 9791 rows and 63 columns.
 
-An object of class \code{data.frame} with 9964 rows and 61 columns.
+An object of class \code{data.frame} with 9964 rows and 64 columns.
 }
 \source{
 \code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/proteomics-untargeted/prot-pr/normalized-data/*med-mad-normalized-logratio.txt}

@@ -8,7 +8,7 @@
 A data frame with 4044034 rows and 9 variables:
 \describe{
 \item{\code{entrez_gene}}{double, Entrez gene ID}
-\item{\code{feature_ID}}{character, MoTrPAC feature identifier}
+\item{\code{feature_ID}}{@eval feature_ID()}
 \item{\code{rgd_gene}}{integer, RGD gene ID}
 \item{\code{gene_symbol}}{character, official gene symbol}
 \item{\code{old_gene_symbol}}{character, semicolon-separated list of deprecated or alias gene symbols}
@@ -22,7 +22,7 @@ Note that "geneStart" and "geneEnd" are strand-agnostic, i.e. "geneStart"
 is always less than "geneEnd", even if the gene is on the negative strand ("geneStrand" == 2).}
 \item{\code{custom_annotation}}{character, a version of the \code{ChIPseeker} annotations with many corrections. Values include:
 "Distal Intergenic", "Promoter (<=1kb)", "Exon", "Promoter (1-2kb)", "Downstream (<5kb)", "Upstream (<5kb)", "5' UTR", "Intron", "3' UTR", "Overlaps Gene"}
-\item{\code{kegg_id}}{character, KEGG ID for METAB features only. See \code{\link[MotrpacBicQC:get_and_validate_mdd]{MotrpacBicQC::get_and_validate_mdd()}} for more details.}
+\item{\code{kegg_id}}{character, KEGG ID for METAB features only. See \link[MotrpacBicQC:metabolomics_data_dictionary]{MotrpacBicQC::metabolomics_data_dictionary} for more details.}
 }
 }
 \usage{
