@@ -89,6 +89,7 @@ ACETYL_HEART_DA                                Differential analysis of proteomi
 ACETYL_HEART_NORM_DATA                         Normalized protein acetylation data
 ACETYL_LIVER_DA                                Differential analysis of proteomics datasets
 ACETYL_LIVER_NORM_DATA                         Normalized protein acetylation data
+ACETYL_META                                    Proteomics sample-level metadata
 ASSAY_ABBREV                                   Assay or "ome" abbreviations
 ASSAY_ABBREV_TO_CODE                           Assay abbreviation-to-code mapping
 ASSAY_CODE_TO_ABBREV                           Assay code-to-abbreviation mapping
@@ -137,6 +138,7 @@ METAB_COLON_DA                                 Differential analysis of merged m
 METAB_COLON_DA_METAREG                         Meta-regression of metabolomics differential analysis results
 METAB_CORTEX_DA                                Differential analysis of merged metabolomics datasets
 METAB_CORTEX_DA_METAREG                        Meta-regression of metabolomics differential analysis results
+METAB_FEATURE_ID_MAP                           Metabolite feature ID map
 METAB_HEART_DA                                 Differential analysis of merged metabolomics datasets
 METAB_HEART_DA_METAREG                         Meta-regression of metabolomics differential analysis results
 METAB_HIPPOC_DA                                Differential analysis of merged metabolomics datasets
@@ -149,11 +151,12 @@ METAB_LIVER_DA                                 Differential analysis of merged m
 METAB_LIVER_DA_METAREG                         Meta-regression of metabolomics differential analysis results
 METAB_LUNG_DA                                  Differential analysis of merged metabolomics datasets
 METAB_LUNG_DA_METAREG                          Meta-regression of metabolomics differential analysis results
+METAB_NORM_DATA_FLAT                           Combined metabolomics data used for visualization
 METAB_OVARY_DA                                 Differential analysis of merged metabolomics datasets
 METAB_OVARY_DA_METAREG                         Meta-regression of metabolomics differential analysis results
 METAB_PLASMA_DA                                Differential analysis of merged metabolomics datasets
 METAB_PLASMA_DA_METAREG                        Meta-regression of metabolomics differential analysis results
-METAB_SAMPLE_DATA                              Nested metabolomics data used for differential analysis
+METAB_SAMPLE_DATA_NESTED                       Nested metabolomics data used for differential analysis
 METAB_SKMGN_DA                                 Differential analysis of merged metabolomics datasets
 METAB_SKMGN_DA_METAREG                         Meta-regression of metabolomics differential analysis results
 METAB_SKMVL_DA                                 Differential analysis of merged metabolomics datasets
@@ -166,7 +169,6 @@ METAB_TESTES_DA                                Differential analysis of merged m
 METAB_TESTES_DA_METAREG                        Meta-regression of metabolomics differential analysis results
 METAB_VENACV_DA                                Differential analysis of merged metabolomics datasets
 METAB_VENACV_DA_METAREG                        Meta-regression of metabolomics differential analysis results
-METAB_VIZ_DATA                                 
 METAB_WATSC_DA                                 Differential analysis of merged metabolomics datasets
 METAB_WATSC_DA_METAREG                         Meta-regression of metabolomics differential analysis results
 METHYL_BAT_NORM_DATA_05FDR                     Normalized DNA methylation data for training-regulated features
@@ -191,6 +193,7 @@ PHOSPHO_LIVER_DA                               Differential analysis of proteomi
 PHOSPHO_LIVER_NORM_DATA                        Normalized protein phosphorylation data
 PHOSPHO_LUNG_DA                                Differential analysis of proteomics datasets
 PHOSPHO_LUNG_NORM_DATA                         Normalized protein phosphorylation data
+PHOSPHO_META                                   Proteomics sample-level metadata
 PHOSPHO_SKMGN_DA                               Differential analysis of proteomics datasets
 PHOSPHO_SKMGN_NORM_DATA                        Normalized protein phosphorylation data
 PHOSPHO_WATSC_DA                               Differential analysis of proteomics datasets
@@ -205,6 +208,7 @@ PROT_LIVER_DA                                  Differential analysis of proteomi
 PROT_LIVER_NORM_DATA                           Normalized protein expression data
 PROT_LUNG_DA                                   Differential analysis of proteomics datasets
 PROT_LUNG_NORM_DATA                            Normalized protein expression data
+PROT_META                                      Proteomics sample-level metadata
 PROT_SKMGN_DA                                  Differential analysis of proteomics datasets
 PROT_SKMGN_NORM_DATA                           Normalized protein expression data
 PROT_WATSC_DA                                  Differential analysis of proteomics datasets
@@ -282,4 +286,72 @@ UBIQ_HEART_DA                                  Differential analysis of proteomi
 UBIQ_HEART_NORM_DATA                           Normalized protein ubiquitynation data
 UBIQ_LIVER_DA                                  Differential analysis of proteomics datasets
 UBIQ_LIVER_NORM_DATA                           Normalized protein ubiquitynation data
+UBIQ_META                                      Proteomics sample-level metadata
 ```
+
+## Access epigenomics data through Google Cloud Storage
+
+Due to file size, only normalized sample-level data and differential analysis results 
+corresponding to **training-regulated features** (5% IHW FDR) are contained in this package
+for chromatin accessibility (ATAC) and DNA methylation (METHYL). The full sets of epigenetic results
+may be downloaded through the following public URLs. 
+
+Type|Assay|Tissue|Object|URL
+---|---|---|---|---
+Differential analysis results|ATAC|BAT|ATAC_BAT_DA|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_BAT_DA.rda
+Differential analysis results|ATAC|HEART|ATAC_HEART_DA|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_HEART_DA.rda
+Differential analysis results|ATAC|HIPPOC|ATAC_HIPPOC_DA|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_HIPPOC_DA.rda
+Differential analysis results|ATAC|KIDNEY|ATAC_KIDNEY_DA|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_KIDNEY_DA.rda
+Differential analysis results|ATAC|LIVER|ATAC_LIVER_DA|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_LIVER_DA.rda
+Differential analysis results|ATAC|LUNG|ATAC_LUNG_DA|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_LUNG_DA.rda
+Differential analysis results|ATAC|SKM-GN|ATAC_SKMGN_DA|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_SKMGN_DA.rda
+Differential analysis results|ATAC|WAT-SC|ATAC_WATSC_DA|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_WATSC_DA.rda
+Normalized sample-level data|ATAC|BAT|ATAC_BAT_NORM_DATA|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_BAT_NORM_DATA.rda
+Normalized sample-level data|ATAC|HEART|ATAC_HEART_NORM_DATA|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_HEART_NORM_DATA.rda
+Normalized sample-level data|ATAC|HIPPOC|ATAC_HIPPOC_NORM_DATA|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_HIPPOC_NORM_DATA.rda
+Normalized sample-level data|ATAC|KIDNEY|ATAC_KIDNEY_NORM_DATA|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_KIDNEY_NORM_DATA.rda
+Normalized sample-level data|ATAC|LIVER|ATAC_LIVER_NORM_DATA|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_LIVER_NORM_DATA.rda
+Normalized sample-level data|ATAC|LUNG|ATAC_LUNG_NORM_DATA|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_LUNG_NORM_DATA.rda
+Normalized sample-level data|ATAC|SKM-GN|ATAC_SKMGN_NORM_DATA|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_SKMGN_NORM_DATA.rda
+Normalized sample-level data|ATAC|WAT-SC|ATAC_WATSC_NORM_DATA|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_WATSC_NORM_DATA.rda
+Raw sample-level counts|ATAC|BAT|ATAC_BAT_RAW_COUNTS|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_BAT_RAW_COUNTS.rda
+Raw sample-level counts|ATAC|HEART|ATAC_HEART_RAW_COUNTS|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_HEART_RAW_COUNTS.rda
+Raw sample-level counts|ATAC|HIPPOC|ATAC_HIPPOC_RAW_COUNTS|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_HIPPOC_RAW_COUNTS.rda
+Raw sample-level counts|ATAC|KIDNEY|ATAC_KIDNEY_RAW_COUNTS|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_KIDNEY_RAW_COUNTS.rda
+Raw sample-level counts|ATAC|LIVER|ATAC_LIVER_RAW_COUNTS|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_LIVER_RAW_COUNTS.rda
+Raw sample-level counts|ATAC|LUNG|ATAC_LUNG_RAW_COUNTS|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_LUNG_RAW_COUNTS.rda
+Raw sample-level counts|ATAC|SKM-GN|ATAC_SKMGN_RAW_COUNTS|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_SKMGN_RAW_COUNTS.rda
+Raw sample-level counts|ATAC|WAT-SC|ATAC_WATSC_RAW_COUNTS|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_WATSC_RAW_COUNTS.rda
+Differential analysis results|METHYL|BAT|METHYL_BAT_DA|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_BAT_DA.rda
+Differential analysis results|METHYL|HEART|METHYL_HEART_DA|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_HEART_DA.rda
+Differential analysis results|METHYL|HIPPOC|METHYL_HIPPOC_DA|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_HIPPOC_DA.rda
+Differential analysis results|METHYL|KIDNEY|METHYL_KIDNEY_DA|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_KIDNEY_DA.rda
+Differential analysis results|METHYL|LIVER|METHYL_LIVER_DA|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_LIVER_DA.rda
+Differential analysis results|METHYL|LUNG|METHYL_LUNG_DA|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_LUNG_DA.rda
+Differential analysis results|METHYL|SKM-GN|METHYL_SKMGN_DA|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_SKMGN_DA.rda
+Differential analysis results|METHYL|WAT-SC|METHYL_WATSC_DA|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_WATSC_DA.rda
+Feature annotation|METHYL|all|METHYL_FEATURE_ANNOT|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_FEATURE_ANNOT.rda
+Normalized sample-level data|METHYL|BAT|METHYL_BAT_NORM_DATA|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_BAT_NORM_DATA.rda
+Normalized sample-level data|METHYL|HEART|METHYL_HEART_NORM_DATA|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_HEART_NORM_DATA.rda
+Normalized sample-level data|METHYL|HIPPOC|METHYL_HIPPOC_NORM_DATA|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_HIPPOC_NORM_DATA.rda
+Normalized sample-level data|METHYL|KIDNEY|METHYL_KIDNEY_NORM_DATA|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_KIDNEY_NORM_DATA.rda
+Normalized sample-level data|METHYL|LIVER|METHYL_LIVER_NORM_DATA|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_LIVER_NORM_DATA.rda
+Normalized sample-level data|METHYL|LUNG|METHYL_LUNG_NORM_DATA|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_LUNG_NORM_DATA.rda
+Normalized sample-level data|METHYL|SKM-GN|METHYL_SKMGN_NORM_DATA|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_SKMGN_NORM_DATA.rda
+Normalized sample-level data|METHYL|WAT-SC|METHYL_WATSC_NORM_DATA|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_WATSC_NORM_DATA.rda
+Raw data|METHYL|BAT|BAT_raw|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/raw/RRBS/BAT_raw.RData
+Raw data|METHYL|HEART|HEART_raw|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/raw/RRBS/HEART_raw.RData
+Raw data|METHYL|HIPPOC|HIPPOC_raw|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/raw/RRBS/HIPPOC_raw.RData
+Raw data|METHYL|KIDNEY|KIDNEY_raw|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/raw/RRBS/KIDNEY_raw.RData
+Raw data|METHYL|LIVER|LIVER_raw|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/raw/RRBS/LIVER_raw.RData
+Raw data|METHYL|LUNG|LUNG_raw|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/raw/RRBS/LUNG_raw.RData
+Raw data|METHYL|SKM-GN|SKMGN_raw|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/raw/RRBS/SKMGN_raw.RData
+Raw data|METHYL|WAT-SC|WATSC_raw|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/raw/RRBS/WATSC_raw.RData
+Raw sample-level counts|METHYL|BAT|METHYL_BAT_RAW_COUNTS|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_BAT_RAW_COUNTS.rda
+Raw sample-level counts|METHYL|HEART|METHYL_HEART_RAW_COUNTS|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_HEART_RAW_COUNTS.rda
+Raw sample-level counts|METHYL|HIPPOC|METHYL_HIPPOC_RAW_COUNTS|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_HIPPOC_RAW_COUNTS.rda
+Raw sample-level counts|METHYL|KIDNEY|METHYL_KIDNEY_RAW_COUNTS|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_KIDNEY_RAW_COUNTS.rda
+Raw sample-level counts|METHYL|LIVER|METHYL_LIVER_RAW_COUNTS|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_LIVER_RAW_COUNTS.rda
+Raw sample-level counts|METHYL|LUNG|METHYL_LUNG_RAW_COUNTS|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_LUNG_RAW_COUNTS.rda
+Raw sample-level counts|METHYL|SKM-GN|METHYL_SKMGN_RAW_COUNTS|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_SKMGN_RAW_COUNTS.rda
+Raw sample-level counts|METHYL|WAT-SC|METHYL_WATSC_RAW_COUNTS|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_WATSC_RAW_COUNTS.rda
