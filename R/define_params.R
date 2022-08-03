@@ -51,8 +51,19 @@ dataset = function(){
         )
 }
 
+dataset_metab = function(){
+  paste("character,",
+        "metabolomics platform (metab-u-ionpneg,",
+        "metab-u-lrpneg, metab-u-lrppos, metab-u-hilicpos, metab-u-rpneg, metab-u-rppos,",
+        "metab-t-amines, metab-t-oxylipneg, metab-t-tca, metab-t-nuc, metab-t-acoa,",
+        "metab-t-ka) the feature was measured in. 'meta-reg' specifies results from",
+        "the metabolomics meta-regression for repeated features."
+  )
+}
+
 feature = function(){
-  paste("character, feature identifier in the format '[MotrpacRatTrainingData::ASSAY_ABBREV];[MotrpacRatTrainingData::TISSUE_ABBREV];feature_ID'.",
+  paste("character, unique feature identifier in the format '[MotrpacRatTrainingData::ASSAY_ABBREV];[MotrpacRatTrainingData::TISSUE_ABBREV];feature_ID'",
+        "only for training-regulated features at 5% IHW FDR.",
         "For redundant differential features, 'feature_ID' is prepended with the specific platform to make unique identifiers.",
         "See [MotrpacRatTrainingData::REPEATED_FEATURES] for details.")
 }
