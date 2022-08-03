@@ -294,7 +294,8 @@ UBIQ_META                                      Proteomics sample-level metadata
 Due to file size, only normalized sample-level data and differential analysis results 
 corresponding to **training-regulated features** (5% IHW FDR) are contained in this package
 for chromatin accessibility (ATAC) and DNA methylation (METHYL). The full sets of epigenetic results
-may be downloaded through the following public URLs. 
+may be downloaded through the following public URLs. Note that clicking on a URL automatically
+starts a download. 
 
 Type|Assay|Tissue|Object|URL
 ---|---|---|---|---
@@ -330,7 +331,6 @@ Differential analysis results|METHYL|LIVER|METHYL_LIVER_DA|https://storage.googl
 Differential analysis results|METHYL|LUNG|METHYL_LUNG_DA|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_LUNG_DA.rda
 Differential analysis results|METHYL|SKM-GN|METHYL_SKMGN_DA|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_SKMGN_DA.rda
 Differential analysis results|METHYL|WAT-SC|METHYL_WATSC_DA|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_WATSC_DA.rda
-Feature annotation|METHYL|all|METHYL_FEATURE_ANNOT|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_FEATURE_ANNOT.rda
 Normalized sample-level data|METHYL|BAT|METHYL_BAT_NORM_DATA|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_BAT_NORM_DATA.rda
 Normalized sample-level data|METHYL|HEART|METHYL_HEART_NORM_DATA|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_HEART_NORM_DATA.rda
 Normalized sample-level data|METHYL|HIPPOC|METHYL_HIPPOC_NORM_DATA|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_HIPPOC_NORM_DATA.rda
@@ -355,3 +355,4 @@ Raw sample-level counts|METHYL|LIVER|METHYL_LIVER_RAW_COUNTS|https://storage.goo
 Raw sample-level counts|METHYL|LUNG|METHYL_LUNG_RAW_COUNTS|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_LUNG_RAW_COUNTS.rda
 Raw sample-level counts|METHYL|SKM-GN|METHYL_SKMGN_RAW_COUNTS|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_SKMGN_RAW_COUNTS.rda
 Raw sample-level counts|METHYL|WAT-SC|METHYL_WATSC_RAW_COUNTS|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_WATSC_RAW_COUNTS.rda
+Feature annotation|METHYL|all|METHYL_FEATURE_ANNOT|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_FEATURE_ANNOT.rda
