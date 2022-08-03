@@ -154,7 +154,7 @@
 #'   \item{\code{tissue}}{@eval tissue()}
 #'   \item{\code{dataset}}{@eval dataset()}
 #'   \item{\code{selection_fdr}}{@eval selection_fdr()}
-#'   \item{\code{metabolite_refmet}}{character, RefMet name of metabolite OR the site-given code for unnamed metabolites}
+#'   \item{\code{metabolite_refmet}}{character, RefMet name of metabolite}
 #'   \item{\code{feature}}{character, duplicated \code{feature} in the format \code{[ASSAY_ABBREV];[TISSUE_ABBREV];[feature_ID]}}
 #'   \item{\code{new_feature_ID}}{character, new unique \code{feature_ID} with \code{panel} or \code{dataset} prepended}
 #'   \item{\code{new_feature}}{character, new unique \code{feature} in the format \code{[ASSAY_ABBREV];[TISSUE_ABBREV];[new_feature_ID]}} 
@@ -167,6 +167,53 @@
 #'     the feature-to-gene map and universe lists. Note that the graphical analysis
 #'     uses the modified feature_IDs; differential analysis results use the unmodified feature_IDs.
 "REPEATED_FEATURES"
+
+
+#' @title Metabolite feature ID map
+#' @description Mapping between various metabolite feature identifiers used
+#'   at different stages of data processing. 
+#' @format A data frame with 14420 rows and 13 variables:
+#' \describe{
+#'   \item{\code{tissue}}{@eval tissue()}
+#'   \item{\code{dataset}}{@eval dataset_metab()}
+#'   \item{\code{metabolite_name}}{character, name of metabolite as appears in the Chemical Analysis Site's data}
+#'   \item{\code{metabolite_refmet}}{character, RefMet name of metabolite}
+#'   \item{\code{feature_ID_sample_data}}{character, \code{feature_ID} used in the sample-level data, e.g. [METAB_NORM_DATA_FLAT]}
+#'   \item{\code{feature_ID_da}}{character, \code{feature_ID} used in the standard
+#'     differential analysis results tables, e.g. [METAB_BAT_DA]}
+#'   \item{\code{feature_ID_metareg}}{character, \code{feature_ID} used in the meta-regression
+#'     results tables, e.g. [METAB_BAT_DA_METAREG]}
+#'   \item{\code{dataset_metareg}}{character, version of the differential analysis results
+#'     retained after meta-regression, either \code{dataset} or 'meta-reg'}
+#'   \item{\code{feature}}{@eval}
+#'   \item{\code{rt}}{double, retention time}
+#'   \item{\code{mz}}{double, mass over charge}
+#'   \item{\code{neutral_mass}}{double, neutral mass}
+#'   \item{\code{formula}}{character, chemical formula} 
+#'}
+#' @details TODO
+"METAB_FEATURE_ID_MAP"
+
+
+#' @title RRBS feature annotation
+#' @format A data frame with 7585076 rows and 12 variables:
+#' \describe{
+#'   \item{\code{Chr}}{integer, chromosome}
+#'   \item{\code{Locus}}{character, base pair range of feature}
+#'   \item{\code{EntrezID}}{character, Entrez ID of closest gene}
+#'   \item{\code{Symbol}}{character, gene symbol of closest gene}
+#'   \item{\code{Strand}}{character, strand}
+#'   \item{\code{Width}}{integer, width of feature}
+#'   \item{\code{NumSites}}{integer, TODO}
+#'   \item{\code{Sites}}{character, TODO}
+#'   \item{\code{LocStart}}{integer, feature start in base pairs}
+#'   \item{\code{LocEnd}}{integer, feature end in base pairs}
+#'   \item{\code{tissue}}{@eval tissue()}
+#'   \item{\code{feature_ID}}{@eval feature_ID()}
+#'}
+#' @details TODO
+#' @name METHYL_FEATURE_ANNOT
+NULL
 
 
 ## Phenotypic data ####
@@ -610,6 +657,13 @@ NULL
 #' @name METHYL_RAW_DATA
 NULL
 
+#' @title RRBS raw counts
+#' @description TODO
+#' @format TODO
+#' @details TODO
+#'   Raw METHYL data is only available via download from the Cloud. See TODO.
+#' @name METHYL_RAW_COUNTS
+NULL
 
 #' @title Normalized DNA methylation data
 #' @description Normalized DNA methylation (METHYL) data used for visualization.
@@ -832,26 +886,23 @@ NULL
 #'   \item{\code{feature_metadata}}{list, feature metadata important for differntial abundance analysis} 
 #'}
 #' @details TODO
-"METAB_SAMPLE_DATA"
+"METAB_SAMPLE_DATA_NESTED"
 
 
-#' #' @title Combined metabolomics data used for visualization
-#' #' @description Combined sample-level metabolomics data used for visualization.
-#' #'   Data are equivalent to the data provided in [METAB_SAMPLE_DATA]. [METAB_SAMPLE_DATA] is compatible with the 
-#' #'   differential analysis functions while this format is compatible with visualization functions. 
-#' #' @format A data frame with 15116 rows and 55 variables:
-#' #' \describe{
-#' #'   \item{\code{feature}}{unique \code{feature} in the format \code{[ASSAY_ABBREV];[TISSUE_ABBREV];[feature_ID]},
-#' #'     where \code{feature_ID} is \code{new_feature_ID} when applicable. See [REPEATED_FEATURES] for details.}
-#' #' }
-#' #' @details
-#' #'   Analytes (\code{feature}) are in rows, and participants IDs (PIDs, i.e., unique animal IDs) are in columns. 
-#' #'   When an metabolite was measured by more than one platform, the platform name is prepended to \code{feature_ID} to 
-#' #'   provide unique feature identifiers. See [REPEATED_FEATURES] for details. For completeness, analytes are defined 
-#' #'   both with the \code{feature_ID} used in the original sample-level data AND with the \code{feature} used in the 
-#' #'   graphical analysis results, e.g., [GRAPH_STATES]. 
-#' #'   
-#' "METAB_VIZ_DATA"
+#' @title Combined metabolomics data used for visualization
+#' @description Combined sample-level metabolomics data used for visualization.
+#'   Data are equivalent to the data provided in [METAB_SAMPLE_DATA_NESTED]. [METAB_SAMPLE_DATA_NESTED] is compatible with the 
+#'   differential analysis functions while this format is compatible with visualization functions. 
+#' @format A data frame with 59 variables:
+#' \describe{
+#'   \item{\code{feature}}{@eval feature()}
+#'   \item{\code{feature_ID}}{@eval feature_ID()}
+#'   \item{\code{tissue}}{@eval tissue()}
+#'   \item{\code{assay}}{@eval assay()}
+#'   \item{\code{dataset}}{@eval dataset_metab()}
+#'}
+#' @details TODO
+"METAB_NORM_DATA_FLAT"
 
 
 ## Differential analysis ####
@@ -1190,6 +1241,31 @@ NULL
 #'   panels, so metadata must be matched to unique samples using both \code{viallabel} and \code{panel_name}. 
 "IMMUNO_META"
 
+
+#' @title Proteomics sample-level metadata
+#' @description TMT channel and plex information for each proteomics assay
+#' @format A data frame with 5 variables:
+#' \describe{
+#'   \item{\code{tmt11_channel}}{character, TMT channel}
+#'   \item{\code{tmt_plex}}{character, TMT plex}
+#'   \item{\code{tissue}}{@eval tissue()}
+#'   \item{\code{viallabel}}{@eval viallabel()}
+#'   \item{\code{assay}}{@eval assay()} 
+#'}
+#' @details TODO
+#' @name PROTEOMICS_META
+"PHOSPHO_META"
+
+#' @rdname PROTEOMICS_META
+"PROT_META"
+
+#' @rdname PROTEOMICS_META
+"ACETYL_META"
+
+#' @rdname PROTEOMICS_META
+"UBIQ_META"
+
+
 ### Outliers ####
 
 #' @title Sample outliers
@@ -1392,7 +1468,7 @@ NULL
 #'   \item{\code{tissue}}{@eval tissue()}
 #'   \item{\code{tissue_code}}{@eval tissue_code()}
 #'   \item{\code{feature_ID}}{@eval feature_ID()}
-#'   \item{\code{dataset}}{character, mame of platform used by the site, e.g. 'metab-u-hilicpos'}
+#'   \item{\code{dataset}}{@eval dataset_metab()}
 #'   \item{\code{site}}{character, Chemical Analysis Site (CAS) name}
 #'   \item{\code{is_targeted}}{logical, is this a targeted platform?}
 #'   \item{\code{sex}}{@eval sex()}
@@ -1405,7 +1481,7 @@ NULL
 #'   \item{\code{covariates}}{@eval covariates()}
 #'   \item{\code{comparison_average_intensity}}{@eval comparison_average_intensity()}
 #'   \item{\code{reference_average_intensity}}{@eval reference_average_intensity()}
-#'   \item{\code{metabolite_refmet}}{character, RefMet name of metabolite OR the site-given code for unnamed metabolites}
+#'   \item{\code{metabolite_refmet}}{character, RefMet name of metabolite}
 #'   \item{\code{cv}}{double, feature coefficient of variation in the dataset}
 #'   \item{\code{metabolite}}{character, name of metabolite as appears in the CAS's data}
 #'   \item{\code{control_cv}}{double, feature coefficient of variation in the dataset}
@@ -1489,7 +1565,7 @@ NULL
 #'   \item{\code{tissue}}{@eval tissue()}
 #'   \item{\code{tissue_code}}{@eval tissue_code()}
 #'   \item{\code{feature_ID}}{@eval feature_ID()}
-#'   \item{\code{dataset}}{character, mame of platform used by the site, e.g. 'metab-u-hilicpos'}
+#'   \item{\code{dataset}}{@eval dataset_metab()}
 #'   \item{\code{site}}{character, Chemical Analysis Site (CAS) name}
 #'   \item{\code{is_targeted}}{logical, is this a targeted platform?}
 #'   \item{\code{sex}}{@eval sex()}
@@ -1503,7 +1579,7 @@ NULL
 #'   \item{\code{covariates}}{@eval covariates()}
 #'   \item{\code{comparison_average_intensity}}{@eval comparison_average_intensity()}
 #'   \item{\code{reference_average_intensity}}{@eval reference_average_intensity()}
-#'   \item{\code{metabolite_refmet}}{character, RefMet name of metabolite OR the site-given code for unnamed metabolites}
+#'   \item{\code{metabolite_refmet}}{character, RefMet name of metabolite}
 #'   \item{\code{cv}}{double, feature coefficient of variation in the dataset}
 #'   \item{\code{metabolite}}{character, name of metabolite as appears in the CAS's data}
 #'   \item{\code{control_cv}}{double, feature coefficient of variation in the dataset}
