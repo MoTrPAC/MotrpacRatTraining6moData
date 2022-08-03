@@ -42,7 +42,8 @@ Error in utils::download.file(url, path, method = method, quiet = quiet,  :
 ```
 Try extending the timeout:  
 ```r
-devtools::install_github("MoTrPAC/MotrpacRatTraining6moData", timeout=1e5)
+options(timeout=1e5)
+devtools::install_github("MoTrPAC/MotrpacRatTraining6moData")
 ```
 
 If you get this error after extending the `timeout`:  
@@ -54,12 +55,11 @@ Error in `action()`:
 ! `class` is absent but must be supplied.
 Run `rlang::last_error()` to see where the error occurred.
 ```
-...this seems to be an intermittent issue that was resolved by running the same command 30 minutes later. 
-Note that this error was seen only on Mac, not Linux. In fact, on Mac, sometimes a successful installation
-of the package is followed by the same `rlang` error. 
+...this seems to be an intermittent issue seen only on Mac, not Linux or Windows. 
+This was resolved by [installing the newest version of R](https://cran.rstudio.com/). 
 
 ### Last resort
-If you can't get `devtools::install_github("MoTrPAC/MotrpacRatTraining6moData", timeout=1e5)` to work, try this:  
+If you can't get `devtools::install_github("MoTrPAC/MotrpacRatTraining6moData")` to work, try this:  
 
 1. Go to <https://api.github.com/repos/MoTrPAC/MotrpacRatTraining6moData/tarball/HEAD>, which will automatically start downloading this repository in a tarball 
 2. Install the package from source: 
