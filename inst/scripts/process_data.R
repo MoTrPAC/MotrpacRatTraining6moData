@@ -133,29 +133,33 @@ dea_directories = c('TRNSCRPT' = sprintf("%s/transcriptomics/transcript-rna-seq/
                     'PHOSPHO' = sprintf("%s/proteomics-untargeted/prot-ph/dea", data_dir),
                     'ACETYL' = sprintf("%s/proteomics-untargeted/prot-ac/dea", data_dir),
                     'UBIQ' = sprintf("%s/proteomics-untargeted/prot-ub/dea", data_dir),
-                    'METHYL' = sprintf("%s/epigenomics/epigen-rrbs/dea", data_dir),
-                    'ATAC' = sprintf("%s/epigenomics/epigen-atac-seq/dea", data_dir),
                     'IMMUNO' = sprintf("%s/proteomics-targeted/immunoassay-luminex/dea", data_dir),
                     'METAB' = sprintf("%s/metabolomics-named-merged/dea", data_dir),
-                    'metab-metareg' = sprintf("%s/metabolomics-named-merged/dea/meta-regression", data_dir))
+                    'metab-metareg' = sprintf("%s/metabolomics-named-merged/dea/meta-regression", data_dir),
+                    'METHYL' = sprintf("%s/epigenomics/epigen-rrbs/dea", data_dir),
+                    'ATAC' = sprintf("%s/epigenomics/epigen-atac-seq/dea", data_dir))
 
 dea_patterns = c('TRNSCRPT' = 'timewise-dea-fdr',
                  'PROT' = 'prot-pr_timewise-dea-fdr',
                  'PHOSPHO' = 'prot-ph_timewise-dea-fdr',
                  'ACETYL' = 'prot-ac_timewise-dea-fdr',
                  'UBIQ' = 'prot-ub-protein-corrected_timewise-dea-fdr',
-                 'METHYL' = 'epigen-rrbs_timewise-dea-fdr',
-                 'ATAC' = 'epigen-atac-seq_timewise-dea-fdr',
                  'IMMUNO' = 'pass1b-06_immunoassay_timewise-dea-fdr_20211005.txt', # just one file
                  'METAB' = 'metab_timewise-dea-fdr',
-                 'metab-metareg' = 'metab-meta-reg_timewise-dea-fdr')                    
+                 'metab-metareg' = 'metab-meta-reg_timewise-dea-fdr',
+                 'METHYL' = 'epigen-rrbs_timewise-dea-fdr',
+                 'ATAC' = 'epigen-atac-seq_timewise-dea-fdr')                    
 
 list_of_dfs = c()
 #system("gsutil cp gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/resources/master_feature_to_gene_20211116.RData /oak/stanford/groups/smontgom/nicolerg/tmp")
 load("/oak/stanford/groups/smontgom/nicolerg/tmp/master_feature_to_gene_20211116.RData")
 REPEATED_FEATURES = as.data.table(repeated_feature_map)
 
+load("data/TRAINING_REGULATED_FEATURES.rda") # from DEA tables, 5% FDR 
+differential_features = unique(TRAINING_REGULATED_FEATURES$feature)
+
 rep = data.table(REPEATED_FEATURES)
+
 for(ome in names(dea_directories)){
   if(ome == "IMMUNO") next
   if(ome == "metab-metareg"){
@@ -186,12 +190,12 @@ for(ome in names(dea_directories)){
              new=c("tissue_code","assay_code","tissue"))
     dt[,assay := assay_abbr]
     
-    if(ome=="METAB"){
+    if(assay_abbr=="METAB"){
       # fix repeated features
       features = dt[,feature]
       if(any(features %in% rep[,feature])){
         new_features = sprintf("METAB;%s;%s:%s", dt[,tissue], dt[,dataset], dt[,feature_ID])
-        print(new_features[new_features %in% rep[,new_feature]])
+        print(unique(new_features[new_features %in% rep[,new_feature]]))
         features[new_features %in% rep[,new_feature]] = new_features[new_features %in% rep[,new_feature]]
         dt[,feature := features]
       }
@@ -215,6 +219,9 @@ for(ome in names(dea_directories)){
     print(other_cols)
     dt = dt[,c(curr_cols, other_cols), with=F]
     
+    # remove "feature" if it's not a differential feature 
+    dt[!feature %in% differential_features, feature := NA]
+    
     # Convert to data.frame for ease of use 
     df = as.data.frame(dt) 
 
@@ -237,16 +244,28 @@ for(ome in names(dea_directories)){
                         new_name)
       do.call("save", list(as.name(new_name),
                            file = outfile,
-                           compress = "bzip2", compression_level = 9))
+                           compress = "bzip2",
+                           compression_level = 9)) 
       print(outfile)
       print(head(get(new_name)))
+    }else{
+      print(new_name)
+      print(head(get(new_name)))
+      do.call("use_data", list(as.name(new_name), overwrite = TRUE))
     }
-    print(new_name)
-    print(head(get(new_name)))
-    do.call("use_data", list(as.name(new_name), overwrite = TRUE))
   }
 }
 
+## Fix missing refmet name for METAB
+load("data/METAB_WATSC_DA_METAREG.rda")
+METAB_WATSC_DA_METAREG$metabolite_refmet[METAB_WATSC_DA_METAREG$feature_ID == "TG(36:1)>TG(4:0_16:0_16:1)_and_TG(2:0_16:0_18:1)_feature4"] = "TG(36:1)_lp_d"
+# save
+use_data(METAB_WATSC_DA_METAREG, overwrite=T)
+
+load("data/METAB_WATSC_DA.rda")
+METAB_WATSC_DA$metabolite_refmet[METAB_WATSC_DA$feature_ID == "TG(36:1)>TG(4:0_16:0_16:1)_and_TG(2:0_16:0_18:1)_feature4"] = "TG(36:1)_lp_d"
+# save
+use_data(METAB_WATSC_DA, overwrite=T)
 
 ## Handle IMMUNO separately
 ome = "IMMUNO"
@@ -296,6 +315,9 @@ for (curr_tissue in unique(dt[,tissue])){
   print(other_cols)
   dt_sub = dt_sub[,c(curr_cols, other_cols), with=F]
   
+  # remove non-DE feature
+  dt_sub[!feature %in% differential_features, feature := NA]
+  
   # Convert to data.frame for ease of use 
   df = as.data.frame(dt_sub) 
 
@@ -319,6 +341,12 @@ sinew::makeOxygen(UBIQ_HEART_DA)
 sinew::makeOxygen(METAB_PLASMA_DA)
 sinew::makeOxygen(IMMUNO_PLASMA_DA)
 sinew::makeOxygen(METAB_PLASMA_DA_METAREG)
+
+load(sprintf("/oak/stanford/groups/smontgom/shared/motrpac/internal_releases/motrpac-data-freeze-pass/v1.1/extracted_sample_level_data/ATAC/ATAC_BAT_DA.rda"))
+sinew::makeOxygen(ATAC_BAT_DA)
+
+load(sprintf("/oak/stanford/groups/smontgom/shared/motrpac/internal_releases/motrpac-data-freeze-pass/v1.1/extracted_sample_level_data/METHYL/METHYL_BAT_DA.rda"))
+sinew::makeOxygen(METHYL_BAT_DA)
 
 # Phenotypic data ---------------------------------------------------------------
 
@@ -487,3 +515,59 @@ sinew::makeOxygen(TRNSCRPT_META)
 sinew::makeOxygen(ATAC_META)
 sinew::makeOxygen(METHYL_META)
 
+
+# Proteomics sample-level data -------------------------------------------------
+
+#gs://motrpac-data-freeze-pass/pass1b-06/v1.1/results/proteomics-untargeted/t58-heart/prot-pr/motrpac_pass1b-06_t58-heart_prot-pr_vial-metadata.txt 
+indir = "/oak/stanford/groups/smontgom/shared/motrpac/internal_releases/motrpac-data-freeze-pass/v1.1/results/extracted_proteomics"
+system(sprintf("gsutil -m cp gs://motrpac-data-freeze-pass/pass1b-06/v1.1/results/proteomics-untargeted/**/*vial-metadata.txt %s", indir))
+
+for(assay_code in c('prot-pr','prot-ac','prot-ub','prot-ph')){
+  dtlist = list()
+  files = list.files(path=indir, pattern=assay_code, full.names=T)
+  for(f in files){
+    dt = fread(f, sep="\t", header=T)
+    # add tissue label 
+    dt[,tissue := TISSUE_CODE_TO_ABBREV[[unname(unlist(strsplit(basename(f), '_')))[3]]]]
+    dt[,viallabel := as.character(vial_label)]
+    dt[,vial_label := NULL]
+    dtlist[[f]] = dt
+  }
+  dt = rbindlist(dtlist)
+  dt[,assay := ASSAY_CODE_TO_ABBREV[[assay_code]]]
+  df = as.data.frame(dt)
+  print(head(df))
+  
+  # save table
+  new_name = sprintf("%s_META", ASSAY_CODE_TO_ABBREV[[assay_code]])
+  
+  assign(new_name, df)
+  print(new_name)
+  print(head(get(new_name)))
+  do.call("use_data", list(as.name(new_name), overwrite = TRUE))  
+}
+
+
+# RRBS feature annotation ------------------------------------------------------
+
+indir = "/oak/stanford/groups/smontgom/shared/motrpac/internal_releases/motrpac-data-freeze-pass/v1.1/extracted_sample_level_data/METHYL"
+system(sprintf("gsutil -m cp gs://mawg-data/pass1b-06/epigen-rrbs-v2/data/*_epigen-rrbs_normalized-data-feature-annot.txt %s", indir))
+
+dtlist = list()
+files = list.files(path=indir, pattern="normalized-data-feature-annot", full.names=T)
+for(f in files){
+  dt = fread(f, sep="\t", header=T)
+  # add tissue label 
+  dt[,tissue := TISSUE_CODE_TO_ABBREV[[unname(unlist(strsplit(basename(f), '_')))[3]]]]
+  dt[,feature_ID := featureID]
+  dt[,featureID := NULL]
+  dtlist[[f]] = dt
+  print(f)
+}
+dt = rbindlist(dtlist)
+
+METHYL_FEATURE_ANNOT = as.data.frame(dt)
+save(METHYL_FEATURE_ANNOT, 
+     file="/oak/stanford/groups/smontgom/shared/motrpac/internal_releases/motrpac-data-freeze-pass/v1.1/extracted_sample_level_data/METHYL/METHYL_FEATURE_ANNOT.rda", 
+     compress = "bzip2", 
+     compression_level = 9)

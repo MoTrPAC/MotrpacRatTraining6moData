@@ -32,7 +32,7 @@ A data frame with 30 variables:
 \item{\code{tissue}}{@eval tissue()}
 \item{\code{tissue_code}}{@eval tissue_code()}
 \item{\code{feature_ID}}{@eval feature_ID()}
-\item{\code{dataset}}{character, mame of platform used by the site, e.g. 'metab-u-hilicpos'}
+\item{\code{dataset}}{@eval dataset_metab()}
 \item{\code{site}}{character, Chemical Analysis Site (CAS) name}
 \item{\code{is_targeted}}{logical, is this a targeted platform?}
 \item{\code{sex}}{@eval sex()}
@@ -46,7 +46,7 @@ A data frame with 30 variables:
 \item{\code{covariates}}{@eval covariates()}
 \item{\code{comparison_average_intensity}}{@eval comparison_average_intensity()}
 \item{\code{reference_average_intensity}}{@eval reference_average_intensity()}
-\item{\code{metabolite_refmet}}{character, RefMet name of metabolite OR the site-given code for unnamed metabolites}
+\item{\code{metabolite_refmet}}{character, RefMet name of metabolite}
 \item{\code{cv}}{double, feature coefficient of variation in the dataset}
 \item{\code{metabolite}}{character, name of metabolite as appears in the CAS's data}
 \item{\code{control_cv}}{double, feature coefficient of variation in the dataset}
