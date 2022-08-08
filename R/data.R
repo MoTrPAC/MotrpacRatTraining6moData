@@ -1331,7 +1331,7 @@ NULL
 #'   \item{\code{bid}}{integer, biospecimen ID}
 #'   \item{\code{luminex_sample_name}}{character, sample name used by HIMC in raw data files}
 #'   \item{\code{panel_name}}{character, LUMINEX panel name}
-#'   \item{\code{plate_id}}{character, plate ID in format "[date]-[tissues]_[panel_name]"}
+#'   \item{\code{plate_id}}{character, plate ID in format "`[date]-[tissues]_[panel_name]`"}
 #'   \item{\code{ppt_type}}{character, species}
 #'   \item{\code{weight_mg}}{integer, sample weight in mg (solid tissue only)}
 #'   \item{\code{volume_ul}}{integer, sample volume in uL (plasma only)}
@@ -1990,11 +1990,11 @@ NULL
 #'   using [gprofiler2::gost()] with custom backgrounds defined by [GENE_UNIVERSES].  
 #'   Only pathways with at least 10 and up to 200 members were tested. Because [gprofiler2::gost()]
 #'   only returns adjusted p-values, we recalculated nominal p-values using a one-tailed hypergeometric test, 
-#'   which is consistent with how [gprofiler2::gost()] calculates enrichments. See [cluster_pathway_enrichment()] for implementation. 
+#'   which is consistent with how [gprofiler2::gost()] calculates enrichments. See [MotrpacRatTraining6moData::cluster_pathway_enrichment()] for implementation. 
 #'   
 #'   For metabolites, 
 #'   we performed enrichment of KEGG pathways using the hypergeometric method in [FELLA::enrich()] 
-#'   with custom backgrounds defined by [GENE_UNIVERSES]. See [run_fella()] for implementation. 
+#'   with custom backgrounds defined by [GENE_UNIVERSES]. See [MotrpacRatTraining6moData::run_fella()] for implementation. 
 #'   
 #'   Pathway enrichment analysis p-values 
 #'   were adjusted across all results using Independent Hypothesis Weighting (IHW) with tissue as a covariate.
