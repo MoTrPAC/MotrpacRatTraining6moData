@@ -40,9 +40,11 @@ Epigenomics features were mapped to the nearest gene using the R function \code{
 with Ensembl gene annotation (Rattus norvegicus release 96).
 Gene symbols, Entrez IDs, Ensembl IDs, and RGD IDs were mapped to each
 other using RGD’s rat gene annotation
-(\url{https://download.rgd.mcw.edu/data_release/RAT/GENES_RAT.txt}, generated on 2021/11/12).\preformatted{For fast(er) indexing, convert this object to a \code{data.table} and use 
+(\url{https://download.rgd.mcw.edu/data_release/RAT/GENES_RAT.txt}, generated on 2021/11/12).
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{For fast(er) indexing, convert this object to a \code{data.table} and use 
 [data.table::setkey()] to set the key to the column you are matching. 
 This dramatically improves performance. 
-}
+}\if{html}{\out{</div>}}
 }
 \keyword{datasets}
