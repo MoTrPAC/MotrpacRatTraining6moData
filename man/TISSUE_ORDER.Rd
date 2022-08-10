@@ -11,6 +11,6 @@ Unnamed character vector
 TISSUE_ORDER
 }
 \description{
-Biological order of \code{TISSUE_ABBREV} used in figures
+Biological order of \link{TISSUE_ABBREV} used in figures
 }
 \keyword{datasets}
