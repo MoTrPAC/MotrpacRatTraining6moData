@@ -7,12 +7,12 @@
 \format{
 A data frame with 34244 rows and 10 variables:
 \describe{
-\item{\code{feature}}{@eval feature()}
-\item{\code{ome}}{@eval assay()}
-\item{\code{tissue}}{@eval tissue(). Note that VENACV, OVARY, TESTES,
+\item{\code{feature}}{character, unique feature identifier in the format '\link{ASSAY_ABBREV};\link{TISSUE_ABBREV};feature_ID' only for training-regulated features at 5\% IHW FDR. For redundant differential features, 'feature_ID' is prepended with the specific platform to make unique identifiers. See \link{REPEATED_FEATURES} for details.}
+\item{\code{ome}}{character, assay abbreviation, one of \link{ASSAY_ABBREV}}
+\item{\code{tissue}}{character, tissue abbreviation, one of \link{TISSUE_ABBREV}. Note that VENACV, OVARY, TESTES,
 were not included in the graphical representation of differential
 features due to missing groups (e.g., females trained for 1 week).}
-\item{\code{feature_ID}}{@eval feature_ID()}
+\item{\code{feature_ID}}{character, MoTrPAC feature identifier}
 \item{\code{state_1w}}{character, state (1, up-regulated; 0, null; -1, down-regulated)
 of the feature in each sex (F, females; M, males) at the 1-week training time point,
 relative to sex-matched untrained animals}
