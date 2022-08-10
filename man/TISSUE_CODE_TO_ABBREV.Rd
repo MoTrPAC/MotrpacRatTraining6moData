@@ -11,7 +11,7 @@ Named character vector
 TISSUE_CODE_TO_ABBREV
 }
 \description{
-Values are abbreviations (\code{TISSUE_ABBREV}) and names are codes.
+Values are abbreviations \link{TISSUE_ABBREV} and names are codes.
 See \link[MotrpacBicQC:bic_animal_tissue_code]{MotrpacBicQC::bic_animal_tissue_code} for more details.
 }
 \keyword{datasets}

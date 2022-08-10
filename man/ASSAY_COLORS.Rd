@@ -11,6 +11,6 @@ Named character vector
 ASSAY_COLORS
 }
 \description{
-Assay colors used in figures. Values are hex codes and names are assay abbreviations (\code{ASSAY_ABBREV}).
+Assay colors used in figures. Values are hex codes and names are assay abbreviations \link{ASSAY_ABBREV}.
 }
 \keyword{datasets}

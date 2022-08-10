@@ -11,6 +11,6 @@ Named character vector
 TISSUE_COLORS
 }
 \description{
-Tissue colors used in figures. Values are hex codes and names are tissue abbreviations (\code{TISSUE_ABBREV}) OR tissue codes.
+Tissue colors used in figures. Values are hex codes and names are tissue abbreviations \link{TISSUE_ABBREV} OR tissue codes.
 }
 \keyword{datasets}

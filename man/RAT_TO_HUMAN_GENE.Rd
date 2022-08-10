@@ -22,12 +22,12 @@ A data frame with 21461 rows and 12 variables:
 }
 }
 \source{
-\preformatted{<https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_39/gencode.v39.metadata.EntrezGene.gz>
+\if{html}{\out{<div class="sourceCode">}}\preformatted{<https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_39/gencode.v39.metadata.EntrezGene.gz>
 <https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_39/gencode.v39.metadata.HGNC.gz>
 <https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_39/gencode.v39.chr_patch_hapl_scaff.basic.annotation.gtf.gz>
 <https://download.rgd.mcw.edu/pub/data_release/RGD_ORTHOLOGS.txt> (2020-01-10)
 <https://download.rgd.mcw.edu/data_release/RAT/GENES_RAT.txt> (2020-11-15)
-}
+}\if{html}{\out{</div>}}
 }
 \usage{
 RAT_TO_HUMAN_GENE
@@ -39,10 +39,12 @@ Mapping between various rat and human gene identifiers for orthologs as reported
 This map was compiled from several external sources.
 GENCODE metadata and annotation files were used to map between human Ensembl transcript IDs, Entrez IDs,
 GENCODE IDs, and Ensembl gene IDs \href{https://pubmed.ncbi.nlm.nih.gov/33270111/}{(Frankish et al., 2021)}. RGD files were used to map between human and
-rat gene symbols as well as between various rat gene identifiers \href{https://pubmed.ncbi.nlm.nih.gov/31713623/}{(Smith et al., 2020)}.\preformatted{There is one row per unique combination of \code{RAT_SYMBOL}, \code{RAT_GENE_RGD_ID}, \code{RAT_NCBI_GENE_ID}, \code{RAT_ENSEMBL_ID},
+rat gene symbols as well as between various rat gene identifiers \href{https://pubmed.ncbi.nlm.nih.gov/31713623/}{(Smith et al., 2020)}.
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{There is one row per unique combination of \code{RAT_SYMBOL}, \code{RAT_GENE_RGD_ID}, \code{RAT_NCBI_GENE_ID}, \code{RAT_ENSEMBL_ID},
 \code{RAT_UNIPROT_ID}, \code{HUMAN_ORTHOLOG_SYMBOL}, \code{HUMAN_ORTHOLOG_RGD}, \code{HUMAN_ORTHOLOG_NCBI_GENE_ID}, and \code{HUMAN_ORTHOLOG_ENSEMBL_ID}, 
 so some genes correspond to multiple rows in the table. For example, there are 24 rows corresponding to \code{RAT_SYMBOL == "Tnf"} 
 because 3 \code{RAT_ENSEMBL_ID}s correspond to Tnf, and 8 \code{HUMAN_ORTHOLOG_ENSEMBL_ID}s correspond to TNF.  
-}
+}\if{html}{\out{</div>}}
 }
 \keyword{datasets}

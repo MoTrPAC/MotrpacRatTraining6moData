@@ -16,8 +16,8 @@ A data frame with 7585076 rows and 12 variables:
 \item{\code{Sites}}{character, TODO}
 \item{\code{LocStart}}{integer, feature start in base pairs}
 \item{\code{LocEnd}}{integer, feature end in base pairs}
-\item{\code{tissue}}{@eval tissue()}
-\item{\code{feature_ID}}{@eval feature_ID()}
+\item{\code{tissue}}{character, tissue abbreviation, one of \link{TISSUE_ABBREV}}
+\item{\code{feature_ID}}{character, MoTrPAC feature identifier}
 }
 }
 \description{

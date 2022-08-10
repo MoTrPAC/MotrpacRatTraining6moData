@@ -26,10 +26,10 @@ A data frame with 156906 rows and 22 variables:
 ignored because p-values are only adjusted within each tissue/ome/cluster combination. Use the \code{adj_p_value} column instead.}
 \item{\code{computed_p_value}}{double, nominal hypergeometric p-value, computed from the \code{\link[gprofiler2:gost]{gprofiler2::gost()}} output}
 \item{\code{cluster}}{character, graphical cluster (node, edge, or path) name}
-\item{\code{tissue}}{@eval tissue(). Note that VENACV, OVARY, TESTES,
+\item{\code{tissue}}{character, tissue abbreviation, one of \link{TISSUE_ABBREV}. Note that VENACV, OVARY, TESTES,
 were not included in the graphical representation of differential
 features due to missing groups (e.g., females trained for 1 week).}
-\item{\code{ome}}{@eval assay()}
+\item{\code{ome}}{character, assay abbreviation, one of \link{ASSAY_ABBREV}}
 \item{\code{kegg_id}}{character, pathway ID returned from \code{\link[FELLA:enrich-funs]{FELLA::enrich()}}}
 \item{\code{adj_p_value}}{double, IHW FDR, calculated using \code{\link[IHW:ihw.default]{IHW::ihw()}} with \code{tissue} as a covariate}
 }

@@ -11,6 +11,6 @@ Unnamed character vector
 ASSAY_ORDER
 }
 \description{
-Biological order of \code{ASSAY_ABBREV} used in figures
+Biological order of \link{ASSAY_ABBREV} used in figures
 }
 \keyword{datasets}
