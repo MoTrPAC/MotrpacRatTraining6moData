@@ -7,8 +7,8 @@
 \format{
 A tibble with 113 rows and 5 variables:
 \describe{
-\item{\code{tissue}}{@eval tissue_code()}
-\item{\code{assay_code}}{@eval assay_code()}
+\item{\code{tissue}}{character, tissue code used in data release. See \link[MotrpacBicQC:bic_animal_tissue_code]{MotrpacBicQC::bic_animal_tissue_code}.}
+\item{\code{assay_code}}{character, assay code used in data release. See \link[MotrpacBicQC:assay_codes]{MotrpacBicQC::assay_codes}.}
 \item{\code{sample_data}}{list where first element is a tibble of feature by viallabel normalized sample-level data}
 \item{\code{pheno}}{list, phenotypic data important for differential abundance analysis}
 \item{\code{feature_metadata}}{list, feature metadata important for differntial abundance analysis}

@@ -5,8 +5,9 @@
 #   tissue character, tissue abbreviation, one of [MotrpacRatTraining6moData::TISSUE_ABBREV]
 #   assay character, assay abbreviation, one of [MotrpacRatTraining6moData::ASSAY_ABBREV]
 # Type:
-#   tissue @eval tissue()
-#   assay @eval assay()
+#   tissue `r tissue()`
+#   assay `r assay()`
+# Note: You must be using roxygen2 v7.2.1 or later
 
 adj_p_value_da = function(){
   "double, adjusted p-value from 'p_value' column. P-values are BY-adjusted across all datasets within a given assay/ome."
@@ -62,10 +63,10 @@ dataset_metab = function(){
 }
 
 feature = function(){
-  paste("character, unique feature identifier in the format '[MotrpacRatTrainingData::ASSAY_ABBREV];[MotrpacRatTrainingData::TISSUE_ABBREV];feature_ID'",
+  paste("character, unique feature identifier in the format '[MotrpacRatTraining6moData::ASSAY_ABBREV];[MotrpacRatTraining6moData::TISSUE_ABBREV];feature_ID'",
         "only for training-regulated features at 5% IHW FDR.",
         "For redundant differential features, 'feature_ID' is prepended with the specific platform to make unique identifiers.",
-        "See [MotrpacRatTrainingData::REPEATED_FEATURES] for details.")
+        "See [MotrpacRatTraining6moData::REPEATED_FEATURES] for details.")
 }
 
 feature_ID = function(){

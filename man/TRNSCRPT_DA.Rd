@@ -26,28 +26,28 @@
 \format{
 A data frame with 22 variables:
 \describe{
-\item{\code{feature}}{@eval feature()}
-\item{\code{assay}}{@eval assay()}
-\item{\code{assay_code}}{@eval assay_code()}
-\item{\code{tissue}}{@eval tissue()}
-\item{\code{tissue_code}}{@eval tissue_code()}
-\item{\code{feature_ID}}{@eval feature_ID()}
-\item{\code{sex}}{@eval sex()}
-\item{\code{comparison_group}}{@eval comparison_group()}
-\item{\code{p_value}}{@eval p_value()}
-\item{\code{adj_p_value}}{@eval adj_p_value()}
-\item{\code{logFC}}{@eval logFC()}
-\item{\code{logFC_se}}{@eval logFC_se()}
+\item{\code{feature}}{character, unique feature identifier in the format '\link{ASSAY_ABBREV};\link{TISSUE_ABBREV};feature_ID' only for training-regulated features at 5\% IHW FDR. For redundant differential features, 'feature_ID' is prepended with the specific platform to make unique identifiers. See \link{REPEATED_FEATURES} for details.}
+\item{\code{assay}}{character, assay abbreviation, one of \link{ASSAY_ABBREV}}
+\item{\code{assay_code}}{character, assay code used in data release. See \link[MotrpacBicQC:assay_codes]{MotrpacBicQC::assay_codes}.}
+\item{\code{tissue}}{character, tissue abbreviation, one of \link{TISSUE_ABBREV}}
+\item{\code{tissue_code}}{character, tissue code used in data release. See \link[MotrpacBicQC:bic_animal_tissue_code]{MotrpacBicQC::bic_animal_tissue_code}.}
+\item{\code{feature_ID}}{character, MoTrPAC feature identifier}
+\item{\code{sex}}{character, one of 'male' or 'female'}
+\item{\code{comparison_group}}{character, time point of trained animals compared to the sex-matched sedentary control animals, one of '1w', '2w', '4w', '8w'}
+\item{\code{p_value}}{double, unadjusted p-value for the difference between 'comparison_group' and the group of sex-matched sedentary control animals}
+\item{\code{adj_p_value}}{double, adjusted p-value from 'p_value' column. P-values are BY-adjusted across all datasets within a given assay/ome.}
+\item{\code{logFC}}{double, log fold-change where the numerator is 'comparison_group', e.g., '1w', and the denominator is the group of sex-matched sedentary control animals}
+\item{\code{logFC_se}}{double, standard error of the log fold-change}
 \item{\code{shrunk_logFC}}{double, log fold-change with shrinkage applied}
 \item{\code{shrunk_logFC_se}}{double, standard error of the shrunken log fold-change}
-\item{\code{zscore}}{@eval zscore()}
-\item{\code{covariates}}{@eval covariates()}
-\item{\code{removed_samples}}{@eval removed_samples()}
-\item{\code{comparison_average_intensity}}{@eval comparison_average_intensity()}
-\item{\code{comparison_average_intensity_se}}{@eval comparison_average_intensity_se()}
-\item{\code{reference_average_intensity}}{@eval reference_average_intensity()}
-\item{\code{reference_average_intensity_se}}{@eval reference_average_intensity_se()}
-\item{\code{selection_fdr}}{@eval selection_fdr()}
+\item{\code{zscore}}{double, z statistic}
+\item{\code{covariates}}{character, comma-separated list of adjustment variables or NA}
+\item{\code{removed_samples}}{character, comma-separated list of vial labels excluded from differential analysis or NA}
+\item{\code{comparison_average_intensity}}{double, average intensity among the replicates in 'comparison_group'}
+\item{\code{comparison_average_intensity_se}}{double, standard error of 'comparison_average_intensity'}
+\item{\code{reference_average_intensity}}{double, average intensity among the replicates in the group of sex-matched sedentary control animals}
+\item{\code{reference_average_intensity_se}}{double, standard error of 'reference_average_intensity'}
+\item{\code{selection_fdr}}{double, adjusted training p-value used to select training-regulated analytes. P-values are IHW-adjusted across all datasets within a given assay with tissue as a covariate.}
 }
 
 An object of class \code{data.frame} with 132864 rows and 22 columns.
