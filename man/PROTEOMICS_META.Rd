@@ -13,9 +13,9 @@ A data frame with 5 variables:
 \describe{
 \item{\code{tmt11_channel}}{character, TMT channel}
 \item{\code{tmt_plex}}{character, TMT plex}
-\item{\code{tissue}}{@eval tissue()}
-\item{\code{viallabel}}{@eval viallabel()}
-\item{\code{assay}}{@eval assay()}
+\item{\code{tissue}}{character, tissue abbreviation, one of \link{TISSUE_ABBREV}}
+\item{\code{viallabel}}{character, sample identifier}
+\item{\code{assay}}{character, assay abbreviation, one of \link{ASSAY_ABBREV}}
 }
 
 An object of class \code{data.frame} with 462 rows and 5 columns.

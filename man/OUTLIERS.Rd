@@ -5,11 +5,13 @@
 \alias{OUTLIERS}
 \title{Sample outliers}
 \format{
-A data frame with 27 rows and 4 variables:
+A data frame with 27 rows and 9 variables:
 \describe{
 \item{\code{viallabel}}{character, sample identifier}
 \item{\code{tissue}}{character, tissue abbreviation, one of \link{TISSUE_ABBREV}}
+\item{\code{tissue_code}}{character, tissue code used in data release. See \link[MotrpacBicQC:bic_animal_tissue_code]{MotrpacBicQC::bic_animal_tissue_code}.}
 \item{\code{assay}}{character, assay abbreviation, one of \link{ASSAY_ABBREV}}
+\item{\code{assay_code}}{character, assay code used in data release. See \link[MotrpacBicQC:assay_codes]{MotrpacBicQC::assay_codes}.}
 \item{\code{platform}}{character, LUMINEX panel if \code{assay} is IMMUNO}
 \item{\code{pid}}{integer, participant ID, one per animal}
 \item{\code{group}}{character, combination of sex and training time point that the sample belongs to, e.g., "female_1w"}
