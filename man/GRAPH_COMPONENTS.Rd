@@ -20,7 +20,7 @@ GRAPH_COMPONENTS
 The feature sets selected using the \code{repfdr} results. Each
 value is a named list, where the name is the label for the edge or node,
 and the members are all of the features that belong to that label,
-in the format \code{[ASSAY_ABBREV];[TISSUE_ABBREV];[feature_ID]}.
+in the format \code{\link{ASSAY_ABBREV};\link{TISSUE_ABBREV};[feature_ID]}.
 }
 \details{
 Nodes are named in the format \code{[week]w_F[state]_M[state]}, where

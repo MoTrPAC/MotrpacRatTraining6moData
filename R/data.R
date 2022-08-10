@@ -1941,7 +1941,7 @@ NULL
 #' @description The feature sets selected using the \code{repfdr} results. Each 
 #'   value is a named list, where the name is the label for the edge or node, 
 #'   and the members are all of the features that belong to that label, 
-#'   in the format \code{[ASSAY_ABBREV];[TISSUE_ABBREV];[feature_ID]}. 
+#'   in the format \code{\link{ASSAY_ABBREV};\link{TISSUE_ABBREV};[feature_ID]}. 
 #' @format List of lists: 
 #' \describe{
 #'   \item{\code{edge_sets}}{named list, where the name is the label for the edge in the 
