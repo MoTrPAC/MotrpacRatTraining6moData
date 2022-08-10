@@ -1,11 +1,12 @@
 Package: MotrpacRatTraining6moData
 Type: Package
 Title: Data for analysis of the MoTrPAC endurance exercise training study in 6-month-old rats
-Version: 1.0.0
+Version: 1.0.1
 Authors@R: c(
     person("Nicole", "Gay", email = "nicole.r.gay@gmail.com", role = c("cre", "aut")),
     person("Pierre", "Jean Beltran", email = "pjeanbeltran@gmail.com", role = c("aut")),
     person("David", "Amar", email = "ddam.am@gmail.com", role = c("aut")),
+    person("David", "Jimenez-Morales", email = "davidjm@stanford.edu", role = c("aut")),
     person("MoTrPAC Study Group", role = c("aut", "dtc")),
     person("Byron", "Jaeger", email = "bjaeger@wakehealth.edu", role = "rev"), 
     person("NIH Common Fund", role = "fnd"),
@@ -27,6 +28,8 @@ RoxygenNote: 7.2.1
 Roxygen: list(markdown = TRUE)
 Encoding: UTF-8
 Suggests:
-    data.table
+    data.table,
+    tidyverse,
+    MotrpacBicQC
 URL: https://github.com/MoTrPAC/MotrpacRatTraining6moData
 License: MIT + file LICENSE
