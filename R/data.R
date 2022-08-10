@@ -858,6 +858,8 @@ NULL
 #' @description Normalized, imputed, and filtered multiplexed immunoassay data used for visualization.
 #'   Data are equivalent to the data provided in [IMMUNO_NORM_DATA_NESTED]. [IMMUNO_NORM_DATA_NESTED] is compatible with the 
 #'   differential analysis functions while this format is compatible with visualization functions. 
+#'   
+#'   Analytes are in rows, and numeric column names correspond to participant IDs (PIDs). 
 #' @format A data frame with 720 rows and 64 variables:
 #' \describe{
 #'   \item{\code{feature}}{`r feature()`}
@@ -865,69 +867,66 @@ NULL
 #'   \item{\code{tissue}}{`r tissue()`}
 #'   \item{\code{assay}}{`r assay()`}
 #'   \item{\code{dataset}}{character, LUMINEX panel}
-#'   \item{\code{10023259}}{@eval 10023259}
-#'   \item{\code{10024735}}{@eval 10024735}
-#'   \item{\code{10025464}}{@eval 10025464}
-#'   \item{\code{10025626}}{@eval 10025626}
-#'   \item{\code{10025979}}{@eval 10025979}
-#'   \item{\code{10026274}}{@eval 10026274}
-#'   \item{\code{10026355}}{@eval 10026355}
-#'   \item{\code{10026517}}{@eval 10026517}
-#'   \item{\code{10026789}}{@eval 10026789}
-#'   \item{\code{10027165}}{@eval 10027165}
-#'   \item{\code{10027408}}{@eval 10027408}
-#'   \item{\code{10027912}}{@eval 10027912}
-#'   \item{\code{10043527}}{@eval 10043527}
-#'   \item{\code{10043799}}{@eval 10043799}
-#'   \item{\code{10043950}}{@eval 10043950}
-#'   \item{\code{10044256}}{@eval 10044256}
-#'   \item{\code{10044337}}{@eval 10044337}
-#'   \item{\code{10044760}}{@eval 10044760}
-#'   \item{\code{10044841}}{@eval 10044841}
-#'   \item{\code{10044922}}{@eval 10044922}
-#'   \item{\code{10045228}}{@eval 10045228}
-#'   \item{\code{10045309}}{@eval 10045309}
-#'   \item{\code{10046119}}{@eval 10046119}
-#'   \item{\code{10046380}}{@eval 10046380}
-#'   \item{\code{10046461}}{@eval 10046461}
-#'   \item{\code{10046542}}{@eval 10046542}
-#'   \item{\code{10046704}}{@eval 10046704}
-#'   \item{\code{10059369}}{@eval 10059369}
-#'   \item{\code{10095241}}{@eval 10095241}
-#'   \item{\code{10139044}}{@eval 10139044}
-#'   \item{\code{10152148}}{@eval 10152148}
-#'   \item{\code{10204989}}{@eval 10204989}
-#'   \item{\code{10220917}}{@eval 10220917}
-#'   \item{\code{10306471}}{@eval 10306471}
-#'   \item{\code{10314733}}{@eval 10314733}
-#'   \item{\code{10315624}}{@eval 10315624}
-#'   \item{\code{10335064}}{@eval 10335064}
-#'   \item{\code{10337199}}{@eval 10337199}
-#'   \item{\code{10381414}}{@eval 10381414}
-#'   \item{\code{10411690}}{@eval 10411690}
-#'   \item{\code{10422463}}{@eval 10422463}
-#'   \item{\code{10424911}}{@eval 10424911}
-#'   \item{\code{10486003}}{@eval 10486003}
-#'   \item{\code{10502300}}{@eval 10502300}
-#'   \item{\code{10503110}}{@eval 10503110}
-#'   \item{\code{10561072}}{@eval 10561072}
-#'   \item{\code{10641858}}{@eval 10641858}
-#'   \item{\code{10677887}}{@eval 10677887}
-#'   \item{\code{10700102}}{@eval 10700102}
-#'   \item{\code{10729518}}{@eval 10729518}
-#'   \item{\code{10734945}}{@eval 10734945}
-#'   \item{\code{10761160}}{@eval 10761160}
-#'   \item{\code{10833331}}{@eval 10833331}
-#'   \item{\code{10871349}}{@eval 10871349}
-#'   \item{\code{10901434}}{@eval 10901434}
-#'   \item{\code{10934529}}{@eval 10934529}
-#'   \item{\code{10950486}}{@eval 10950486}
-#'   \item{\code{10953744}}{@eval 10953744}
-#'   \item{\code{10971645}}{@eval 10971645}
+#'   \item{\code{10046380}}{}
+#'   \item{\code{10026355}}{}
+#'   \item{\code{10561072}}{}
+#'   \item{\code{10871349}}{}
+#'   \item{\code{10335064}}{}
+#'   \item{\code{10044337}}{}
+#'   \item{\code{10139044}}{}
+#'   \item{\code{10045309}}{}
+#'   \item{\code{10953744}}{}
+#'   \item{\code{10025626}}{}
+#'   \item{\code{10901434}}{}
+#'   \item{\code{10486003}}{}
+#'   \item{\code{10024735}}{}
+#'   \item{\code{10025979}}{}
+#'   \item{\code{10729518}}{}
+#'   \item{\code{10045228}}{}
+#'   \item{\code{10043527}}{}
+#'   \item{\code{10220917}}{}
+#'   \item{\code{10424911}}{}
+#'   \item{\code{10503110}}{}
+#'   \item{\code{10046461}}{}
+#'   \item{\code{10306471}}{}
+#'   \item{\code{10095241}}{}
+#'   \item{\code{10026789}}{}
+#'   \item{\code{10411690}}{}
+#'   \item{\code{10971645}}{}
+#'   \item{\code{10641858}}{}
+#'   \item{\code{10023259}}{}
+#'   \item{\code{10502300}}{}
+#'   \item{\code{10950486}}{}
+#'   \item{\code{10381414}}{}
+#'   \item{\code{10027408}}{}
+#'   \item{\code{10027165}}{}
+#'   \item{\code{10677887}}{}
+#'   \item{\code{10700102}}{}
+#'   \item{\code{10046119}}{}
+#'   \item{\code{10046542}}{}
+#'   \item{\code{10044841}}{}
+#'   \item{\code{10204989}}{}
+#'   \item{\code{10314733}}{}
+#'   \item{\code{10044256}}{}
+#'   \item{\code{10044922}}{}
+#'   \item{\code{10027912}}{}
+#'   \item{\code{10337199}}{}
+#'   \item{\code{10044760}}{}
+#'   \item{\code{10315624}}{}
+#'   \item{\code{10026274}}{}
+#'   \item{\code{10026517}}{}
+#'   \item{\code{10761160}}{}
+#'   \item{\code{10046704}}{}
+#'   \item{\code{10059369}}{}
+#'   \item{\code{10934529}}{}
+#'   \item{\code{10043799}}{}
+#'   \item{\code{10833331}}{}
+#'   \item{\code{10025464}}{}
+#'   \item{\code{10422463}}{}
+#'   \item{\code{10152148}}{}
+#'   \item{\code{10734945}}{}
+#'   \item{\code{10043950}}{} 
 #' }
-#' @details 
-#'   Analytes are in rows, and participants IDs (PIDs, i.e., unique animal IDs) are in columns.
-#'   
 #' @source \code{gs://mawg-data/pass1b-06/immunoassay/data/release/pass1b-06*_mfi-log2-filt-imputed-na-outliers.txt} 
 "IMMUNO_NORM_DATA_FLAT"
 
@@ -952,6 +951,8 @@ NULL
 #' @description Combined sample-level metabolomics data used for visualization.
 #'   Data are equivalent to the data provided in [METAB_SAMPLE_DATA_NESTED]. [METAB_SAMPLE_DATA_NESTED] is compatible with the 
 #'   differential analysis functions while this format is compatible with visualization functions. 
+#'   
+#'   Metabolites are in rows, and numeric column names correspond to participant IDs (PIDs). 
 #' @format A data frame with 59 variables:
 #' \describe{
 #'   \item{\code{feature}}{`r feature()`}
@@ -1013,8 +1014,7 @@ NULL
 #'   \item{\code{10204989}}{}
 #'   \item{\code{10314733}}{}
 #'   \item{\code{10044922}}{} 
-#'}
-#' @details TODO
+#' }
 "METAB_NORM_DATA_FLAT"
 
 
