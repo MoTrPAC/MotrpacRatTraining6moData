@@ -155,9 +155,9 @@
 #'   \item{\code{dataset}}{@eval dataset()}
 #'   \item{\code{selection_fdr}}{@eval selection_fdr()}
 #'   \item{\code{metabolite_refmet}}{character, RefMet name of metabolite}
-#'   \item{\code{feature}}{character, duplicated \code{feature} in the format \code{[ASSAY_ABBREV];[TISSUE_ABBREV];[feature_ID]}}
+#'   \item{\code{feature}}{character, duplicated \code{feature} in the format \code{\link{ASSAY_ABBREV};\link{TISSUE_ABBREV};[feature_ID]}}
 #'   \item{\code{new_feature_ID}}{character, new unique \code{feature_ID} with \code{panel} or \code{dataset} prepended}
-#'   \item{\code{new_feature}}{character, new unique \code{feature} in the format \code{[ASSAY_ABBREV];[TISSUE_ABBREV];[new_feature_ID]}} 
+#'   \item{\code{new_feature}}{character, new unique \code{feature} in the format \code{\link{ASSAY_ABBREV};\link{TISSUE_ABBREV};[new_feature_ID]}} 
 #'}
 #' @details 91 IMMUNO and METAB features were measured on multiple platforms and have multiple differential analysis results. 
 #'     In order to distinguish between the different sets of results, these 
@@ -884,7 +884,7 @@ NULL
 #'   \item{\code{sample_data}}{list where first element is a tibble of feature by viallabel normalized sample-level data}
 #'   \item{\code{pheno}}{list, phenotypic data important for differential abundance analysis}
 #'   \item{\code{feature_metadata}}{list, feature metadata important for differntial abundance analysis} 
-#'}
+#' }
 #' @details TODO
 "METAB_SAMPLE_DATA_NESTED"
 
@@ -1270,11 +1270,13 @@ NULL
 
 #' @title Sample outliers
 #' @description Outliers excluded during differential analysis
-#' @format A data frame with 27 rows and 4 variables:
+#' @format A data frame with 27 rows and 9 variables:
 #' \describe{
-#'   \item{\code{viallabel}}{character, sample identifier}
-#'   \item{\code{tissue}}{character, tissue abbreviation, one of [TISSUE_ABBREV]}
-#'   \item{\code{assay}}{character, assay abbreviation, one of [ASSAY_ABBREV]}
+#'   \item{\code{viallabel}}{@eval viallabel()}
+#'   \item{\code{tissue}}{@eval tissue()}
+#'   \item{\code{tissue_code}}{@eval tissue_code()}
+#'   \item{\code{assay}}{@eval assay()}
+#'   \item{\code{assay_code}}{@eval}
 #'   \item{\code{platform}}{character, LUMINEX panel if \code{assay} is IMMUNO}
 #'   \item{\code{pid}}{integer, participant ID, one per animal}
 #'   \item{\code{group}}{character, combination of sex and training time point that the sample belongs to, e.g., "female_1w"}
@@ -1939,7 +1941,7 @@ NULL
 #' @description The feature sets selected using the \code{repfdr} results. Each 
 #'   value is a named list, where the name is the label for the edge or node, 
 #'   and the members are all of the features that belong to that label, 
-#'   in the format \code{[ASSAY_ABBREV];[TISSUE_ABBREV];[feature_ID]}. 
+#'   in the format \code{\link{ASSAY_ABBREV};\link{TISSUE_ABBREV};[feature_ID]}. 
 #' @format List of lists: 
 #' \describe{
 #'   \item{\code{edge_sets}}{named list, where the name is the label for the edge in the 
