@@ -1,50 +1,60 @@
-viallabel	tissue	assay	platform	pid	group	reason
-90283015504	LIVER	ACETYL		10700102	female_1w	"Sex outlier - potentially a sample swap or contaminated sample. Only affected PROT, PHOSPHO, and ACETYL, because UBIQ used a different aliquot"
-90266016903	HEART	ATAC		10901434	female_1w	PC1
-90218016903	HEART	ATAC		10046461	female_8w	PC1
-90559015805	HIPPOC	ATAC		10306471	female_4w	PC1
-90560016806	HIPPOC	ATAC		10424911	male_1w	PC1
-90560016806	HIPPOC	ATAC		10023259	male_control	PC1
-90578016903	KIDNEY	ATAC		10220917	male_4w	PC1
-90585017004	LIVER	ATAC		10901434	female_1w	PC1
-90406015203	LIVER	ATAC		10046461	female_8w	"PC1,PC2"
-90251016604	LIVER	ATAC		10587543	male_2w	PC1
-90245016105	WAT-SC	ATAC		10901434	female_1w	PC1
-90232016105	WAT-SC	ATAC		10046461	female_8w	PC1
-90578015504	COLON	IMMUNO	rat-mag27plex	10043527	female_control	large fraction of missing values: 0.6296296
-90420015504	COLON	IMMUNO	rat-mag27plex	10026789	male_control	large fraction of missing values: 0.5555556
-90252015504	COLON	IMMUNO	rat-mag27plex	10486003	male_2w	large fraction of missing values: 0.7037037
-90265015504	COLON	IMMUNO	rat-mag27plex	10641858	male_2w	large fraction of missing values: 0.8148148
-90422015504	COLON	IMMUNO	rat-mag27plex	10220917	male_4w	large fraction of missing values: 0.7037037
-90449016105	BAT	METHYL		10046380	female_control	
-90292016105	BAT	METHYL		10024735	male_8w	
-90406015204	BAT	METHYL		10734945	female_2w	
-90217015204	HIPPOC	METHYL		10306471	female_4w	
-90439016105	KIDNEY	METHYL		10672656	male_2w	Sex outlier
-90576015504	LUNG	METHYL		10044256	female_8w	
-90423015204	WAT-SC	METHYL		10871349	female_2w	
-90239015504	LIVER	PHOSPHO		10700102	female_1w	"Sex outlier - potentially a sample swap or contaminated sample. Only affected PROT, PHOSPHO, and ACETYL, because UBIQ used a different aliquot"
-90567015802	SKM-GN	PHOSPHO		10044337	female_control	Low loading or poor labeling
-90267015802	SKM-GN	PHOSPHO		10043527	female_control	Low loading or poor labeling
-90292015904	SKM-GN	PHOSPHO		10025707	male_8w	Low loading or poor labeling
-90567016805	LIVER	PROT		10700102	female_1w	"Sex outlier - potentially a sample swap or contaminated sample. Only affected PROT, PHOSPHO, and ACETYL, because UBIQ used a different aliquot"
-90267016805	SKM-GN	PROT		10044337	female_control	Low loading or poor labeling
-90444016805	SKM-GN	PROT		10043527	female_control	Low loading or poor labeling
-90567017011	SKM-GN	PROT		10025707	male_8w	Low loading or poor labeling
-90571016002	ADRNL	TRNSCRPT		10953744	female_1w	PC1
-90266016902	BAT	TRNSCRPT		10046380	female_control	PC3
-90416016902	BAT	TRNSCRPT		10381414	female_4w	PC3
-90229016102	COLON	TRNSCRPT		10026355	male_control	PC2
-90252015402	HYPOTH	TRNSCRPT		10044337	female_control	PC1
-90406015402	HYPOTH	TRNSCRPT		10306471	female_4w	"PC3,PC4"
-90217015402	HYPOTH	TRNSCRPT		10023259	male_control	PC4
-90444015902	KIDNEY	TRNSCRPT		10587543	male_2w	PC1
-90218016803	LIVER	TRNSCRPT		10024735	male_8w	PC2
-90252015603	SKM-VL	TRNSCRPT		10044337	female_control	PC1
-90217015603	SKM-VL	TRNSCRPT		10023259	male_control	PC3
-90441016702	SMLINT	TRNSCRPT		10502300	male_2w	PC3
-90289016302	TESTES	TRNSCRPT		10185585	male_4w	PC2
-90564016502	VENACV	TRNSCRPT		10833331	female_1w	PC2
-90410017005	WAT-SC	TRNSCRPT		10335064	female_4w	PC2
-90423017005	WAT-SC	TRNSCRPT		10424911	male_1w	PC3
-90267017011	HEART	UBIQ		10950486	female_1w	"Ubiquitylome technical processing outlier, shows lower median intensity values and unusually high variance"
+viallabel	tissue	pid	group	platform	reason
+90559015805	t58-heart	10950486	female,1w	prot-ub	Ubiquitylome technical processing outlier, shows lower median intensity values and unusually high variance
+90560016806	t68-liver	10700102	female,1w	prot-pr	Sex outlier - potentially a sample swap or contaminated sample. Only affected prot-pr, -ph, and -ac, because prot-ub used a different aliquot
+90560016806	t68-liver	10700102	female,1w	prot-ph	Sex outlier - potentially a sample swap or contaminated sample. Only affected prot-pr, -ph, and -ac, because prot-ub used a different aliquot
+90560016806	t68-liver	10700102	female,1w	prot-ac	Sex outlier - potentially a sample swap or contaminated sample. Only affected prot-pr, -ph, and -ac, because prot-ub used a different aliquot
+90252015507	t55-gastrocnemius	10044337	female,control	prot-ph	Low loading or poor labeling. Removing improves DEA results
+90245015507	t55-gastrocnemius	10043527	female,control	prot-ph	Low loading or poor labeling. Removing improves DEA results
+90223015507	t55-gastrocnemius	10025707	male,8w	prot-ph	Low loading or poor labeling. Removing improves DEA results
+90252015507	t55-gastrocnemius	10044337	female,control	prot-pr	Low loading or poor labeling. Removing improves DEA results
+90245015507	t55-gastrocnemius	10043527	female,control	prot-pr	Low loading or poor labeling. Removing improves DEA results
+90223015507	t55-gastrocnemius	10025707	male,8w	prot-pr	Low loading or poor labeling. Removing improves DEA results
+90450015903	t59-kidney	10672656	male,2w	epigen-rrbs	Sex outlier
+90266016903	t69-brown-adipose	10046380	female,control	epigen-rrbs	
+90218016903	t69-brown-adipose	10024735	male,8w	epigen-rrbs	
+90578016903	t69-brown-adipose	10734945	female,2w	epigen-rrbs	
+90585017004	t70-white-adipose	10871349	female,2w	epigen-rrbs	
+90406015203	t52-hippocampus	10306471	female,4w	epigen-rrbs	
+90251016604	t66-lung	10044256	female,8w	epigen-rrbs	
+90245016105	t61-colon	10043527	female,control	immunoassay-rat-mag27plex	large fraction of missing values: 0.6296296
+90232016105	t61-colon	10026789	male,control	immunoassay-rat-mag27plex	large fraction of missing values: 0.5555556
+90439016105	t61-colon	10486003	male,2w	immunoassay-rat-mag27plex	large fraction of missing values: 0.7037037
+90449016105	t61-colon	10641858	male,2w	immunoassay-rat-mag27plex	large fraction of missing values: 0.8148148
+90292016105	t61-colon	10220917	male,4w	immunoassay-rat-mag27plex	large fraction of missing values: 0.7037037
+all	t65-aorta (vena cava)		female,1w	all	brown adipose contamination
+all	t65-aorta (vena cava)		female,2w	all	brown adipose contamination
+90406015204	t52-hippocampus,stanford	10306471	female,4w	epigen-atac-seq	PC1
+90423015204	t52-hippocampus,stanford	10424911	male,1w	epigen-atac-seq	PC1
+90217015204	t52-hippocampus,stanford	10023259	male,control	epigen-atac-seq	PC1
+90576015504	t55-gastrocnemius,mssm	10729518	female,2w	epigen-atac-seq	PC1
+90578015504	t55-gastrocnemius,mssm	10734945	female,2w	epigen-atac-seq	PC1
+90420015504	t55-gastrocnemius,mssm	10411690	female,4w	epigen-atac-seq	PC1
+90252015504	t55-gastrocnemius,mssm	10044337	female,control	epigen-atac-seq	PC1
+90265015504	t55-gastrocnemius,mssm	10046119	female,control	epigen-atac-seq	PC1
+90422015504	t55-gastrocnemius,mssm	10422463	male,1w	epigen-atac-seq	PC1
+90283015504	t55-gastrocnemius,mssm	10139044	male,4w	epigen-atac-seq	PC1
+90239015504	t55-gastrocnemius,mssm	10027599	male,control	epigen-atac-seq	PC1
+90567015802	t58-heart,stanford	10901434	female,1w	epigen-atac-seq	PC1
+90267015802	t58-heart,stanford	10046461	female,8w	epigen-atac-seq	PC1
+90292015904	t59-kidney,stanford	10220917	male,4w	epigen-atac-seq	PC1
+90567016805	t68-liver,stanford	10901434	female,1w	epigen-atac-seq	PC1
+90267016805	t68-liver,stanford	10046461	female,8w	epigen-atac-seq	PC1,PC2
+90444016805	t68-liver,stanford	10587543	male,2w	epigen-atac-seq	PC1
+90567017011	t70-white-adipose,stanford	10901434	female,1w	epigen-atac-seq	PC1
+90267017011	t70-white-adipose,stanford	10046461	female,8w	epigen-atac-seq	PC1
+90252015402	t54-hypothalamus	10044337	female,control	transcript-rna-seq	PC1
+90406015402	t54-hypothalamus	10306471	female,4w	transcript-rna-seq	PC3,PC4
+90217015402	t54-hypothalamus	10023259	male,control	transcript-rna-seq	PC4
+90252015603	t56-vastus-lateralis	10044337	female,control	transcript-rna-seq	PC1
+90217015603	t56-vastus-lateralis	10023259	male,control	transcript-rna-seq	PC3
+90444015902	t59-kidney	10587543	male,2w	transcript-rna-seq	PC1
+90571016002	t60-adrenal	10953744	female,1w	transcript-rna-seq	PC1
+90229016102	t61-colon	10026355	male,control	transcript-rna-seq	PC2
+90289016302	t63-testes	10185585	male,4w	transcript-rna-seq	PC2
+90564016502	t65-aorta	10833331	female,1w	transcript-rna-seq	PC2
+90441016702	t67-small-intestine	10502300	male,2w	transcript-rna-seq	PC3
+90218016803	t68-liver	10024735	male,8w	transcript-rna-seq	PC2
+90266016902	t69-brown-adipose	10046380	female,control	transcript-rna-seq	PC3
+90416016902	t69-brown-adipose	10381414	female,4w	transcript-rna-seq	PC3
+90410017005	t70-white-adipose	10335064	female,4w	transcript-rna-seq	PC2
+90423017005	t70-white-adipose	10424911	male,1w	transcript-rna-seq	PC3

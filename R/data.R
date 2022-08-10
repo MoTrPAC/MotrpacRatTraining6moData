@@ -884,7 +884,7 @@ NULL
 #'   \item{\code{sample_data}}{list where first element is a tibble of feature by viallabel normalized sample-level data}
 #'   \item{\code{pheno}}{list, phenotypic data important for differential abundance analysis}
 #'   \item{\code{feature_metadata}}{list, feature metadata important for differntial abundance analysis} 
-#'}
+#' }
 #' @details TODO
 "METAB_SAMPLE_DATA_NESTED"
 
@@ -1270,11 +1270,13 @@ NULL
 
 #' @title Sample outliers
 #' @description Outliers excluded during differential analysis
-#' @format A data frame with 27 rows and 4 variables:
+#' @format A data frame with 27 rows and 9 variables:
 #' \describe{
-#'   \item{\code{viallabel}}{character, sample identifier}
-#'   \item{\code{tissue}}{character, tissue abbreviation, one of [TISSUE_ABBREV]}
-#'   \item{\code{assay}}{character, assay abbreviation, one of [ASSAY_ABBREV]}
+#'   \item{\code{viallabel}}{@eval viallabel()}
+#'   \item{\code{tissue}}{@eval tissue()}
+#'   \item{\code{tissue_code}}{@eval tissue_code()}
+#'   \item{\code{assay}}{@eval assay()}
+#'   \item{\code{assay_code}}{@eval assay_code()}
 #'   \item{\code{platform}}{character, LUMINEX panel if \code{assay} is IMMUNO}
 #'   \item{\code{pid}}{integer, participant ID, one per animal}
 #'   \item{\code{group}}{character, combination of sex and training time point that the sample belongs to, e.g., "female_1w"}
