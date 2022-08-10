@@ -12,7 +12,7 @@ A data frame with 1511 rows and 23 variables:
 \item{\code{bid}}{integer, biospecimen ID}
 \item{\code{luminex_sample_name}}{character, sample name used by HIMC in raw data files}
 \item{\code{panel_name}}{character, LUMINEX panel name}
-\item{\code{plate_id}}{character, plate ID in format "\link{date}-\link{tissues}_\link{panel_name}"}
+\item{\code{plate_id}}{character, plate ID in format "\verb{[date]-[tissues]_[panel_name]}"}
 \item{\code{ppt_type}}{character, species}
 \item{\code{weight_mg}}{integer, sample weight in mg (solid tissue only)}
 \item{\code{volume_ul}}{integer, sample volume in uL (plasma only)}
