@@ -11,7 +11,7 @@ A data frame with 27 rows and 9 variables:
 \item{\code{tissue}}{@eval tissue()}
 \item{\code{tissue_code}}{@eval tissue_code()}
 \item{\code{assay}}{@eval assay()}
-\item{\code{assay_code}}{@eval assay_code()}
+\item{\code{assay_code}}{@eval}
 \item{\code{platform}}{character, LUMINEX panel if \code{assay} is IMMUNO}
 \item{\code{pid}}{integer, participant ID, one per animal}
 \item{\code{group}}{character, combination of sex and training time point that the sample belongs to, e.g., "female_1w"}
