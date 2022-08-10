@@ -7,10 +7,10 @@
 \format{
 A data frame with 720 rows and 64 variables:
 \describe{
-\item{\code{feature}}{@eval feature()}
-\item{\code{feature_ID}}{@eval feature_ID()}
-\item{\code{tissue}}{@eval tissue()}
-\item{\code{assay}}{@eval assay()}
+\item{\code{feature}}{character, unique feature identifier in the format '\link{ASSAY_ABBREV};\link{TISSUE_ABBREV};feature_ID' only for training-regulated features at 5\% IHW FDR. For redundant differential features, 'feature_ID' is prepended with the specific platform to make unique identifiers. See \link{REPEATED_FEATURES} for details.}
+\item{\code{feature_ID}}{character, MoTrPAC feature identifier}
+\item{\code{tissue}}{character, tissue abbreviation, one of \link{TISSUE_ABBREV}}
+\item{\code{assay}}{character, assay abbreviation, one of \link{ASSAY_ABBREV}}
 \item{\code{dataset}}{character, LUMINEX panel}
 }
 }

@@ -22,7 +22,7 @@ Description: The goal of the Molecular Transducers of Physical Activity Consorti
 Depends: 
     R (>= 2.10)
 LazyData: true
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.1
 Roxygen: list(markdown = TRUE)
 Encoding: UTF-8
 Suggests:

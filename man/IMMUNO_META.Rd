@@ -7,8 +7,8 @@
 \format{
 A data frame with 1511 rows and 23 variables:
 \describe{
-\item{\code{viallabel}}{@eval viallabel()}
-\item{\code{tissue_code}}{@eval tissue_code()}
+\item{\code{viallabel}}{character, sample identifier}
+\item{\code{tissue_code}}{character, tissue code used in data release. See \link[MotrpacBicQC:bic_animal_tissue_code]{MotrpacBicQC::bic_animal_tissue_code}.}
 \item{\code{bid}}{integer, biospecimen ID}
 \item{\code{luminex_sample_name}}{character, sample name used by HIMC in raw data files}
 \item{\code{panel_name}}{character, LUMINEX panel name}
@@ -24,7 +24,7 @@ A data frame with 1511 rows and 23 variables:
 \item{\code{comments}}{character, comments about protein extraction}
 \item{\code{sample_well_position}}{character, well position in plates submitted to the HIMC}
 \item{\code{luminex_well}}{character, well position for LUMINEX assay}
-\item{\code{sex}}{@eval sex()}
+\item{\code{sex}}{character, one of 'male' or 'female'}
 \item{\code{group}}{character, intervention group, one of "1w", "2w", "4w", "8w", "control"}
 \item{\code{log2_CHEX1}}{double, custom Assay CHEX control beads to monitor instrument performance, log-transformed}
 \item{\code{log2_CHEX2}}{double, custom Assay CHEX control beads to monitor application of the detection antibody, log-transformed}

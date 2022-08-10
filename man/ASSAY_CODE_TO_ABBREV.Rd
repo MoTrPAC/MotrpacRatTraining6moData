@@ -11,7 +11,7 @@ Named character vector
 ASSAY_CODE_TO_ABBREV
 }
 \description{
-Values are abbreviations (\code{ASSAY_ABBREV}) and names are codes.
+Values are abbreviations \link{ASSAY_ABBREV} and names are codes.
 See \link[MotrpacBicQC:assay_codes]{MotrpacBicQC::assay_codes} for more details.
 }
 \keyword{datasets}
