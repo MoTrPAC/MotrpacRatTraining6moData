@@ -45,6 +45,7 @@ Suggests:
     sinew,
     testit,
     tidyverse,
+    tools,
     usethis
 Remotes: 
     MoTrPAC/MotrpacBicQC
