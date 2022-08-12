@@ -17,11 +17,11 @@ library(sinew)
 library(devtools)
 knitr::opts_chunk$set(echo = TRUE)
 
-mawgdir = '/oak/stanford/groups/smontgom/nicolerg/MOTRPAC/MAWG_DATA'
-gitdir = "/oak/stanford/groups/smontgom/nicolerg/src/MOTRPAC/"
-scratch='/oak/stanford/groups/smontgom/nicolerg/tmp'
-datadir = '/oak/stanford/groups/smontgom/shared/motrpac/internal_releases/motrpac-data-freeze-pass/v1.1/extracted_sample_level_data'
-gsutil='~/google-cloud-sdk/bin/gsutil'
+mawgdir = 'nicolerg/MOTRPAC/MAWG_DATA'
+gitdir = "nicolerg/src/MOTRPAC/"
+scratch = 'nicolerg/tmp'
+datadir = 'motrpac/internal_releases/motrpac-data-freeze-pass/v1.1/extracted_sample_level_data'
+gsutil = 'gsutil'
 
 source(sprintf("%s/motrpac-mawg/pass1b-06/tools/get_fx.R", gitdir))
 source(sprintf("%s/motrpac-mawg/pass1b-06/integrative/clustering/cluster_viz_fx.R", gitdir))
@@ -54,7 +54,7 @@ combine_normalized_data = function(gsutil_path,
                                    ome_abbreviation, 
                                    datadir, 
                                    diff_feat = differential_features,
-                                   gsutil_bin = '~/google-cloud-sdk/bin/gsutil', 
+                                   gsutil_bin = 'gsutil', 
                                    pheno = NULL, 
                                    features_to_keep = NULL, 
                                    tissue_index=3, 
@@ -437,7 +437,7 @@ usethis::use_data(IMMUNO_NORM_DATA_FLAT, overwrite=T)
 
 ## TRNSCRPT raw counts
 ```{r}
-data_dir = "/oak/stanford/groups/smontgom/shared/motrpac/internal_releases/motrpac-data-freeze-pass/v1.1/results/transcriptomics"
+data_dir = "motrpac/internal_releases/motrpac-data-freeze-pass/v1.1/results/transcriptomics"
 for(tissue_code in names(TISSUE_CODE_TO_ABBREV)){
   file = sprintf("%s/%s/transcript-rna-seq/motrpac_pass1b-06_%s_transcript-rna-seq_rsem-genes-count.txt", data_dir, tissue_code, tissue_code)
   if(file.exists(file)){

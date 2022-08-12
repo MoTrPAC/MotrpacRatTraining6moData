@@ -9,10 +9,10 @@ output: html_document
 library(cowplot)
 knitr::opts_chunk$set(echo = TRUE)
 
-gsutil = '~/google-cloud-sdk/bin/gsutil'
-scratch = '/oak/stanford/groups/smontgom/nicolerg/tmp'
-gitdir='/oak/stanford/groups/smontgom/nicolerg/src/MOTRPAC/motrpac-mawg/'
-outdir="/oak/stanford/groups/smontgom/nicolerg/MOTRPAC/PASS_ANALYSIS/PASS1B/INTEGRATIVE/GRAPHICAL"
+gsutil = 'gsutil'
+scratch = '/tmp'
+gitdir='src/MOTRPAC/motrpac-mawg/'
+outdir="MOTRPAC/PASS_ANALYSIS/PASS1B/INTEGRATIVE/GRAPHICAL"
 
 source(sprintf('%s/pass1b-06/integrative/clustering/cluster_viz_fx.R',gitdir))
 source(sprintf('%s/pass1b-06/integrative/clustering/graphical_analysis_functions.R',gitdir)) # if you get an error loading igraph, restart R and rerun this chunk. the order of libraries loaded matters

@@ -54,11 +54,11 @@ we performed enrichment analysis of KEGG and REACTOME rat pathways (organism "rn
 using \code{\link[gprofiler2:gost]{gprofiler2::gost()}} with custom backgrounds defined by \link{GENE_UNIVERSES}.
 Only pathways with at least 10 and up to 200 members were tested. Because \code{\link[gprofiler2:gost]{gprofiler2::gost()}}
 only returns adjusted p-values, we recalculated nominal p-values using a one-tailed hypergeometric test,
-which is consistent with how \code{\link[gprofiler2:gost]{gprofiler2::gost()}} calculates enrichments. See \code{\link[=cluster_pathway_enrichment]{cluster_pathway_enrichment()}} for implementation.
+which is consistent with how \code{\link[gprofiler2:gost]{gprofiler2::gost()}} calculates enrichments. See \code{cluster_pathway_enrichment()} for implementation.
 
 For metabolites,
 we performed enrichment of KEGG pathways using the hypergeometric method in \code{\link[FELLA:enrich-funs]{FELLA::enrich()}}
-with custom backgrounds defined by \link{GENE_UNIVERSES}. See \code{\link[=run_fella]{run_fella()}} for implementation.
+with custom backgrounds defined by \link{GENE_UNIVERSES}. See \code{run_fella()} for implementation.
 
 Pathway enrichment analysis p-values
 were adjusted across all results using Independent Hypothesis Weighting (IHW) with tissue as a covariate.

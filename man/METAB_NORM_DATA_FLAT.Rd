@@ -73,7 +73,7 @@ METAB_NORM_DATA_FLAT
 }
 \description{
 Combined sample-level metabolomics data used for visualization.
-Data are equivalent to the data provided in \link{METAB_SAMPLE_DATA_NESTED}. \link{METAB_SAMPLE_DATA_NESTED} is compatible with the
+Data are equivalent to the data provided in \link{METAB_NORM_DATA_NESTED}. \link{METAB_NORM_DATA_NESTED} is compatible with the
 differential analysis functions while this format is compatible with visualization functions.
 
 Metabolites are in rows, and numeric column names correspond to participant IDs (PIDs).
