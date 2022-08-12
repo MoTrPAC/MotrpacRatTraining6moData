@@ -571,3 +571,14 @@ save(METHYL_FEATURE_ANNOT,
      file=sprintf("%s/extracted_sample_level_data/METHYL/METHYL_FEATURE_ANNOT.rda",data_dir),  
      compress = "bzip2", 
      compression_level = 9)
+
+# ATAC feature annotation ------------------------------------------------------
+
+atac_feature_annot = dl_read_gcp("gs://mawg-data/pass1b-06/epigen-atac-seq/mapping/pass1b-06_epigen-atac-seq_feature-mapping_20211110.txt")
+setnames(atac_feature_annot, "assay", "assay_code")
+atac_feature_annot = data.table(cbind(assay="ATAC", atac_feature_annot))
+ATAC_FEATURE_ANNOT = as.data.frame(atac_feature_annot)
+save(ATAC_FEATURE_ANNOT, 
+     file=sprintf("%s/extracted_sample_level_data/ATAC/ATAC_FEATURE_ANNOT.rda",data_dir),  
+     compress = "bzip2", 
+     compression_level = 9)
