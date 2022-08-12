@@ -169,9 +169,9 @@
 "REPEATED_FEATURES"
 
 
-#' @title Metabolite feature ID map
+#' @title Metabolite feature IDs and metadata
 #' @description Mapping between various metabolite feature identifiers used
-#'   at different stages of data processing. 
+#'   at different stages of data processing. Also includes some feature metadata
 #' @format A data frame with 14420 rows and 13 variables:
 #' \describe{
 #'   \item{\code{tissue}}{`r tissue()`}
@@ -944,7 +944,7 @@ NULL
 #'   \code{tissue} is a tissue abbreviation (see [TISSUE_ABBREV]). Samples (vial labels) are in columns, and metabolites (feature IDs) are
 #'   in rows. Feature IDs in the row names in these tables correspond to \code{\link{METAB_FEATURE_ID_MAP}$feature_ID_sample_data}.
 #'   
-#' @source \code{gs://mawg-data/pass1b-06/immunoassay/data/release/pass1b-06*_mfi-log2-filt-imputed-na-outliers.txt} 
+#'   TODO: Explain which version of normalized data were used for each data set. 
 "METAB_NORM_DATA_NESTED"
 
 
