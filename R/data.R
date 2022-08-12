@@ -832,7 +832,7 @@ NULL
 #' @format A nested list of data frames
 #' @details 
 #'   IMMUNO sample-level data is in a different format than sample-level data for other assays/omes. 
-#'   Extract data from a panel and tissue using \code{IMMUNO_SAMPLE_DATA[[panel]][[tissue]]}, where \code{panel} 
+#'   Extract data from a panel and tissue using \code{\link{IMMUNO_NORM_DATA_NESTED}[[panel]][[tissue]]}, where \code{panel} 
 #'   is one of "ADIPONECTIN", "SERPIN-E", "rat-mag27plex", "rat-metabolic", "rat-myokine", "rat-pituitary", and 
 #'   \code{tissue} is a tissue abbreviation (see [TISSUE_ABBREV]). Samples (vial labels) are in rows, and analytes are
 #'   in columns. Column names, barring the first "viallabel" column, correspond to \code{feature_ID}s. 
@@ -933,23 +933,24 @@ NULL
 
 ## Metabolomics sample-level data ####
 
-#' @title Nested metabolomics data used for differential analysis
+#' @title Processed metabolomics data used for differential analysis
 #' @description Combined sample-level data organized by metabolomics platforms and tissue used for differential analysis
-#' @format A tibble with 113 rows and 5 variables:
-#' \describe{
-#'   \item{\code{tissue}}{`r tissue_code()`}
-#'   \item{\code{assay_code}}{`r assay_code()`}
-#'   \item{\code{sample_data}}{list where first element is a tibble of feature by viallabel normalized sample-level data}
-#'   \item{\code{pheno}}{list, phenotypic data important for differential abundance analysis}
-#'   \item{\code{feature_metadata}}{list, feature metadata important for differntial abundance analysis} 
-#' }
-#' @details TODO
-"METAB_SAMPLE_DATA_NESTED"
+#' @format A nested list of data frames
+#' @details 
+#'   METAB sample-level data is in a different format than sample-level data for other assays/omes. 
+#'   Extract data from a panel and tissue using \code{METAB_NORM_DATA_NESTED[[platform]][[tissue]]}, where \code{platform} 
+#'   is one of "metab-t-amines", "metab-t-acoa", "metab-t-nuc", "metab-t-oxylipneg", "metab-t-ka", "metab-t-etamidpos", "metab-t-tca", 
+#'   "metab-u-lrppos", "metab-u-lrpneg", "metab-u-hilicpos", "metab-u-rppos", "metab-u-rpneg", "metab-u-ionpneg" (see [MotrpacBicQC::assay_codes] for details) and 
+#'   \code{tissue} is a tissue abbreviation (see [TISSUE_ABBREV]). Samples (vial labels) are in columns, and metabolites (feature IDs) are
+#'   in rows. Feature IDs in the row names in these tables correspond to \code{\link{METAB_FEATURE_ID_MAP}$feature_ID_sample_data}.
+#'   
+#' @source \code{gs://mawg-data/pass1b-06/immunoassay/data/release/pass1b-06*_mfi-log2-filt-imputed-na-outliers.txt} 
+"METAB_NORM_DATA_NESTED"
 
 
 #' @title Combined metabolomics data used for visualization
 #' @description Combined sample-level metabolomics data used for visualization.
-#'   Data are equivalent to the data provided in [METAB_SAMPLE_DATA_NESTED]. [METAB_SAMPLE_DATA_NESTED] is compatible with the 
+#'   Data are equivalent to the data provided in [METAB_NORM_DATA_NESTED]. [METAB_NORM_DATA_NESTED] is compatible with the 
 #'   differential analysis functions while this format is compatible with visualization functions. 
 #'   
 #'   Metabolites are in rows, and numeric column names correspond to participant IDs (PIDs). 
