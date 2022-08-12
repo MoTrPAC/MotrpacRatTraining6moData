@@ -216,6 +216,40 @@
 NULL
 
 
+#' @title ATAC-seq feature annotation
+#' @format A data frame with 1209773 rows and 16 variables:
+#' \describe{
+#'   \item{\code{assay}}{`r assay()`}
+#'   \item{\code{assay_code}}{`r assay_code()`}
+#'   \item{\code{feature_ID}}{`r feature_ID()`}
+#'   \item{\code{chrom}}{character, chromosome: 1-20, X, or Y}
+#'   \item{\code{start}}{double, base pair of feature start}
+#'   \item{\code{end}}{double, base bair of feature end}
+#'   \item{\code{width}}{integer, width of feature in base pairs}
+#'   \item{\code{chipseeker_annotation}}{character, annotation from [ChIPseeker::annotatePeak()]}
+#'   \item{\code{custom_annotation}}{character, a version of the ChIPseeker annotations with many corrections. Values include:
+#'     "Distal Intergenic", "Promoter (<=1kb)", "Exon", "Promoter (1-2kb)", "Downstream (<5kb)", "Upstream (<5kb)", "5' UTR",
+#'     "Intron", "3' UTR", "Overlaps Gene", where "Overlaps Gene" means the feature has a non-zero overlap with
+#'     either the start or end of the gene but was not otherwise asssigned an annotation.}
+#'   \item{\code{distanceToTSS}}{double, minimum distance from one end of the feature to the transcription start site.}
+#'   \item{\code{relationship_to_gene}}{double, distance from the closest edge 
+#'     of the feature to the start or end of the closest gene, whichever is closer.
+#'     A value of 0 means there is non-zero overlap between the feature and the gene.
+#'     A negative value means the feature is upstream of \code{geneStart}.
+#'     A a positive value means the feature is downstream of \code{geneEnd}.
+#'     Note that \code{geneStart} and \code{geneEnd} are strand-agnostic, i.e. \code{geneStart} 
+#'     is always less than \code{geneEnd}, even if the gene is on the negative strand (\code{geneStrand == 2}).}
+#'   \item{\code{ensembl_gene}}{character, Ensembl gene ID from release 96 of the Rattus norvegicus gene annotation}
+#'   \item{\code{geneStart}}{integer, base pair start of gene; strand-agnostic, meaning \code{geneStart} is always less than \code{geneEnd}}
+#'   \item{\code{geneEnd}}{integer, base pair end of gene; strand-agnostic, meaning \code{geneStart} is always less than \code{geneEnd}}
+#'   \item{\code{geneLength}}{integer, length of gene in base pairs}
+#'   \item{\code{geneStrand}}{integer, 1 (forward strand) or 2 (reverse strand)} 
+#' }
+#' @details TODO - link to function in MotrpacRatTraining6mo 
+#' @name ATAC_FEATURE_ANNOT
+NULL
+
+
 ## Phenotypic data ####
 
 #' @title Phenotypic data 

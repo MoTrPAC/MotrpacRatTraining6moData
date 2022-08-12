@@ -323,6 +323,7 @@ Raw sample-level counts|ATAC|LIVER|ATAC_LIVER_RAW_COUNTS|https://storage.googlea
 Raw sample-level counts|ATAC|LUNG|ATAC_LUNG_RAW_COUNTS|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_LUNG_RAW_COUNTS.rda
 Raw sample-level counts|ATAC|SKM-GN|ATAC_SKMGN_RAW_COUNTS|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_SKMGN_RAW_COUNTS.rda
 Raw sample-level counts|ATAC|WAT-SC|ATAC_WATSC_RAW_COUNTS|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_WATSC_RAW_COUNTS.rda
+Feature annotation|ATAC|all|ATAC_FEATURE_ANNOT|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_FEATURE_ANNOT.rda
 Differential analysis results|METHYL|BAT|METHYL_BAT_DA|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_BAT_DA.rda
 Differential analysis results|METHYL|HEART|METHYL_HEART_DA|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_HEART_DA.rda
 Differential analysis results|METHYL|HIPPOC|METHYL_HIPPOC_DA|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_HIPPOC_DA.rda
