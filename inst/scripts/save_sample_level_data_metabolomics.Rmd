@@ -412,7 +412,7 @@ for(i in 1:nrow(METAB_SAMPLE_DATA_NESTED)){
   data_list[[platform]][[tissue]] = data
 }
 METAB_NORM_DATA_NESTED = data_list
-usethis::use_data(METAB_SAMPLE_DATA_NESTED,overwrite=T)
+usethis::use_data(METAB_NORM_DATA_NESTED,overwrite=T)
 ```
 
 # 4. Make metabolite-to-RefMet map from DEA
