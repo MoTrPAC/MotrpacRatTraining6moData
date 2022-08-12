@@ -18,7 +18,7 @@ Normalized, imputed, and filtered multiplexed immunoassay data used for differen
 }
 \details{
 IMMUNO sample-level data is in a different format than sample-level data for other assays/omes.
-Extract data from a panel and tissue using \code{IMMUNO_SAMPLE_DATA[[panel]][[tissue]]}, where \code{panel}
+Extract data from a panel and tissue using \code{\link{IMMUNO_NORM_DATA_NESTED}[[panel]][[tissue]]}, where \code{panel}
 is one of "ADIPONECTIN", "SERPIN-E", "rat-mag27plex", "rat-metabolic", "rat-myokine", "rat-pituitary", and
 \code{tissue} is a tissue abbreviation (see \link{TISSUE_ABBREV}). Samples (vial labels) are in rows, and analytes are
 in columns. Column names, barring the first "viallabel" column, correspond to \code{feature_ID}s.
