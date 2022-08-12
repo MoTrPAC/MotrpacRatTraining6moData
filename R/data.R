@@ -169,9 +169,9 @@
 "REPEATED_FEATURES"
 
 
-#' @title Metabolite feature ID map
+#' @title Metabolite feature IDs and metadata
 #' @description Mapping between various metabolite feature identifiers used
-#'   at different stages of data processing. 
+#'   at different stages of data processing. Also includes some feature metadata
 #' @format A data frame with 14420 rows and 13 variables:
 #' \describe{
 #'   \item{\code{tissue}}{`r tissue()`}
@@ -213,6 +213,40 @@
 #' }
 #' @details TODO
 #' @name METHYL_FEATURE_ANNOT
+NULL
+
+
+#' @title ATAC-seq feature annotation
+#' @format A data frame with 1209773 rows and 16 variables:
+#' \describe{
+#'   \item{\code{assay}}{`r assay()`}
+#'   \item{\code{assay_code}}{`r assay_code()`}
+#'   \item{\code{feature_ID}}{`r feature_ID()`}
+#'   \item{\code{chrom}}{character, chromosome: 1-20, X, or Y}
+#'   \item{\code{start}}{double, base pair of feature start}
+#'   \item{\code{end}}{double, base bair of feature end}
+#'   \item{\code{width}}{integer, width of feature in base pairs}
+#'   \item{\code{chipseeker_annotation}}{character, annotation from [ChIPseeker::annotatePeak()]}
+#'   \item{\code{custom_annotation}}{character, a version of the ChIPseeker annotations with many corrections. Values include:
+#'     "Distal Intergenic", "Promoter (<=1kb)", "Exon", "Promoter (1-2kb)", "Downstream (<5kb)", "Upstream (<5kb)", "5' UTR",
+#'     "Intron", "3' UTR", "Overlaps Gene", where "Overlaps Gene" means the feature has a non-zero overlap with
+#'     either the start or end of the gene but was not otherwise asssigned an annotation.}
+#'   \item{\code{distanceToTSS}}{double, minimum distance from one end of the feature to the transcription start site.}
+#'   \item{\code{relationship_to_gene}}{double, distance from the closest edge 
+#'     of the feature to the start or end of the closest gene, whichever is closer.
+#'     A value of 0 means there is non-zero overlap between the feature and the gene.
+#'     A negative value means the feature is upstream of \code{geneStart}.
+#'     A a positive value means the feature is downstream of \code{geneEnd}.
+#'     Note that \code{geneStart} and \code{geneEnd} are strand-agnostic, i.e. \code{geneStart} 
+#'     is always less than \code{geneEnd}, even if the gene is on the negative strand (\code{geneStrand == 2}).}
+#'   \item{\code{ensembl_gene}}{character, Ensembl gene ID from release 96 of the Rattus norvegicus gene annotation}
+#'   \item{\code{geneStart}}{integer, base pair start of gene; strand-agnostic, meaning \code{geneStart} is always less than \code{geneEnd}}
+#'   \item{\code{geneEnd}}{integer, base pair end of gene; strand-agnostic, meaning \code{geneStart} is always less than \code{geneEnd}}
+#'   \item{\code{geneLength}}{integer, length of gene in base pairs}
+#'   \item{\code{geneStrand}}{integer, 1 (forward strand) or 2 (reverse strand)} 
+#' }
+#' @details TODO - link to function in MotrpacRatTraining6mo 
+#' @name ATAC_FEATURE_ANNOT
 NULL
 
 
@@ -832,7 +866,7 @@ NULL
 #' @format A nested list of data frames
 #' @details 
 #'   IMMUNO sample-level data is in a different format than sample-level data for other assays/omes. 
-#'   Extract data from a panel and tissue using \code{IMMUNO_SAMPLE_DATA[[panel]][[tissue]]}, where \code{panel} 
+#'   Extract data from a panel and tissue using \code{\link{IMMUNO_NORM_DATA_NESTED}[[panel]][[tissue]]}, where \code{panel} 
 #'   is one of "ADIPONECTIN", "SERPIN-E", "rat-mag27plex", "rat-metabolic", "rat-myokine", "rat-pituitary", and 
 #'   \code{tissue} is a tissue abbreviation (see [TISSUE_ABBREV]). Samples (vial labels) are in rows, and analytes are
 #'   in columns. Column names, barring the first "viallabel" column, correspond to \code{feature_ID}s. 
@@ -933,23 +967,24 @@ NULL
 
 ## Metabolomics sample-level data ####
 
-#' @title Nested metabolomics data used for differential analysis
+#' @title Processed metabolomics data used for differential analysis
 #' @description Combined sample-level data organized by metabolomics platforms and tissue used for differential analysis
-#' @format A tibble with 113 rows and 5 variables:
-#' \describe{
-#'   \item{\code{tissue}}{`r tissue_code()`}
-#'   \item{\code{assay_code}}{`r assay_code()`}
-#'   \item{\code{sample_data}}{list where first element is a tibble of feature by viallabel normalized sample-level data}
-#'   \item{\code{pheno}}{list, phenotypic data important for differential abundance analysis}
-#'   \item{\code{feature_metadata}}{list, feature metadata important for differntial abundance analysis} 
-#' }
-#' @details TODO
-"METAB_SAMPLE_DATA_NESTED"
+#' @format A nested list of data frames
+#' @details 
+#'   METAB sample-level data is in a different format than sample-level data for other assays/omes. 
+#'   Extract data from a panel and tissue using \code{METAB_NORM_DATA_NESTED[[platform]][[tissue]]}, where \code{platform} 
+#'   is one of "metab-t-amines", "metab-t-acoa", "metab-t-nuc", "metab-t-oxylipneg", "metab-t-ka", "metab-t-etamidpos", "metab-t-tca", 
+#'   "metab-u-lrppos", "metab-u-lrpneg", "metab-u-hilicpos", "metab-u-rppos", "metab-u-rpneg", "metab-u-ionpneg" (see [MotrpacBicQC::assay_codes] for details) and 
+#'   \code{tissue} is a tissue abbreviation (see [TISSUE_ABBREV]). Samples (vial labels) are in columns, and metabolites (feature IDs) are
+#'   in rows. Feature IDs in the row names in these tables correspond to \code{\link{METAB_FEATURE_ID_MAP}$feature_ID_sample_data}.
+#'   
+#'   TODO: Explain which version of normalized data were used for each data set. 
+"METAB_NORM_DATA_NESTED"
 
 
 #' @title Combined metabolomics data used for visualization
 #' @description Combined sample-level metabolomics data used for visualization.
-#'   Data are equivalent to the data provided in [METAB_SAMPLE_DATA_NESTED]. [METAB_SAMPLE_DATA_NESTED] is compatible with the 
+#'   Data are equivalent to the data provided in [METAB_NORM_DATA_NESTED]. [METAB_NORM_DATA_NESTED] is compatible with the 
 #'   differential analysis functions while this format is compatible with visualization functions. 
 #'   
 #'   Metabolites are in rows, and numeric column names correspond to participant IDs (PIDs). 
@@ -1992,11 +2027,11 @@ NULL
 #'   using [gprofiler2::gost()] with custom backgrounds defined by [GENE_UNIVERSES].  
 #'   Only pathways with at least 10 and up to 200 members were tested. Because [gprofiler2::gost()]
 #'   only returns adjusted p-values, we recalculated nominal p-values using a one-tailed hypergeometric test, 
-#'   which is consistent with how [gprofiler2::gost()] calculates enrichments. See [MotrpacRatTraining6mo::cluster_pathway_enrichment()] for implementation. 
+#'   which is consistent with how [gprofiler2::gost()] calculates enrichments. See `cluster_pathway_enrichment()` for implementation. 
 #'   
 #'   For metabolites, 
 #'   we performed enrichment of KEGG pathways using the hypergeometric method in [FELLA::enrich()] 
-#'   with custom backgrounds defined by [GENE_UNIVERSES]. See [MotrpacRatTraining6mo::run_fella()] for implementation. 
+#'   with custom backgrounds defined by [GENE_UNIVERSES]. See `run_fella()` for implementation. 
 #'   
 #'   Pathway enrichment analysis p-values 
 #'   were adjusted across all results using Independent Hypothesis Weighting (IHW) with tissue as a covariate.
