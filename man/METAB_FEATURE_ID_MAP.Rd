@@ -3,7 +3,7 @@
 \docType{data}
 \name{METAB_FEATURE_ID_MAP}
 \alias{METAB_FEATURE_ID_MAP}
-\title{Metabolite feature ID map}
+\title{Metabolite feature IDs and metadata}
 \format{
 A data frame with 14420 rows and 13 variables:
 \describe{
@@ -30,7 +30,7 @@ METAB_FEATURE_ID_MAP
 }
 \description{
 Mapping between various metabolite feature identifiers used
-at different stages of data processing.
+at different stages of data processing. Also includes some feature metadata
 }
 \details{
 TODO

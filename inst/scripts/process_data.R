@@ -9,10 +9,10 @@ library(devtools)
 library(usethis)
 library(data.table)
 library(sinew)
-# library(MotrpacRatTraining6moData) use load_all instead
+load_all()
 
-setwd("/oak/stanford/groups/smontgom/nicolerg/src/MOTRPAC/MotrpacRatTraining6moData")
-data_dir = "/oak/stanford/groups/smontgom/shared/motrpac/internal_releases/motrpac-data-freeze-pass/v1.1/analysis"
+setwd("../../../MotrpacRatTraining6moData")
+data_dir = "motrpac/internal_releases/motrpac-data-freeze-pass/v1.1"
 
 # Define tissue codes 
 tissue_codes = unique(bic_animal_tissue_code$tissue_name_release)
@@ -29,7 +29,7 @@ tissue_codes = tissue_codes[tissue_codes != ""]
 #' @param check_first check if file exists before downloading it. read in existing file if it exists. should be set to TRUE if you are running this function in parallel
 #'
 #' @return A data.table
-dl_read_gcp = function(path,sep='\t',tmpdir='/oak/stanford/groups/smontgom/nicolerg/tmp',GSUTIL_PATH='~/google-cloud-sdk/bin/gsutil',check_first=F){
+dl_read_gcp = function(path,sep='\t',tmpdir='/tmp',GSUTIL_PATH='gsutil',check_first=F){
   system(sprintf('mkdir -p %s',tmpdir))
   # download
   new_path = sprintf('%s/%s',tmpdir,basename(path))
@@ -128,16 +128,16 @@ usethis::use_data(TISSUE_ABBREV,
 # Differential analysis results -------------------------------------------------
 
 # Define directories
-dea_directories = c('TRNSCRPT' = sprintf("%s/transcriptomics/transcript-rna-seq/dea", data_dir),
-                    'PROT' = sprintf("%s/proteomics-untargeted/prot-pr/dea", data_dir),
-                    'PHOSPHO' = sprintf("%s/proteomics-untargeted/prot-ph/dea", data_dir),
-                    'ACETYL' = sprintf("%s/proteomics-untargeted/prot-ac/dea", data_dir),
-                    'UBIQ' = sprintf("%s/proteomics-untargeted/prot-ub/dea", data_dir),
-                    'IMMUNO' = sprintf("%s/proteomics-targeted/immunoassay-luminex/dea", data_dir),
-                    'METAB' = sprintf("%s/metabolomics-named-merged/dea", data_dir),
-                    'metab-metareg' = sprintf("%s/metabolomics-named-merged/dea/meta-regression", data_dir),
-                    'METHYL' = sprintf("%s/epigenomics/epigen-rrbs/dea", data_dir),
-                    'ATAC' = sprintf("%s/epigenomics/epigen-atac-seq/dea", data_dir))
+dea_directories = c('TRNSCRPT' = sprintf("%s/analysis/transcriptomics/transcript-rna-seq/dea", data_dir),
+                    'PROT' = sprintf("%s/analysis/proteomics-untargeted/prot-pr/dea", data_dir),
+                    'PHOSPHO' = sprintf("%s/analysis/proteomics-untargeted/prot-ph/dea", data_dir),
+                    'ACETYL' = sprintf("%s/analysis/proteomics-untargeted/prot-ac/dea", data_dir),
+                    'UBIQ' = sprintf("%s/analysis/proteomics-untargeted/prot-ub/dea", data_dir),
+                    'IMMUNO' = sprintf("%s/analysis/proteomics-targeted/immunoassay-luminex/dea", data_dir),
+                    'METAB' = sprintf("%s/analysis/metabolomics-named-merged/dea", data_dir),
+                    'metab-metareg' = sprintf("%s/analysis/metabolomics-named-merged/dea/meta-regression", data_dir),
+                    'METHYL' = sprintf("%s/analysis/epigenomics/epigen-rrbs/dea", data_dir),
+                    'ATAC' = sprintf("%s/analysis/epigenomics/epigen-atac-seq/dea", data_dir))
 
 dea_patterns = c('TRNSCRPT' = 'timewise-dea-fdr',
                  'PROT' = 'prot-pr_timewise-dea-fdr',
@@ -151,8 +151,8 @@ dea_patterns = c('TRNSCRPT' = 'timewise-dea-fdr',
                  'ATAC' = 'epigen-atac-seq_timewise-dea-fdr')                    
 
 list_of_dfs = c()
-#system("gsutil cp gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/resources/master_feature_to_gene_20211116.RData /oak/stanford/groups/smontgom/nicolerg/tmp")
-load("/oak/stanford/groups/smontgom/nicolerg/tmp/master_feature_to_gene_20211116.RData")
+#system("gsutil cp gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/resources/master_feature_to_gene_20211116.RData /tmp")
+load("/tmp/master_feature_to_gene_20211116.RData")
 REPEATED_FEATURES = as.data.table(repeated_feature_map)
 
 load("data/TRAINING_REGULATED_FEATURES.rda") # from DEA tables, 5% FDR 
@@ -238,8 +238,8 @@ for(ome in names(dea_directories)){
     
     if(assay_abbr %in% c("ATAC","METHYL")){
       # copy full set to GCS
-      outfile = sprintf("%s/%s/%s.rda",
-                        "/oak/stanford/groups/smontgom/shared/motrpac/internal_releases/motrpac-data-freeze-pass/v1.1/extracted_sample_level_data",
+      outfile = sprintf("%s/extracted_sample_level_data/%s/%s.rda",
+                        data_dir,
                         assay_abbr,
                         new_name)
       do.call("save", list(as.name(new_name),
@@ -342,10 +342,10 @@ sinew::makeOxygen(METAB_PLASMA_DA)
 sinew::makeOxygen(IMMUNO_PLASMA_DA)
 sinew::makeOxygen(METAB_PLASMA_DA_METAREG)
 
-load(sprintf("/oak/stanford/groups/smontgom/shared/motrpac/internal_releases/motrpac-data-freeze-pass/v1.1/extracted_sample_level_data/ATAC/ATAC_BAT_DA.rda"))
+load(sprintf("%s/extracted_sample_level_data/ATAC/ATAC_BAT_DA.rda", data_dir))
 sinew::makeOxygen(ATAC_BAT_DA)
 
-load(sprintf("/oak/stanford/groups/smontgom/shared/motrpac/internal_releases/motrpac-data-freeze-pass/v1.1/extracted_sample_level_data/METHYL/METHYL_BAT_DA.rda"))
+load(sprintf("%s/extracted_sample_level_data/METHYL/METHYL_BAT_DA.rda", data_dir))
 sinew::makeOxygen(METHYL_BAT_DA)
 
 # Phenotypic data ---------------------------------------------------------------
@@ -462,8 +462,8 @@ sinew::makeOxygen(PHENO)
  
 # Feature-to-gene map -----------------------------------------------------------
 
-#system("gsutil cp gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/resources/master_feature_to_gene_20211116.RData /oak/stanford/groups/smontgom/nicolerg/tmp")
-load("/oak/stanford/groups/smontgom/nicolerg/tmp/master_feature_to_gene_20211116.RData")
+#system("gsutil cp gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/resources/master_feature_to_gene_20211116.RData /tmp")
+load("/tmp/master_feature_to_gene_20211116.RData")
 
 FEATURE_TO_GENE = as.data.frame(master_feature_to_gene)
 REPEATED_FEATURES = repeated_feature_map
@@ -519,7 +519,7 @@ sinew::makeOxygen(METHYL_META)
 # Proteomics sample-level data -------------------------------------------------
 
 #gs://motrpac-data-freeze-pass/pass1b-06/v1.1/results/proteomics-untargeted/t58-heart/prot-pr/motrpac_pass1b-06_t58-heart_prot-pr_vial-metadata.txt 
-indir = "/oak/stanford/groups/smontgom/shared/motrpac/internal_releases/motrpac-data-freeze-pass/v1.1/results/extracted_proteomics"
+indir = sprintf("%s/results/extracted_proteomics", data_dir)
 system(sprintf("gsutil -m cp gs://motrpac-data-freeze-pass/pass1b-06/v1.1/results/proteomics-untargeted/**/*vial-metadata.txt %s", indir))
 
 for(assay_code in c('prot-pr','prot-ac','prot-ub','prot-ph')){
@@ -550,7 +550,7 @@ for(assay_code in c('prot-pr','prot-ac','prot-ub','prot-ph')){
 
 # RRBS feature annotation ------------------------------------------------------
 
-indir = "/oak/stanford/groups/smontgom/shared/motrpac/internal_releases/motrpac-data-freeze-pass/v1.1/extracted_sample_level_data/METHYL"
+indir = sprintf("%s/extracted_sample_level_data/METHYL", data_dir)
 system(sprintf("gsutil -m cp gs://mawg-data/pass1b-06/epigen-rrbs-v2/data/*_epigen-rrbs_normalized-data-feature-annot.txt %s", indir))
 
 dtlist = list()
@@ -568,6 +568,17 @@ dt = rbindlist(dtlist)
 
 METHYL_FEATURE_ANNOT = as.data.frame(dt)
 save(METHYL_FEATURE_ANNOT, 
-     file="/oak/stanford/groups/smontgom/shared/motrpac/internal_releases/motrpac-data-freeze-pass/v1.1/extracted_sample_level_data/METHYL/METHYL_FEATURE_ANNOT.rda", 
+     file=sprintf("%s/extracted_sample_level_data/METHYL/METHYL_FEATURE_ANNOT.rda",data_dir),  
+     compress = "bzip2", 
+     compression_level = 9)
+
+# ATAC feature annotation ------------------------------------------------------
+
+atac_feature_annot = dl_read_gcp("gs://mawg-data/pass1b-06/epigen-atac-seq/mapping/pass1b-06_epigen-atac-seq_feature-mapping_20211110.txt")
+setnames(atac_feature_annot, "assay", "assay_code")
+atac_feature_annot = data.table(cbind(assay="ATAC", atac_feature_annot))
+ATAC_FEATURE_ANNOT = as.data.frame(atac_feature_annot)
+save(ATAC_FEATURE_ANNOT, 
+     file=sprintf("%s/extracted_sample_level_data/ATAC/ATAC_FEATURE_ANNOT.rda",data_dir),  
      compress = "bzip2", 
      compression_level = 9)

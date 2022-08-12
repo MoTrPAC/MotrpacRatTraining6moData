@@ -394,12 +394,25 @@ mutate(feature_metadata = pmap(list(tissue,assay_code,data_for_dea), function(ti
 ```{r}
 METAB_SAMPLE_DATA <- metab_data %>%
   rename(sample_data = data_for_dea)
-usethis::use_data(METAB_SAMPLE_DATA,overwrite=T)
-
-# rename
-load("../../data/METAB_SAMPLE_DATA.rda")
+# usethis::use_data(METAB_SAMPLE_DATA,overwrite=T)
+# 
+# # rename
+# load("../../data/METAB_SAMPLE_DATA.rda")
 METAB_SAMPLE_DATA_NESTED = METAB_SAMPLE_DATA
-usethis::use_data(METAB_SAMPLE_DATA_NESTED,overwrite=T)
+# usethis::use_data(METAB_SAMPLE_DATA_NESTED,overwrite=T)
+
+# convert to nested list 
+# load("../../data/METAB_SAMPLE_DATA_NESTED.rda")
+data_list = list()
+for(i in 1:nrow(METAB_SAMPLE_DATA_NESTED)){
+  tissue_code = METAB_SAMPLE_DATA_NESTED$tissue[i]
+  tissue = TISSUE_CODE_TO_ABBREV[[tissue_code]]
+  platform = METAB_SAMPLE_DATA_NESTED$assay_code[i]
+  data = as.data.frame(METAB_SAMPLE_DATA_NESTED$sample_data[i][[1]])
+  data_list[[platform]][[tissue]] = data
+}
+METAB_NORM_DATA_NESTED = data_list
+usethis::use_data(METAB_NORM_DATA_NESTED,overwrite=T)
 ```
 
 # 4. Make metabolite-to-RefMet map from DEA
