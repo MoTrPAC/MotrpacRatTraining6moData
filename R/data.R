@@ -978,10 +978,13 @@ NULL
 #'   \code{tissue} is a tissue abbreviation (see [TISSUE_ABBREV]). Samples (vial labels) are in columns, and metabolites (feature IDs) are
 #'   in rows. Feature IDs in the row names in these tables correspond to \code{\link{METAB_FEATURE_ID_MAP}$feature_ID_sample_data}.
 #'   
-#'   Not all data sets were processed similarly. The processing for each tissue/platform data follows this criteria:
-#'      -Metabolomics targeted 't' platform with >12 features: KNN imputated and log2 transformed
-#'      -Metabolomics targeted 't' platform with <= 12 features: Log2 transformed (no imputation)
-#'      -Metabolomics untargeted 'u' platform: sample centered, KNN imputed, log2 transformed
+#'   Not all data sets were processed similarly. The processing for each tissue/platform data follows this criteria:  
+#'   \itemize{
+#'     \item Metabolomics targeted 't' platform with >12 features: KNN imputated and log2 transformed
+#'     \item Metabolomics targeted 't' platform with <= 12 features: Log2 transformed (no imputation) 
+#'     \item Metabolomics untargeted 'u' platform: sample centered, KNN imputed, log2 transformed
+#'   }
+#'   
 "METAB_NORM_DATA_NESTED"
 
 
