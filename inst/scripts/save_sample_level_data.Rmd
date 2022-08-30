@@ -15,10 +15,10 @@ library(usethis)
 library(sinew)
 library(devtools)
 knitr::opts_chunk$set(echo = TRUE)
-mawgdir = '/oak/stanford/groups/smontgom/nicolerg/MOTRPAC/MAWG_DATA'
-gitdir = "/oak/stanford/groups/smontgom/nicolerg/src/MOTRPAC/"
-scratch = '/oak/stanford/groups/smontgom/nicolerg/tmp'
-datadir = '/projects/motrpac/internal_releases/motrpac-data-freeze-pass/v1.1/extracted_sample_level_data'
+mawgdir = 'nicolerg/MOTRPAC/MAWG_DATA'
+gitdir = "nicolerg/src/MOTRPAC/"
+scratch = 'nicolerg/tmp'
+datadir = 'motrpac/internal_releases/motrpac-data-freeze-pass/v1.1/extracted_sample_level_data'
 gsutil = 'gsutil'
 source(sprintf("%s/motrpac-mawg/pass1b-06/tools/get_fx.R", gitdir))
 source(sprintf("%s/motrpac-mawg/pass1b-06/integrative/clustering/cluster_viz_fx.R", gitdir))
