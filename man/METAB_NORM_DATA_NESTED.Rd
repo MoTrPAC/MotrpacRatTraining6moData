@@ -21,6 +21,11 @@ is one of "metab-t-amines", "metab-t-acoa", "metab-t-nuc", "metab-t-oxylipneg", 
 \code{tissue} is a tissue abbreviation (see \link{TISSUE_ABBREV}). Samples (vial labels) are in columns, and metabolites (feature IDs) are
 in rows. Feature IDs in the row names in these tables correspond to \code{\link{METAB_FEATURE_ID_MAP}$feature_ID_sample_data}.
 
-TODO: Explain which version of normalized data were used for each data set.
+Not all data sets were processed similarly. The processing for each tissue/platform data follows this criteria:
+\itemize{
+\item Metabolomics targeted 't' platform with >12 features: KNN imputated and log2 transformed
+\item Metabolomics targeted 't' platform with <= 12 features: Log2 transformed (no imputation)
+\item Metabolomics untargeted 'u' platform: sample centered, KNN imputed, log2 transformed
+}
 }
 \keyword{datasets}

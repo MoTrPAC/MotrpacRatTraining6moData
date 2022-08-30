@@ -295,10 +295,13 @@ for(ome in names(norm_data_list)){
 Protein extractions from the same viallabel were used in multiple panels. 
 Furthermore, not all assays were performed on every viallabel. 
 CHEX* variables are also well-specific measurements, where CHEX4 is used as a covariate in differential analysis. 
+Finally, for PLASMA, only DX3 for SERPIN-E and DX200 for ADIPONECTIN were retained.
 ```{r immuno}
 metadata = dl_read_gcp("gs://mawg-data/pass1b-06/immunoassay/data/release/sample_metadata_20210803.csv", sep=',')
 metadata[,group := ifelse(intervention == 'control', 'control', sacrifice_time)]
 metadata[,c('intervention','sacrifice_time') := NULL]
+# note metadata does not distinguish between ADIPONECTIN and SERPIN-E measurements for PLASMA so we have to fix this
+
 # version of the data used for differential analysis 
 flist = system("gsutil ls gs://mawg-data/pass1b-06/immunoassay/data/release/pass1b-06*_mfi-log2-filt-imputed-na-outliers.txt", intern=T)
 # add CHEX to metadata
@@ -324,9 +327,11 @@ for(f in flist){
   # add CHEX to metadata
   imputed = dl_read_gcp(f, sep='\t')
   imputed[,vial_label := as.character(vial_label)]
-  new_meta_list[[sprintf("%s;%s", panel, tissue)]] = merge(metadata[tissue_code==tissue & panel_name==meta_panel], 
-                                                           imputed[,.(vial_label, CHEX1, CHEX2, CHEX3, CHEX4)],
-                                                           by="vial_label")
+  newm = merge(metadata[tissue_code==tissue & panel_name==meta_panel], 
+               imputed[,.(vial_label, CHEX1, CHEX2, CHEX3, CHEX4)],
+               by="vial_label")
+  newm[,panel_name := panel]
+  new_meta_list[[sprintf("%s;%s", panel, tissue)]] = newm
   # remove CHEX from imputed data
   imputed[,c("CHEX1","CHEX2","CHEX3","CHEX4") := NULL]
   
@@ -335,23 +340,33 @@ for(f in flist){
   imputed_data[[panel]][[tissue_abbrev]] = imputed
 }
 new_meta = rbindlist(new_meta_list)
-# add ref stds
-metadata[!vial_label %in% new_meta[,vial_label]]
-new_meta = rbindlist(list(new_meta, metadata[!vial_label %in% new_meta[,vial_label]]), fill=T)
 setnames(new_meta, "vial_label", "viallabel")
 new_meta[new_meta==""] = NA
 # rename CHEX columns - these are already log2
 setnames(new_meta,
          c("CHEX1","CHEX2","CHEX3","CHEX4"),
          c("log2_CHEX1","log2_CHEX2","log2_CHEX3","log2_CHEX4"))
+# add tissue col and reorder
+old_cols = colnames(new_meta)[2:ncol(new_meta)]
+new_meta[,tissue := MotrpacBicQC::tissue_abbr[tissue_code]]
+new_meta = new_meta[,c("viallabel","tissue", old_cols), with=F]
+# remove wrong dilutions for plasma adipokine
+nrow(new_meta)
+new_meta = new_meta[!(tissue == "PLASMA" & panel_name == "ADIPONECTIN" & grepl("DX3", luminex_sample_name))]
+new_meta = new_meta[!(tissue == "PLASMA" & panel_name == "SERPIN-E" & grepl("DX200", luminex_sample_name))]
+nrow(new_meta)
+# check that entries are unique
+stopifnot(nrow(new_meta[,.(viallabel, tissue, panel_name)]) == nrow(unique(new_meta[,.(viallabel, tissue, panel_name)])))
 # save data
 IMMUNO_META = as.data.frame(new_meta)
 usethis::use_data(IMMUNO_META, overwrite=T)
-sinew::makeOxygen(IMMUNO_META)
+tools::resaveRdaFiles(paths = '../../data/IMMUNO_META.rda')
+
 # write metadata to file 
-write.table(IMMUNO_META, file=sprintf("%s/sample_metadata_20220727.csv",scratch), sep=",", col.names=T, row.names=F, quote=F)
+write.table(IMMUNO_META, file=sprintf("%s/sample_metadata_20220829.csv",scratch), sep=",", col.names=T, row.names=F, quote=F)
 system(sprintf("gsutil cp %s gs://mawg-data/pass1b-06/immunoassay/data/release/",
-               sprintf("%s/sample_metadata_20220727.csv",scratch)))
+               sprintf("%s/sample_metadata_20220829.csv",scratch)))
+
 # save the data in list format 
 IMMUNO_NORM_DATA_NESTED = imputed_data
 usethis::use_data(IMMUNO_NORM_DATA_NESTED, overwrite=T)

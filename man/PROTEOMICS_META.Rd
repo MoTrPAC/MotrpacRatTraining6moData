@@ -37,6 +37,6 @@ UBIQ_META
 TMT channel and plex information for each proteomics assay
 }
 \details{
-TODO
+Sample information specific to each proteomics assay. This includes the TMT channel assigned to the sample (\code{tmt11_channel}) and the plex group in which the sample was assigned (\code{tmt_plex}).
 }
 \keyword{datasets}
