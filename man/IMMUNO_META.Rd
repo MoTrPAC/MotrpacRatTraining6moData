@@ -8,6 +8,7 @@
 A data frame with 1511 rows and 23 variables:
 \describe{
 \item{\code{viallabel}}{character, sample identifier}
+\item{\code{tissue}}{character, tissue abbreviation, one of \link{TISSUE_ABBREV}}
 \item{\code{tissue_code}}{character, tissue code used in data release. See \link[MotrpacBicQC:bic_animal_tissue_code]{MotrpacBicQC::bic_animal_tissue_code}.}
 \item{\code{bid}}{integer, biospecimen ID}
 \item{\code{luminex_sample_name}}{character, sample name used by HIMC in raw data files}

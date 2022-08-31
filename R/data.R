@@ -156,7 +156,7 @@
 #'   \item{\code{selection_fdr}}{`r selection_fdr()`}
 #'   \item{\code{metabolite_refmet}}{character, RefMet name of metabolite}
 #'   \item{\code{feature}}{character, duplicated \code{feature} in the format \code{\link{ASSAY_ABBREV};\link{TISSUE_ABBREV};[feature_ID]}}
-#'   \item{\code{new_feature_ID}}{character, new unique \code{feature_ID} with \code{panel} or \code{dataset} prepended}
+#'   \item{\code{new_feature_ID}}{character, new unique \code{feature_ID} with \code{dataset} prepended}
 #'   \item{\code{new_feature}}{character, new unique \code{feature} in the format \code{\link{ASSAY_ABBREV};\link{TISSUE_ABBREV};[new_feature_ID]}} 
 #' }
 #' @details 91 IMMUNO and METAB features were measured on multiple platforms and have multiple differential analysis results. 
@@ -252,10 +252,28 @@ NULL
 
 ## Phenotypic data ####
 
+# Helper function to repeat variables for 40 days in PHENO docs
+doctext = function(day){
+  str = paste0(c("#'   \\item{\\code{training.day*date}}{character, date of given training day}",
+                 "#'   \\item{\\code{training.day*_days}}{integer, day of given training day relative to \\code{registration.d_arrive} (count)}",
+                 "#'   \\item{\\code{training.day*time}}{character, time of given training day}",
+                 "#'   \\item{\\code{training.day*_treadmillspeed}}{double, treadmill speed on given training day}",
+                 "#'   \\item{\\code{training.day*_treadmillincline}}{double, treadmill incline on given training day}",
+                 "#'   \\item{\\code{training.day*_timeontreadmill}}{integer, time on treadmill on given training day}",
+                 "#'   \\item{\\code{training.day*_weight}}{double, weight on given training day}",
+                 "#'   \\item{\\code{training.day*_posttrainlact}}{double, post-training lactate on given training day}",
+                 "#'   \\item{\\code{training.day*_score}}{integer, score on given training day}",
+                 "#'   \\item{\\code{training.day*_comments}}{character, comments on given training day}"), collapse="\n")
+  cat(gsub("\\*",day,str),"\n")
+}
+# for (i in 1:40){
+#   doctext(i)
+# }
+
 #' @title Phenotypic data 
 #' @description Phenotypic data for samples from the MoTrPAC endurance exercise 
 #'     training study in 6-month-old rats. One row per sample (\code{viallabel}).
-#' @format A data frame with 5955 rows and 509 variables:
+#' @format A data frame with 5955 rows and 510 variables:
 #' \describe{
 #'   \item{\code{pid}}{integer, unique, randomly generated 8 digit numeric identifier used in linkage to phenotypic data}
 #'   \item{\code{bid}}{integer, unique, randomly generated 8 digit numeric identifier used in linkage to phenotypic data}
@@ -308,16 +326,349 @@ NULL
 #'   \item{\code{training.siteid}}{character, training site}
 #'   \item{\code{training.formname}}{character, training form name}
 #'   \item{\code{training.versionnbr}}{integer, training form version number}
-#'   \item{\code{training.day*date}}{character, date of given training day}
-#'   \item{\code{training.day*_days}}{integer, day of given training day relative to \code{registration.d_arrive} (count)}
-#'   \item{\code{training.day*time}}{character, time of given training day}
-#'   \item{\code{training.day*_treadmillspeed}}{double, treadmill speed on given training day}
-#'   \item{\code{training.day*_treadmillincline}}{double, treadmill incline on given training day}
-#'   \item{\code{training.day*_timeontreadmill}}{integer, time on treadmill on given training day}
-#'   \item{\code{training.day*_weight}}{double, weight on given training day}
-#'   \item{\code{training.day*_posttrainlact}}{double, post-training lactate on given training day}
-#'   \item{\code{training.day*_score}}{integer, score on given training day}
-#'   \item{\code{training.day*_comments}}{character, comments on given training day}
+#'   \item{\code{training.day1date}}{character, date of given training day}
+#'   \item{\code{training.day1_days}}{integer, day of given training day relative to \code{registration.d_arrive} (count)}
+#'   \item{\code{training.day1time}}{character, time of given training day}
+#'   \item{\code{training.day1_treadmillspeed}}{double, treadmill speed on given training day}
+#'   \item{\code{training.day1_treadmillincline}}{double, treadmill incline on given training day}
+#'   \item{\code{training.day1_timeontreadmill}}{integer, time on treadmill on given training day}
+#'   \item{\code{training.day1_weight}}{double, weight on given training day}
+#'   \item{\code{training.day1_posttrainlact}}{double, post-training lactate on given training day}
+#'   \item{\code{training.day1_score}}{integer, score on given training day}
+#'   \item{\code{training.day1_comments}}{character, comments on given training day} 
+#'   \item{\code{training.day2date}}{character, date of given training day}
+#'   \item{\code{training.day2_days}}{integer, day of given training day relative to \code{registration.d_arrive} (count)}
+#'   \item{\code{training.day2time}}{character, time of given training day}
+#'   \item{\code{training.day2_treadmillspeed}}{double, treadmill speed on given training day}
+#'   \item{\code{training.day2_treadmillincline}}{double, treadmill incline on given training day}
+#'   \item{\code{training.day2_timeontreadmill}}{integer, time on treadmill on given training day}
+#'   \item{\code{training.day2_score}}{integer, score on given training day}
+#'   \item{\code{training.day2_comments}}{character, comments on given training day} 
+#'   \item{\code{training.day3date}}{character, date of given training day}
+#'   \item{\code{training.day3_days}}{integer, day of given training day relative to \code{registration.d_arrive} (count)}
+#'   \item{\code{training.day3time}}{character, time of given training day}
+#'   \item{\code{training.day3_treadmillspeed}}{double, treadmill speed on given training day}
+#'   \item{\code{training.day3_treadmillincline}}{double, treadmill incline on given training day}
+#'   \item{\code{training.day3_timeontreadmill}}{integer, time on treadmill on given training day}
+#'   \item{\code{training.day3_score}}{integer, score on given training day}
+#'   \item{\code{training.day3_comments}}{character, comments on given training day} 
+#'   \item{\code{training.day4date}}{character, date of given training day}
+#'   \item{\code{training.day4_days}}{integer, day of given training day relative to \code{registration.d_arrive} (count)}
+#'   \item{\code{training.day4time}}{character, time of given training day}
+#'   \item{\code{training.day4_treadmillspeed}}{double, treadmill speed on given training day}
+#'   \item{\code{training.day4_treadmillincline}}{double, treadmill incline on given training day}
+#'   \item{\code{training.day4_timeontreadmill}}{integer, time on treadmill on given training day}
+#'   \item{\code{training.day4_score}}{integer, score on given training day}
+#'   \item{\code{training.day4_comments}}{character, comments on given training day} 
+#'   \item{\code{training.day5date}}{character, date of given training day}
+#'   \item{\code{training.day5_days}}{integer, day of given training day relative to \code{registration.d_arrive} (count)}
+#'   \item{\code{training.day5time}}{character, time of given training day}
+#'   \item{\code{training.day5_treadmillspeed}}{double, treadmill speed on given training day}
+#'   \item{\code{training.day5_treadmillincline}}{double, treadmill incline on given training day}
+#'   \item{\code{training.day5_timeontreadmill}}{integer, time on treadmill on given training day}
+#'   \item{\code{training.day5_posttrainlact}}{double, post-training lactate on given training day}
+#'   \item{\code{training.day5_score}}{integer, score on given training day}
+#'   \item{\code{training.day5_comments}}{character, comments on given training day} 
+#'   \item{\code{training.day6date}}{character, date of given training day}
+#'   \item{\code{training.day6_days}}{integer, day of given training day relative to \code{registration.d_arrive} (count)}
+#'   \item{\code{training.day6time}}{character, time of given training day}
+#'   \item{\code{training.day6_treadmillspeed}}{double, treadmill speed on given training day}
+#'   \item{\code{training.day6_treadmillincline}}{double, treadmill incline on given training day}
+#'   \item{\code{training.day6_timeontreadmill}}{integer, time on treadmill on given training day}
+#'   \item{\code{training.day6_weight}}{double, weight on given training day}
+#'   \item{\code{training.day6_posttrainlact}}{double, post-training lactate on given training day}
+#'   \item{\code{training.day6_score}}{integer, score on given training day}
+#'   \item{\code{training.day6_comments}}{character, comments on given training day} 
+#'   \item{\code{training.day7date}}{character, date of given training day}
+#'   \item{\code{training.day7_days}}{integer, day of given training day relative to \code{registration.d_arrive} (count)}
+#'   \item{\code{training.day7time}}{character, time of given training day}
+#'   \item{\code{training.day7_treadmillspeed}}{double, treadmill speed on given training day}
+#'   \item{\code{training.day7_treadmillincline}}{double, treadmill incline on given training day}
+#'   \item{\code{training.day7_timeontreadmill}}{integer, time on treadmill on given training day}
+#'   \item{\code{training.day7_posttrainlact}}{double, post-training lactate on given training day}
+#'   \item{\code{training.day7_score}}{integer, score on given training day}
+#'   \item{\code{training.day7_comments}}{character, comments on given training day} 
+#'   \item{\code{training.day8date}}{character, date of given training day}
+#'   \item{\code{training.day8_days}}{integer, day of given training day relative to \code{registration.d_arrive} (count)}
+#'   \item{\code{training.day8time}}{character, time of given training day}
+#'   \item{\code{training.day8_treadmillspeed}}{double, treadmill speed on given training day}
+#'   \item{\code{training.day8_treadmillincline}}{double, treadmill incline on given training day}
+#'   \item{\code{training.day8_timeontreadmill}}{integer, time on treadmill on given training day}
+#'   \item{\code{training.day8_posttrainlact}}{double, post-training lactate on given training day}
+#'   \item{\code{training.day8_score}}{integer, score on given training day}
+#'   \item{\code{training.day8_comments}}{character, comments on given training day} 
+#'   \item{\code{training.day9date}}{character, date of given training day}
+#'   \item{\code{training.day9_days}}{integer, day of given training day relative to \code{registration.d_arrive} (count)}
+#'   \item{\code{training.day9time}}{character, time of given training day}
+#'   \item{\code{training.day9_treadmillspeed}}{double, treadmill speed on given training day}
+#'   \item{\code{training.day9_treadmillincline}}{double, treadmill incline on given training day}
+#'   \item{\code{training.day9_timeontreadmill}}{integer, time on treadmill on given training day}
+#'   \item{\code{training.day9_posttrainlact}}{double, post-training lactate on given training day}
+#'   \item{\code{training.day9_score}}{integer, score on given training day}
+#'   \item{\code{training.day9_comments}}{character, comments on given training day} 
+#'   \item{\code{training.day10date}}{character, date of given training day}
+#'   \item{\code{training.day10_days}}{integer, day of given training day relative to \code{registration.d_arrive} (count)}
+#'   \item{\code{training.day10time}}{character, time of given training day}
+#'   \item{\code{training.day10_treadmillspeed}}{double, treadmill speed on given training day}
+#'   \item{\code{training.day10_treadmillincline}}{double, treadmill incline on given training day}
+#'   \item{\code{training.day10_timeontreadmill}}{integer, time on treadmill on given training day}
+#'   \item{\code{training.day10_posttrainlact}}{double, post-training lactate on given training day}
+#'   \item{\code{training.day10_score}}{integer, score on given training day}
+#'   \item{\code{training.day10_comments}}{character, comments on given training day} 
+#'   \item{\code{training.day11date}}{character, date of given training day}
+#'   \item{\code{training.day11_days}}{integer, day of given training day relative to \code{registration.d_arrive} (count)}
+#'   \item{\code{training.day11time}}{character, time of given training day}
+#'   \item{\code{training.day11_treadmillspeed}}{double, treadmill speed on given training day}
+#'   \item{\code{training.day11_treadmillincline}}{double, treadmill incline on given training day}
+#'   \item{\code{training.day11_timeontreadmill}}{integer, time on treadmill on given training day}
+#'   \item{\code{training.day11_weight}}{double, weight on given training day}
+#'   \item{\code{training.day11_posttrainlact}}{double, post-training lactate on given training day}
+#'   \item{\code{training.day11_score}}{integer, score on given training day}
+#'   \item{\code{training.day11_comments}}{character, comments on given training day} 
+#'   \item{\code{training.day12date}}{character, date of given training day}
+#'   \item{\code{training.day12_days}}{integer, day of given training day relative to \code{registration.d_arrive} (count)}
+#'   \item{\code{training.day12time}}{character, time of given training day}
+#'   \item{\code{training.day12_treadmillspeed}}{double, treadmill speed on given training day}
+#'   \item{\code{training.day12_treadmillincline}}{double, treadmill incline on given training day}
+#'   \item{\code{training.day12_timeontreadmill}}{integer, time on treadmill on given training day}
+#'   \item{\code{training.day12_score}}{integer, score on given training day}
+#'   \item{\code{training.day12_comments}}{character, comments on given training day} 
+#'   \item{\code{training.day13date}}{character, date of given training day}
+#'   \item{\code{training.day13_days}}{integer, day of given training day relative to \code{registration.d_arrive} (count)}
+#'   \item{\code{training.day13time}}{character, time of given training day}
+#'   \item{\code{training.day13_treadmillspeed}}{double, treadmill speed on given training day}
+#'   \item{\code{training.day13_treadmillincline}}{double, treadmill incline on given training day}
+#'   \item{\code{training.day13_timeontreadmill}}{integer, time on treadmill on given training day}
+#'   \item{\code{training.day13_score}}{integer, score on given training day}
+#'   \item{\code{training.day13_comments}}{character, comments on given training day} 
+#'   \item{\code{training.day14date}}{character, date of given training day}
+#'   \item{\code{training.day14_days}}{integer, day of given training day relative to \code{registration.d_arrive} (count)}
+#'   \item{\code{training.day14time}}{character, time of given training day}
+#'   \item{\code{training.day14_treadmillspeed}}{double, treadmill speed on given training day}
+#'   \item{\code{training.day14_treadmillincline}}{double, treadmill incline on given training day}
+#'   \item{\code{training.day14_timeontreadmill}}{integer, time on treadmill on given training day}
+#'   \item{\code{training.day14_score}}{integer, score on given training day}
+#'   \item{\code{training.day14_comments}}{character, comments on given training day} 
+#'   \item{\code{training.day15date}}{character, date of given training day}
+#'   \item{\code{training.day15_days}}{integer, day of given training day relative to \code{registration.d_arrive} (count)}
+#'   \item{\code{training.day15time}}{character, time of given training day}
+#'   \item{\code{training.day15_treadmillspeed}}{double, treadmill speed on given training day}
+#'   \item{\code{training.day15_treadmillincline}}{double, treadmill incline on given training day}
+#'   \item{\code{training.day15_timeontreadmill}}{integer, time on treadmill on given training day}
+#'   \item{\code{training.day15_posttrainlact}}{double, post-training lactate on given training day}
+#'   \item{\code{training.day15_score}}{integer, score on given training day}
+#'   \item{\code{training.day15_comments}}{character, comments on given training day} 
+#'   \item{\code{training.day16date}}{character, date of given training day}
+#'   \item{\code{training.day16_days}}{integer, day of given training day relative to \code{registration.d_arrive} (count)}
+#'   \item{\code{training.day16time}}{character, time of given training day}
+#'   \item{\code{training.day16_treadmillspeed}}{double, treadmill speed on given training day}
+#'   \item{\code{training.day16_treadmillincline}}{double, treadmill incline on given training day}
+#'   \item{\code{training.day16_timeontreadmill}}{integer, time on treadmill on given training day}
+#'   \item{\code{training.day16_weight}}{double, weight on given training day}
+#'   \item{\code{training.day16_posttrainlact}}{double, post-training lactate on given training day}
+#'   \item{\code{training.day16_score}}{integer, score on given training day}
+#'   \item{\code{training.day16_comments}}{character, comments on given training day} 
+#'   \item{\code{training.day17date}}{character, date of given training day}
+#'   \item{\code{training.day17_days}}{integer, day of given training day relative to \code{registration.d_arrive} (count)}
+#'   \item{\code{training.day17time}}{character, time of given training day}
+#'   \item{\code{training.day17_treadmillspeed}}{double, treadmill speed on given training day}
+#'   \item{\code{training.day17_treadmillincline}}{double, treadmill incline on given training day}
+#'   \item{\code{training.day17_timeontreadmill}}{integer, time on treadmill on given training day}
+#'   \item{\code{training.day17_score}}{integer, score on given training day}
+#'   \item{\code{training.day17_comments}}{character, comments on given training day} 
+#'   \item{\code{training.day18date}}{character, date of given training day}
+#'   \item{\code{training.day18_days}}{integer, day of given training day relative to \code{registration.d_arrive} (count)}
+#'   \item{\code{training.day18time}}{character, time of given training day}
+#'   \item{\code{training.day18_treadmillspeed}}{double, treadmill speed on given training day}
+#'   \item{\code{training.day18_treadmillincline}}{double, treadmill incline on given training day}
+#'   \item{\code{training.day18_timeontreadmill}}{integer, time on treadmill on given training day}
+#'   \item{\code{training.day18_score}}{integer, score on given training day}
+#'   \item{\code{training.day18_comments}}{character, comments on given training day} 
+#'   \item{\code{training.day19date}}{character, date of given training day}
+#'   \item{\code{training.day19_days}}{integer, day of given training day relative to \code{registration.d_arrive} (count)}
+#'   \item{\code{training.day19time}}{character, time of given training day}
+#'   \item{\code{training.day19_treadmillspeed}}{double, treadmill speed on given training day}
+#'   \item{\code{training.day19_treadmillincline}}{double, treadmill incline on given training day}
+#'   \item{\code{training.day19_timeontreadmill}}{integer, time on treadmill on given training day}
+#'   \item{\code{training.day19_score}}{integer, score on given training day}
+#'   \item{\code{training.day19_comments}}{character, comments on given training day} 
+#'   \item{\code{training.day20date}}{character, date of given training day}
+#'   \item{\code{training.day20_days}}{integer, day of given training day relative to \code{registration.d_arrive} (count)}
+#'   \item{\code{training.day20time}}{character, time of given training day}
+#'   \item{\code{training.day20_treadmillspeed}}{double, treadmill speed on given training day}
+#'   \item{\code{training.day20_treadmillincline}}{double, treadmill incline on given training day}
+#'   \item{\code{training.day20_timeontreadmill}}{integer, time on treadmill on given training day}
+#'   \item{\code{training.day20_posttrainlact}}{double, post-training lactate on given training day}
+#'   \item{\code{training.day20_score}}{integer, score on given training day}
+#'   \item{\code{training.day20_comments}}{character, comments on given training day} 
+#'   \item{\code{training.day21date}}{character, date of given training day}
+#'   \item{\code{training.day21_days}}{integer, day of given training day relative to \code{registration.d_arrive} (count)}
+#'   \item{\code{training.day21time}}{character, time of given training day}
+#'   \item{\code{training.day21_treadmillspeed}}{double, treadmill speed on given training day}
+#'   \item{\code{training.day21_treadmillincline}}{double, treadmill incline on given training day}
+#'   \item{\code{training.day21_timeontreadmill}}{integer, time on treadmill on given training day}
+#'   \item{\code{training.day21_weight}}{double, weight on given training day}
+#'   \item{\code{training.day21_posttrainlact}}{double, post-training lactate on given training day}
+#'   \item{\code{training.day21_score}}{integer, score on given training day}
+#'   \item{\code{training.day21_comments}}{character, comments on given training day} 
+#'   \item{\code{training.day22date}}{character, date of given training day}
+#'   \item{\code{training.day22_days}}{integer, day of given training day relative to \code{registration.d_arrive} (count)}
+#'   \item{\code{training.day22time}}{character, time of given training day}
+#'   \item{\code{training.day22_treadmillspeed}}{double, treadmill speed on given training day}
+#'   \item{\code{training.day22_treadmillincline}}{double, treadmill incline on given training day}
+#'   \item{\code{training.day22_timeontreadmill}}{integer, time on treadmill on given training day}
+#'   \item{\code{training.day22_score}}{integer, score on given training day}
+#'   \item{\code{training.day22_comments}}{character, comments on given training day} 
+#'   \item{\code{training.day23date}}{character, date of given training day}
+#'   \item{\code{training.day23_days}}{integer, day of given training day relative to \code{registration.d_arrive} (count)}
+#'   \item{\code{training.day23time}}{character, time of given training day}
+#'   \item{\code{training.day23_treadmillspeed}}{double, treadmill speed on given training day}
+#'   \item{\code{training.day23_treadmillincline}}{double, treadmill incline on given training day}
+#'   \item{\code{training.day23_timeontreadmill}}{integer, time on treadmill on given training day}
+#'   \item{\code{training.day23_score}}{integer, score on given training day}
+#'   \item{\code{training.day23_comments}}{character, comments on given training day} 
+#'   \item{\code{training.day24date}}{character, date of given training day}
+#'   \item{\code{training.day24_days}}{integer, day of given training day relative to \code{registration.d_arrive} (count)}
+#'   \item{\code{training.day24time}}{character, time of given training day}
+#'   \item{\code{training.day24_treadmillspeed}}{double, treadmill speed on given training day}
+#'   \item{\code{training.day24_treadmillincline}}{double, treadmill incline on given training day}
+#'   \item{\code{training.day24_timeontreadmill}}{integer, time on treadmill on given training day}
+#'   \item{\code{training.day24_score}}{integer, score on given training day}
+#'   \item{\code{training.day24_comments}}{character, comments on given training day} 
+#'   \item{\code{training.day25date}}{character, date of given training day}
+#'   \item{\code{training.day25_days}}{integer, day of given training day relative to \code{registration.d_arrive} (count)}
+#'   \item{\code{training.day25time}}{character, time of given training day}
+#'   \item{\code{training.day25_treadmillspeed}}{double, treadmill speed on given training day}
+#'   \item{\code{training.day25_treadmillincline}}{double, treadmill incline on given training day}
+#'   \item{\code{training.day25_timeontreadmill}}{integer, time on treadmill on given training day}
+#'   \item{\code{training.day25_posttrainlact}}{double, post-training lactate on given training day}
+#'   \item{\code{training.day25_score}}{integer, score on given training day}
+#'   \item{\code{training.day25_comments}}{character, comments on given training day} 
+#'   \item{\code{training.day26date}}{character, date of given training day}
+#'   \item{\code{training.day26_days}}{integer, day of given training day relative to \code{registration.d_arrive} (count)}
+#'   \item{\code{training.day26time}}{character, time of given training day}
+#'   \item{\code{training.day26_treadmillspeed}}{double, treadmill speed on given training day}
+#'   \item{\code{training.day26_treadmillincline}}{double, treadmill incline on given training day}
+#'   \item{\code{training.day26_timeontreadmill}}{integer, time on treadmill on given training day}
+#'   \item{\code{training.day26_weight}}{double, weight on given training day}
+#'   \item{\code{training.day26_posttrainlact}}{double, post-training lactate on given training day}
+#'   \item{\code{training.day26_score}}{integer, score on given training day}
+#'   \item{\code{training.day26_comments}}{character, comments on given training day} 
+#'   \item{\code{training.day27date}}{character, date of given training day}
+#'   \item{\code{training.day27_days}}{integer, day of given training day relative to \code{registration.d_arrive} (count)}
+#'   \item{\code{training.day27time}}{character, time of given training day}
+#'   \item{\code{training.day27_treadmillspeed}}{double, treadmill speed on given training day}
+#'   \item{\code{training.day27_treadmillincline}}{double, treadmill incline on given training day}
+#'   \item{\code{training.day27_timeontreadmill}}{integer, time on treadmill on given training day}
+#'   \item{\code{training.day27_score}}{integer, score on given training day}
+#'   \item{\code{training.day27_comments}}{character, comments on given training day} 
+#'   \item{\code{training.day28date}}{character, date of given training day}
+#'   \item{\code{training.day28_days}}{integer, day of given training day relative to \code{registration.d_arrive} (count)}
+#'   \item{\code{training.day28time}}{character, time of given training day}
+#'   \item{\code{training.day28_treadmillspeed}}{double, treadmill speed on given training day}
+#'   \item{\code{training.day28_treadmillincline}}{double, treadmill incline on given training day}
+#'   \item{\code{training.day28_timeontreadmill}}{integer, time on treadmill on given training day}
+#'   \item{\code{training.day28_score}}{integer, score on given training day}
+#'   \item{\code{training.day28_comments}}{character, comments on given training day} 
+#'   \item{\code{training.day29date}}{character, date of given training day}
+#'   \item{\code{training.day29_days}}{integer, day of given training day relative to \code{registration.d_arrive} (count)}
+#'   \item{\code{training.day29time}}{character, time of given training day}
+#'   \item{\code{training.day29_treadmillspeed}}{double, treadmill speed on given training day}
+#'   \item{\code{training.day29_treadmillincline}}{double, treadmill incline on given training day}
+#'   \item{\code{training.day29_timeontreadmill}}{integer, time on treadmill on given training day}
+#'   \item{\code{training.day29_score}}{integer, score on given training day}
+#'   \item{\code{training.day29_comments}}{character, comments on given training day} 
+#'   \item{\code{training.day30date}}{character, date of given training day}
+#'   \item{\code{training.day30_days}}{integer, day of given training day relative to \code{registration.d_arrive} (count)}
+#'   \item{\code{training.day30time}}{character, time of given training day}
+#'   \item{\code{training.day30_treadmillspeed}}{double, treadmill speed on given training day}
+#'   \item{\code{training.day30_treadmillincline}}{double, treadmill incline on given training day}
+#'   \item{\code{training.day30_timeontreadmill}}{integer, time on treadmill on given training day}
+#'   \item{\code{training.day30_posttrainlact}}{double, post-training lactate on given training day}
+#'   \item{\code{training.day30_score}}{integer, score on given training day}
+#'   \item{\code{training.day30_comments}}{character, comments on given training day} 
+#'   \item{\code{training.day31date}}{character, date of given training day}
+#'   \item{\code{training.day31_days}}{integer, day of given training day relative to \code{registration.d_arrive} (count)}
+#'   \item{\code{training.day31time}}{character, time of given training day}
+#'   \item{\code{training.day31_treadmillspeed}}{double, treadmill speed on given training day}
+#'   \item{\code{training.day31_treadmillincline}}{double, treadmill incline on given training day}
+#'   \item{\code{training.day31_timeontreadmill}}{integer, time on treadmill on given training day}
+#'   \item{\code{training.day31_weight}}{double, weight on given training day}
+#'   \item{\code{training.day31_posttrainlact}}{double, post-training lactate on given training day}
+#'   \item{\code{training.day31_score}}{integer, score on given training day}
+#'   \item{\code{training.day31_comments}}{character, comments on given training day} 
+#'   \item{\code{training.day32date}}{character, date of given training day}
+#'   \item{\code{training.day32_days}}{integer, day of given training day relative to \code{registration.d_arrive} (count)}
+#'   \item{\code{training.day32time}}{character, time of given training day}
+#'   \item{\code{training.day32_treadmillspeed}}{double, treadmill speed on given training day}
+#'   \item{\code{training.day32_treadmillincline}}{double, treadmill incline on given training day}
+#'   \item{\code{training.day32_timeontreadmill}}{integer, time on treadmill on given training day}
+#'   \item{\code{training.day32_score}}{integer, score on given training day}
+#'   \item{\code{training.day32_comments}}{character, comments on given training day} 
+#'   \item{\code{training.day33date}}{character, date of given training day}
+#'   \item{\code{training.day33_days}}{integer, day of given training day relative to \code{registration.d_arrive} (count)}
+#'   \item{\code{training.day33time}}{character, time of given training day}
+#'   \item{\code{training.day33_treadmillspeed}}{double, treadmill speed on given training day}
+#'   \item{\code{training.day33_treadmillincline}}{double, treadmill incline on given training day}
+#'   \item{\code{training.day33_timeontreadmill}}{integer, time on treadmill on given training day}
+#'   \item{\code{training.day33_score}}{integer, score on given training day}
+#'   \item{\code{training.day33_comments}}{character, comments on given training day} 
+#'   \item{\code{training.day34date}}{character, date of given training day}
+#'   \item{\code{training.day34_days}}{integer, day of given training day relative to \code{registration.d_arrive} (count)}
+#'   \item{\code{training.day34time}}{character, time of given training day}
+#'   \item{\code{training.day34_treadmillspeed}}{double, treadmill speed on given training day}
+#'   \item{\code{training.day34_treadmillincline}}{double, treadmill incline on given training day}
+#'   \item{\code{training.day34_timeontreadmill}}{integer, time on treadmill on given training day}
+#'   \item{\code{training.day34_score}}{integer, score on given training day}
+#'   \item{\code{training.day34_comments}}{character, comments on given training day} 
+#'   \item{\code{training.day35date}}{character, date of given training day}
+#'   \item{\code{training.day35_days}}{integer, day of given training day relative to \code{registration.d_arrive} (count)}
+#'   \item{\code{training.day35time}}{character, time of given training day}
+#'   \item{\code{training.day35_treadmillspeed}}{double, treadmill speed on given training day}
+#'   \item{\code{training.day35_treadmillincline}}{double, treadmill incline on given training day}
+#'   \item{\code{training.day35_timeontreadmill}}{integer, time on treadmill on given training day}
+#'   \item{\code{training.day35_posttrainlact}}{double, post-training lactate on given training day}
+#'   \item{\code{training.day35_score}}{integer, score on given training day}
+#'   \item{\code{training.day35_comments}}{character, comments on given training day} 
+#'   \item{\code{training.day36date}}{character, date of given training day}
+#'   \item{\code{training.day36_days}}{integer, day of given training day relative to \code{registration.d_arrive} (count)}
+#'   \item{\code{training.day36time}}{character, time of given training day}
+#'   \item{\code{training.day36_weight}}{double, weight on given training day}
+#'   \item{\code{training.day36_comments}}{character, comments on given training day} 
+#'   \item{\code{training.day37date}}{character, date of given training day}
+#'   \item{\code{training.day37_days}}{integer, day of given training day relative to \code{registration.d_arrive} (count)}
+#'   \item{\code{training.day37time}}{character, time of given training day}
+#'   \item{\code{training.day37_treadmillspeed}}{double, treadmill speed on given training day}
+#'   \item{\code{training.day37_treadmillincline}}{double, treadmill incline on given training day}
+#'   \item{\code{training.day37_timeontreadmill}}{integer, time on treadmill on given training day}
+#'   \item{\code{training.day37_score}}{integer, score on given training day}
+#'   \item{\code{training.day37_comments}}{character, comments on given training day} 
+#'   \item{\code{training.day38date}}{character, date of given training day}
+#'   \item{\code{training.day38_days}}{integer, day of given training day relative to \code{registration.d_arrive} (count)}
+#'   \item{\code{training.day38time}}{character, time of given training day}
+#'   \item{\code{training.day38_treadmillspeed}}{double, treadmill speed on given training day}
+#'   \item{\code{training.day38_treadmillincline}}{double, treadmill incline on given training day}
+#'   \item{\code{training.day38_timeontreadmill}}{integer, time on treadmill on given training day}
+#'   \item{\code{training.day38_score}}{integer, score on given training day}
+#'   \item{\code{training.day38_comments}}{character, comments on given training day} 
+#'   \item{\code{training.day39date}}{character, date of given training day}
+#'   \item{\code{training.day39_days}}{integer, day of given training day relative to \code{registration.d_arrive} (count)}
+#'   \item{\code{training.day39time}}{character, time of given training day}
+#'   \item{\code{training.day39_treadmillspeed}}{double, treadmill speed on given training day}
+#'   \item{\code{training.day39_treadmillincline}}{double, treadmill incline on given training day}
+#'   \item{\code{training.day39_timeontreadmill}}{integer, time on treadmill on given training day}
+#'   \item{\code{training.day39_posttrainlact}}{double, post-training lactate on given training day}
+#'   \item{\code{training.day39_score}}{integer, score on given training day}
+#'   \item{\code{training.day39_comments}}{character, comments on given training day} 
+#'   \item{\code{training.day40date}}{character, date of given training day}
+#'   \item{\code{training.day40_days}}{integer, day of given training day relative to \code{registration.d_arrive} (count)}
+#'   \item{\code{training.day40time}}{character, time of given training day}
+#'   \item{\code{training.day40_treadmillspeed}}{double, treadmill speed on given training day}
+#'   \item{\code{training.day40_treadmillincline}}{double, treadmill incline on given training day}
+#'   \item{\code{training.day40_timeontreadmill}}{integer, time on treadmill on given training day}
+#'   \item{\code{training.day40_posttrainlact}}{double, post-training lactate on given training day}
+#'   \item{\code{training.day40_score}}{integer, score on given training day}
+#'   \item{\code{training.day40_comments}}{character, comments on given training day} 
 #'   \item{\code{vo2.max.test.d_visit_1}}{character, date first VO2 max test was completed}
 #'   \item{\code{vo2.max.test.d_visit_2}}{character, date second VO2 max test was completed}
 #'   \item{\code{vo2.max.test.days_visit_1}}{integer, day first VO2 max test was completed relative to \code{registration.d_arrive} (count)}
@@ -866,7 +1217,7 @@ NULL
 #' @format A nested list of data frames
 #' @details 
 #'   IMMUNO sample-level data is in a different format than sample-level data for other assays/omes. 
-#'   Extract data from a panel and tissue using \code{\link{IMMUNO_NORM_DATA_NESTED}[[panel]][[tissue]]}, where \code{panel} 
+#'   Extract data from a panel and tissue using \code{\link{IMMUNO_NORM_DATA_NESTED}[[dataset]][[tissue]]}, where \code{dataset} 
 #'   is one of "ADIPONECTIN", "SERPIN-E", "rat-mag27plex", "rat-metabolic", "rat-myokine", "rat-pituitary", and 
 #'   \code{tissue} is a tissue abbreviation (see [TISSUE_ABBREV]). Samples (vial labels) are in rows, and analytes are
 #'   in columns. Column names, barring the first "viallabel" column, correspond to \code{feature_ID}s. 
@@ -882,8 +1233,8 @@ NULL
 #'   SERPIN-E and ADIPONECTIN were both originally in a panel called rat-adipokine. They 
 #'   were split into their own "panels" because this panel was run with two dilutions, 
 #'   and one was optimal for SERPIN-E while the other was optimal for ADIPONECTIN.
-#'   Hence, in some places \code{panel} refers to "rat-adipokine" while in other places, 
-#'   like here, \code{panel} refers to "SERPIN-E" or "ADIPONECTIN", among others. 
+#'   Hence, in some places \code{dataset} refers to "rat-adipokine" while in other places, 
+#'   like here, \code{dataset} refers to "SERPIN-E" or "ADIPONECTIN", among others. 
 #' @source \code{gs://mawg-data/pass1b-06/immunoassay/data/release/pass1b-06*_mfi-log2-filt-imputed-na-outliers.txt} 
 "IMMUNO_NORM_DATA_NESTED"
 
@@ -1368,6 +1719,7 @@ NULL
 #' @format A data frame with 1511 rows and 23 variables:
 #' \describe{
 #'   \item{\code{viallabel}}{`r viallabel()`}
+#'   \item{\code{tissue}}{`r tissue()`}
 #'   \item{\code{tissue_code}}{`r tissue_code()`}
 #'   \item{\code{bid}}{integer, biospecimen ID}
 #'   \item{\code{luminex_sample_name}}{character, sample name used by HIMC in raw data files}
@@ -1441,6 +1793,7 @@ NULL
 #'   in the supplementary methods of the manuscript. 
 #' @source <https://docs.google.com/spreadsheets/d/1DetAMovcmMJqulEA41yBLd4I9Q1XSHPH1U8U2aVMShg/edit#gid=2057863805>
 "OUTLIERS"
+
 
 ### Differential analysis results ####
 
