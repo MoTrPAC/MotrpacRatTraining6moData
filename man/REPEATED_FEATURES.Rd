@@ -14,7 +14,7 @@ A data frame with 825 rows and 10 variables:
 \item{\code{selection_fdr}}{double, adjusted training p-value used to select training-regulated analytes. P-values are IHW-adjusted across all datasets within a given assay with tissue as a covariate.}
 \item{\code{metabolite_refmet}}{character, RefMet name of metabolite}
 \item{\code{feature}}{character, duplicated \code{feature} in the format \code{\link{ASSAY_ABBREV};\link{TISSUE_ABBREV};[feature_ID]}}
-\item{\code{new_feature_ID}}{character, new unique \code{feature_ID} with \code{panel} or \code{dataset} prepended}
+\item{\code{new_feature_ID}}{character, new unique \code{feature_ID} with \code{dataset} prepended}
 \item{\code{new_feature}}{character, new unique \code{feature} in the format \code{\link{ASSAY_ABBREV};\link{TISSUE_ABBREV};[new_feature_ID]}}
 }
 }

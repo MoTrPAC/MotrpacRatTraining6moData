@@ -18,7 +18,7 @@ Normalized, imputed, and filtered multiplexed immunoassay data used for differen
 }
 \details{
 IMMUNO sample-level data is in a different format than sample-level data for other assays/omes.
-Extract data from a panel and tissue using \code{\link{IMMUNO_NORM_DATA_NESTED}[[panel]][[tissue]]}, where \code{panel}
+Extract data from a panel and tissue using \code{\link{IMMUNO_NORM_DATA_NESTED}[[dataset]][[tissue]]}, where \code{dataset}
 is one of "ADIPONECTIN", "SERPIN-E", "rat-mag27plex", "rat-metabolic", "rat-myokine", "rat-pituitary", and
 \code{tissue} is a tissue abbreviation (see \link{TISSUE_ABBREV}). Samples (vial labels) are in rows, and analytes are
 in columns. Column names, barring the first "viallabel" column, correspond to \code{feature_ID}s.
@@ -34,7 +34,7 @@ and used for differential analysis.
 SERPIN-E and ADIPONECTIN were both originally in a panel called rat-adipokine. They
 were split into their own "panels" because this panel was run with two dilutions,
 and one was optimal for SERPIN-E while the other was optimal for ADIPONECTIN.
-Hence, in some places \code{panel} refers to "rat-adipokine" while in other places,
-like here, \code{panel} refers to "SERPIN-E" or "ADIPONECTIN", among others.
+Hence, in some places \code{dataset} refers to "rat-adipokine" while in other places,
+like here, \code{dataset} refers to "SERPIN-E" or "ADIPONECTIN", among others.
 }
 \keyword{datasets}
