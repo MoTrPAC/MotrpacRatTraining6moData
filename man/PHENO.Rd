@@ -524,7 +524,10 @@ specimen collection date and freeze time - last time trained}
 \item{\code{sacrificetime}}{character, sacrifice time point in weeks, one of "1w", "2w", "4w", "8w"}
 \item{\code{intervention}}{character, intervention, one of "training", "control"}
 \item{\code{group}}{character, intervention group, one of "1w", "2w", "4w", "8w", "control"}
-\item{\code{sex}character, one of 'male' or 'female')\verb{\} \\item\{\code{time_to_freeze}\}\{integer, sample time to freeze, \code{calculated.variables.frozetime_after_train - calculated.variables.deathtime_after_train}\}  \\item\{\code{tissue_code_no}\}\{character, BIC tissue code. See [MotrpacBicQC::bic_animal_tissue_code].\} \\item\{\code{tissue}character, tissue abbreviation, one of [MotrpacRatTraining6moData::TISSUE_ABBREV])}}
+\item{\code{sex}}{character, one of 'male' or 'female'}
+\item{\code{time_to_freeze}}{integer, sample time to freeze, \code{calculated.variables.frozetime_after_train - calculated.variables.deathtime_after_train}}
+\item{\code{tissue_code_no}}{character, BIC tissue code. See \link[MotrpacBicQC:bic_animal_tissue_code]{MotrpacBicQC::bic_animal_tissue_code}.}
+\item{\code{tissue}}{character, tissue abbreviation, one of \link{TISSUE_ABBREV}}
 }
 }
 \usage{

@@ -7,13 +7,17 @@
 \format{
 A data frame with 279002 rows and 18 variables:
 \describe{
-\item{\code{feature}character, unique feature identifier in the format '\link{ASSAY_ABBREV};\link{TISSUE_ABBREV};feature_ID' only for training-regulated features at 5\% IHW FDR. For redundant differential features, 'feature_ID' is prepended with the specific platform to make unique identifiers. See \link{REPEATED_FEATURES} for details.)\verb{\} \\item\{\code{assay}character, assay abbreviation, one of [MotrpacRatTraining6moData::ASSAY_ABBREV])}}
-\item{\code{assay_code}character, assay code used in data release. See \link[MotrpacBicQC:assay_codes]{MotrpacBicQC::assay_codes}.)\verb{\} \\item\{\code{tissue}character, tissue abbreviation, one of [MotrpacRatTraining6moData::TISSUE_ABBREV])}}
-\item{\code{tissue_code}character, tissue code used in data release. See \link[MotrpacBicQC:bic_animal_tissue_code]{MotrpacBicQC::bic_animal_tissue_code}.)\verb{\} \\item\{\code{feature_ID}character, MoTrPAC feature identifier)}}
+\item{\code{feature}}{character, unique feature identifier in the format '\link{ASSAY_ABBREV};\link{TISSUE_ABBREV};feature_ID' only for training-regulated features at 5\% IHW FDR. For redundant differential features, 'feature_ID' is prepended with the specific platform to make unique identifiers. See \link{REPEATED_FEATURES} for details.}
+\item{\code{assay}}{character, assay abbreviation, one of \link{ASSAY_ABBREV}}
+\item{\code{assay_code}}{character, assay code used in data release. See \link[MotrpacBicQC:assay_codes]{MotrpacBicQC::assay_codes}.}
+\item{\code{tissue}}{character, tissue abbreviation, one of \link{TISSUE_ABBREV}}
+\item{\code{tissue_code}}{character, tissue code used in data release. See \link[MotrpacBicQC:bic_animal_tissue_code]{MotrpacBicQC::bic_animal_tissue_code}.}
+\item{\code{feature_ID}}{character, MoTrPAC feature identifier}
 \item{\code{non_redundant_feature_ID}}{character, non-redundant feature identifier defined for \code{feature_ID}s
 with measurements from multiple platforms. \code{feature} uses \code{non_redundant_feature_ID}
 when available and \code{feature_ID} otherwise. See \link{REPEATED_FEATURES} for more details.}
-\item{\code{platform}character, for immunoassay and metabolomics features, this variable specifies the immune panel (rat-myokine, rat-pituitary, rat-mag27plex, rat-metabolic, ADIPONECTIN, SERPIN-E) or metabolomics platform (metab-u-ionpneg, metab-u-lrpneg, metab-u-lrppos, metab-u-hilicpos, metab-u-rpneg, metab-u-rppos, metab-t-amines, metab-t-oxylipneg, metab-t-tca, metab-t-nuc, metab-t-acoa, metab-t-ka) the feature was measured in. 'meta-reg' specifies results from the metabolomics meta-regression for repeated features)\verb{\} \\item\{\code{sex}character, one of 'male' or 'female')}}
+\item{\code{platform}}{character, for immunoassay and metabolomics features, this variable specifies the immune panel (rat-myokine, rat-pituitary, rat-mag27plex, rat-metabolic, ADIPONECTIN, SERPIN-E) or metabolomics platform (metab-u-ionpneg, metab-u-lrpneg, metab-u-lrppos, metab-u-hilicpos, metab-u-rpneg, metab-u-rppos, metab-t-amines, metab-t-oxylipneg, metab-t-tca, metab-t-nuc, metab-t-acoa, metab-t-ka) the feature was measured in. 'meta-reg' specifies results from the metabolomics meta-regression for repeated features}
+\item{\code{sex}}{character, one of 'male' or 'female'}
 \item{\code{training_group}}{character, training time point in weeks, one of "1w", "2w", "4w", "8w".
 Corresponds to \code{comparison_group} in the \code{*_DA} tables.}
 \item{\code{timewise_logFC}}{double, log fold-change of the training group specified by
@@ -27,7 +31,8 @@ sedentary controls. Corresponds to \code{p_value} in the \code{*_DA} tables.}
 \item{\code{timewise_zscore}}{double, smoothed z-score corresponding to
 \code{timewise_p_value} used for graphical clustering.
 Corresponds to \code{zscore} or \code{tscore} in the \code{*_DA} tables.}
-\item{\code{meta_reg_het_p}double, for metabolites with multiple measurements, the meta-regression heterogeneity p-value, where a smaller p-value indicates more disagreement between platforms. One value per feature (not per training group).)\verb{\} \\item\{\code{meta_reg_pvalue}double, for metabolites with multiple measurements, the meta-regression p-value. One value per feature (not per training group).)}}
+\item{\code{meta_reg_het_p}}{double, for metabolites with multiple measurements, the meta-regression heterogeneity p-value, where a smaller p-value indicates more disagreement between platforms. One value per feature (not per training group).}
+\item{\code{meta_reg_pvalue}}{double, for metabolites with multiple measurements, the meta-regression p-value. One value per feature (not per training group).}
 \item{\code{training_p_value}}{double, combined training p-value determined from
 F-tests or LRTs comparing a full model with ome-specific technical covariates
 and training group as a factor variable against a reduced model with only

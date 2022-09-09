@@ -7,8 +7,25 @@
 \format{
 A data frame with 1511 rows and 23 variables:
 \describe{
-\item{\code{viallabel}character, sample identifier)\verb{\} \\item\{\code{tissue}character, tissue abbreviation, one of [MotrpacRatTraining6moData::TISSUE_ABBREV])}}
-\item{\code{tissue_code}character, tissue code used in data release. See \link[MotrpacBicQC:bic_animal_tissue_code]{MotrpacBicQC::bic_animal_tissue_code}.)\verb{\} \\item\{\code{bid}\}\{integer, biospecimen ID\} \\item\{\code{luminex_sample_name}\}\{character, sample name used by HIMC in raw data files\} \\item\{\code{panel_name}\}\{character, LUMINEX panel name\} \\item\{\code{plate_id}\}\{character, plate ID in format "}\link{date}-\link{tissues}_\link{panel_name}\verb{"\} \\item\{\code{ppt_type}\}\{character, species\} \\item\{\code{weight_mg}\}\{integer, sample weight in mg (solid tissue only)\} \\item\{\code{volume_ul}\}\{integer, sample volume in uL (plasma only)\} \\item\{\code{date_extracted}\}\{character, date of protein extraction\} \\item\{\code{operators}\}\{character, initials of experimentalists\} \\item\{\code{protein_conc_mg_ml}\}\{double, protein concentration in mg/mL\} \\item\{\code{vol_plate1_ul}\}\{integer, volume (uL) of sample submitted in first master plate (plate used for LUMINEX assays)\} \\item\{\code{min_vol_plate2_ul}\}\{integer, volume (uL) of remaining sample submitted in second master plate (backup plate)\} \\item\{\code{comments}\}\{character, comments about protein extraction\} \\item\{\code{sample_well_position}\}\{character, well position in plates submitted to the HIMC\} \\item\{\code{luminex_well}\}\{character, well position for LUMINEX assay\} \\item\{\code{sex}character, one of 'male' or 'female')}}
+\item{\code{viallabel}}{character, sample identifier}
+\item{\code{tissue}}{character, tissue abbreviation, one of \link{TISSUE_ABBREV}}
+\item{\code{tissue_code}}{character, tissue code used in data release. See \link[MotrpacBicQC:bic_animal_tissue_code]{MotrpacBicQC::bic_animal_tissue_code}.}
+\item{\code{bid}}{integer, biospecimen ID}
+\item{\code{luminex_sample_name}}{character, sample name used by HIMC in raw data files}
+\item{\code{panel_name}}{character, LUMINEX panel name}
+\item{\code{plate_id}}{character, plate ID in format "\verb{[date]-[tissues]_[panel_name]}"}
+\item{\code{ppt_type}}{character, species}
+\item{\code{weight_mg}}{integer, sample weight in mg (solid tissue only)}
+\item{\code{volume_ul}}{integer, sample volume in uL (plasma only)}
+\item{\code{date_extracted}}{character, date of protein extraction}
+\item{\code{operators}}{character, initials of experimentalists}
+\item{\code{protein_conc_mg_ml}}{double, protein concentration in mg/mL}
+\item{\code{vol_plate1_ul}}{integer, volume (uL) of sample submitted in first master plate (plate used for LUMINEX assays)}
+\item{\code{min_vol_plate2_ul}}{integer, volume (uL) of remaining sample submitted in second master plate (backup plate)}
+\item{\code{comments}}{character, comments about protein extraction}
+\item{\code{sample_well_position}}{character, well position in plates submitted to the HIMC}
+\item{\code{luminex_well}}{character, well position for LUMINEX assay}
+\item{\code{sex}}{character, one of 'male' or 'female'}
 \item{\code{group}}{character, intervention group, one of "1w", "2w", "4w", "8w", "control"}
 \item{\code{log2_CHEX1}}{double, custom Assay CHEX control beads to monitor instrument performance, log-transformed}
 \item{\code{log2_CHEX2}}{double, custom Assay CHEX control beads to monitor application of the detection antibody, log-transformed}

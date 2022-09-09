@@ -7,7 +7,8 @@
 \format{
 A data frame with 14420 rows and 13 variables:
 \describe{
-\item{\code{tissue}character, tissue abbreviation, one of \link{TISSUE_ABBREV})\verb{\} \\item\{\code{dataset}character, metabolomics platform (metab-u-ionpneg, metab-u-lrpneg, metab-u-lrppos, metab-u-hilicpos, metab-u-rpneg, metab-u-rppos, metab-t-amines, metab-t-oxylipneg, metab-t-tca, metab-t-nuc, metab-t-acoa, metab-t-ka) the feature was measured in. 'meta-reg' specifies results from the metabolomics meta-regression for repeated features.)}}
+\item{\code{tissue}}{character, tissue abbreviation, one of \link{TISSUE_ABBREV}}
+\item{\code{dataset}}{character, metabolomics platform (metab-u-ionpneg, metab-u-lrpneg, metab-u-lrppos, metab-u-hilicpos, metab-u-rpneg, metab-u-rppos, metab-t-amines, metab-t-oxylipneg, metab-t-tca, metab-t-nuc, metab-t-acoa, metab-t-ka) the feature was measured in. 'meta-reg' specifies results from the metabolomics meta-regression for repeated features.}
 \item{\code{metabolite_name}}{character, name of metabolite as appears in the Chemical Analysis Site's data}
 \item{\code{metabolite_refmet}}{character, RefMet name of metabolite}
 \item{\code{feature_ID_sample_data}}{character, \code{feature_ID} used in the sample-level data, e.g. \link{METAB_NORM_DATA_FLAT}}
@@ -17,7 +18,7 @@ differential analysis results tables, e.g. \link{METAB_BAT_DA}}
 results tables, e.g. \link{METAB_BAT_DA_METAREG}}
 \item{\code{dataset_metareg}}{character, version of the differential analysis results
 retained after meta-regression, either \code{dataset} or 'meta-reg'}
-\item{\code{feature}character, unique feature identifier in the format '\link{ASSAY_ABBREV};\link{TISSUE_ABBREV};feature_ID' only for training-regulated features at 5\% IHW FDR. For redundant differential features, 'feature_ID' is prepended with the specific platform to make unique identifiers. See \link{REPEATED_FEATURES} for details.)`}
+\item{\code{feature}}{character, unique feature identifier in the format '\link{ASSAY_ABBREV};\link{TISSUE_ABBREV};feature_ID' only for training-regulated features at 5\% IHW FDR. For redundant differential features, 'feature_ID' is prepended with the specific platform to make unique identifiers. See \link{REPEATED_FEATURES} for details.}
 \item{\code{rt}}{double, retention time}
 \item{\code{mz}}{double, mass over charge}
 \item{\code{neutral_mass}}{double, neutral mass}

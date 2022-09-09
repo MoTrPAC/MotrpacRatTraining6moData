@@ -6,8 +6,9 @@
 \format{
 A data frame with 1209773 rows and 16 variables:
 \describe{
-\item{\code{assay}character, assay abbreviation, one of \link{ASSAY_ABBREV})\verb{\} \\item\{\code{assay_code}character, assay code used in data release. See [MotrpacBicQC::assay_codes].)}}
-\item{\code{feature_ID}character, MoTrPAC feature identifier)`}
+\item{\code{assay}}{character, assay abbreviation, one of \link{ASSAY_ABBREV}}
+\item{\code{assay_code}}{character, assay code used in data release. See \link[MotrpacBicQC:assay_codes]{MotrpacBicQC::assay_codes}.}
+\item{\code{feature_ID}}{character, MoTrPAC feature identifier}
 \item{\code{chrom}}{character, chromosome: 1-20, X, or Y}
 \item{\code{start}}{double, base pair of feature start}
 \item{\code{end}}{double, base bair of feature end}
