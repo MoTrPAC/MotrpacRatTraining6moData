@@ -8,8 +8,7 @@
 A list of lists of lists of vectors. Access a vector of measured/tested genes with \code{GENE_UNIVERSES[[gene_identifier]][[ome]][[tissue]]}, where:
 \describe{
 \item{\code{gene_identifier}}{one of "entrez_gene", "gene_symbol", "ensembl_gene", "rgd_gene"}
-\item{\code{ome}}{character, assay abbreviation, one of \link{ASSAY_ABBREV}}
-\item{\code{tissue}}{character, tissue abbreviation, one of \link{TISSUE_ABBREV}}
+\item{\code{ome}character, assay abbreviation, one of \link{ASSAY_ABBREV})\verb{\} \\item\{\code{tissue}character, tissue abbreviation, one of [MotrpacRatTraining6moData::TISSUE_ABBREV])}}
 }
 }
 \usage{

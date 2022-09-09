@@ -7,7 +7,7 @@
 \format{
 A data frame with 935 rows and 82 variables:
 \describe{
-\item{\code{viallabel}}{character, sample identifier}
+\item{\code{viallabel}character, sample identifier)`}
 \item{\code{vial_label}}{double, sample identifier}
 \item{\code{2D_barcode}}{double, sample barcode}
 \item{\code{Species}}{character, species}

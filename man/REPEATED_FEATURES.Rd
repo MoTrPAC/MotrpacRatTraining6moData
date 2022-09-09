@@ -7,11 +7,9 @@
 \format{
 A data frame with 825 rows and 10 variables:
 \describe{
-\item{\code{feature_ID}}{character, MoTrPAC feature identifier}
-\item{\code{assay}}{character, assay abbreviation, one of \link{ASSAY_ABBREV}}
-\item{\code{tissue}}{character, tissue abbreviation, one of \link{TISSUE_ABBREV}}
-\item{\code{dataset}}{character, for immunoassay and metabolomics features, this variable specifies the immune panel (rat-myokine, rat-pituitary, rat-mag27plex, rat-metabolic, ADIPONECTIN, SERPIN-E) or metabolomics platform (metab-u-ionpneg, metab-u-lrpneg, metab-u-lrppos, metab-u-hilicpos, metab-u-rpneg, metab-u-rppos, metab-t-amines, metab-t-oxylipneg, metab-t-tca, metab-t-nuc, metab-t-acoa, metab-t-ka) the feature was measured in. 'meta-reg' specifies results from the metabolomics meta-regression for repeated features}
-\item{\code{selection_fdr}}{double, adjusted training p-value used to select training-regulated analytes. P-values are IHW-adjusted across all datasets within a given assay with tissue as a covariate.}
+\item{\code{feature_ID}character, MoTrPAC feature identifier)\verb{\} \\item\{\code{assay}character, assay abbreviation, one of [MotrpacRatTraining6moData::ASSAY_ABBREV])}}
+\item{\code{tissue}character, tissue abbreviation, one of \link{TISSUE_ABBREV})\verb{\} \\item\{\code{dataset}character, for immunoassay and metabolomics features, this variable specifies the immune panel (rat-myokine, rat-pituitary, rat-mag27plex, rat-metabolic, ADIPONECTIN, SERPIN-E) or metabolomics platform (metab-u-ionpneg, metab-u-lrpneg, metab-u-lrppos, metab-u-hilicpos, metab-u-rpneg, metab-u-rppos, metab-t-amines, metab-t-oxylipneg, metab-t-tca, metab-t-nuc, metab-t-acoa, metab-t-ka) the feature was measured in. 'meta-reg' specifies results from the metabolomics meta-regression for repeated features)}}
+\item{\code{selection_fdr}double, adjusted training p-value used to select training-regulated analytes. P-values are IHW-adjusted across all datasets within a given assay with tissue as a covariate.)`}
 \item{\code{metabolite_refmet}}{character, RefMet name of metabolite}
 \item{\code{feature}}{character, duplicated \code{feature} in the format \code{\link{ASSAY_ABBREV};\link{TISSUE_ABBREV};[feature_ID]}}
 \item{\code{new_feature_ID}}{character, new unique \code{feature_ID} with \code{dataset} prepended}

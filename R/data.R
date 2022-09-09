@@ -203,15 +203,20 @@
 #'   \item{\code{EntrezID}}{character, Entrez ID of closest gene}
 #'   \item{\code{Symbol}}{character, gene symbol of closest gene}
 #'   \item{\code{Strand}}{character, strand}
-#'   \item{\code{Width}}{integer, width of feature}
-#'   \item{\code{NumSites}}{integer, TODO}
-#'   \item{\code{Sites}}{character, TODO}
+#'   \item{\code{Width}}{integer, width of the genomic locus represented by the feature}
+#'   \item{\code{NumSites}}{integer, the number of sites merged to generate the feature, sites are merged by their correlation pattern in the data using an unsupervised analysis}
+#'   \item{\code{Sites}}{character, a comma separated string with the specific sites that were merged to generate the feature}
 #'   \item{\code{LocStart}}{integer, feature start in base pairs}
 #'   \item{\code{LocEnd}}{integer, feature end in base pairs}
 #'   \item{\code{tissue}}{`r tissue()`}
 #'   \item{\code{feature_ID}}{`r feature_ID()`}
 #' }
-#' @details TODO
+#' @details Only CpG sites with methylation coverage of >=10 in all samples were included for downstream analysis,
+#'   and normalization was performed separately in each tissue. Individual CpG sites were divided into 500 base-pair
+#'   windows and were clustered using the Markov Clustering algorithm via the MCL R package (Jager, 2015). To apply MCL,
+#'   for each 500 base-pair window an undirected graph was constructed, linking individual sites if their correlation
+#'   was >=0.7. MCL was chosen for this task as it: (1) determines the number of clusters internally, (2) identifies
+#'   homogeneous clusters, and (3) keeps single sites that are not correlated with either sites as singletons (clusters of size one).
 #' @name METHYL_FEATURE_ANNOT
 NULL
 
@@ -1035,18 +1040,74 @@ NULL
 ## RRBS sample-level data ####
 
 #' @title RRBS raw data
-#' @description TODO
-#' @format TODO
+#' @description RRBS raw read counts; created by loading all bismark files into a single data object.
+#' @format A DGEList object (edgeR).
 #' @details TODO
-#'   Raw METHYL data is only available via download from the Cloud. See TODO.
+#'   Raw METHYL data is only available via download from the Cloud. 
+#'   Example for a file: <https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/raw/RRBS/BAT_raw.RData>.
+#'   This file of the brown adipose data (BAT), you can change the name of the file to other tissues including:
+#'   HEART, HIPPOC, KIDNEY, LIVER, LUNG, SKMGN (gastrocnemius), and WATSC (white adipose).
+#'   For more details about these files see the readme of this repository at TODO.
+#'   
+#'   Unlike the METHYL_RAW_COUNTS data, these objects were not filtered to remove low count features.
+#'   
+#'   Reads were demultiplexed with bcl2fastq (version 2.20) using options --use-bases-mask Y*,I8Y*,I*,Y* 
+#'   --mask-short-adapter-reads 0 --minimum-trimmed-read-length 0 (Illumina, San Diego, CA, USA), 
+#'   and UMIs in the index FASTQ files were attached to the read FASTQ files. 
+#'   The regular 5’ and 3’ adapters were trimmed with TrimGalore (v1.18), and the diversity adapter 
+#'   that is about 0 to 3 bases of RDD (R={A or G} and D={A, G, or T}) that is added before YGG 
+#'   (Y={C or T} depending on the methylation) from the YGG MspI cut signature was trimmed with 
+#'   the NuGEN script “trimRRBSdiversityAdaptCustomers.py” (https://github.com/nugentechnologies/NuMetRRBS).  
+#'   FastQC (v0.11.8) was used to generate pre-alignment QC metrics3. Bismark (v0.20.0) was used to index 
+#'   and align reads to release 96 of the Ensembl Rattus norvegicus (rn6) genome and gene annotation4. 
+#'   As the lambda genome was spiked into each sample to determine the bisulfite conversion efficiency, 
+#'   the lambda genome (GenBank: J02459.1) was also indexed. Default parameters were used for Bismark’s 
+#'   bismark_genome_preparation in the alignment step. Bismark output BAM files were first formatted 
+#'   using a custom script; Bismark’s deduplicate_bismark with “-p --barcode” options was used 
+#'   to remove PCR duplicates from the bam files; and Bismark’s “bismark_methylation_extractor 
+#'   --comprehensive --bedgraph” was used to quantify methylated and unmethylated coverages for all the 
+#'   CpG sites. Bowtie 2 (v2.3.4.3) was used to index and align reads to globin, rRNA, and phix sequences 
+#'   in order to quantify the percent of reads that mapped to these contaminants and spike-ins5. 
+#'   SAMtools (v1.3.1) was used to compute mapping percentages to different chromosomes6. 
+#'   UMIs were used to accurately quantify PCR duplicates with NuGEN’s “nodup.py” script 
+#'   (https://github.com/tecangenomics/nudup). QC metrics from every stage of the quantification pipeline 
+#'   were compiled, in part with multiQC (v1.6)7. The openWDL-based implementation of the RRBS pipeline on 
+#'   Google Cloud Platform is available on GitHub (https://github.com/MoTrPAC/motrpac-rrbs-pipeline).
 #' @name METHYL_RAW_DATA
 NULL
 
 #' @title RRBS raw counts
-#' @description TODO
-#' @format TODO
-#' @details TODO
-#'   Raw METHYL data is only available via download from the Cloud. See TODO.
+#' @description RRBS read counts data after filtering for CpG sites with methylation coverage of >=10 in all samples; used as input for the site clustering pipeline.
+#' @format A data frame of sites as rows. Each sample has two columns: one for the methylated counts ("Me"), and nother for the unmethylated counts ("Un").
+#' @details =
+#'   Raw METHYL data is only available via download from the Cloud. 
+#'   Example for a file: <https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/raw/RRBS/METHYL_BAT_RAW_COUNTS.rda>.
+#'   This file of the brown adipose data (BAT), you can change the name of the file to other tissues including:
+#'   HEART, HIPPOC, KIDNEY, LIVER, LUNG, SKMGN (gastrocnemius), and WATSC (white adipose).
+#'   For more details about these files see the readme of this repository at TODO.
+#'   
+#'   Reads were demultiplexed with bcl2fastq (version 2.20) using options --use-bases-mask Y*,I8Y*,I*,Y* 
+#'   --mask-short-adapter-reads 0 --minimum-trimmed-read-length 0 (Illumina, San Diego, CA, USA), 
+#'   and UMIs in the index FASTQ files were attached to the read FASTQ files. 
+#'   The regular 5’ and 3’ adapters were trimmed with TrimGalore (v1.18), and the diversity adapter 
+#'   that is about 0 to 3 bases of RDD (R={A or G} and D={A, G, or T}) that is added before YGG 
+#'   (Y={C or T} depending on the methylation) from the YGG MspI cut signature was trimmed with 
+#'   the NuGEN script “trimRRBSdiversityAdaptCustomers.py” (https://github.com/nugentechnologies/NuMetRRBS).  
+#'   FastQC (v0.11.8) was used to generate pre-alignment QC metrics3. Bismark (v0.20.0) was used to index 
+#'   and align reads to release 96 of the Ensembl Rattus norvegicus (rn6) genome and gene annotation4. 
+#'   As the lambda genome was spiked into each sample to determine the bisulfite conversion efficiency, 
+#'   the lambda genome (GenBank: J02459.1) was also indexed. Default parameters were used for Bismark’s 
+#'   bismark_genome_preparation in the alignment step. Bismark output BAM files were first formatted 
+#'   using a custom script; Bismark’s deduplicate_bismark with “-p --barcode” options was used 
+#'   to remove PCR duplicates from the bam files; and Bismark’s “bismark_methylation_extractor 
+#'   --comprehensive --bedgraph” was used to quantify methylated and unmethylated coverages for all the 
+#'   CpG sites. Bowtie 2 (v2.3.4.3) was used to index and align reads to globin, rRNA, and phix sequences 
+#'   in order to quantify the percent of reads that mapped to these contaminants and spike-ins5. 
+#'   SAMtools (v1.3.1) was used to compute mapping percentages to different chromosomes6. 
+#'   UMIs were used to accurately quantify PCR duplicates with NuGEN’s “nodup.py” script 
+#'   (https://github.com/tecangenomics/nudup). QC metrics from every stage of the quantification pipeline 
+#'   were compiled, in part with multiQC (v1.6)7. The openWDL-based implementation of the RRBS pipeline on 
+#'   Google Cloud Platform is available on GitHub (https://github.com/MoTrPAC/motrpac-rrbs-pipeline).
 #' @name METHYL_RAW_COUNTS
 NULL
 
@@ -2245,7 +2306,7 @@ NULL
 NULL
 
 
-#' @title Differential analysis of RRBS data
+#' @title Differential analysis results of RRBS data
 #' @description TODO
 #' @format TODO
 #' @details TODO
