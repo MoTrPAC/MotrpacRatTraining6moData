@@ -2,16 +2,39 @@
 % Please edit documentation in R/data.R
 \name{METHYL_DA}
 \alias{METHYL_DA}
-\title{Differential analysis of RRBS data}
+\title{Differential analysis results of RRBS data}
 \format{
-TODO
+A data frame with 20 variables:
+\describe{
+\item{\code{feature}character, unique feature identifier in the format '\link{ASSAY_ABBREV};\link{TISSUE_ABBREV};feature_ID' only for training-regulated features at 5\% IHW FDR. For redundant differential features, 'feature_ID' is prepended with the specific platform to make unique identifiers. See \link{REPEATED_FEATURES} for details.)\verb{\} \\item\{\code{assay}character, assay abbreviation, one of [MotrpacRatTraining6moData::ASSAY_ABBREV])}}
+\item{\code{assay_code}character, assay code used in data release. See \link[MotrpacBicQC:assay_codes]{MotrpacBicQC::assay_codes}.)\verb{\} \\item\{\code{tissue}character, tissue abbreviation, one of [MotrpacRatTraining6moData::TISSUE_ABBREV])}}
+\item{\code{tissue_code}character, tissue code used in data release. See \link[MotrpacBicQC:bic_animal_tissue_code]{MotrpacBicQC::bic_animal_tissue_code}.)\verb{\} \\item\{\code{feature_ID}character, MoTrPAC feature identifier)}}
+\item{\code{sex}character, one of 'male' or 'female')\verb{\} \\item\{\code{comparison_group}character, time point of trained animals compared to the sex-matched sedentary control animals, one of '1w', '2w', '4w', '8w')}}
+\item{\code{p_value}double, unadjusted p-value for the difference between 'comparison_group' and the group of sex-matched sedentary control animals)\verb{\} \\item\{\code{adj_p_value}double, adjusted p-value from 'p_value' column. P-values are BY-adjusted across all datasets within a given assay/ome.)}}
+\item{\code{logFC}double, log fold-change where the numerator is 'comparison_group', e.g., '1w', and the denominator is the group of sex-matched sedentary control animals)\verb{\} \\item\{\code{zscore}double, z statistic)}}
+\item{\code{covariates}character, comma-separated list of adjustment variables or NA)\verb{\} \\item\{\code{removed_samples}character, comma-separated list of vial labels excluded from differential analysis or NA)}}
+\item{\code{Chr}}{integer, chromosome}
+\item{\code{Locus}}{character, base pair range of feature}
+\item{\code{EntrezID}}{character, Entrez ID of closest gene}
+\item{\code{Symbol}}{character, gene symbol of closest gene}
+\item{\code{fscore}}{the LRT fscore}
+\item{\code{selection_fdr}double, adjusted training p-value used to select training-regulated analytes. P-values are IHW-adjusted across all datasets within a given assay with tissue as a covariate.)`}
+}
 }
 \description{
-TODO
+Timewise summary statistics and training FDR from
+differential analysis (DA) that tests the effect of training on each
+immunoassay analyte within each sex. One data frame per tissue.
 }
 \details{
-TODO
-Full METHYL differential analysis results are only available via download from the Cloud. See TODO.
+The differential analysis results in this data frame were computed using edgeR::glmQLFTest after
+removing a few outlier low quality samples from the kidney dataset.
+
+Full METHYL differential analysis results are only available via download from the Cloud.
+Example for a file: \url{https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_BAT_DA.rda}.
+This file of the brown adipose data (BAT), you can change the name of the file to other tissues including:
+HEART, HIPPOC, KIDNEY, LIVER, LUNG, SKMGN (gastrocnemius), and WATSC (white adipose).
+For more details about these files see the readme of this repository at TODO.
 
 For training-regulated METHYL features at 5\% FDR, see \link{TRAINING_REGULATED_FEATURES}.
 }

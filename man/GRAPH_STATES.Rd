@@ -34,7 +34,22 @@ Missing values indicate that the \code{repfdr} posterior probabilities
 did not meet the cutoff for that feature.
 }
 \details{
-TODO
-See \href{https://docs.google.com/document/d/1i5jLyy2K9-N3yMCOvSwnws-5ny77jQPaBtC50TsUZ_g/edit#heading=h.2zazg4neamea}{Supplementary Methods}.
+Given the posteriors Pr(h|z_i) computed using repfdr where h is a configuration
+vector in {-1,0,1}^8 (specifying the 8 analyzed groups, 4 time points in males and females),
+and z_i is the vector of z-scores of analyte i, we assign analytes to “states”.
+A state is a tuple (s_{m,j}, s_{f,j}), where s_{m,j} is the differential abundance
+state null, up, or down (0,1, and -1 in the notation above, respectively) in males
+at time point j, and s_{f,j} is defined similarly for females (at time point j).
+Thus, we have nine possible states in each time point.
+For example, assume we inspect analyte i in time point j, asking if the abundance is
+up-regulated in males while null in females. Then, we sum over all posteriors Pr(h|z_i)
+such that males are up-regulated and females have 0.
+If the resulting value is greater than 0.5, then we say that analyte i belongs to the
+node set S(s_{m,j}, s_{f,j}). Thus, we use S(s_{m,j}, s_{f,j}) to denote all analytes
+that belong to a state (s_{m,j}, s_{f,j}).
+Then, for every pair of states from adjacent time points j and j+1 we define their
+edge set as the intersection of S(s_{m,j}, s_{f,j}) and S(s_{m,j+1}, s_{f,j+1}).
+Thus, thenode sets edge sets together define a tree structure that represent different
+differential patterns over sex and time.
 }
 \keyword{datasets}
