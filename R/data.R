@@ -202,7 +202,7 @@
 #'   
 #'   \code{feature} is only non-NA for training-regulated features at 5% IHW FDR (see [TRAINING_REGULATED_FEATURES]).
 #'   Each non-NA value of \code{feature} is unique. In the case of repeated measurements, this means \code{dataset}
-#'   was added to \code{metabolite_name}. See [REPEATED_FEATURE_MAP] for more details.
+#'   was added to \code{metabolite_name}. See [REPEATED_FEATURES] for more details.
 #'   
 #'   Note that RefMet IDs are frequently updated. This table provides the version of the RefMet IDs
 #'   at the time that these data were generated. 
@@ -1111,7 +1111,7 @@ NULL
 #' @format A [edgeR::DGEList-class] object
 #' @details 
 #'   Raw METHYL data are only available via download from Google Cloud Storage. 
-#'   For example, <https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/raw/RRBS/BAT_raw.RData> 
+#'   For example, <https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_BAT_RAW_DATA.rda> 
 #'   is the file for brown adipose tissue (BAT) data. You can change the name of the file to specify other tissues including:
 #'   HEART, HIPPOC, KIDNEY, LIVER, LUNG, SKMGN (gastrocnemius skeletal muscle), and WATSC (subcutaneous white adipose tissue).
 #'   You can also use [MotrpacRatTraining6mo::get_rdata_from_url()] 
