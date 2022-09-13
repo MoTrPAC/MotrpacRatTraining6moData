@@ -17,10 +17,10 @@ List:
 REPFDR_RES
 }
 \description{
-Raw \code{repfdr} results from which the graphical state assignments were determined
+Raw \code{\link[repfdr:repfdr]{repfdr::repfdr()}} results from which the graphical state assignments were determined
 }
 \details{
-\code{repfdr} is an algorithm suggested by Yekutieli and Heller in 2014
+\code{\link[repfdr:repfdr]{repfdr::repfdr()}} is an algorithm suggested by Yekutieli and Heller in 2014
 (Bioinformatics) for analysis of p-values or z-scores from different resources.
 It is based on the assumption that z-scores from each resource (a time point
 from a specific sex in our case) is either positive, null, or negative.
@@ -30,7 +30,7 @@ made about conditional independence between the z-scores given their state
 (so for example, two high scores from weeks 4 and 8 in males are independent
 given that we know that they are positive, non-null cases).
 
-Our analysis pipeline is as follows: we run \code{repfdr} on the z-score data matrix
+Our analysis pipeline is as follows: we run \code{\link[repfdr:repfdr]{repfdr::repfdr()}} on the z-score data matrix
 of all training-regulated features at 5\% IWH FDR (see \link{REPFDR_INPUTS}). Then we use the output to extract
 the analytes of each state in each time point. Here a state means one of
 (male up, male null, male down) x (female up, female null, female down)
@@ -38,5 +38,8 @@ for each time point. Once these are selected we call them the \code{node_sets}.
 Then, for each pair of node \code{(x,y)} such that \code{y} is from a time point that is adjacent
 and after \code{x} (e.g., \code{x} is a node from week 4 and \code{y} is a node from week 8),
 we define their edge set as the intersection of their analytes.
+
+Reproduce our analysis with \code{\link[MotrpacRatTraining6mo:bayesian_graphical_clustering]{MotrpacRatTraining6mo::bayesian_graphical_clustering()}}
+and \code{\link[MotrpacRatTraining6mo:repfdr_wrapper]{MotrpacRatTraining6mo::repfdr_wrapper()}}.
 }
 \keyword{datasets}

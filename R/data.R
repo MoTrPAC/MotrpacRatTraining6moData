@@ -191,7 +191,22 @@
 #'   \item{\code{neutral_mass}}{double, neutral mass}
 #'   \item{\code{formula}}{character, chemical formula} 
 #' }
-#' @details TODO
+#' @details 
+#'   \code{metabolite_name} is always equal to \code{feature_ID_sample_data} and \code{feature_ID_da}.
+#'   
+#'   \code{feature_ID_metareg} is different than \code{metabolite_name} when the combined 
+#'   results from multiple measurements of the same metabolite are reported in the meta-regression differential 
+#'   analysis results, in which case \code{feature_ID_metareg} is \code{metabolite_refmet}. 
+#'   112 rows (57 unique metabolites in 9 tissues) do not have corresponding meta-regression results, 
+#'   in which case \code{feature_ID_metareg} is \code{NA}. 
+#'   
+#'   \code{feature} is only non-NA for training-regulated features at 5% IHW FDR (see [TRAINING_REGULATED_FEATURES]).
+#'   Each non-NA value of \code{feature} is unique. In the case of repeated measurements, this means \code{dataset}
+#'   was added to \code{metabolite_name}. See [REPEATED_FEATURES] for more details.
+#'   
+#'   Note that RefMet IDs are frequently updated. This table provides the version of the RefMet IDs
+#'   at the time that these data were generated. 
+#'   
 "METAB_FEATURE_ID_MAP"
 
 
@@ -203,15 +218,31 @@
 #'   \item{\code{EntrezID}}{character, Entrez ID of closest gene}
 #'   \item{\code{Symbol}}{character, gene symbol of closest gene}
 #'   \item{\code{Strand}}{character, strand}
-#'   \item{\code{Width}}{integer, width of feature}
-#'   \item{\code{NumSites}}{integer, TODO}
-#'   \item{\code{Sites}}{character, TODO}
+#'   \item{\code{Width}}{integer, width of the genomic locus represented by the feature}
+#'   \item{\code{NumSites}}{integer, the number of sites merged to generate the feature, sites are merged by their correlation pattern in the data using an unsupervised analysis}
+#'   \item{\code{Sites}}{character, a comma separated string with the specific sites that were merged to generate the feature}
 #'   \item{\code{LocStart}}{integer, feature start in base pairs}
 #'   \item{\code{LocEnd}}{integer, feature end in base pairs}
 #'   \item{\code{tissue}}{`r tissue()`}
 #'   \item{\code{feature_ID}}{`r feature_ID()`}
 #' }
-#' @details TODO
+#' @details 
+#'   METHYL feature annotation is only available via download from Google Cloud Storage:
+#'   <https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_FEATURE_ANNOT.rda>.
+#'   You can use [MotrpacRatTraining6mo::load_methyl_feature_annotation()] to download and return this file. 
+#' 
+#'   Only CpG sites with methylation coverage of >=10 in all samples were included for downstream analysis,
+#'   and normalization was performed separately in each tissue. Individual CpG sites were divided into 500 base-pair
+#'   windows and were clustered using the Markov Clustering algorithm via the MCL R package (Jager, 2015). To apply MCL,
+#'   for each 500 base-pair window an undirected graph was constructed, linking individual sites if their correlation
+#'   was >=0.7. MCL was chosen for this task as it: (1) determines the number of clusters internally, (2) identifies
+#'   homogeneous clusters, and (3) keeps single sites that are not correlated with either sites as singletons (clusters of size one).
+#'   
+#'   Given these sites, this table was generated using [MotrpacRatTraining6mo::get_peak_annotations()]. 
+#'   \code{relationship_to_gene} is the shortest distance between the feature and the start or end of the closest gene. 
+#'   It is 0 if the feature has any overlap with the gene. 
+#'   \code{custom_annotation} fixes many issues with the \code{ChIPseeker} annotation (v1.22.1). 
+#'   
 #' @name METHYL_FEATURE_ANNOT
 NULL
 
@@ -245,7 +276,16 @@ NULL
 #'   \item{\code{geneLength}}{integer, length of gene in base pairs}
 #'   \item{\code{geneStrand}}{integer, 1 (forward strand) or 2 (reverse strand)} 
 #' }
-#' @details TODO - link to function in MotrpacRatTraining6mo 
+#' @details 
+#'   ATAC feature annotation is only available via download from Google Cloud Storage:
+#'   <https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_FEATURE_ANNOT.rda>.
+#'   You can use [MotrpacRatTraining6mo::load_atac_feature_annotation()] to download and return this file. 
+#' 
+#'   This table was generated using [MotrpacRatTraining6mo::get_peak_annotations()]. 
+#'   \code{relationship_to_gene} is the shortest distance between the feature and the start or end of the closest gene. 
+#'   It is 0 if the feature has any overlap with the gene. 
+#'   \code{custom_annotation} fixes many issues with the \code{ChIPseeker} annotation (v1.22.1). 
+#'   
 #' @name ATAC_FEATURE_ANNOT
 NULL
 
@@ -804,7 +844,7 @@ doctext = function(day){
 
 #' @title RNA-seq raw counts
 #' @description RNA-seq raw counts as quantified by RSEM
-#' @format A data frame with 32883 rows and one column per viallabel
+#' @format A data frame with 32883 rows (\code{feature_ID}) and samples in columns (\code{viallabel})
 #' @details STAR (v2.7.0d) was used to index and align reads to release 96 
 #'     of the Ensembl Rattus norvegicus (rn6) genome and gene annotation. 
 #'     RSEM (v1.3.1) was used to quantify transcriptome-coordinate-sorted 
@@ -937,18 +977,18 @@ doctext = function(day){
 ## ATAC-seq sample-level data ####
 
 #' @title ATAC-seq raw counts
-#' @description TODO
-#' @format TODO
-#' @details TODO
-#'   ATAC raw counts data are only available via download from the Cloud. See TODO.
-#' @name ATAC_RAW_COUNTS
-NULL
-
-
-#' @title Normalized ATAC-seq data
-#' @description Normalized sample-level ATAC-seq (ATAC) data used for visualization and differential analysis
-#' @format A data frame with peaks in rows (\code{feature_ID}) and samples in columns (\code{viallabel})
-#' @details Data was processed with the [ENCODE ATAC-seq pipeline (v1.7.0)](https://github.com/ENCODE-DCC/atac-seq-pipeline).
+#' @format A data frame with chromatin accessibility peaks in rows and samples (vial labels) in columns
+#' @details 
+#'   Unfiltered ATAC sample-level data are only available via download from Google Cloud Storage. 
+#'   For example, <https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_BAT_RAW_COUNTS.rda> 
+#'   is the file for brown adipose tissue (BAT) data. You can change the name of the file to specify other tissues including:
+#'   HEART, HIPPOC, KIDNEY, LIVER, LUNG, SKMGN (gastrocnemius skeletal muscle), and WATSC (subcutaneous white adipose tissue).
+#'   You can also use [MotrpacRatTraining6mo::load_sample_data()] or [MotrpacRatTraining6mo::get_rdata_from_url()] 
+#'   to download raw and normalized sample-level data for ATAC and METHYL.
+#'   For more details about these files see the readme of this repository at 
+#'   <https://github.com/MoTrPAC/MotrpacRatTraining6mo/blob/main/README.md>. 
+#' 
+#'   Data was processed with the [ENCODE ATAC-seq pipeline (v1.7.0)](https://github.com/ENCODE-DCC/atac-seq-pipeline).
 #'   Samples from a single sex and training time point, e.g., males trained for 2 weeks, were analyzed together as biological
 #'   replicates in a single workflow. Briefly, adapters were trimmed with cutadapt v2.5 (Martin, 2011) and aligned to release 96
 #'   of the Ensembl Rattus norvegicus (rn6) genome (Dobin et al., 2013) with Bowtie 2 v2.3.4.3 (Langmead and Salzberg, 2012).
@@ -957,7 +997,41 @@ NULL
 #'   Pooled peaks were compared with the peaks called for each replicate individually using Irreproducibility Discovery Rate (Li et al., 2011)
 #'   and thresholded to generate an optimal set of peaks.
 #'
-#'   The cloud implementation of the ENCODE ATAC-seq pipeline and source code for the post-processing steps are available at <https://github.com/MoTrPAC/motrpac-atac-seq-pipeline>.
+#'   The cloud implementation of the ENCODE ATAC-seq pipeline and source code for the post-processing steps are available at 
+#'   <https://github.com/MoTrPAC/motrpac-atac-seq-pipeline>.
+#'   Optimal peaks (overlap.optimal_peak.narrowPeak.bed.gz) from all workflows were concatenated, trimmed to 200 base pairs around the summit,
+#'   and sorted and merged with bedtools v2.29.0 (Quinlan and Hall, 2010) to generate a master peak list. This peak list was intersected with
+#'   the filtered alignments from each sample using bedtools coverage with options \code{-nonamecheck} and \code{-counts} to generate a peak by
+#'   sample matrix of raw counts.
+#'   
+#' @name ATAC_RAW_COUNTS
+NULL
+
+
+#' @title Normalized ATAC-seq data
+#' @description Normalized sample-level ATAC-seq (ATAC) data used for visualization and differential analysis
+#' @format A data frame with peaks in rows (\code{feature_ID}) and samples in columns (\code{viallabel})
+#' @details 
+#'   Unfiltered ATAC sample-level data are only available via download from Google Cloud Storage. 
+#'   For example, <https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_BAT_NORM_DATA.rda> 
+#'   is the file for brown adipose tissue (BAT) data. You can change the name of the file to specify other tissues including:
+#'   HEART, HIPPOC, KIDNEY, LIVER, LUNG, SKMGN (gastrocnemius skeletal muscle), and WATSC (subcutaneous white adipose tissue).
+#'   You can also use [MotrpacRatTraining6mo::load_sample_data()] or [MotrpacRatTraining6mo::get_rdata_from_url()] 
+#'   to download raw and normalized sample-level data for ATAC and METHYL.
+#'   For more details about these files see the readme of this repository at 
+#'   <https://github.com/MoTrPAC/MotrpacRatTraining6mo/blob/main/README.md>. 
+#' 
+#'   Data was processed with the [ENCODE ATAC-seq pipeline (v1.7.0)](https://github.com/ENCODE-DCC/atac-seq-pipeline).
+#'   Samples from a single sex and training time point, e.g., males trained for 2 weeks, were analyzed together as biological
+#'   replicates in a single workflow. Briefly, adapters were trimmed with cutadapt v2.5 (Martin, 2011) and aligned to release 96
+#'   of the Ensembl Rattus norvegicus (rn6) genome (Dobin et al., 2013) with Bowtie 2 v2.3.4.3 (Langmead and Salzberg, 2012).
+#'   Duplicate reads and reads mapping to the mitochondrial chromosome were removed. Signal files and peak calls were generated
+#'   using MACS2 v2.2.4 (Gaspar, 2018), both from reads from each sample and pooled reads from all biological replicates.
+#'   Pooled peaks were compared with the peaks called for each replicate individually using Irreproducibility Discovery Rate (Li et al., 2011)
+#'   and thresholded to generate an optimal set of peaks.
+#'
+#'   The cloud implementation of the ENCODE ATAC-seq pipeline and source code for the post-processing steps are available at 
+#'   <https://github.com/MoTrPAC/motrpac-atac-seq-pipeline>.
 #'   Optimal peaks (overlap.optimal_peak.narrowPeak.bed.gz) from all workflows were concatenated, trimmed to 200 base pairs around the summit,
 #'   and sorted and merged with bedtools v2.29.0 (Quinlan and Hall, 2010) to generate a master peak list. This peak list was intersected with
 #'   the filtered alignments from each sample using bedtools coverage with options \code{-nonamecheck} and \code{-counts} to generate a peak by
@@ -967,10 +1041,8 @@ NULL
 #'   as well as peaks that did not have at least 10 read counts in four samples. Filtered raw counts were then quantile-normalized with
 #'   limma-voom (Law et al., 2014). 
 #'   
-#'   This version of the normalized data is available via download from Google Cloud Storage. See TODO. 
-#'   
 #'   For the subset of normalized data corresponding to training-regulated features at 5% IHW FDR, see [ATAC_NORM_DATA_05FDR].
-#'
+#'   
 #' @source \code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/epigenomics/epigen-atac-seq/normalized-data/*quant-norm*}
 #' @name ATAC_NORM_DATA
 NULL
@@ -979,7 +1051,7 @@ NULL
 #' @title Normalized ATAC-seq data for training-regulated features
 #' @description Normalized sample-level ATAC-seq (ATAC) data used for visualization and differential analysis.
 #'   Only for training-regulated features at 5% IHW FDR. For sample-level data for \emph{all} features, 
-#'   see [ATAC_NORM_DATA] and TODO.
+#'   see [ATAC_NORM_DATA] and [ATAC_RAW_COUNTS]. 
 #' @format A data frame with peaks in rows (\code{feature_ID}) and samples in columns (\code{viallabel})
 #' @details Data was processed with the [ENCODE ATAC-seq pipeline (v1.7.0)](https://github.com/ENCODE-DCC/atac-seq-pipeline).
 #'   Samples from a single sex and training time point, e.g., males trained for 2 weeks, were analyzed together as biological
@@ -1001,10 +1073,10 @@ NULL
 #'   as well as peaks that did not have at least 10 read counts in four samples. Filtered raw counts were then quantile-normalized with
 #'   limma-voom (Law et al., 2014). 
 #'   
-#'   After performing differential analysis (see TODO), training-regulated features were selected at 5% IHW FDR. The normalized data were
+#'   After performing differential analysis, training-regulated features were selected at 5% IHW FDR. The normalized data were
 #'   filtered down to these features and provided here. 
 #'   
-#'   For the full set of normalized sample-level data, see TODO. 
+#'   For the full set of normalized sample-level data, see [ATAC_NORM_DATA] and [ATAC_RAW_COUNTS]. 
 #'
 #' @source \code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/epigenomics/epigen-atac-seq/normalized-data/*quant-norm*}
 #' @name ATAC_NORM_DATA_05FDR
@@ -1035,27 +1107,101 @@ NULL
 ## RRBS sample-level data ####
 
 #' @title RRBS raw data
-#' @description TODO
-#' @format TODO
-#' @details TODO
-#'   Raw METHYL data is only available via download from the Cloud. See TODO.
+#' @description RRBS raw read counts; created by loading all bismark files into a single data object.
+#' @format A [edgeR::DGEList-class] object
+#' @details 
+#'   Raw METHYL data are only available via download from Google Cloud Storage. 
+#'   For example, <https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_BAT_RAW_DATA.rda> 
+#'   is the file for brown adipose tissue (BAT) data. You can change the name of the file to specify other tissues including:
+#'   HEART, HIPPOC, KIDNEY, LIVER, LUNG, SKMGN (gastrocnemius skeletal muscle), and WATSC (subcutaneous white adipose tissue).
+#'   You can also use [MotrpacRatTraining6mo::get_rdata_from_url()] 
+#'   to download and return raw METHYL data.
+#'   For more details about these files see the readme of this repository at 
+#'   <https://github.com/MoTrPAC/MotrpacRatTraining6mo/blob/main/README.md>. 
+#'   
+#'   Unlike the [METHYL_RAW_COUNTS] data, these objects were not filtered to remove low-count features.
+#'   
+#'   Reads were demultiplexed with bcl2fastq (version 2.20) using options 
+#'   \code{--use-bases-mask Y*,I8Y*,I*,Y* --mask-short-adapter-reads 0 --minimum-trimmed-read-length 0} 
+#'   (Illumina, San Diego, CA, USA), and UMIs in the index FASTQ files were attached to the read FASTQ files. 
+#'   The regular 5' and 3' adapters were trimmed with TrimGalore (v1.18), and the diversity adapter 
+#'   that is about 0 to 3 bases of RDD (R={A or G} and D={A, G, or T}) that is added before YGG 
+#'   (Y={C or T} depending on the methylation) from the YGG MspI cut signature was trimmed with 
+#'   the NuGEN script "trimRRBSdiversityAdaptCustomers.py" (<https://github.com/nugentechnologies/NuMetRRBS>).  
+#'   FastQC (v0.11.8) was used to generate pre-alignment QC metrics3. Bismark (v0.20.0) was used to index 
+#'   and align reads to release 96 of the Ensembl Rattus norvegicus (rn6) genome and gene annotation. 
+#'   As the lambda genome was spiked into each sample to determine the bisulfite conversion efficiency, 
+#'   the lambda genome (GenBank: J02459.1) was also indexed. Default parameters were used for Bismark’s 
+#'   bismark_genome_preparation in the alignment step. Bismark output BAM files were first formatted 
+#'   using a custom script; Bismark’s \code{deduplicate_bismark -p --barcode} was used 
+#'   to remove PCR duplicates from the bam files; and Bismark’s \code{bismark_methylation_extractor 
+#'   --comprehensive --bedgraph} was used to quantify methylated and unmethylated coverages for all the 
+#'   CpG sites. Bowtie 2 (v2.3.4.3) was used to index and align reads to globin, rRNA, and phix sequences 
+#'   in order to quantify the percent of reads that mapped to these contaminants and spike-ins5. 
+#'   SAMtools (v1.3.1) was used to compute mapping percentages to different chromosomes6. 
+#'   UMIs were used to accurately quantify PCR duplicates with NuGEN’s "nodup.py" script 
+#'   (<https://github.com/tecangenomics/nudup>). QC metrics from every stage of the quantification pipeline 
+#'   were compiled, in part with multiQC (v1.6)7. The openWDL-based implementation of the RRBS pipeline on 
+#'   Google Cloud Platform is available on GitHub (<https://github.com/MoTrPAC/motrpac-rrbs-pipeline>).
 #' @name METHYL_RAW_DATA
 NULL
 
 #' @title RRBS raw counts
-#' @description TODO
-#' @format TODO
-#' @details TODO
-#'   Raw METHYL data is only available via download from the Cloud. See TODO.
+#' @description RRBS read counts data after filtering for CpG sites with methylation coverage of >=10 in all samples; used as input for the site clustering pipeline.
+#' @format A data frame of sites as rows. Each sample has two columns: one for the methylated counts ("Me"), and nother for the unmethylated counts ("Un").
+#' @details 
+#'   Unfiltered METHYL sample-level data are only available via download from Google Cloud Storage. 
+#'   For example, <https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_BAT_RAW_COUNTS.rda> 
+#'   is the file for brown adipose tissue (BAT) data. You can change the name of the file to specify other tissues including:
+#'   HEART, HIPPOC, KIDNEY, LIVER, LUNG, SKMGN (gastrocnemius skeletal muscle), and WATSC (subcutaneous white adipose tissue).
+#'   You can also use [MotrpacRatTraining6mo::load_sample_data()] or [MotrpacRatTraining6mo::get_rdata_from_url()] 
+#'   to download raw and normalized sample-level data for ATAC and METHYL.
+#'   For more details about these files see the readme of this repository at 
+#'   <https://github.com/MoTrPAC/MotrpacRatTraining6mo/blob/main/README.md>. 
+#'   
+#'   Reads were demultiplexed with bcl2fastq (version 2.20) using options 
+#'   \code{--use-bases-mask Y*,I8Y*,I*,Y* --mask-short-adapter-reads 0 --minimum-trimmed-read-length 0} 
+#'   (Illumina, San Diego, CA, USA), and UMIs in the index FASTQ files were attached to the read FASTQ files. 
+#'   The regular 5' and 3' adapters were trimmed with TrimGalore (v1.18), and the diversity adapter 
+#'   that is about 0 to 3 bases of RDD (R={A or G} and D={A, G, or T}) that is added before YGG 
+#'   (Y={C or T} depending on the methylation) from the YGG MspI cut signature was trimmed with 
+#'   the NuGEN script "trimRRBSdiversityAdaptCustomers.py" (<https://github.com/nugentechnologies/NuMetRRBS>).  
+#'   FastQC (v0.11.8) was used to generate pre-alignment QC metrics3. Bismark (v0.20.0) was used to index 
+#'   and align reads to release 96 of the Ensembl Rattus norvegicus (rn6) genome and gene annotation. 
+#'   As the lambda genome was spiked into each sample to determine the bisulfite conversion efficiency, 
+#'   the lambda genome (GenBank: J02459.1) was also indexed. Default parameters were used for Bismark’s 
+#'   bismark_genome_preparation in the alignment step. Bismark output BAM files were first formatted 
+#'   using a custom script; Bismark’s \code{deduplicate_bismark -p --barcode} was used 
+#'   to remove PCR duplicates from the bam files; and Bismark’s \code{bismark_methylation_extractor 
+#'   --comprehensive --bedgraph} was used to quantify methylated and unmethylated coverages for all the 
+#'   CpG sites. Bowtie 2 (v2.3.4.3) was used to index and align reads to globin, rRNA, and phix sequences 
+#'   in order to quantify the percent of reads that mapped to these contaminants and spike-ins5. 
+#'   SAMtools (v1.3.1) was used to compute mapping percentages to different chromosomes6. 
+#'   UMIs were used to accurately quantify PCR duplicates with NuGEN’s "nodup.py" script 
+#'   (<https://github.com/tecangenomics/nudup>). QC metrics from every stage of the quantification pipeline 
+#'   were compiled, in part with multiQC (v1.6)7. The openWDL-based implementation of the RRBS pipeline on 
+#'   Google Cloud Platform is available on GitHub (<https://github.com/MoTrPAC/motrpac-rrbs-pipeline>).
+#'   
 #' @name METHYL_RAW_COUNTS
 NULL
+
 
 #' @title Normalized DNA methylation data
 #' @description Normalized DNA methylation (METHYL) data used for visualization.
 #'   Only for training-regulated features at 5% IHW FDR. For sample-level data for \emph{all} features, 
-#'   see [METHYL_NORM_DATA] and TODO.
+#'   see [METHYL_RAW_DATA], [METHYL_RAW_COUNTS], and [METHYL_NORM_DATA].
 #' @format A data frame with CpG sites in rows (\code{feature_ID}) and samples in columns (\code{viallabel})
-#' @details Only CpG sites with methylation coverage of >=10 in all samples were included for downstream analysis,
+#' @details 
+#'   Unfiltered METHYL sample-level data are only available via download from Google Cloud Storage. 
+#'   For example, <https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_BAT_NORM_DATA.rda> 
+#'   is the file for brown adipose tissue (BAT) data. You can change the name of the file to specify other tissues including:
+#'   HEART, HIPPOC, KIDNEY, LIVER, LUNG, SKMGN (gastrocnemius skeletal muscle), and WATSC (subcutaneous white adipose tissue).
+#'   You can also use [MotrpacRatTraining6mo::load_sample_data()] or [MotrpacRatTraining6mo::get_rdata_from_url()] 
+#'   to download raw and normalized sample-level data for ATAC and METHYL.
+#'   For more details about these files see the readme of this repository at 
+#'   <https://github.com/MoTrPAC/MotrpacRatTraining6mo/blob/main/README.md>. 
+#' 
+#'   Only CpG sites with methylation coverage of >=10 in all samples were included for downstream analysis,
 #'   and normalization was performed separately in each tissue. Individual CpG sites were divided into 500 base-pair
 #'   windows and were clustered using the Markov Clustering algorithm via the MCL R package (Jager, 2015). To apply MCL,
 #'   for each 500 base-pair window an undirected graph was constructed, linking individual sites if their correlation
@@ -1065,8 +1211,10 @@ NULL
 #'   To generate this normalized sample-level data, the methylation coverages of filtered sites/clusters were first log2-transformed,
 #'   and normalization was performed using [preprocessCore::normalize.quantiles.robust()] (Bolstad, 2021).
 #'   
-#'   After performing differential analysis (see TODO), training-regulated features were selected at 5% IHW FDR. The normalized data were
+#'   After performing differential analysis, training-regulated features were selected at 5% IHW FDR. The normalized data were
 #'   filtered down to these features and provided here. 
+#'   
+#'   For the subset of normalized data corresponding to training-regulated features at 5% IHW FDR, see [METHYL_NORM_DATA_05FDR].
 #'   
 #' @source \code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/epigenomics/epigen-rrbs/normalized-data/*normalized-log-M-window.txt}
 #' @name METHYL_NORM_DATA
@@ -1086,7 +1234,8 @@ NULL
 #'   To generate this normalized sample-level data, the methylation coverages of filtered sites/clusters were first log2-transformed,
 #'   and normalization was performed using [preprocessCore::normalize.quantiles.robust()] (Bolstad, 2021).
 #'   
-#'   METHYL data is only available via download from the Cloud. See TODO.
+#'   For the full set of normalized sample-level data, see [METHYL_NORM_DATA]. 
+#'   
 #' @source \code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/epigenomics/epigen-rrbs/normalized-data/*normalized-log-M-window.txt}
 #' @name METHYL_NORM_DATA_05FDR
 "METHYL_HIPPOC_NORM_DATA_05FDR"
@@ -1243,75 +1392,7 @@ NULL
 #' @description Normalized, imputed, and filtered multiplexed immunoassay data used for visualization.
 #'   Data are equivalent to the data provided in [IMMUNO_NORM_DATA_NESTED]. [IMMUNO_NORM_DATA_NESTED] is compatible with the 
 #'   differential analysis functions while this format is compatible with visualization functions. 
-#'   
-#'   Analytes are in rows, and numeric column names correspond to participant IDs (PIDs). 
-#' @format A data frame with 720 rows and 64 variables:
-#' \describe{
-#'   \item{\code{feature}}{`r feature()`}
-#'   \item{\code{feature_ID}}{`r feature_ID()`}
-#'   \item{\code{tissue}}{`r tissue()`}
-#'   \item{\code{assay}}{`r assay()`}
-#'   \item{\code{dataset}}{character, LUMINEX panel}
-#'   \item{\code{10046380}}{}
-#'   \item{\code{10026355}}{}
-#'   \item{\code{10561072}}{}
-#'   \item{\code{10871349}}{}
-#'   \item{\code{10335064}}{}
-#'   \item{\code{10044337}}{}
-#'   \item{\code{10139044}}{}
-#'   \item{\code{10045309}}{}
-#'   \item{\code{10953744}}{}
-#'   \item{\code{10025626}}{}
-#'   \item{\code{10901434}}{}
-#'   \item{\code{10486003}}{}
-#'   \item{\code{10024735}}{}
-#'   \item{\code{10025979}}{}
-#'   \item{\code{10729518}}{}
-#'   \item{\code{10045228}}{}
-#'   \item{\code{10043527}}{}
-#'   \item{\code{10220917}}{}
-#'   \item{\code{10424911}}{}
-#'   \item{\code{10503110}}{}
-#'   \item{\code{10046461}}{}
-#'   \item{\code{10306471}}{}
-#'   \item{\code{10095241}}{}
-#'   \item{\code{10026789}}{}
-#'   \item{\code{10411690}}{}
-#'   \item{\code{10971645}}{}
-#'   \item{\code{10641858}}{}
-#'   \item{\code{10023259}}{}
-#'   \item{\code{10502300}}{}
-#'   \item{\code{10950486}}{}
-#'   \item{\code{10381414}}{}
-#'   \item{\code{10027408}}{}
-#'   \item{\code{10027165}}{}
-#'   \item{\code{10677887}}{}
-#'   \item{\code{10700102}}{}
-#'   \item{\code{10046119}}{}
-#'   \item{\code{10046542}}{}
-#'   \item{\code{10044841}}{}
-#'   \item{\code{10204989}}{}
-#'   \item{\code{10314733}}{}
-#'   \item{\code{10044256}}{}
-#'   \item{\code{10044922}}{}
-#'   \item{\code{10027912}}{}
-#'   \item{\code{10337199}}{}
-#'   \item{\code{10044760}}{}
-#'   \item{\code{10315624}}{}
-#'   \item{\code{10026274}}{}
-#'   \item{\code{10026517}}{}
-#'   \item{\code{10761160}}{}
-#'   \item{\code{10046704}}{}
-#'   \item{\code{10059369}}{}
-#'   \item{\code{10934529}}{}
-#'   \item{\code{10043799}}{}
-#'   \item{\code{10833331}}{}
-#'   \item{\code{10025464}}{}
-#'   \item{\code{10422463}}{}
-#'   \item{\code{10152148}}{}
-#'   \item{\code{10734945}}{}
-#'   \item{\code{10043950}}{} 
-#' }
+#' @format A data frame with analytes in rows and participant IDs (PIDs) in columns
 #' @source \code{gs://mawg-data/pass1b-06/immunoassay/data/release/pass1b-06*_mfi-log2-filt-imputed-na-outliers.txt} 
 "IMMUNO_NORM_DATA_FLAT"
 
@@ -1331,9 +1412,9 @@ NULL
 #'   
 #'   Not all data sets were processed similarly. The processing for each tissue/platform data follows this criteria:  
 #'   \itemize{
-#'     \item Metabolomics targeted 't' platform with >12 features: KNN imputated and log2 transformed
-#'     \item Metabolomics targeted 't' platform with <= 12 features: Log2 transformed (no imputation) 
-#'     \item Metabolomics untargeted 'u' platform: sample centered, KNN imputed, log2 transformed
+#'     \item Metabolomics targeted 't' platform with >12 features: KNN-imputed and log2-transformed
+#'     \item Metabolomics targeted 't' platform with <= 12 features: Log2-transformed (no imputation) 
+#'     \item Metabolomics untargeted 'u' platform: sample-centered, KNN-imputed, log2-transformed
 #'   }
 #'   
 "METAB_NORM_DATA_NESTED"
@@ -1343,70 +1424,7 @@ NULL
 #' @description Combined sample-level metabolomics data used for visualization.
 #'   Data are equivalent to the data provided in [METAB_NORM_DATA_NESTED]. [METAB_NORM_DATA_NESTED] is compatible with the 
 #'   differential analysis functions while this format is compatible with visualization functions. 
-#'   
-#'   Metabolites are in rows, and numeric column names correspond to participant IDs (PIDs). 
-#' @format A data frame with 59 variables:
-#' \describe{
-#'   \item{\code{feature}}{`r feature()`}
-#'   \item{\code{feature_ID}}{`r feature_ID()`}
-#'   \item{\code{tissue}}{`r tissue()`}
-#'   \item{\code{assay}}{`r assay()`}
-#'   \item{\code{dataset}}{`r dataset_metab()`}
-#'   \item{\code{10381414}}{}
-#'   \item{\code{10046380}}{}
-#'   \item{\code{10026355}}{}
-#'   \item{\code{10561072}}{}
-#'   \item{\code{10871349}}{}
-#'   \item{\code{10761160}}{}
-#'   \item{\code{10185585}}{}
-#'   \item{\code{10335064}}{}
-#'   \item{\code{10044337}}{}
-#'   \item{\code{10700102}}{}
-#'   \item{\code{10139044}}{}
-#'   \item{\code{10045309}}{}
-#'   \item{\code{10953744}}{}
-#'   \item{\code{10027327}}{}
-#'   \item{\code{10025626}}{}
-#'   \item{\code{10901434}}{}
-#'   \item{\code{10486003}}{}
-#'   \item{\code{10337199}}{}
-#'   \item{\code{10025707}}{}
-#'   \item{\code{10024735}}{}
-#'   \item{\code{10025979}}{}
-#'   \item{\code{10587543}}{}
-#'   \item{\code{10729518}}{}
-#'   \item{\code{10833331}}{}
-#'   \item{\code{10046119}}{}
-#'   \item{\code{10045228}}{}
-#'   \item{\code{10043527}}{}
-#'   \item{\code{10220917}}{}
-#'   \item{\code{10424911}}{}
-#'   \item{\code{10503110}}{}
-#'   \item{\code{10026193}}{}
-#'   \item{\code{10046461}}{}
-#'   \item{\code{10044760}}{}
-#'   \item{\code{10422463}}{}
-#'   \item{\code{10417702}}{}
-#'   \item{\code{10043950}}{}
-#'   \item{\code{10672656}}{}
-#'   \item{\code{10306471}}{}
-#'   \item{\code{10095241}}{}
-#'   \item{\code{10026789}}{}
-#'   \item{\code{10734945}}{}
-#'   \item{\code{10411690}}{}
-#'   \item{\code{10971645}}{}
-#'   \item{\code{10106383}}{}
-#'   \item{\code{10027599}}{}
-#'   \item{\code{10641858}}{}
-#'   \item{\code{10023259}}{}
-#'   \item{\code{10044256}}{}
-#'   \item{\code{10502300}}{}
-#'   \item{\code{10950486}}{}
-#'   \item{\code{10044841}}{}
-#'   \item{\code{10204989}}{}
-#'   \item{\code{10314733}}{}
-#'   \item{\code{10044922}}{} 
-#' }
+#' @format A data frame with metabolites in rows and participant IDs (PIDs) in columns 
 "METAB_NORM_DATA_FLAT"
 
 
@@ -1758,7 +1776,8 @@ NULL
 #'   \item{\code{viallabel}}{`r viallabel()`}
 #'   \item{\code{assay}}{`r assay()`} 
 #' }
-#' @details Sample information specific to each proteomics assay. This includes the TMT channel assigned to the sample (\code{tmt11_channel}) and the plex group in which the sample was assigned (\code{tmt_plex}).
+#' @details Sample information specific to each proteomics assay. This includes the TMT channel assigned to the 
+#'   sample (\code{tmt11_channel}) and the plex group in which the sample was assigned (\code{tmt_plex}).
 #' @name PROTEOMICS_META
 "PHOSPHO_META"
 
@@ -1826,6 +1845,9 @@ NULL
 #'   \item{\code{reference_average_intensity_se}}{`r reference_average_intensity_se()`}
 #'   \item{\code{selection_fdr}}{`r selection_fdr()`} 
 #' }
+#' @details 
+#'   Reproduce our analysis with [MotrpacRatTraining6mo::transcript_timewise_da()]
+#'   and [MotrpacRatTraining6mo::transcript_training_da()]. 
 #' @name TRNSCRPT_DA
 "TRNSCRPT_BLOOD_DA"
 
@@ -1910,6 +1932,9 @@ NULL
 #'   \item{\code{reference_average_intensity}}{`r reference_average_intensity()`}
 #'   \item{\code{selection_fdr}}{`r selection_fdr()`} 
 #' }
+#' @details 
+#'   Reproduce our analysis with [MotrpacRatTraining6mo::proteomics_timewise_da()]
+#'   and [MotrpacRatTraining6mo::proteomics_training_da()]. 
 #' @name PROTEOME_DA
 "PROT_CORTEX_DA"
 
@@ -1999,6 +2024,9 @@ NULL
 #'   \item{\code{neutral_mass}}{double, neutral mass}
 #'   \item{\code{selection_fdr}}{`r selection_fdr()`} 
 #' }
+#' @details 
+#'   Reproduce our analysis with [MotrpacRatTraining6mo::metab_training_da()]
+#'   and [MotrpacRatTraining6mo::metab_timewise_da()]. 
 #' @name METAB_DA
 "METAB_PLASMA_DA"
 
@@ -2099,7 +2127,10 @@ NULL
 #'   \item{\code{meta_reg_pvalue}}{`r meta_reg_pvalue()`}
 #'   \item{\code{selection_fdr}}{`r selection_fdr()`} 
 #' }
-#' @details DETAILS
+#' @details TODO
+#' 
+#'   Reproduce our analysis with TODO. 
+#' 
 #' @name METAB_DA_METAREG
 "METAB_ADRNL_DA_METAREG"
 
@@ -2182,6 +2213,9 @@ NULL
 #'   \item{\code{reference_average_intensity}}{`r reference_average_intensity()`}
 #'   \item{\code{selection_fdr}}{`r selection_fdr()`} 
 #' }
+#' @details 
+#'   Reproduce our analysis with [MotrpacRatTraining6mo::immuno_timewise_da()]
+#'   and [MotrpacRatTraining6mo::immuno_training_da()]. 
 #' @name IMMUNO_DA
 "IMMUNO_PLASMA_DA"
 
@@ -2235,23 +2269,98 @@ NULL
 
 
 #' @title Differential analysis of ATAC-seq data
-#' @description TODO
-#' @format TODO
-#' @details TODO
-#'   Full ATAC differential analysis results are only available via download from the Cloud. See TODO.
+#' @description Timewise summary statistics and training FDR from 
+#'     differential analysis (DA) that tests the effect of training on each 
+#'     chromatin accessibility peak within each sex. One data frame per tissue. 
+#' @format A data frame with 21 variables:
+#' \describe{
+#'   \item{\code{feature}}{`r feature()`}
+#'   \item{\code{assay}}{`r assay()`}
+#'   \item{\code{assay_code}}{`r assay_code()`}
+#'   \item{\code{tissue}}{`r tissue()`}
+#'   \item{\code{tissue_code}}{`r tissue_code()`}
+#'   \item{\code{feature_ID}}{`r feature_ID()`}
+#'   \item{\code{dataset}}{character, tissue code and Chemical Analysis Site that
+#'     generated the data. Note only ATAC data generated by Stanford are included
+#'     in this repository.}
+#'   \item{\code{sex}}{`r sex()`}
+#'   \item{\code{comparison_group}}{`r comparison_group()`}
+#'   \item{\code{p_value}}{`r p_value_da()`}
+#'   \item{\code{adj_p_value}}{`r adj_p_value_da()`}
+#'   \item{\code{logFC}}{`r logFC()`}
+#'   \item{\code{logFC_se}}{`r logFC_se()`}
+#'   \item{\code{tscore}}{`r tscore()`}
+#'   \item{\code{covariates}}{`r covariates()`}
+#'   \item{\code{removed_samples}}{`r removed_samples()`}
+#'   \item{\code{comparison_average_intensity}}{`r comparison_average_intensity()`}
+#'   \item{\code{comparison_average_intensity_se}}{`r comparison_average_intensity_se()`}
+#'   \item{\code{reference_average_intensity}}{`r reference_average_intensity()`}
+#'   \item{\code{reference_average_intensity_se}}{`r reference_average_intensity_se()`}
+#'   \item{\code{selection_fdr}}{`r selection_fdr()`} 
+#' }
+#' @details 
+#'   Unfiltered ATAC differential analysis results are only available via download from Google Cloud Storage. 
+#'   For example, <https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_BAT_DA.rda> 
+#'   is the file for brown adipose tissue (BAT) results. You can change the name of the file to specify other tissues including:
+#'   HEART, HIPPOC, KIDNEY, LIVER, LUNG, SKMGN (gastrocnemius skeletal muscle), and WATSC (subcutaneous white adipose tissue).
+#'   You can also use [MotrpacRatTraining6mo::get_rdata_from_url()] 
+#'   to download differential analysis results for ATAC and METHYL.
+#'   For more details about these files see the readme of this repository at 
+#'   <https://github.com/MoTrPAC/MotrpacRatTraining6mo/blob/main/README.md>. 
 #'   
 #'   For training-regulated ATAC features at 5% FDR, see [TRAINING_REGULATED_FEATURES].
+#' 
+#'   Reproduce our analysis with [MotrpacRatTraining6mo::atac_timewise_da()]
+#'   and [MotrpacRatTraining6mo::atac_training_da()]. 
+#' 
 #' @name ATAC_DA
 NULL
 
 
-#' @title Differential analysis of RRBS data
-#' @description TODO
-#' @format TODO
-#' @details TODO
-#'   Full METHYL differential analysis results are only available via download from the Cloud. See TODO.
+#' @title Differential analysis results of RRBS data
+#' @description Timewise summary statistics and training FDR from 
+#'     differential analysis (DA) that tests the effect of training on each 
+#'     methylation feature within each sex. One data frame per tissue. 
+#' @format A data frame with 20 variables:
+#' \describe{
+#'   \item{\code{feature}}{`r feature()`}
+#'   \item{\code{assay}}{`r assay()`}
+#'   \item{\code{assay_code}}{`r assay_code()`}
+#'   \item{\code{tissue}}{`r tissue()`}
+#'   \item{\code{tissue_code}}{`r tissue_code()`}
+#'   \item{\code{feature_ID}}{`r feature_ID()`}
+#'   \item{\code{sex}}{`r sex()`}
+#'   \item{\code{comparison_group}}{`r comparison_group()`}
+#'   \item{\code{p_value}}{`r p_value_da()`}
+#'   \item{\code{adj_p_value}}{`r adj_p_value_da()`}
+#'   \item{\code{logFC}}{`r logFC()`}
+#'   \item{\code{zscore}}{`r zscore()`}
+#'   \item{\code{covariates}}{`r covariates()`}
+#'   \item{\code{removed_samples}}{`r removed_samples()`}
+#'   \item{\code{Chr}}{integer, chromosome}
+#'   \item{\code{Locus}}{character, base pair range of feature}
+#'   \item{\code{EntrezID}}{character, Entrez ID of closest gene}
+#'   \item{\code{Symbol}}{character, gene symbol of closest gene}
+#'   \item{\code{fscore}}{the LRT fscore}
+#'   \item{\code{selection_fdr}}{`r selection_fdr()`}
+#' }
+#' @details 
+#'   Unfiltered METHYL differential analysis results are only available via download from Google Cloud Storage. 
+#'   For example, <https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_BAT_DA.rda> 
+#'   is the file for brown adipose tissue (BAT) results. You can change the name of the file to specify other tissues including:
+#'   HEART, HIPPOC, KIDNEY, LIVER, LUNG, SKMGN (gastrocnemius skeletal muscle), and WATSC (subcutaneous white adipose tissue).
+#'   You can also use [MotrpacRatTraining6mo::get_rdata_from_url()] 
+#'   to download differential analysis results for ATAC and METHYL.
+#'   For more details about these files see the readme of this repository at 
+#'   <https://github.com/MoTrPAC/MotrpacRatTraining6mo/blob/main/README.md>. 
+#'   
+#'   The differential analysis results in this data frame were computed using [edgeR::glmQLFTest()] after
+#'   removing a few outlier low quality samples from the kidney dataset.
 #'   
 #'   For training-regulated METHYL features at 5% FDR, see [TRAINING_REGULATED_FEATURES].
+#'
+#'   Reproduce our analysis with [MotrpacRatTraining6mo::rrbs_differential_analysis()].
+#'
 #' @name METHYL_DA
 NULL
 
@@ -2328,8 +2437,23 @@ NULL
 #'     NA if the state at any of the four time points is NA.} 
 #' }
 #' @details 
-#'   TODO
-#'   See [Supplementary Methods](https://docs.google.com/document/d/1i5jLyy2K9-N3yMCOvSwnws-5ny77jQPaBtC50TsUZ_g/edit#heading=h.2zazg4neamea). 
+#'   Given the posteriors Pr(h|z_i) computed using [repfdr::repfdr()] where h is a configuration
+#'   vector in {-1,0,1}^8 (specifying the 8 analyzed groups, 4 time points in males and females),
+#'   and z_i is the vector of z-scores of analyte i, we assign analytes to "states". 
+#'   A state is a tuple (s_{m,j}, s_{f,j}), where s_{m,j} is the differential abundance 
+#'   state null, up, or down (0,1, and -1 in the notation above, respectively) in males 
+#'   at time point j, and s_{f,j} is defined similarly for females (at time point j). 
+#'   Thus, we have nine possible states in each time point. 
+#'   For example, assume we inspect analyte i in time point j, asking if the abundance is 
+#'   up-regulated in males while null in females. Then, we sum over all posteriors Pr(h|z_i) 
+#'   such that males are up-regulated and females have 0. 
+#'   If the resulting value is greater than 0.5, then we say that analyte i belongs to the 
+#'   node set S(s_{m,j}, s_{f,j}). Thus, we use S(s_{m,j}, s_{f,j}) to denote all analytes 
+#'   that belong to a state (s_{m,j}, s_{f,j}). 
+#'   Then, for every pair of states from adjacent time points j and j+1 we define their 
+#'   edge set as the intersection of S(s_{m,j}, s_{f,j}) and S(s_{m,j+1}, s_{f,j+1}). 
+#'   Thus, thenode sets edge sets together define a tree structure that represent different 
+#'   differential patterns over sex and time.
 "GRAPH_STATES"
 
 
@@ -2386,14 +2510,15 @@ NULL
 #'   using [gprofiler2::gost()] with custom backgrounds defined by [GENE_UNIVERSES].  
 #'   Only pathways with at least 10 and up to 200 members were tested. Because [gprofiler2::gost()]
 #'   only returns adjusted p-values, we recalculated nominal p-values using a one-tailed hypergeometric test, 
-#'   which is consistent with how [gprofiler2::gost()] calculates enrichments. See `cluster_pathway_enrichment()` for implementation. 
+#'   which is consistent with how [gprofiler2::gost()] calculates enrichments. 
+#'   See [MotrpacRatTraining6mo::cluster_pathway_enrichment()] for implementation. 
 #'   
 #'   For metabolites, 
 #'   we performed enrichment of KEGG pathways using the hypergeometric method in [FELLA::enrich()] 
-#'   with custom backgrounds defined by [GENE_UNIVERSES]. See `run_fella()` for implementation. 
+#'   with custom backgrounds defined by [GENE_UNIVERSES]. See [MotrpacRatTraining6mo::run_fella()] for implementation. 
 #'   
-#'   Pathway enrichment analysis p-values 
-#'   were adjusted across all results using Independent Hypothesis Weighting (IHW) with tissue as a covariate.
+#'   Pathway enrichment analysis p-values were adjusted across all results using Independent 
+#'   Hypothesis Weighting (IHW) with tissue as a covariate.
 #'    
 "GRAPH_PW_ENRICH"
 
@@ -2432,7 +2557,7 @@ NULL
 
 
 #' @title \code{repfdr} inputs
-#' @description Feature by state data frames that define the input for \code{repfdr} 
+#' @description Feature by state data frames that define the input for [repfdr::repfdr()] 
 #' @format List of data frames:
 #' \describe{
 #'   \item{\code{zs_info}}{feature-level metadata for training-regulated features included in graphical analysis}
@@ -2468,7 +2593,7 @@ NULL
 
 
 #' @title \code{repfdr} results  
-#' @description Raw \code{repfdr} results from which the graphical state assignments were determined
+#' @description Raw [repfdr::repfdr()] results from which the graphical state assignments were determined
 #' @format List:
 #' \describe{
 #'   \item{\code{repfdr_em_res}}{a list with \code{repfdr}'s EM results}
@@ -2476,7 +2601,7 @@ NULL
 #'   \item{\code{repfdr_clusters_str}}{\code{repfdr}'s configurations, string representation}
 #'   \item{\code{repfdr_clusters_pi}}{configuration's inferred priors} 
 #' }
-#' @details \code{repfdr} is an algorithm suggested by Yekutieli and Heller in 2014 
+#' @details [repfdr::repfdr()] is an algorithm suggested by Yekutieli and Heller in 2014 
 #'   (Bioinformatics) for analysis of p-values or z-scores from different resources. 
 #'   It is based on the assumption that z-scores from each resource (a time point 
 #'   from a specific sex in our case) is either positive, null, or negative. 
@@ -2486,7 +2611,7 @@ NULL
 #'   (so for example, two high scores from weeks 4 and 8 in males are independent 
 #'   given that we know that they are positive, non-null cases). 
 #'   
-#'   Our analysis pipeline is as follows: we run \code{repfdr} on the z-score data matrix 
+#'   Our analysis pipeline is as follows: we run [repfdr::repfdr()] on the z-score data matrix 
 #'   of all training-regulated features at 5% IWH FDR (see [REPFDR_INPUTS]). Then we use the output to extract 
 #'   the analytes of each state in each time point. Here a state means one of 
 #'   (male up, male null, male down) x (female up, female null, female down) 
@@ -2494,5 +2619,8 @@ NULL
 #'   Then, for each pair of node \code{(x,y)} such that \code{y} is from a time point that is adjacent 
 #'   and after \code{x} (e.g., \code{x} is a node from week 4 and \code{y} is a node from week 8), 
 #'   we define their edge set as the intersection of their analytes.
+#'   
+#'   Reproduce our analysis with [MotrpacRatTraining6mo::bayesian_graphical_clustering()]
+#'   and [MotrpacRatTraining6mo::repfdr_wrapper()]. 
 #'   
 "REPFDR_RES"

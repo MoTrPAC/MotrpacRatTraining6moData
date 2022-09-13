@@ -52,7 +52,7 @@ ATAC_WATSC_NORM_DATA_05FDR
 \description{
 Normalized sample-level ATAC-seq (ATAC) data used for visualization and differential analysis.
 Only for training-regulated features at 5\% IHW FDR. For sample-level data for \emph{all} features,
-see \link{ATAC_NORM_DATA} and TODO.
+see \link{ATAC_NORM_DATA} and \link{ATAC_RAW_COUNTS}.
 }
 \details{
 Data was processed with the \href{https://github.com/ENCODE-DCC/atac-seq-pipeline}{ENCODE ATAC-seq pipeline (v1.7.0)}.
@@ -75,9 +75,9 @@ The remaining steps were applied separately on raw counts from each tissue. Peak
 as well as peaks that did not have at least 10 read counts in four samples. Filtered raw counts were then quantile-normalized with
 limma-voom (Law et al., 2014).
 
-After performing differential analysis (see TODO), training-regulated features were selected at 5\% IHW FDR. The normalized data were
+After performing differential analysis, training-regulated features were selected at 5\% IHW FDR. The normalized data were
 filtered down to these features and provided here.
 
-For the full set of normalized sample-level data, see TODO.
+For the full set of normalized sample-level data, see \link{ATAC_NORM_DATA} and \link{ATAC_RAW_COUNTS}.
 }
 \keyword{datasets}

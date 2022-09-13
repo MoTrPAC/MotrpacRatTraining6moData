@@ -4,12 +4,43 @@
 \alias{METHYL_RAW_DATA}
 \title{RRBS raw data}
 \format{
-TODO
+A \link[edgeR:DGEList-class]{edgeR::DGEList} object
 }
 \description{
-TODO
+RRBS raw read counts; created by loading all bismark files into a single data object.
 }
 \details{
-TODO
-Raw METHYL data is only available via download from the Cloud. See TODO.
+Raw METHYL data are only available via download from Google Cloud Storage.
+For example, \url{https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/raw/RRBS/BAT_raw.RData}
+is the file for brown adipose tissue (BAT) data. You can change the name of the file to specify other tissues including:
+HEART, HIPPOC, KIDNEY, LIVER, LUNG, SKMGN (gastrocnemius skeletal muscle), and WATSC (subcutaneous white adipose tissue).
+You can also use \code{\link[MotrpacRatTraining6mo:get_rdata_from_url]{MotrpacRatTraining6mo::get_rdata_from_url()}}
+to download and return raw METHYL data.
+For more details about these files see the readme of this repository at
+\url{https://github.com/MoTrPAC/MotrpacRatTraining6mo/blob/main/README.md}.
+
+Unlike the \link{METHYL_RAW_COUNTS} data, these objects were not filtered to remove low-count features.
+
+Reads were demultiplexed with bcl2fastq (version 2.20) using options
+\code{--use-bases-mask Y*,I8Y*,I*,Y* --mask-short-adapter-reads 0 --minimum-trimmed-read-length 0}
+(Illumina, San Diego, CA, USA), and UMIs in the index FASTQ files were attached to the read FASTQ files.
+The regular 5' and 3' adapters were trimmed with TrimGalore (v1.18), and the diversity adapter
+that is about 0 to 3 bases of RDD (R={A or G} and D={A, G, or T}) that is added before YGG
+(Y={C or T} depending on the methylation) from the YGG MspI cut signature was trimmed with
+the NuGEN script "trimRRBSdiversityAdaptCustomers.py" (\url{https://github.com/nugentechnologies/NuMetRRBS}).
+FastQC (v0.11.8) was used to generate pre-alignment QC metrics3. Bismark (v0.20.0) was used to index
+and align reads to release 96 of the Ensembl Rattus norvegicus (rn6) genome and gene annotation.
+As the lambda genome was spiked into each sample to determine the bisulfite conversion efficiency,
+the lambda genome (GenBank: J02459.1) was also indexed. Default parameters were used for Bismark’s
+bismark_genome_preparation in the alignment step. Bismark output BAM files were first formatted
+using a custom script; Bismark’s \code{deduplicate_bismark -p --barcode} was used
+to remove PCR duplicates from the bam files; and Bismark’s \code{bismark_methylation_extractor 
+  --comprehensive --bedgraph} was used to quantify methylated and unmethylated coverages for all the
+CpG sites. Bowtie 2 (v2.3.4.3) was used to index and align reads to globin, rRNA, and phix sequences
+in order to quantify the percent of reads that mapped to these contaminants and spike-ins5.
+SAMtools (v1.3.1) was used to compute mapping percentages to different chromosomes6.
+UMIs were used to accurately quantify PCR duplicates with NuGEN’s "nodup.py" script
+(\url{https://github.com/tecangenomics/nudup}). QC metrics from every stage of the quantification pipeline
+were compiled, in part with multiQC (v1.6)7. The openWDL-based implementation of the RRBS pipeline on
+Google Cloud Platform is available on GitHub (\url{https://github.com/MoTrPAC/motrpac-rrbs-pipeline}).
 }

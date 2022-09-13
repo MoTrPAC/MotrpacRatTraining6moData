@@ -37,5 +37,12 @@ is always less than \code{geneEnd}, even if the gene is on the negative strand (
 ATAC-seq feature annotation
 }
 \details{
-TODO - link to function in MotrpacRatTraining6mo
+ATAC feature annotation is only available via download from Google Cloud Storage:
+\url{https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_FEATURE_ANNOT.rda}.
+You can use \code{\link[MotrpacRatTraining6mo:load_atac_feature_annotation]{MotrpacRatTraining6mo::load_atac_feature_annotation()}} to download and return this file.
+
+This table was generated using \code{\link[MotrpacRatTraining6mo:get_peak_annotations]{MotrpacRatTraining6mo::get_peak_annotations()}}.
+\code{relationship_to_gene} is the shortest distance between the feature and the start or end of the closest gene.
+It is 0 if the feature has any overlap with the gene.
+\code{custom_annotation} fixes many issues with the \code{ChIPseeker} annotation (v1.22.1).
 }

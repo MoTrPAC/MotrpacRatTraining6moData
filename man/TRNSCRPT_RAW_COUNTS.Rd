@@ -24,7 +24,7 @@
 \alias{TRNSCRPT_WATSC_RAW_COUNTS}
 \title{RNA-seq raw counts}
 \format{
-A data frame with 32883 rows and one column per viallabel
+A data frame with 32883 rows (\code{feature_ID}) and samples in columns (\code{viallabel})
 
 An object of class \code{data.frame} with 32883 rows and 54 columns.
 

@@ -13,6 +13,15 @@ A data frame with peaks in rows (\code{feature_ID}) and samples in columns (\cod
 Normalized sample-level ATAC-seq (ATAC) data used for visualization and differential analysis
 }
 \details{
+Unfiltered ATAC sample-level data are only available via download from Google Cloud Storage.
+For example, \url{https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_BAT_NORM_DATA.rda}
+is the file for brown adipose tissue (BAT) data. You can change the name of the file to specify other tissues including:
+HEART, HIPPOC, KIDNEY, LIVER, LUNG, SKMGN (gastrocnemius skeletal muscle), and WATSC (subcutaneous white adipose tissue).
+You can also use \code{\link[MotrpacRatTraining6mo:load_sample_data]{MotrpacRatTraining6mo::load_sample_data()}} or \code{\link[MotrpacRatTraining6mo:get_rdata_from_url]{MotrpacRatTraining6mo::get_rdata_from_url()}}
+to download raw and normalized sample-level data for ATAC and METHYL.
+For more details about these files see the readme of this repository at
+\url{https://github.com/MoTrPAC/MotrpacRatTraining6mo/blob/main/README.md}.
+
 Data was processed with the \href{https://github.com/ENCODE-DCC/atac-seq-pipeline}{ENCODE ATAC-seq pipeline (v1.7.0)}.
 Samples from a single sex and training time point, e.g., males trained for 2 weeks, were analyzed together as biological
 replicates in a single workflow. Briefly, adapters were trimmed with cutadapt v2.5 (Martin, 2011) and aligned to release 96
@@ -22,7 +31,8 @@ using MACS2 v2.2.4 (Gaspar, 2018), both from reads from each sample and pooled r
 Pooled peaks were compared with the peaks called for each replicate individually using Irreproducibility Discovery Rate (Li et al., 2011)
 and thresholded to generate an optimal set of peaks.
 
-The cloud implementation of the ENCODE ATAC-seq pipeline and source code for the post-processing steps are available at \url{https://github.com/MoTrPAC/motrpac-atac-seq-pipeline}.
+The cloud implementation of the ENCODE ATAC-seq pipeline and source code for the post-processing steps are available at
+\url{https://github.com/MoTrPAC/motrpac-atac-seq-pipeline}.
 Optimal peaks (overlap.optimal_peak.narrowPeak.bed.gz) from all workflows were concatenated, trimmed to 200 base pairs around the summit,
 and sorted and merged with bedtools v2.29.0 (Quinlan and Hall, 2010) to generate a master peak list. This peak list was intersected with
 the filtered alignments from each sample using bedtools coverage with options \code{-nonamecheck} and \code{-counts} to generate a peak by
@@ -31,8 +41,6 @@ sample matrix of raw counts.
 The remaining steps were applied separately on raw counts from each tissue. Peaks from non-autosomal chromosomes were removed,
 as well as peaks that did not have at least 10 read counts in four samples. Filtered raw counts were then quantile-normalized with
 limma-voom (Law et al., 2014).
-
-This version of the normalized data is available via download from Google Cloud Storage. See TODO.
 
 For the subset of normalized data corresponding to training-regulated features at 5\% IHW FDR, see \link{ATAC_NORM_DATA_05FDR}.
 }

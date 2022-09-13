@@ -135,4 +135,8 @@ Timewise summary statistics and training FDR from
 differential analysis (DA) that tests the effect of training on each
 metabolite within each sex. One data frame per tissue.
 }
+\details{
+Reproduce our analysis with \code{\link[MotrpacRatTraining6mo:metab_training_da]{MotrpacRatTraining6mo::metab_training_da()}}
+and \code{\link[MotrpacRatTraining6mo:metab_timewise_da]{MotrpacRatTraining6mo::metab_timewise_da()}}.
+}
 \keyword{datasets}

@@ -23,9 +23,9 @@ in rows. Feature IDs in the row names in these tables correspond to \code{\link{
 
 Not all data sets were processed similarly. The processing for each tissue/platform data follows this criteria:
 \itemize{
-\item Metabolomics targeted 't' platform with >12 features: KNN imputated and log2 transformed
-\item Metabolomics targeted 't' platform with <= 12 features: Log2 transformed (no imputation)
-\item Metabolomics untargeted 'u' platform: sample centered, KNN imputed, log2 transformed
+\item Metabolomics targeted 't' platform with >12 features: KNN-imputed and log2-transformed
+\item Metabolomics targeted 't' platform with <= 12 features: Log2-transformed (no imputation)
+\item Metabolomics untargeted 'u' platform: sample-centered, KNN-imputed, log2-transformed
 }
 }
 \keyword{datasets}

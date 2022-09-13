@@ -17,6 +17,6 @@ List of data frames:
 REPFDR_INPUTS
 }
 \description{
-Feature by state data frames that define the input for \code{repfdr}
+Feature by state data frames that define the input for \code{\link[repfdr:repfdr]{repfdr::repfdr()}}
 }
 \keyword{datasets}

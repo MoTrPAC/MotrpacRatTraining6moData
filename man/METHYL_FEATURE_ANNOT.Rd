@@ -11,9 +11,9 @@ A data frame with 7585076 rows and 12 variables:
 \item{\code{EntrezID}}{character, Entrez ID of closest gene}
 \item{\code{Symbol}}{character, gene symbol of closest gene}
 \item{\code{Strand}}{character, strand}
-\item{\code{Width}}{integer, width of feature}
-\item{\code{NumSites}}{integer, TODO}
-\item{\code{Sites}}{character, TODO}
+\item{\code{Width}}{integer, width of the genomic locus represented by the feature}
+\item{\code{NumSites}}{integer, the number of sites merged to generate the feature, sites are merged by their correlation pattern in the data using an unsupervised analysis}
+\item{\code{Sites}}{character, a comma separated string with the specific sites that were merged to generate the feature}
 \item{\code{LocStart}}{integer, feature start in base pairs}
 \item{\code{LocEnd}}{integer, feature end in base pairs}
 \item{\code{tissue}}{character, tissue abbreviation, one of \link{TISSUE_ABBREV}}
@@ -24,5 +24,19 @@ A data frame with 7585076 rows and 12 variables:
 RRBS feature annotation
 }
 \details{
-TODO
+METHYL feature annotation is only available via download from Google Cloud Storage:
+\url{https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_FEATURE_ANNOT.rda}.
+You can use \code{\link[MotrpacRatTraining6mo:load_methyl_feature_annotation]{MotrpacRatTraining6mo::load_methyl_feature_annotation()}} to download and return this file.
+
+Only CpG sites with methylation coverage of >=10 in all samples were included for downstream analysis,
+and normalization was performed separately in each tissue. Individual CpG sites were divided into 500 base-pair
+windows and were clustered using the Markov Clustering algorithm via the MCL R package (Jager, 2015). To apply MCL,
+for each 500 base-pair window an undirected graph was constructed, linking individual sites if their correlation
+was >=0.7. MCL was chosen for this task as it: (1) determines the number of clusters internally, (2) identifies
+homogeneous clusters, and (3) keeps single sites that are not correlated with either sites as singletons (clusters of size one).
+
+Given these sites, this table was generated using \code{\link[MotrpacRatTraining6mo:get_peak_annotations]{MotrpacRatTraining6mo::get_peak_annotations()}}.
+\code{relationship_to_gene} is the shortest distance between the feature and the start or end of the closest gene.
+It is 0 if the feature has any overlap with the gene.
+\code{custom_annotation} fixes many issues with the \code{ChIPseeker} annotation (v1.22.1).
 }

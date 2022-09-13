@@ -340,14 +340,14 @@ Normalized sample-level data|METHYL|LIVER|METHYL_LIVER_NORM_DATA|https://storage
 Normalized sample-level data|METHYL|LUNG|METHYL_LUNG_NORM_DATA|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_LUNG_NORM_DATA.rda
 Normalized sample-level data|METHYL|SKM-GN|METHYL_SKMGN_NORM_DATA|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_SKMGN_NORM_DATA.rda
 Normalized sample-level data|METHYL|WAT-SC|METHYL_WATSC_NORM_DATA|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_WATSC_NORM_DATA.rda
-Raw data|METHYL|BAT|BAT_raw|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/raw/RRBS/BAT_raw.RData
-Raw data|METHYL|HEART|HEART_raw|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/raw/RRBS/HEART_raw.RData
-Raw data|METHYL|HIPPOC|HIPPOC_raw|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/raw/RRBS/HIPPOC_raw.RData
-Raw data|METHYL|KIDNEY|KIDNEY_raw|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/raw/RRBS/KIDNEY_raw.RData
-Raw data|METHYL|LIVER|LIVER_raw|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/raw/RRBS/LIVER_raw.RData
-Raw data|METHYL|LUNG|LUNG_raw|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/raw/RRBS/LUNG_raw.RData
-Raw data|METHYL|SKM-GN|SKMGN_raw|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/raw/RRBS/SKMGN_raw.RData
-Raw data|METHYL|WAT-SC|WATSC_raw|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/raw/RRBS/WATSC_raw.RData
+Raw data|METHYL|BAT|BAT_raw|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_BAT_RAW_DATA.rda
+Raw data|METHYL|HEART|HEART_raw|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_HEART_RAW_DATA.rda
+Raw data|METHYL|HIPPOC|HIPPOC_raw|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_HIPPOC_RAW_DATA.rda
+Raw data|METHYL|KIDNEY|KIDNEY_raw|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_KIDNEY_RAW_DATA.rda
+Raw data|METHYL|LIVER|LIVER_raw|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_LIVER_RAW_DATA.rda
+Raw data|METHYL|LUNG|LUNG_raw|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_LUNG_RAW_DATA.rda
+Raw data|METHYL|SKM-GN|SKMGN_raw|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_SKMGN_RAW_DATA.rda
+Raw data|METHYL|WAT-SC|WATSC_raw|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_WATSC_RAW_DATA.rda
 Raw sample-level counts|METHYL|BAT|METHYL_BAT_RAW_COUNTS|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_BAT_RAW_COUNTS.rda
 Raw sample-level counts|METHYL|HEART|METHYL_HEART_RAW_COUNTS|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_HEART_RAW_COUNTS.rda
 Raw sample-level counts|METHYL|HIPPOC|METHYL_HIPPOC_RAW_COUNTS|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_HIPPOC_RAW_COUNTS.rda
