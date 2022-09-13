@@ -38,9 +38,9 @@ Missing values indicate that the \code{repfdr} posterior probabilities
 did not meet the cutoff for that feature.
 }
 \details{
-Given the posteriors Pr(h|z_i) computed using repfdr where h is a configuration
+Given the posteriors Pr(h|z_i) computed using \code{\link[repfdr:repfdr]{repfdr::repfdr()}} where h is a configuration
 vector in {-1,0,1}^8 (specifying the 8 analyzed groups, 4 time points in males and females),
-and z_i is the vector of z-scores of analyte i, we assign analytes to “states”.
+and z_i is the vector of z-scores of analyte i, we assign analytes to "states".
 A state is a tuple (s_{m,j}, s_{f,j}), where s_{m,j} is the differential abundance
 state null, up, or down (0,1, and -1 in the notation above, respectively) in males
 at time point j, and s_{f,j} is defined similarly for females (at time point j).

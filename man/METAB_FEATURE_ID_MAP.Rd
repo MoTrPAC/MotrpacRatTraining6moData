@@ -33,6 +33,19 @@ Mapping between various metabolite feature identifiers used
 at different stages of data processing. Also includes some feature metadata
 }
 \details{
-TODO
+\code{metabolite_name} is always equal to \code{feature_ID_sample_data} and \code{feature_ID_da}.
+
+\code{feature_ID_metareg} is different than \code{metabolite_name} when the combined
+results from multiple measurements of the same metabolite are reported in the meta-regression differential
+analysis results, in which case \code{feature_ID_metareg} is \code{metabolite_refmet}.
+112 rows (57 unique metabolites in 9 tissues) do not have corresponding meta-regression results,
+in which case \code{feature_ID_metareg} is \code{NA}.
+
+\code{feature} is only non-NA for training-regulated features at 5\% IHW FDR (see \link{TRAINING_REGULATED_FEATURES}).
+Each non-NA value of \code{feature} is unique. In the case of repeated measurements, this means \code{dataset}
+was added to \code{metabolite_name}. See \link{REPEATED_FEATURE_MAP} for more details.
+
+Note that RefMet IDs are frequently updated. This table provides the version of the RefMet IDs
+at the time that these data were generated.
 }
 \keyword{datasets}

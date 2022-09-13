@@ -4,12 +4,34 @@
 \alias{ATAC_RAW_COUNTS}
 \title{ATAC-seq raw counts}
 \format{
-TODO
+A data frame with chromatin accessibility peaks in rows and samples (vial labels) in columns
 }
 \description{
-TODO
+ATAC-seq raw counts
 }
 \details{
-TODO
-ATAC raw counts data are only available via download from the Cloud. See TODO.
+Unfiltered ATAC sample-level data are only available via download from Google Cloud Storage.
+For example, \url{https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_BAT_RAW_COUNTS.rda}
+is the file for brown adipose tissue (BAT) data. You can change the name of the file to specify other tissues including:
+HEART, HIPPOC, KIDNEY, LIVER, LUNG, SKMGN (gastrocnemius skeletal muscle), and WATSC (subcutaneous white adipose tissue).
+You can also use \code{\link[MotrpacRatTraining6mo:load_sample_data]{MotrpacRatTraining6mo::load_sample_data()}} or \code{\link[MotrpacRatTraining6mo:get_rdata_from_url]{MotrpacRatTraining6mo::get_rdata_from_url()}}
+to download raw and normalized sample-level data for ATAC and METHYL.
+For more details about these files see the readme of this repository at
+\url{https://github.com/MoTrPAC/MotrpacRatTraining6mo/blob/main/README.md}.
+
+Data was processed with the \href{https://github.com/ENCODE-DCC/atac-seq-pipeline}{ENCODE ATAC-seq pipeline (v1.7.0)}.
+Samples from a single sex and training time point, e.g., males trained for 2 weeks, were analyzed together as biological
+replicates in a single workflow. Briefly, adapters were trimmed with cutadapt v2.5 (Martin, 2011) and aligned to release 96
+of the Ensembl Rattus norvegicus (rn6) genome (Dobin et al., 2013) with Bowtie 2 v2.3.4.3 (Langmead and Salzberg, 2012).
+Duplicate reads and reads mapping to the mitochondrial chromosome were removed. Signal files and peak calls were generated
+using MACS2 v2.2.4 (Gaspar, 2018), both from reads from each sample and pooled reads from all biological replicates.
+Pooled peaks were compared with the peaks called for each replicate individually using Irreproducibility Discovery Rate (Li et al., 2011)
+and thresholded to generate an optimal set of peaks.
+
+The cloud implementation of the ENCODE ATAC-seq pipeline and source code for the post-processing steps are available at
+\url{https://github.com/MoTrPAC/motrpac-atac-seq-pipeline}.
+Optimal peaks (overlap.optimal_peak.narrowPeak.bed.gz) from all workflows were concatenated, trimmed to 200 base pairs around the summit,
+and sorted and merged with bedtools v2.29.0 (Quinlan and Hall, 2010) to generate a master peak list. This peak list was intersected with
+the filtered alignments from each sample using bedtools coverage with options \code{-nonamecheck} and \code{-counts} to generate a peak by
+sample matrix of raw counts.
 }

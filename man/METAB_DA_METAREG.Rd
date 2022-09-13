@@ -143,6 +143,8 @@ platform, the consensus result may be provided. For metabolites measured
 on a single platform, these results are identical to \link{METAB_DA}.
 }
 \details{
-DETAILS
+TODO
+
+Reproduce our analysis with TODO.
 }
 \keyword{datasets}

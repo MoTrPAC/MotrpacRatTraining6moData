@@ -130,4 +130,8 @@ Timewise summary statistics and training FDR from
 differential analysis (DA) that tests the effect of training on the
 expression of each gene within each sex. One data frame per tissue.
 }
+\details{
+Reproduce our analysis with \code{\link[MotrpacRatTraining6mo:transcript_timewise_da]{MotrpacRatTraining6mo::transcript_timewise_da()}}
+and \code{\link[MotrpacRatTraining6mo:transcript_training_da]{MotrpacRatTraining6mo::transcript_training_da()}}.
+}
 \keyword{datasets}

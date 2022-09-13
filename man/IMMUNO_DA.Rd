@@ -115,4 +115,8 @@ Timewise summary statistics and training FDR from
 differential analysis (DA) that tests the effect of training on each
 immunoassay analyte within each sex. One data frame per tissue.
 }
+\details{
+Reproduce our analysis with \code{\link[MotrpacRatTraining6mo:immuno_timewise_da]{MotrpacRatTraining6mo::immuno_timewise_da()}}
+and \code{\link[MotrpacRatTraining6mo:immuno_training_da]{MotrpacRatTraining6mo::immuno_training_da()}}.
+}
 \keyword{datasets}

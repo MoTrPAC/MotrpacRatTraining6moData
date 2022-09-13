@@ -12,9 +12,18 @@ A data frame with CpG sites in rows (\code{feature_ID}) and samples in columns (
 \description{
 Normalized DNA methylation (METHYL) data used for visualization.
 Only for training-regulated features at 5\% IHW FDR. For sample-level data for \emph{all} features,
-see \link{METHYL_NORM_DATA} and TODO.
+see \link{METHYL_RAW_DATA}, \link{METHYL_RAW_COUNTS}, and \link{METHYL_NORM_DATA}.
 }
 \details{
+Unfiltered METHYL sample-level data are only available via download from Google Cloud Storage.
+For example, \url{https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_BAT_NORM_DATA.rda}
+is the file for brown adipose tissue (BAT) data. You can change the name of the file to specify other tissues including:
+HEART, HIPPOC, KIDNEY, LIVER, LUNG, SKMGN (gastrocnemius skeletal muscle), and WATSC (subcutaneous white adipose tissue).
+You can also use \code{\link[MotrpacRatTraining6mo:load_sample_data]{MotrpacRatTraining6mo::load_sample_data()}} or \code{\link[MotrpacRatTraining6mo:get_rdata_from_url]{MotrpacRatTraining6mo::get_rdata_from_url()}}
+to download raw and normalized sample-level data for ATAC and METHYL.
+For more details about these files see the readme of this repository at
+\url{https://github.com/MoTrPAC/MotrpacRatTraining6mo/blob/main/README.md}.
+
 Only CpG sites with methylation coverage of >=10 in all samples were included for downstream analysis,
 and normalization was performed separately in each tissue. Individual CpG sites were divided into 500 base-pair
 windows and were clustered using the Markov Clustering algorithm via the MCL R package (Jager, 2015). To apply MCL,
@@ -25,6 +34,8 @@ The resulting sites/clusters were used as input for normalization and differenti
 To generate this normalized sample-level data, the methylation coverages of filtered sites/clusters were first log2-transformed,
 and normalization was performed using \code{\link[preprocessCore:normalize.quantiles.robust]{preprocessCore::normalize.quantiles.robust()}} (Bolstad, 2021).
 
-After performing differential analysis (see TODO), training-regulated features were selected at 5\% IHW FDR. The normalized data were
+After performing differential analysis, training-regulated features were selected at 5\% IHW FDR. The normalized data were
 filtered down to these features and provided here.
+
+For the subset of normalized data corresponding to training-regulated features at 5\% IHW FDR, see \link{METHYL_NORM_DATA_05FDR}.
 }

@@ -63,6 +63,6 @@ The resulting sites/clusters were used as input for normalization and differenti
 To generate this normalized sample-level data, the methylation coverages of filtered sites/clusters were first log2-transformed,
 and normalization was performed using \code{\link[preprocessCore:normalize.quantiles.robust]{preprocessCore::normalize.quantiles.robust()}} (Bolstad, 2021).
 
-METHYL data is only available via download from the Cloud. See TODO.
+For the full set of normalized sample-level data, see \link{METHYL_NORM_DATA}.
 }
 \keyword{datasets}

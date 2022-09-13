@@ -5,68 +5,7 @@
 \alias{METAB_NORM_DATA_FLAT}
 \title{Combined metabolomics data used for visualization}
 \format{
-A data frame with 59 variables:
-\describe{
-\item{\code{feature}}{character, unique feature identifier in the format '\link{ASSAY_ABBREV};\link{TISSUE_ABBREV};feature_ID' only for training-regulated features at 5\% IHW FDR. For redundant differential features, 'feature_ID' is prepended with the specific platform to make unique identifiers. See \link{REPEATED_FEATURES} for details.}
-\item{\code{feature_ID}}{character, MoTrPAC feature identifier}
-\item{\code{tissue}}{character, tissue abbreviation, one of \link{TISSUE_ABBREV}}
-\item{\code{assay}}{character, assay abbreviation, one of \link{ASSAY_ABBREV}}
-\item{\code{dataset}}{character, metabolomics platform (metab-u-ionpneg, metab-u-lrpneg, metab-u-lrppos, metab-u-hilicpos, metab-u-rpneg, metab-u-rppos, metab-t-amines, metab-t-oxylipneg, metab-t-tca, metab-t-nuc, metab-t-acoa, metab-t-ka) the feature was measured in. 'meta-reg' specifies results from the metabolomics meta-regression for repeated features.}
-\item{\code{10381414}}{}
-\item{\code{10046380}}{}
-\item{\code{10026355}}{}
-\item{\code{10561072}}{}
-\item{\code{10871349}}{}
-\item{\code{10761160}}{}
-\item{\code{10185585}}{}
-\item{\code{10335064}}{}
-\item{\code{10044337}}{}
-\item{\code{10700102}}{}
-\item{\code{10139044}}{}
-\item{\code{10045309}}{}
-\item{\code{10953744}}{}
-\item{\code{10027327}}{}
-\item{\code{10025626}}{}
-\item{\code{10901434}}{}
-\item{\code{10486003}}{}
-\item{\code{10337199}}{}
-\item{\code{10025707}}{}
-\item{\code{10024735}}{}
-\item{\code{10025979}}{}
-\item{\code{10587543}}{}
-\item{\code{10729518}}{}
-\item{\code{10833331}}{}
-\item{\code{10046119}}{}
-\item{\code{10045228}}{}
-\item{\code{10043527}}{}
-\item{\code{10220917}}{}
-\item{\code{10424911}}{}
-\item{\code{10503110}}{}
-\item{\code{10026193}}{}
-\item{\code{10046461}}{}
-\item{\code{10044760}}{}
-\item{\code{10422463}}{}
-\item{\code{10417702}}{}
-\item{\code{10043950}}{}
-\item{\code{10672656}}{}
-\item{\code{10306471}}{}
-\item{\code{10095241}}{}
-\item{\code{10026789}}{}
-\item{\code{10734945}}{}
-\item{\code{10411690}}{}
-\item{\code{10971645}}{}
-\item{\code{10106383}}{}
-\item{\code{10027599}}{}
-\item{\code{10641858}}{}
-\item{\code{10023259}}{}
-\item{\code{10044256}}{}
-\item{\code{10502300}}{}
-\item{\code{10950486}}{}
-\item{\code{10044841}}{}
-\item{\code{10204989}}{}
-\item{\code{10314733}}{}
-\item{\code{10044922}}{}
-}
+A data frame with metabolites in rows and participant IDs (PIDs) in columns
 }
 \usage{
 METAB_NORM_DATA_FLAT
@@ -75,7 +14,5 @@ METAB_NORM_DATA_FLAT
 Combined sample-level metabolomics data used for visualization.
 Data are equivalent to the data provided in \link{METAB_NORM_DATA_NESTED}. \link{METAB_NORM_DATA_NESTED} is compatible with the
 differential analysis functions while this format is compatible with visualization functions.
-
-Metabolites are in rows, and numeric column names correspond to participant IDs (PIDs).
 }
 \keyword{datasets}

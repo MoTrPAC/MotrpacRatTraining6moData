@@ -31,17 +31,22 @@ A data frame with 20 variables:
 \description{
 Timewise summary statistics and training FDR from
 differential analysis (DA) that tests the effect of training on each
-immunoassay analyte within each sex. One data frame per tissue.
+methylation feature within each sex. One data frame per tissue.
 }
 \details{
-The differential analysis results in this data frame were computed using edgeR::glmQLFTest after
+Unfiltered METHYL differential analysis results are only available via download from Google Cloud Storage.
+For example, \url{https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_BAT_DA.rda}
+is the file for brown adipose tissue (BAT) results. You can change the name of the file to specify other tissues including:
+HEART, HIPPOC, KIDNEY, LIVER, LUNG, SKMGN (gastrocnemius skeletal muscle), and WATSC (subcutaneous white adipose tissue).
+You can also use \code{\link[MotrpacRatTraining6mo:get_rdata_from_url]{MotrpacRatTraining6mo::get_rdata_from_url()}}
+to download differential analysis results for ATAC and METHYL.
+For more details about these files see the readme of this repository at
+\url{https://github.com/MoTrPAC/MotrpacRatTraining6mo/blob/main/README.md}.
+
+The differential analysis results in this data frame were computed using \code{\link[edgeR:glmQLFTest]{edgeR::glmQLFTest()}} after
 removing a few outlier low quality samples from the kidney dataset.
 
-Full METHYL differential analysis results are only available via download from the Cloud.
-Example for a file: \url{https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_BAT_DA.rda}.
-This file of the brown adipose data (BAT), you can change the name of the file to other tissues including:
-HEART, HIPPOC, KIDNEY, LIVER, LUNG, SKMGN (gastrocnemius), and WATSC (white adipose).
-For more details about these files see the readme of this repository at TODO.
-
 For training-regulated METHYL features at 5\% FDR, see \link{TRAINING_REGULATED_FEATURES}.
+
+Reproduce our analysis with \code{\link[MotrpacRatTraining6mo:rrbs_differential_analysis]{MotrpacRatTraining6mo::rrbs_differential_analysis()}}.
 }

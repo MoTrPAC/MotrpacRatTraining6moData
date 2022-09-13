@@ -122,4 +122,8 @@ differential analysis (DA) that tests the effect of training on each
 proteomics feature (protein, phosphosite, acetylsite, ubiquitlsite)
 within each sex. One data frame per data type per tissue.
 }
+\details{
+Reproduce our analysis with \code{\link[MotrpacRatTraining6mo:proteomics_timewise_da]{MotrpacRatTraining6mo::proteomics_timewise_da()}}
+and \code{\link[MotrpacRatTraining6mo:proteomics_training_da]{MotrpacRatTraining6mo::proteomics_training_da()}}.
+}
 \keyword{datasets}
