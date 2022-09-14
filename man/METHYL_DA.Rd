@@ -24,7 +24,7 @@ A data frame with 20 variables:
 \item{\code{Locus}}{character, base pair range of feature}
 \item{\code{EntrezID}}{character, Entrez ID of closest gene}
 \item{\code{Symbol}}{character, gene symbol of closest gene}
-\item{\code{fscore}}{the LRT fscore}
+\item{\code{fscore}}{numeric, F-score}
 \item{\code{selection_fdr}}{double, adjusted training p-value used to select training-regulated analytes. P-values are IHW-adjusted across all datasets within a given assay with tissue as a covariate.}
 }
 }

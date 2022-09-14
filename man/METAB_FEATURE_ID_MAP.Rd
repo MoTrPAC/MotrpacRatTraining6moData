@@ -43,7 +43,7 @@ in which case \code{feature_ID_metareg} is \code{NA}.
 
 \code{feature} is only non-NA for training-regulated features at 5\% IHW FDR (see \link{TRAINING_REGULATED_FEATURES}).
 Each non-NA value of \code{feature} is unique. In the case of repeated measurements, this means \code{dataset}
-was added to \code{metabolite_name}. See \link{REPEATED_FEATURE_MAP} for more details.
+was added to \code{metabolite_name}. See \link{REPEATED_FEATURES} for more details.
 
 Note that RefMet IDs are frequently updated. This table provides the version of the RefMet IDs
 at the time that these data were generated.
