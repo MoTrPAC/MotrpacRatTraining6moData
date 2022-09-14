@@ -2341,7 +2341,7 @@ NULL
 #'   \item{\code{Locus}}{character, base pair range of feature}
 #'   \item{\code{EntrezID}}{character, Entrez ID of closest gene}
 #'   \item{\code{Symbol}}{character, gene symbol of closest gene}
-#'   \item{\code{fscore}}{the LRT fscore}
+#'   \item{\code{fscore}}{numeric, F-score}
 #'   \item{\code{selection_fdr}}{`r selection_fdr()`}
 #' }
 #' @details 

@@ -1,6 +1,6 @@
 ---
 title: "Download metabolomics sample-level data"
-author: "Pierre M Jean Beltran"
+author: "Pierre M Jean Beltran, Nicole Gay"
 date: "7/16/2022"
 output: html_document
 ---
@@ -416,8 +416,8 @@ differential_features = unique(TRAINING_REGULATED_FEATURES$feature)
 ```{r}
 data_list = list()
 feature_meta_list = list()
-for(i in 1:nrow(METAB_SAMPLE_DATA_NESTED)){
-  tissue_code = METAB_SAMPLE_DATA_NESTED$tissue[i]
+for(i in 1:nrow(METAB_NORM_DATA_NESTED)){
+  tissue_code = METAB_NORM_DATA_NESTED$tissue[i]
   tissue = TISSUE_CODE_TO_ABBREV[[tissue_code]]
   assay_code = METAB_SAMPLE_DATA_NESTED$assay_code[i]
   sample_data = as.data.frame(METAB_SAMPLE_DATA_NESTED$sample_data[i][[1]])
@@ -601,4 +601,143 @@ METAB_NORM_DATA_FLAT = as.data.frame(metab_data)
 use_data(METAB_NORM_DATA_FLAT, overwrite = TRUE)
 sinew::makeOxygen(METAB_FEATURE_ID_MAP)
 sinew::makeOxygen(METAB_NORM_DATA_FLAT)
+```
+
+### Fix `METAB_NORM_DATA_FLAT$feature`
+```{r}
+load("../../data/METAB_NORM_DATA_FLAT.rda")
+load("../../data/METAB_FEATURE_ID_MAP.rda")
+load("../../data/REPEATED_FEATURES.rda")
+load("../../data/TRAINING_REGULATED_FEATURES.rda")
+
+# 'feature' should only exist for training-differential features 
+metab_diff = unique(TRAINING_REGULATED_FEATURES$feature[TRAINING_REGULATED_FEATURES$assay=="METAB"])
+table(na.omit(METAB_NORM_DATA_FLAT$feature) %in% metab_diff)
+table(metab_diff %in% METAB_NORM_DATA_FLAT$feature)
+
+# so there are 289 differential metabolites not named in METAB_NORM_DATA_FLAT
+missing = metab_diff[!metab_diff %in% METAB_NORM_DATA_FLAT$feature]
+missing
+# these look like RefMet IDs 
+missing_featureID = unique(sapply(missing, function(x) unname(unlist(strsplit(x, ";")))[3]))
+table(missing_featureID %in% METAB_FEATURE_ID_MAP$metabolite_refmet)
+
+# for each of the missing features, find corresponding refmet
+# replace feature
+map = data.table(METAB_FEATURE_ID_MAP)
+map[,wrong_feature := sprintf("METAB;%s;%s", tissue, metabolite_name)]
+METAB_NORM_DATA_FLAT = data.table(METAB_NORM_DATA_FLAT)
+for (m in missing){
+  sub = map[feature==m]
+  # for each metabolite_name, change "feature" in sample-level data 
+  for(wrong_name in unique(sub[,wrong_feature])){
+    .tissue = unname(unlist(strsplit(wrong_name, ";")))[2]
+    .feature_ID = unname(unlist(strsplit(wrong_name, ";")))[3]
+    METAB_NORM_DATA_FLAT[tissue == .tissue & feature_ID == .feature_ID, feature := m]
+  }
+}
+
+# check again 
+table(na.omit(METAB_NORM_DATA_FLAT[,feature]) %in% metab_diff)
+table(metab_diff %in% METAB_NORM_DATA_FLAT[,feature])
+f = metab_diff[!metab_diff %in% METAB_NORM_DATA_FLAT[,feature]]
+map[feature==f]
+METAB_NORM_DATA_FLAT[feature_ID == "sn-glycero-3-phosphocholine" & tissue == "WAT-SC" & dataset == "metab-u-lrppos", feature := f]
+
+# check again 
+table(na.omit(METAB_NORM_DATA_FLAT[,feature]) %in% metab_diff)
+table(metab_diff %in% METAB_NORM_DATA_FLAT[,feature])
+```
+So now we've fixed the sample-level data, but what about the METAB_DA tables?
+```{r check metab da}
+# load all DEA tables 
+obj_list = list_available_data(package="MotrpacRatTraining6moData")
+metab_dea = obj_list[grepl("^METAB_",obj_list) & grepl("_DA$",obj_list)]
+dea_list = list()
+for(dea in metab_dea){
+  load(sprintf("../../data/%s.rda", dea))
+  dea_list[[dea]] = as.data.table(get(dea))
+}
+dea = rbindlist(dea_list)
+
+table(na.omit(dea[,feature]) %in% metab_diff)
+table(metab_diff %in% na.omit(dea[,feature]))
+missing = metab_diff[!metab_diff %in% na.omit(dea[,feature])]
+
+# same problem... 
+for(.tissue in unique(dea[,tissue])){
+  # load table
+  table_name = sprintf("METAB_%s_DA", gsub("-","",.tissue))
+  data = fetch_object(table_name)
+  data = data.table(data)
+  
+  # get missing metabolites for this tissue
+  curr_missing = missing[grepl(sprintf("METAB;%s;",.tissue), missing)]
+  if(length(curr_missing) == 0) next
+  for (m in curr_missing){
+    sub = map[feature==m]
+    if(nrow(sub) == 0){
+      print(m)
+    }
+    # for each metabolite_name, change "feature" in sample-level data 
+    for(wrong_name in unique(sub[,wrong_feature])){
+      .tissue = unname(unlist(strsplit(wrong_name, ";")))[2]
+      .feature_ID = unname(unlist(strsplit(wrong_name, ";")))[3]
+      data[tissue == .tissue & feature_ID == .feature_ID, feature := m]
+    }
+  }
+  if(tissue == "WAT-SC"){
+    data[feature_ID == "sn-glycero-3-phosphocholine" & tissue == "WAT-SC" & dataset == "metab-u-lrppos", 
+         feature := "METAB;WAT-SC;sn-glycero-3-phosphocholine"]
+    data[feature_ID == "sn-glycero-3-phosphocholine" & tissue == "WAT-SC" & dataset == "metab-u-rppos", 
+         feature := "METAB;WAT-SC;sn-Glycero-3-phosphocholine"]
+  }
+  # make sure all metabolites have been covered 
+  stopifnot(all(curr_missing %in% data[,feature]))
+  
+  # save again as object name 
+  data = as.data.frame(data)
+  # rename
+  assign(table_name, data)
+  do.call("use_data", list(as.name(table_name), overwrite = TRUE))
+  # re-compress
+  tools::resaveRdaFiles(paths = sprintf('../../data/%s.rda', table_name))
+}
+
+# check one more time 
+nrow(dea)
+
+# load all DEA tables 
+obj_list = list_available_data(package="MotrpacRatTraining6moData")
+metab_dea = obj_list[grepl("^METAB_",obj_list) & grepl("_DA$",obj_list)]
+dea_list = list()
+for(dea in metab_dea){
+  load(sprintf("../../data/%s.rda", dea))
+  dea_list[[dea]] = as.data.table(get(dea))
+}
+dea = rbindlist(dea_list)
+
+table(na.omit(dea[,feature]) %in% metab_diff)
+table(metab_diff %in% na.omit(dea[,feature]))
+missing = metab_diff[!metab_diff %in% na.omit(dea[,feature])]
+
+nrow(dea)
+```
+
+Lastly, what about the METAB_DA_METAREG tables?
+```{r check metab da metareg}
+# load all DEA tables 
+obj_list = list_available_data(package="MotrpacRatTraining6moData")
+metab_dea = obj_list[grepl("^METAB_",obj_list) & grepl("_DA_METAREG$",obj_list)]
+dea_list = list()
+for(dea in metab_dea){
+  load(sprintf("../../data/%s.rda", dea))
+  dea_list[[dea]] = as.data.table(get(dea))
+}
+dea = rbindlist(dea_list)
+
+table(na.omit(dea[,feature]) %in% metab_diff)
+table(metab_diff %in% na.omit(dea[,feature]))
+
+# at least we don't have to change the metareg tables 
 ```
