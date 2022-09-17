@@ -1,8 +1,38 @@
 # MotrpacRatTraining6moData
-Data for analysis of the MoTrPAC endurance exercise training study in 6-month-old rats
+
+## Overview
+
+### About this package 
+This package provides convenient access to the processed data and downstream
+analysis results presented in the main paper for the first 
+large-scale multi-omic multi-tissue endurance exercise training study conducted 
+in young adult rats by the Molecular Transducers of Physical Activity Consortium 
+(MoTrPAC). *A [bioRxiv](https://www.biorxiv.org/) link to the corresponding 
+preprint will be added shortly.* 
+
+While the data in this package can be used by themselves, the 
+[MotrpacRatTraining6mo](https://github.com/MoTrPAC/MotrpacRatTraining6mo)
+R package relies heavily on this package and provides many functions to help
+retrieve and explore the data. *A link to the MotrpacRatTraining6mo vignette
+will be added shortly.* 
+
+### About MoTrPAC
+MoTrPAC is a national research consortium designed to discover and perform 
+preliminary characterization of the range of molecular transducers (the 
+"molecular map") that underlie the effects of physical activity in humans. 
+The program's goal is to study the molecular changes that occur during and after 
+exercise and ultimately to advance the understanding of how physical activity 
+improves and preserves health. The six-year program is the largest targeted NIH 
+investment of funds into the mechanisms of how physical activity improves health 
+and prevents disease. See [motrpac.org](https://www.motrpac.org/) and 
+[motrpac-data.org](https://motrpac-data.org/) for more details. 
 
 ## Installation
+Install this package with `devtools`:
 ```r
+if (!require("devtools", quietly = TRUE)){
+  install.packages("devtools")
+}
 devtools::install_github("MoTrPAC/MotrpacRatTraining6moData")
 ```
 
@@ -15,7 +45,7 @@ Downloading GitHub repo MoTrPAC/MotrpacRatTraining6moData@HEAD
 ✓  checking DESCRIPTION meta-information
 ─  checking for LF line-endings in source and make files and shell scripts
 ─  checking for empty or unneeded directories
-─  building ‘MotrpacRatTraining6moData_1.0.0.tar.gz’ (1.3s)
+─  building ‘MotrpacRatTraining6moData_1.3.2.tar.gz’ (1.3s)
    
 * installing *source* package ‘MotrpacRatTraining6moData’ ...
 ** using staged installation
@@ -357,3 +387,19 @@ Raw sample-level counts|METHYL|LUNG|METHYL_LUNG_RAW_COUNTS|https://storage.googl
 Raw sample-level counts|METHYL|SKM-GN|METHYL_SKMGN_RAW_COUNTS|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_SKMGN_RAW_COUNTS.rda
 Raw sample-level counts|METHYL|WAT-SC|METHYL_WATSC_RAW_COUNTS|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_WATSC_RAW_COUNTS.rda
 Feature annotation|METHYL|all|METHYL_FEATURE_ANNOT|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_FEATURE_ANNOT.rda
+
+## Getting help 
+For questions, bug reporting, and data requests for this package, please 
+[submit a new issue](https://github.com/MoTrPAC/MotrpacRatTraining6moData/issues) 
+and include as many details as possible. 
+
+If the concern is related to functions provided in the 
+[MotrpacRatTraining6mo](https://github.com/MoTrPAC/MotrpacRatTraining6mo)
+package, please submit an issue 
+[here](https://github.com/MoTrPAC/MotrpacRatTraining6mo/issues) instead. 
+
+## Acknowledgements 
+MoTrPAC is supported by the National Institutes of Health (NIH) Common
+Fund through cooperative agreements managed by the National Institute of Diabetes and
+Digestive and Kidney Diseases (NIDDK), National Institute of Arthritis and Musculoskeletal
+Diseases (NIAMS), and National Institute on Aging (NIA). 
