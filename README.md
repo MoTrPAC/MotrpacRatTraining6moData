@@ -28,6 +28,8 @@ R package relies heavily on this package and provides many functions to help
 retrieve and explore the data. *A link to the MotrpacRatTraining6mo vignette
 will be added shortly.* 
 
+*A link to the MotrpacRatTraining6moData vignette will be added shortly.* 
+
 ### About MoTrPAC
 MoTrPAC is a national research consortium designed to discover and perform 
 preliminary characterization of the range of molecular transducers (the 
