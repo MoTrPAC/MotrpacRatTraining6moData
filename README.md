@@ -1,5 +1,17 @@
 # MotrpacRatTraining6moData
 
+## Table of Contents
+* [Overview](#overview)
+  * [About this package](#about-this-package)
+  * [About MoTrPAC](#about-motrpac)
+* [Installation](#installation)
+  * [Troubleshooting](#troubleshooting)
+  * [Last resort](#last-resort)
+* [Explore available data objects](explore-available-data-objects)
+* [Access epigenomics data through Google Cloud Storage](#access-epigenomics-data-through-google-cloud-storage)
+* [Getting help](#getting-help)
+* [Acknowledgements](#acknowledgements)
+
 ## Overview
 
 ### About this package 
