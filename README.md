@@ -94,7 +94,9 @@ If you can't get `devtools::install_github("MoTrPAC/MotrpacRatTraining6moData")`
 1. Go to <https://api.github.com/repos/MoTrPAC/MotrpacRatTraining6moData/tarball/HEAD>, which will automatically start downloading this repository in a tarball 
 2. Install the package from source: 
    ```r
-   install.packages("~/Downloads/MoTrPAC-MotrpacRatTraining6moData-0729e2e.tar.gz", repos = NULL, type = "source")
+   install.packages("~/Downloads/MoTrPAC-MotrpacRatTraining6moData-0729e2e.tar.gz", 
+     repos = NULL, 
+     type = "source")
    library(MotrpacRatTraining6moData)
    ```
 
