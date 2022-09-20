@@ -341,10 +341,13 @@ UBIQ_META                                      Proteomics sample-level metadata
 Due to file size, only normalized sample-level data and differential analysis results 
 corresponding to **training-regulated features** (5% IHW FDR) are contained in this package
 for chromatin accessibility (ATAC) and DNA methylation (METHYL). The full sets of epigenetic results
-may be downloaded through the following public URLs. **Note that clicking on a [Link]() automatically
-starts a download.**
+may be downloaded through the following public URLs. 
 
-To copy the URL for an object, right-click the [Link]() and select `Copy Link Address`. 
+**Note that clicking on a [Link]() automatically starts a download.**
+To instead copy the URL for an object, right-click the [Link]() and select `Copy Link Address`. 
+
+Note that the size in this table is the compressed size. Each object occupies several times more
+memory when loaded into R. The total compressed size for all of these objects is 8.68 GiB (~9.32 GB).
 
 Type|Assay|Tissue|Object|Size (MiB)|Click to download|
 ---|---|---|---|---|---|
