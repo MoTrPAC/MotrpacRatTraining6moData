@@ -129,7 +129,7 @@ Load a data object into your environment using `data()`:
 data(TRNSCRPT_LIVER_DA)
 ```
 
-List of current sets:
+List of current objects:
 ```
 ACETYL_HEART_DA                                Differential analysis of proteomics datasets
 ACETYL_HEART_NORM_DATA                         Normalized protein acetylation data
