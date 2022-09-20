@@ -195,238 +195,45 @@ Run `rlang::last_error()` to see where the error occurred.</code></pre>
 <div class="section level2">
 <h2 id="explore-available-data-objects">Explore available data objects<a class="anchor" aria-label="anchor" href="#explore-available-data-objects"></a>
 </h2>
-<p>List available data objects after loading the package:</p>
+<p>Find the index of available objects <a href="https://motrpac.github.io/MotrpacRatTraining6moData/reference/index.html" class="external-link">here</a>. Click on the name of an object in this index to see its documentation.</p>
+<p>Alternatively, explore data objects in R:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/MoTrPAC/MotrpacRatTraining6moData" class="external-link">MotrpacRatTraining6moData</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span>package <span class="op">=</span> <span class="st">"MotrpacRatTraining6moData"</span><span class="op">)</span></span></code></pre></div>
-<p>Get the documentation for a given data object:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="op">?</span><span class="va">TRNSCRPT_LIVER_DA</span></span></code></pre></div>
-<p>Load a data object into your environment using <code><a href="https://rdrr.io/r/utils/data.html" class="external-link">data()</a></code>:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">TRNSCRPT_LIVER_DA</span><span class="op">)</span></span></code></pre></div>
-<p>List of current objects:</p>
-<pre><code>ACETYL_HEART_DA                                Differential analysis of proteomics datasets
-ACETYL_HEART_NORM_DATA                         Normalized protein acetylation data
-ACETYL_LIVER_DA                                Differential analysis of proteomics datasets
-ACETYL_LIVER_NORM_DATA                         Normalized protein acetylation data
-ACETYL_META                                    Proteomics sample-level metadata
-ASSAY_ABBREV                                   Assay or "ome" abbreviations
-ASSAY_ABBREV_TO_CODE                           Assay abbreviation-to-code mapping
-ASSAY_CODE_TO_ABBREV                           Assay code-to-abbreviation mapping
-ASSAY_COLORS                                   Assay colors
-ASSAY_ORDER                                    Assay order
-ATAC_BAT_NORM_DATA_05FDR                       Normalized ATAC-seq data for training-regulated features
-ATAC_HEART_NORM_DATA_05FDR                     Normalized ATAC-seq data for training-regulated features
-ATAC_HIPPOC_NORM_DATA_05FDR                    Normalized ATAC-seq data for training-regulated features
-ATAC_KIDNEY_NORM_DATA_05FDR                    Normalized ATAC-seq data for training-regulated features
-ATAC_LIVER_NORM_DATA_05FDR                     Normalized ATAC-seq data for training-regulated features
-ATAC_LUNG_NORM_DATA_05FDR                      Normalized ATAC-seq data for training-regulated features
-ATAC_META                                      ATAC-seq metadata and QC
-ATAC_SKMGN_NORM_DATA_05FDR                     Normalized ATAC-seq data for training-regulated features
-ATAC_WATSC_NORM_DATA_05FDR                     Normalized ATAC-seq data for training-regulated features
-FEATURE_TO_GENE                                Feature-to-gene map
-GENE_UNIVERSES                                 Gene-centric universes
-GRAPH_COMPONENTS                               Graph components
-GRAPH_PW_ENRICH                                Graph pathway enrichment results
-GRAPH_STATES                                   'repfdr' state assignments
-GROUP_COLORS                                   Intervention group colors
-IMMUNO_ADRNL_DA                                Differential analysis of multiplexed immunoassays
-IMMUNO_BAT_DA                                  Differential analysis of multiplexed immunoassays
-IMMUNO_COLON_DA                                Differential analysis of multiplexed immunoassays
-IMMUNO_CORTEX_DA                               Differential analysis of multiplexed immunoassays
-IMMUNO_HEART_DA                                Differential analysis of multiplexed immunoassays
-IMMUNO_HIPPOC_DA                               Differential analysis of multiplexed immunoassays
-IMMUNO_KIDNEY_DA                               Differential analysis of multiplexed immunoassays
-IMMUNO_LIVER_DA                                Differential analysis of multiplexed immunoassays
-IMMUNO_LUNG_DA                                 Differential analysis of multiplexed immunoassays
-IMMUNO_META                                    Multiplexed immunoassay metadata and QC
-IMMUNO_NORM_DATA_FLAT                          Combined immunoassay data used for visualization
-IMMUNO_NORM_DATA_NESTED                        Processed immunoassay data used for differential analysis
-IMMUNO_OVARY_DA                                Differential analysis of multiplexed immunoassays
-IMMUNO_PLASMA_DA                               Differential analysis of multiplexed immunoassays
-IMMUNO_SKMGN_DA                                Differential analysis of multiplexed immunoassays
-IMMUNO_SKMVL_DA                                Differential analysis of multiplexed immunoassays
-IMMUNO_SMLINT_DA                               Differential analysis of multiplexed immunoassays
-IMMUNO_SPLEEN_DA                               Differential analysis of multiplexed immunoassays
-IMMUNO_TESTES_DA                               Differential analysis of multiplexed immunoassays
-IMMUNO_WATSC_DA                                Differential analysis of multiplexed immunoassays
-METAB_ADRNL_DA                                 Differential analysis of merged metabolomics datasets
-METAB_ADRNL_DA_METAREG                         Meta-regression of metabolomics differential analysis results
-METAB_BAT_DA                                   Differential analysis of merged metabolomics datasets
-METAB_BAT_DA_METAREG                           Meta-regression of metabolomics differential analysis results
-METAB_COLON_DA                                 Differential analysis of merged metabolomics datasets
-METAB_COLON_DA_METAREG                         Meta-regression of metabolomics differential analysis results
-METAB_CORTEX_DA                                Differential analysis of merged metabolomics datasets
-METAB_CORTEX_DA_METAREG                        Meta-regression of metabolomics differential analysis results
-METAB_FEATURE_ID_MAP                           Metabolite feature ID map
-METAB_HEART_DA                                 Differential analysis of merged metabolomics datasets
-METAB_HEART_DA_METAREG                         Meta-regression of metabolomics differential analysis results
-METAB_HIPPOC_DA                                Differential analysis of merged metabolomics datasets
-METAB_HIPPOC_DA_METAREG                        Meta-regression of metabolomics differential analysis results
-METAB_HYPOTH_DA                                Differential analysis of merged metabolomics datasets
-METAB_HYPOTH_DA_METAREG                        Meta-regression of metabolomics differential analysis results
-METAB_KIDNEY_DA                                Differential analysis of merged metabolomics datasets
-METAB_KIDNEY_DA_METAREG                        Meta-regression of metabolomics differential analysis results
-METAB_LIVER_DA                                 Differential analysis of merged metabolomics datasets
-METAB_LIVER_DA_METAREG                         Meta-regression of metabolomics differential analysis results
-METAB_LUNG_DA                                  Differential analysis of merged metabolomics datasets
-METAB_LUNG_DA_METAREG                          Meta-regression of metabolomics differential analysis results
-METAB_NORM_DATA_FLAT                           Combined metabolomics data used for visualization
-METAB_OVARY_DA                                 Differential analysis of merged metabolomics datasets
-METAB_OVARY_DA_METAREG                         Meta-regression of metabolomics differential analysis results
-METAB_PLASMA_DA                                Differential analysis of merged metabolomics datasets
-METAB_PLASMA_DA_METAREG                        Meta-regression of metabolomics differential analysis results
-METAB_SAMPLE_DATA_NESTED                       Nested metabolomics data used for differential analysis
-METAB_SKMGN_DA                                 Differential analysis of merged metabolomics datasets
-METAB_SKMGN_DA_METAREG                         Meta-regression of metabolomics differential analysis results
-METAB_SKMVL_DA                                 Differential analysis of merged metabolomics datasets
-METAB_SKMVL_DA_METAREG                         Meta-regression of metabolomics differential analysis results
-METAB_SMLINT_DA                                Differential analysis of merged metabolomics datasets
-METAB_SMLINT_DA_METAREG                        Meta-regression of metabolomics differential analysis results
-METAB_SPLEEN_DA                                Differential analysis of merged metabolomics datasets
-METAB_SPLEEN_DA_METAREG                        Meta-regression of metabolomics differential analysis results
-METAB_TESTES_DA                                Differential analysis of merged metabolomics datasets
-METAB_TESTES_DA_METAREG                        Meta-regression of metabolomics differential analysis results
-METAB_VENACV_DA                                Differential analysis of merged metabolomics datasets
-METAB_VENACV_DA_METAREG                        Meta-regression of metabolomics differential analysis results
-METAB_WATSC_DA                                 Differential analysis of merged metabolomics datasets
-METAB_WATSC_DA_METAREG                         Meta-regression of metabolomics differential analysis results
-METHYL_BAT_NORM_DATA_05FDR                     Normalized DNA methylation data for training-regulated features
-METHYL_HEART_NORM_DATA_05FDR                   Normalized DNA methylation data for training-regulated features
-METHYL_HIPPOC_NORM_DATA_05FDR                  Normalized DNA methylation data for training-regulated features
-METHYL_KIDNEY_NORM_DATA_05FDR                  Normalized DNA methylation data for training-regulated features
-METHYL_LIVER_NORM_DATA_05FDR                   Normalized DNA methylation data for training-regulated features
-METHYL_LUNG_NORM_DATA_05FDR                    Normalized DNA methylation data for training-regulated features
-METHYL_META                                    RRBS metadata and QC
-METHYL_SKMGN_NORM_DATA_05FDR                   Normalized DNA methylation data for training-regulated features
-METHYL_WATSC_NORM_DATA_05FDR                   Normalized DNA methylation data for training-regulated features
-OUTLIERS                                       Sample outliers
-PATHWAY_PARENTS                                KEGG and Reactome parent pathways
-PHENO                                          Phenotypic data
-PHOSPHO_CORTEX_DA                              Differential analysis of proteomics datasets
-PHOSPHO_CORTEX_NORM_DATA                       Normalized protein phosphorylation data
-PHOSPHO_HEART_DA                               Differential analysis of proteomics datasets
-PHOSPHO_HEART_NORM_DATA                        Normalized protein phosphorylation data
-PHOSPHO_KIDNEY_DA                              Differential analysis of proteomics datasets
-PHOSPHO_KIDNEY_NORM_DATA                       Normalized protein phosphorylation data
-PHOSPHO_LIVER_DA                               Differential analysis of proteomics datasets
-PHOSPHO_LIVER_NORM_DATA                        Normalized protein phosphorylation data
-PHOSPHO_LUNG_DA                                Differential analysis of proteomics datasets
-PHOSPHO_LUNG_NORM_DATA                         Normalized protein phosphorylation data
-PHOSPHO_META                                   Proteomics sample-level metadata
-PHOSPHO_SKMGN_DA                               Differential analysis of proteomics datasets
-PHOSPHO_SKMGN_NORM_DATA                        Normalized protein phosphorylation data
-PHOSPHO_WATSC_DA                               Differential analysis of proteomics datasets
-PHOSPHO_WATSC_NORM_DATA                        Normalized protein phosphorylation data
-PROT_CORTEX_DA                                 Differential analysis of proteomics datasets
-PROT_CORTEX_NORM_DATA                          Normalized protein expression data
-PROT_HEART_DA                                  Differential analysis of proteomics datasets
-PROT_HEART_NORM_DATA                           Normalized protein expression data
-PROT_KIDNEY_DA                                 Differential analysis of proteomics datasets
-PROT_KIDNEY_NORM_DATA                          Normalized protein expression data
-PROT_LIVER_DA                                  Differential analysis of proteomics datasets
-PROT_LIVER_NORM_DATA                           Normalized protein expression data
-PROT_LUNG_DA                                   Differential analysis of proteomics datasets
-PROT_LUNG_NORM_DATA                            Normalized protein expression data
-PROT_META                                      Proteomics sample-level metadata
-PROT_SKMGN_DA                                  Differential analysis of proteomics datasets
-PROT_SKMGN_NORM_DATA                           Normalized protein expression data
-PROT_WATSC_DA                                  Differential analysis of proteomics datasets
-PROT_WATSC_NORM_DATA                           Normalized protein expression data
-RAT_TO_HUMAN_GENE                              Rat-to-human gene ortholog map
-REPEATED_FEATURES                              Repeated feature info
-REPFDR_INPUTS                                  'repfdr' inputs
-REPFDR_RES                                     'repfdr' results
-SEX_COLORS                                     Sex colors
-TISSUE_ABBREV                                  Tissue abbreviations
-TISSUE_ABBREV_TO_CODE                          Tissue abbreviation-to-code mapping
-TISSUE_CODE_TO_ABBREV                          Tissue code-to-abbreviation mapping
-TISSUE_COLORS                                  Tissue colors
-TISSUE_ORDER                                   Tissue order
-TRAINING_REGULATED_FEATURES                    Training-regulated features
-TRNSCRPT_ADRNL_DA                              Differential analysis of RNA-seq datasets
-TRNSCRPT_ADRNL_NORM_DATA                       Normalized RNA-seq data
-TRNSCRPT_ADRNL_RAW_COUNTS                      RNA-seq raw counts
-TRNSCRPT_BAT_DA                                Differential analysis of RNA-seq datasets
-TRNSCRPT_BAT_NORM_DATA                         Normalized RNA-seq data
-TRNSCRPT_BAT_RAW_COUNTS                        RNA-seq raw counts
-TRNSCRPT_BLOOD_DA                              Differential analysis of RNA-seq datasets
-TRNSCRPT_BLOOD_NORM_DATA                       Normalized RNA-seq data
-TRNSCRPT_BLOOD_RAW_COUNTS                      RNA-seq raw counts
-TRNSCRPT_COLON_DA                              Differential analysis of RNA-seq datasets
-TRNSCRPT_COLON_NORM_DATA                       Normalized RNA-seq data
-TRNSCRPT_COLON_RAW_COUNTS                      RNA-seq raw counts
-TRNSCRPT_CORTEX_DA                             Differential analysis of RNA-seq datasets
-TRNSCRPT_CORTEX_NORM_DATA                      Normalized RNA-seq data
-TRNSCRPT_CORTEX_RAW_COUNTS                     RNA-seq raw counts
-TRNSCRPT_HEART_DA                              Differential analysis of RNA-seq datasets
-TRNSCRPT_HEART_NORM_DATA                       Normalized RNA-seq data
-TRNSCRPT_HEART_RAW_COUNTS                      RNA-seq raw counts
-TRNSCRPT_HIPPOC_DA                             Differential analysis of RNA-seq datasets
-TRNSCRPT_HIPPOC_NORM_DATA                      Normalized RNA-seq data
-TRNSCRPT_HIPPOC_RAW_COUNTS                     RNA-seq raw counts
-TRNSCRPT_HYPOTH_DA                             Differential analysis of RNA-seq datasets
-TRNSCRPT_HYPOTH_NORM_DATA                      Normalized RNA-seq data
-TRNSCRPT_HYPOTH_RAW_COUNTS                     RNA-seq raw counts
-TRNSCRPT_KIDNEY_DA                             Differential analysis of RNA-seq datasets
-TRNSCRPT_KIDNEY_NORM_DATA                      Normalized RNA-seq data
-TRNSCRPT_KIDNEY_RAW_COUNTS                     RNA-seq raw counts
-TRNSCRPT_LIVER_DA                              Differential analysis of RNA-seq datasets
-TRNSCRPT_LIVER_NORM_DATA                       Normalized RNA-seq data
-TRNSCRPT_LIVER_RAW_COUNTS                      RNA-seq raw counts
-TRNSCRPT_LUNG_DA                               Differential analysis of RNA-seq datasets
-TRNSCRPT_LUNG_NORM_DATA                        Normalized RNA-seq data
-TRNSCRPT_LUNG_RAW_COUNTS                       RNA-seq raw counts
-TRNSCRPT_META                                  RNA-seq metadata and QC
-TRNSCRPT_OVARY_DA                              Differential analysis of RNA-seq datasets
-TRNSCRPT_OVARY_NORM_DATA                       Normalized RNA-seq data
-TRNSCRPT_OVARY_RAW_COUNTS                      RNA-seq raw counts
-TRNSCRPT_SKMGN_DA                              Differential analysis of RNA-seq datasets
-TRNSCRPT_SKMGN_NORM_DATA                       Normalized RNA-seq data
-TRNSCRPT_SKMGN_RAW_COUNTS                      RNA-seq raw counts
-TRNSCRPT_SKMVL_DA                              Differential analysis of RNA-seq datasets
-TRNSCRPT_SKMVL_NORM_DATA                       Normalized RNA-seq data
-TRNSCRPT_SKMVL_RAW_COUNTS                      RNA-seq raw counts
-TRNSCRPT_SMLINT_DA                             Differential analysis of RNA-seq datasets
-TRNSCRPT_SMLINT_NORM_DATA                      Normalized RNA-seq data
-TRNSCRPT_SMLINT_RAW_COUNTS                     RNA-seq raw counts
-TRNSCRPT_SPLEEN_DA                             Differential analysis of RNA-seq datasets
-TRNSCRPT_SPLEEN_NORM_DATA                      Normalized RNA-seq data
-TRNSCRPT_SPLEEN_RAW_COUNTS                     RNA-seq raw counts
-TRNSCRPT_TESTES_DA                             Differential analysis of RNA-seq datasets
-TRNSCRPT_TESTES_NORM_DATA                      Normalized RNA-seq data
-TRNSCRPT_TESTES_RAW_COUNTS                     RNA-seq raw counts
-TRNSCRPT_VENACV_DA                             Differential analysis of RNA-seq datasets
-TRNSCRPT_VENACV_NORM_DATA                      Normalized RNA-seq data
-TRNSCRPT_VENACV_RAW_COUNTS                     RNA-seq raw counts
-TRNSCRPT_WATSC_DA                              Differential analysis of RNA-seq datasets
-TRNSCRPT_WATSC_NORM_DATA                       Normalized RNA-seq data
-TRNSCRPT_WATSC_RAW_COUNTS                      RNA-seq raw counts
-UBIQ_HEART_DA                                  Differential analysis of proteomics datasets
-UBIQ_HEART_NORM_DATA                           Normalized protein ubiquitynation data
-UBIQ_LIVER_DA                                  Differential analysis of proteomics datasets
-UBIQ_LIVER_NORM_DATA                           Normalized protein ubiquitynation data
-UBIQ_META                                      Proteomics sample-level metadata</code></pre>
+<code class="sourceCode R"><span><span class="co"># load the package</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/MoTrPAC/MotrpacRatTraining6moData" class="external-link">MotrpacRatTraining6moData</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># list available objects</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span>package <span class="op">=</span> <span class="st">"MotrpacRatTraining6moData"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># get the documentation for a given data object</span></span>
+<span><span class="op">?</span><span class="va">TRNSCRPT_LIVER_DA</span></span>
+<span></span>
+<span><span class="co"># load a data object into your environment using `data()`</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">TRNSCRPT_LIVER_DA</span><span class="op">)</span></span>
+<span><span class="co"># or just use it directly, e.g., </span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">TRNSCRPT_LIVER_DA</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="access-epigenomics-data-through-google-cloud-storage">Access epigenomics data through Google Cloud Storage<a class="anchor" aria-label="anchor" href="#access-epigenomics-data-through-google-cloud-storage"></a>
 </h2>
-<p>Due to file size, only normalized sample-level data and differential analysis results corresponding to <strong>training-regulated features</strong> (5% IHW FDR) are contained in this package for chromatin accessibility (ATAC) and DNA methylation (METHYL). The full sets of epigenetic results may be downloaded through the following public URLs. Note that clicking on a URL automatically starts a download.</p>
-<table class="table">
+<p>Due to file size, only normalized sample-level data and differential analysis results corresponding to <strong>training-regulated features</strong> (5% IHW FDR) are contained in this package for chromatin accessibility (ATAC) and DNA methylation (METHYL). The full sets of epigenetic results may be downloaded through the following public URLs.</p>
+<p><strong>Note that clicking on a <a href="">Link</a> automatically starts a download.</strong> To instead copy the URL for an object, right-click the <a href="">Link</a> and select <code>Copy Link Address</code>.</p>
+<p>Note that the size in this table is the compressed size. Each object occupies several times more memory when loaded into R. The total compressed size for all of these objects is 8.68 GiB (~9.32 GB).</p>
+<table style="width:100%;" class="table">
 <colgroup>
-<col width="20%">
-<col width="20%">
-<col width="20%">
-<col width="20%">
-<col width="20%">
+<col width="16%">
+<col width="16%">
+<col width="16%">
+<col width="16%">
+<col width="16%">
+<col width="16%">
 </colgroup>
 <thead><tr class="header">
 <th>Type</th>
 <th>Assay</th>
 <th>Tissue</th>
 <th>Object</th>
-<th>URL</th>
+<th>Size (MiB)</th>
+<th>Click to download</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
@@ -434,406 +241,464 @@ UBIQ_META                                      Proteomics sample-level metadata<
 <td>ATAC</td>
 <td>BAT</td>
 <td>ATAC_BAT_DA</td>
-<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_BAT_DA.rda" class="external-link uri">https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_BAT_DA.rda</a></td>
+<td>329.71</td>
+<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_BAT_DA.rda" class="external-link">Link</a></td>
 </tr>
 <tr class="even">
 <td>Differential analysis results</td>
 <td>ATAC</td>
 <td>HEART</td>
 <td>ATAC_HEART_DA</td>
-<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_HEART_DA.rda" class="external-link uri">https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_HEART_DA.rda</a></td>
+<td>238.99</td>
+<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_HEART_DA.rda" class="external-link">Link</a></td>
 </tr>
 <tr class="odd">
 <td>Differential analysis results</td>
 <td>ATAC</td>
 <td>HIPPOC</td>
 <td>ATAC_HIPPOC_DA</td>
-<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_HIPPOC_DA.rda" class="external-link uri">https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_HIPPOC_DA.rda</a></td>
+<td>223.06</td>
+<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_HIPPOC_DA.rda" class="external-link">Link</a></td>
 </tr>
 <tr class="even">
 <td>Differential analysis results</td>
 <td>ATAC</td>
 <td>KIDNEY</td>
 <td>ATAC_KIDNEY_DA</td>
-<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_KIDNEY_DA.rda" class="external-link uri">https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_KIDNEY_DA.rda</a></td>
+<td>272.7</td>
+<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_KIDNEY_DA.rda" class="external-link">Link</a></td>
 </tr>
 <tr class="odd">
 <td>Differential analysis results</td>
 <td>ATAC</td>
 <td>LIVER</td>
 <td>ATAC_LIVER_DA</td>
-<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_LIVER_DA.rda" class="external-link uri">https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_LIVER_DA.rda</a></td>
+<td>202.48</td>
+<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_LIVER_DA.rda" class="external-link">Link</a></td>
 </tr>
 <tr class="even">
 <td>Differential analysis results</td>
 <td>ATAC</td>
 <td>LUNG</td>
 <td>ATAC_LUNG_DA</td>
-<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_LUNG_DA.rda" class="external-link uri">https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_LUNG_DA.rda</a></td>
+<td>259.19</td>
+<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_LUNG_DA.rda" class="external-link">Link</a></td>
 </tr>
 <tr class="odd">
 <td>Differential analysis results</td>
 <td>ATAC</td>
 <td>SKM-GN</td>
 <td>ATAC_SKMGN_DA</td>
-<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_SKMGN_DA.rda" class="external-link uri">https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_SKMGN_DA.rda</a></td>
+<td>320.42</td>
+<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_SKMGN_DA.rda" class="external-link">Link</a></td>
 </tr>
 <tr class="even">
 <td>Differential analysis results</td>
 <td>ATAC</td>
 <td>WAT-SC</td>
 <td>ATAC_WATSC_DA</td>
-<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_WATSC_DA.rda" class="external-link uri">https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_WATSC_DA.rda</a></td>
+<td>359.23</td>
+<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_WATSC_DA.rda" class="external-link">Link</a></td>
 </tr>
 <tr class="odd">
 <td>Normalized sample-level data</td>
 <td>ATAC</td>
 <td>BAT</td>
 <td>ATAC_BAT_NORM_DATA</td>
-<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_BAT_NORM_DATA.rda" class="external-link uri">https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_BAT_NORM_DATA.rda</a></td>
+<td>43.11</td>
+<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_BAT_NORM_DATA.rda" class="external-link">Link</a></td>
 </tr>
 <tr class="even">
 <td>Normalized sample-level data</td>
 <td>ATAC</td>
 <td>HEART</td>
 <td>ATAC_HEART_NORM_DATA</td>
-<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_HEART_NORM_DATA.rda" class="external-link uri">https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_HEART_NORM_DATA.rda</a></td>
+<td>31.34</td>
+<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_HEART_NORM_DATA.rda" class="external-link">Link</a></td>
 </tr>
 <tr class="odd">
 <td>Normalized sample-level data</td>
 <td>ATAC</td>
 <td>HIPPOC</td>
 <td>ATAC_HIPPOC_NORM_DATA</td>
-<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_HIPPOC_NORM_DATA.rda" class="external-link uri">https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_HIPPOC_NORM_DATA.rda</a></td>
+<td>33.52</td>
+<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_HIPPOC_NORM_DATA.rda" class="external-link">Link</a></td>
 </tr>
 <tr class="even">
 <td>Normalized sample-level data</td>
 <td>ATAC</td>
 <td>KIDNEY</td>
 <td>ATAC_KIDNEY_NORM_DATA</td>
-<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_KIDNEY_NORM_DATA.rda" class="external-link uri">https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_KIDNEY_NORM_DATA.rda</a></td>
+<td>40.03</td>
+<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_KIDNEY_NORM_DATA.rda" class="external-link">Link</a></td>
 </tr>
 <tr class="odd">
 <td>Normalized sample-level data</td>
 <td>ATAC</td>
 <td>LIVER</td>
 <td>ATAC_LIVER_NORM_DATA</td>
-<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_LIVER_NORM_DATA.rda" class="external-link uri">https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_LIVER_NORM_DATA.rda</a></td>
+<td>27.53</td>
+<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_LIVER_NORM_DATA.rda" class="external-link">Link</a></td>
 </tr>
 <tr class="even">
 <td>Normalized sample-level data</td>
 <td>ATAC</td>
 <td>LUNG</td>
 <td>ATAC_LUNG_NORM_DATA</td>
-<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_LUNG_NORM_DATA.rda" class="external-link uri">https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_LUNG_NORM_DATA.rda</a></td>
+<td>34.54</td>
+<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_LUNG_NORM_DATA.rda" class="external-link">Link</a></td>
 </tr>
 <tr class="odd">
 <td>Normalized sample-level data</td>
 <td>ATAC</td>
 <td>SKM-GN</td>
 <td>ATAC_SKMGN_NORM_DATA</td>
-<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_SKMGN_NORM_DATA.rda" class="external-link uri">https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_SKMGN_NORM_DATA.rda</a></td>
+<td>43.31</td>
+<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_SKMGN_NORM_DATA.rda" class="external-link">Link</a></td>
 </tr>
 <tr class="even">
 <td>Normalized sample-level data</td>
 <td>ATAC</td>
 <td>WAT-SC</td>
 <td>ATAC_WATSC_NORM_DATA</td>
-<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_WATSC_NORM_DATA.rda" class="external-link uri">https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_WATSC_NORM_DATA.rda</a></td>
+<td>45.98</td>
+<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_WATSC_NORM_DATA.rda" class="external-link">Link</a></td>
 </tr>
 <tr class="odd">
 <td>Raw sample-level counts</td>
 <td>ATAC</td>
 <td>BAT</td>
 <td>ATAC_BAT_RAW_COUNTS</td>
-<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_BAT_RAW_COUNTS.rda" class="external-link uri">https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_BAT_RAW_COUNTS.rda</a></td>
+<td>49.38</td>
+<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_BAT_RAW_COUNTS.rda" class="external-link">Link</a></td>
 </tr>
 <tr class="even">
 <td>Raw sample-level counts</td>
 <td>ATAC</td>
 <td>HEART</td>
 <td>ATAC_HEART_RAW_COUNTS</td>
-<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_HEART_RAW_COUNTS.rda" class="external-link uri">https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_HEART_RAW_COUNTS.rda</a></td>
+<td>47.68</td>
+<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_HEART_RAW_COUNTS.rda" class="external-link">Link</a></td>
 </tr>
 <tr class="odd">
 <td>Raw sample-level counts</td>
 <td>ATAC</td>
 <td>HIPPOC</td>
 <td>ATAC_HIPPOC_RAW_COUNTS</td>
-<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_HIPPOC_RAW_COUNTS.rda" class="external-link uri">https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_HIPPOC_RAW_COUNTS.rda</a></td>
+<td>50.63</td>
+<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_HIPPOC_RAW_COUNTS.rda" class="external-link">Link</a></td>
 </tr>
 <tr class="even">
 <td>Raw sample-level counts</td>
 <td>ATAC</td>
 <td>KIDNEY</td>
 <td>ATAC_KIDNEY_RAW_COUNTS</td>
-<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_KIDNEY_RAW_COUNTS.rda" class="external-link uri">https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_KIDNEY_RAW_COUNTS.rda</a></td>
+<td>52.6</td>
+<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_KIDNEY_RAW_COUNTS.rda" class="external-link">Link</a></td>
 </tr>
 <tr class="odd">
 <td>Raw sample-level counts</td>
 <td>ATAC</td>
 <td>LIVER</td>
 <td>ATAC_LIVER_RAW_COUNTS</td>
-<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_LIVER_RAW_COUNTS.rda" class="external-link uri">https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_LIVER_RAW_COUNTS.rda</a></td>
+<td>47.25</td>
+<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_LIVER_RAW_COUNTS.rda" class="external-link">Link</a></td>
 </tr>
 <tr class="even">
 <td>Raw sample-level counts</td>
 <td>ATAC</td>
 <td>LUNG</td>
 <td>ATAC_LUNG_RAW_COUNTS</td>
-<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_LUNG_RAW_COUNTS.rda" class="external-link uri">https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_LUNG_RAW_COUNTS.rda</a></td>
+<td>48.92</td>
+<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_LUNG_RAW_COUNTS.rda" class="external-link">Link</a></td>
 </tr>
 <tr class="odd">
 <td>Raw sample-level counts</td>
 <td>ATAC</td>
 <td>SKM-GN</td>
 <td>ATAC_SKMGN_RAW_COUNTS</td>
-<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_SKMGN_RAW_COUNTS.rda" class="external-link uri">https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_SKMGN_RAW_COUNTS.rda</a></td>
+<td>50.96</td>
+<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_SKMGN_RAW_COUNTS.rda" class="external-link">Link</a></td>
 </tr>
 <tr class="even">
 <td>Raw sample-level counts</td>
 <td>ATAC</td>
 <td>WAT-SC</td>
 <td>ATAC_WATSC_RAW_COUNTS</td>
-<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_WATSC_RAW_COUNTS.rda" class="external-link uri">https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_WATSC_RAW_COUNTS.rda</a></td>
+<td>48.91</td>
+<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_WATSC_RAW_COUNTS.rda" class="external-link">Link</a></td>
 </tr>
 <tr class="odd">
 <td>Feature annotation</td>
 <td>ATAC</td>
 <td>all</td>
 <td>ATAC_FEATURE_ANNOT</td>
-<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_FEATURE_ANNOT.rda" class="external-link uri">https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_FEATURE_ANNOT.rda</a></td>
+<td>27.73</td>
+<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_FEATURE_ANNOT.rda" class="external-link">Link</a></td>
 </tr>
 <tr class="even">
 <td>Differential analysis results</td>
 <td>METHYL</td>
 <td>BAT</td>
 <td>METHYL_BAT_DA</td>
-<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_BAT_DA.rda" class="external-link uri">https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_BAT_DA.rda</a></td>
+<td>281.5</td>
+<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_BAT_DA.rda" class="external-link">Link</a></td>
 </tr>
 <tr class="odd">
 <td>Differential analysis results</td>
 <td>METHYL</td>
 <td>HEART</td>
 <td>METHYL_HEART_DA</td>
-<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_HEART_DA.rda" class="external-link uri">https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_HEART_DA.rda</a></td>
+<td>244.44</td>
+<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_HEART_DA.rda" class="external-link">Link</a></td>
 </tr>
 <tr class="even">
 <td>Differential analysis results</td>
 <td>METHYL</td>
 <td>HIPPOC</td>
 <td>METHYL_HIPPOC_DA</td>
-<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_HIPPOC_DA.rda" class="external-link uri">https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_HIPPOC_DA.rda</a></td>
+<td>194.39</td>
+<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_HIPPOC_DA.rda" class="external-link">Link</a></td>
 </tr>
 <tr class="odd">
 <td>Differential analysis results</td>
 <td>METHYL</td>
 <td>KIDNEY</td>
 <td>METHYL_KIDNEY_DA</td>
-<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_KIDNEY_DA.rda" class="external-link uri">https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_KIDNEY_DA.rda</a></td>
+<td>138.43</td>
+<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_KIDNEY_DA.rda" class="external-link">Link</a></td>
 </tr>
 <tr class="even">
 <td>Differential analysis results</td>
 <td>METHYL</td>
 <td>LIVER</td>
 <td>METHYL_LIVER_DA</td>
-<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_LIVER_DA.rda" class="external-link uri">https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_LIVER_DA.rda</a></td>
+<td>218.21</td>
+<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_LIVER_DA.rda" class="external-link">Link</a></td>
 </tr>
 <tr class="odd">
 <td>Differential analysis results</td>
 <td>METHYL</td>
 <td>LUNG</td>
 <td>METHYL_LUNG_DA</td>
-<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_LUNG_DA.rda" class="external-link uri">https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_LUNG_DA.rda</a></td>
+<td>340.03</td>
+<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_LUNG_DA.rda" class="external-link">Link</a></td>
 </tr>
 <tr class="even">
 <td>Differential analysis results</td>
 <td>METHYL</td>
 <td>SKM-GN</td>
 <td>METHYL_SKMGN_DA</td>
-<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_SKMGN_DA.rda" class="external-link uri">https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_SKMGN_DA.rda</a></td>
+<td>278.02</td>
+<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_SKMGN_DA.rda" class="external-link">Link</a></td>
 </tr>
 <tr class="odd">
 <td>Differential analysis results</td>
 <td>METHYL</td>
 <td>WAT-SC</td>
 <td>METHYL_WATSC_DA</td>
-<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_WATSC_DA.rda" class="external-link uri">https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_WATSC_DA.rda</a></td>
+<td>220.35</td>
+<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_WATSC_DA.rda" class="external-link">Link</a></td>
 </tr>
 <tr class="even">
 <td>Normalized sample-level data</td>
 <td>METHYL</td>
 <td>BAT</td>
 <td>METHYL_BAT_NORM_DATA</td>
-<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_BAT_NORM_DATA.rda" class="external-link uri">https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_BAT_NORM_DATA.rda</a></td>
+<td>76.76</td>
+<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_BAT_NORM_DATA.rda" class="external-link">Link</a></td>
 </tr>
 <tr class="odd">
 <td>Normalized sample-level data</td>
 <td>METHYL</td>
 <td>HEART</td>
 <td>METHYL_HEART_NORM_DATA</td>
-<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_HEART_NORM_DATA.rda" class="external-link uri">https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_HEART_NORM_DATA.rda</a></td>
+<td>59.43</td>
+<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_HEART_NORM_DATA.rda" class="external-link">Link</a></td>
 </tr>
 <tr class="even">
 <td>Normalized sample-level data</td>
 <td>METHYL</td>
 <td>HIPPOC</td>
 <td>METHYL_HIPPOC_NORM_DATA</td>
-<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_HIPPOC_NORM_DATA.rda" class="external-link uri">https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_HIPPOC_NORM_DATA.rda</a></td>
+<td>56.76</td>
+<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_HIPPOC_NORM_DATA.rda" class="external-link">Link</a></td>
 </tr>
 <tr class="odd">
 <td>Normalized sample-level data</td>
 <td>METHYL</td>
 <td>KIDNEY</td>
 <td>METHYL_KIDNEY_NORM_DATA</td>
-<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_KIDNEY_NORM_DATA.rda" class="external-link uri">https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_KIDNEY_NORM_DATA.rda</a></td>
+<td>38.66</td>
+<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_KIDNEY_NORM_DATA.rda" class="external-link">Link</a></td>
 </tr>
 <tr class="even">
 <td>Normalized sample-level data</td>
 <td>METHYL</td>
 <td>LIVER</td>
 <td>METHYL_LIVER_NORM_DATA</td>
-<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_LIVER_NORM_DATA.rda" class="external-link uri">https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_LIVER_NORM_DATA.rda</a></td>
+<td>55.02</td>
+<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_LIVER_NORM_DATA.rda" class="external-link">Link</a></td>
 </tr>
 <tr class="odd">
 <td>Normalized sample-level data</td>
 <td>METHYL</td>
 <td>LUNG</td>
 <td>METHYL_LUNG_NORM_DATA</td>
-<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_LUNG_NORM_DATA.rda" class="external-link uri">https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_LUNG_NORM_DATA.rda</a></td>
+<td>83.75</td>
+<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_LUNG_NORM_DATA.rda" class="external-link">Link</a></td>
 </tr>
 <tr class="even">
 <td>Normalized sample-level data</td>
 <td>METHYL</td>
 <td>SKM-GN</td>
 <td>METHYL_SKMGN_NORM_DATA</td>
-<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_SKMGN_NORM_DATA.rda" class="external-link uri">https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_SKMGN_NORM_DATA.rda</a></td>
+<td>71.99</td>
+<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_SKMGN_NORM_DATA.rda" class="external-link">Link</a></td>
 </tr>
 <tr class="odd">
 <td>Normalized sample-level data</td>
 <td>METHYL</td>
 <td>WAT-SC</td>
 <td>METHYL_WATSC_NORM_DATA</td>
-<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_WATSC_NORM_DATA.rda" class="external-link uri">https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_WATSC_NORM_DATA.rda</a></td>
+<td>57.15</td>
+<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_WATSC_NORM_DATA.rda" class="external-link">Link</a></td>
 </tr>
 <tr class="even">
 <td>Raw data</td>
 <td>METHYL</td>
 <td>BAT</td>
-<td>BAT_raw</td>
-<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_BAT_RAW_DATA.rda" class="external-link uri">https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_BAT_RAW_DATA.rda</a></td>
+<td>BAT_RAW_DATA</td>
+<td>394.79</td>
+<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_BAT_RAW_DATA.rda" class="external-link">Link</a></td>
 </tr>
 <tr class="odd">
 <td>Raw data</td>
 <td>METHYL</td>
 <td>HEART</td>
-<td>HEART_raw</td>
-<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_HEART_RAW_DATA.rda" class="external-link uri">https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_HEART_RAW_DATA.rda</a></td>
+<td>HEART_RAW_DATA</td>
+<td>359.21</td>
+<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_HEART_RAW_DATA.rda" class="external-link">Link</a></td>
 </tr>
 <tr class="even">
 <td>Raw data</td>
 <td>METHYL</td>
 <td>HIPPOC</td>
-<td>HIPPOC_raw</td>
-<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_HIPPOC_RAW_DATA.rda" class="external-link uri">https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_HIPPOC_RAW_DATA.rda</a></td>
+<td>HIPPOC_RAW_DATA</td>
+<td>361.81</td>
+<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_HIPPOC_RAW_DATA.rda" class="external-link">Link</a></td>
 </tr>
 <tr class="odd">
 <td>Raw data</td>
 <td>METHYL</td>
 <td>KIDNEY</td>
-<td>KIDNEY_raw</td>
-<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_KIDNEY_RAW_DATA.rda" class="external-link uri">https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_KIDNEY_RAW_DATA.rda</a></td>
+<td>KIDNEY_RAW_DATA</td>
+<td>363.32</td>
+<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_KIDNEY_RAW_DATA.rda" class="external-link">Link</a></td>
 </tr>
 <tr class="even">
 <td>Raw data</td>
 <td>METHYL</td>
 <td>LIVER</td>
-<td>LIVER_raw</td>
-<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_LIVER_RAW_DATA.rda" class="external-link uri">https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_LIVER_RAW_DATA.rda</a></td>
+<td>LIVER_RAW_DATA</td>
+<td>349.14</td>
+<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_LIVER_RAW_DATA.rda" class="external-link">Link</a></td>
 </tr>
 <tr class="odd">
 <td>Raw data</td>
 <td>METHYL</td>
 <td>LUNG</td>
-<td>LUNG_raw</td>
-<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_LUNG_RAW_DATA.rda" class="external-link uri">https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_LUNG_RAW_DATA.rda</a></td>
+<td>LUNG_RAW_DATA</td>
+<td>349.14</td>
+<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_LUNG_RAW_DATA.rda" class="external-link">Link</a></td>
 </tr>
 <tr class="even">
 <td>Raw data</td>
 <td>METHYL</td>
 <td>SKM-GN</td>
-<td>SKMGN_raw</td>
-<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_SKMGN_RAW_DATA.rda" class="external-link uri">https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_SKMGN_RAW_DATA.rda</a></td>
+<td>SKMGN_RAW_DATA</td>
+<td>378.84</td>
+<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_SKMGN_RAW_DATA.rda" class="external-link">Link</a></td>
 </tr>
 <tr class="odd">
 <td>Raw data</td>
 <td>METHYL</td>
 <td>WAT-SC</td>
-<td>WATSC_raw</td>
-<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_WATSC_RAW_DATA.rda" class="external-link uri">https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_WATSC_RAW_DATA.rda</a></td>
+<td>WATSC_RAW_DATA</td>
+<td>366.74</td>
+<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_WATSC_RAW_DATA.rda" class="external-link">Link</a></td>
 </tr>
 <tr class="even">
 <td>Raw sample-level counts</td>
 <td>METHYL</td>
 <td>BAT</td>
 <td>METHYL_BAT_RAW_COUNTS</td>
-<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_BAT_RAW_COUNTS.rda" class="external-link uri">https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_BAT_RAW_COUNTS.rda</a></td>
+<td>71.6</td>
+<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_BAT_RAW_COUNTS.rda" class="external-link">Link</a></td>
 </tr>
 <tr class="odd">
 <td>Raw sample-level counts</td>
 <td>METHYL</td>
 <td>HEART</td>
 <td>METHYL_HEART_RAW_COUNTS</td>
-<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_HEART_RAW_COUNTS.rda" class="external-link uri">https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_HEART_RAW_COUNTS.rda</a></td>
+<td>56.99</td>
+<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_HEART_RAW_COUNTS.rda" class="external-link">Link</a></td>
 </tr>
 <tr class="even">
 <td>Raw sample-level counts</td>
 <td>METHYL</td>
 <td>HIPPOC</td>
 <td>METHYL_HIPPOC_RAW_COUNTS</td>
-<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_HIPPOC_RAW_COUNTS.rda" class="external-link uri">https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_HIPPOC_RAW_COUNTS.rda</a></td>
+<td>52.56</td>
+<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_HIPPOC_RAW_COUNTS.rda" class="external-link">Link</a></td>
 </tr>
 <tr class="odd">
 <td>Raw sample-level counts</td>
 <td>METHYL</td>
 <td>KIDNEY</td>
 <td>METHYL_KIDNEY_RAW_COUNTS</td>
-<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_KIDNEY_RAW_COUNTS.rda" class="external-link uri">https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_KIDNEY_RAW_COUNTS.rda</a></td>
+<td>36.7</td>
+<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_KIDNEY_RAW_COUNTS.rda" class="external-link">Link</a></td>
 </tr>
 <tr class="even">
 <td>Raw sample-level counts</td>
 <td>METHYL</td>
 <td>LIVER</td>
 <td>METHYL_LIVER_RAW_COUNTS</td>
-<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_LIVER_RAW_COUNTS.rda" class="external-link uri">https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_LIVER_RAW_COUNTS.rda</a></td>
+<td>52.54</td>
+<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_LIVER_RAW_COUNTS.rda" class="external-link">Link</a></td>
 </tr>
 <tr class="odd">
 <td>Raw sample-level counts</td>
 <td>METHYL</td>
 <td>LUNG</td>
 <td>METHYL_LUNG_RAW_COUNTS</td>
-<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_LUNG_RAW_COUNTS.rda" class="external-link uri">https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_LUNG_RAW_COUNTS.rda</a></td>
+<td>77.17</td>
+<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_LUNG_RAW_COUNTS.rda" class="external-link">Link</a></td>
 </tr>
 <tr class="even">
 <td>Raw sample-level counts</td>
 <td>METHYL</td>
 <td>SKM-GN</td>
 <td>METHYL_SKMGN_RAW_COUNTS</td>
-<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_SKMGN_RAW_COUNTS.rda" class="external-link uri">https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_SKMGN_RAW_COUNTS.rda</a></td>
+<td>67.99</td>
+<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_SKMGN_RAW_COUNTS.rda" class="external-link">Link</a></td>
 </tr>
 <tr class="odd">
 <td>Raw sample-level counts</td>
 <td>METHYL</td>
 <td>WAT-SC</td>
 <td>METHYL_WATSC_RAW_COUNTS</td>
-<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_WATSC_RAW_COUNTS.rda" class="external-link uri">https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_WATSC_RAW_COUNTS.rda</a></td>
+<td>53.91</td>
+<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_WATSC_RAW_COUNTS.rda" class="external-link">Link</a></td>
 </tr>
 <tr class="even">
 <td>Feature annotation</td>
 <td>METHYL</td>
 <td>all</td>
 <td>METHYL_FEATURE_ANNOT</td>
-<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_FEATURE_ANNOT.rda" class="external-link uri">https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_FEATURE_ANNOT.rda</a></td>
+<td>152.77</td>
+<td><a href="https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_FEATURE_ANNOT.rda" class="external-link">Link</a></td>
 </tr>
 </tbody>
 </table>
