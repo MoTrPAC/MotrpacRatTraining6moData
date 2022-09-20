@@ -1,5 +1,7 @@
 # MotrpacRatTraining6moData
 
+**Tutorial:** <https://motrpac.github.io/MotrpacRatTraining6moData/articles/tutorial.html>
+
 ## Table of Contents
 * [Overview](#overview)
   * [About this package](#about-this-package)
@@ -19,16 +21,15 @@ This package provides convenient access to the processed data and downstream
 analysis results presented in the main paper for the first 
 large-scale multi-omic multi-tissue endurance exercise training study conducted 
 in young adult rats by the Molecular Transducers of Physical Activity Consortium 
-(MoTrPAC). *A [bioRxiv](https://www.biorxiv.org/) link to the corresponding 
-preprint will be added shortly.* 
+(MoTrPAC). **See the [vignette](https://motrpac.github.io/MotrpacRatTraining6moData/articles/tutorial.html) for examples of how to use this package.**
+A [bioRxiv](https://www.biorxiv.org/) link to the corresponding 
+preprint will be added shortly. 
 
 While the data in this package can be used by themselves, the 
-[MotrpacRatTraining6mo](https://github.com/MoTrPAC/MotrpacRatTraining6mo)
+[MotrpacRatTraining6mo](https://motrpac.github.io/MotrpacRatTraining6mo/)
 R package relies heavily on this package and provides many functions to help
-retrieve and explore the data. *A link to the MotrpacRatTraining6mo vignette
-will be added shortly.* 
-
-*A link to the MotrpacRatTraining6moData vignette will be added shortly.* 
+retrieve and explore the data. See examples in the 
+[MotrpacRatTraining6mo vignette](https://motrpac.github.io/MotrpacRatTraining6mo/articles/tutorial.html).
 
 ### About MoTrPAC
 MoTrPAC is a national research consortium designed to discover and perform 
@@ -405,7 +406,9 @@ Raw sample-level counts|METHYL|WAT-SC|METHYL_WATSC_RAW_COUNTS|https://storage.go
 Feature annotation|METHYL|all|METHYL_FEATURE_ANNOT|https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_FEATURE_ANNOT.rda
 
 ## Getting help 
-For questions, bug reporting, and data requests for this package, please 
+**See the [vignette](https://motrpac.github.io/MotrpacRatTraining6moData/articles/tutorial.html) 
+for examples of how to use this package.**
+Still have questions? For questions, bug reporting, and data requests for this package, please 
 [submit a new issue](https://github.com/MoTrPAC/MotrpacRatTraining6moData/issues) 
 and include as many details as possible. 
 

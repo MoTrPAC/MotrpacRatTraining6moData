@@ -74,17 +74,19 @@ This package provides convenient access to the processed data and downstream
 analysis results presented in the main paper for the first 
 large-scale multi-omic multi-tissue endurance exercise training study conducted 
 in young adult rats by the Molecular Transducers of Physical Activity Consortium 
-(MoTrPAC). *A [bioRxiv](https://www.biorxiv.org/) link to the corresponding 
-preprint will be added shortly.* 
+(MoTrPAC). A [bioRxiv](https://www.biorxiv.org/) link to the corresponding 
+preprint will be added shortly. **We highly recommend skimming the preprint 
+before using this package as it provides important context and much greater detail
+than we can provide here.**
 
 <div class = "blue">
 
 While the data in this package can be used by themselves,
 as demonstrated in this vignette, the 
-[MotrpacRatTraining6mo](https://github.com/MoTrPAC/MotrpacRatTraining6mo)
+[MotrpacRatTraining6mo](https://motrpac.github.io/MotrpacRatTraining6mo/)
 R package relies heavily on this package and provides many functions to help
 retrieve and explore the data. See the 
-[MotrpacRatTraining6mo vignette](https://motrpac.github.io/MotrpacRatTraining6mo/) for examples. 
+[MotrpacRatTraining6mo vignette](https://motrpac.github.io/MotrpacRatTraining6mo/articles/tutorial.html) for examples. 
 
 </div>
 
@@ -246,7 +248,7 @@ Here is a brief summary of the kinds of data included in this package:
 * Raw counts for RNA-Seq (TRNSCRPT), ATAC-Seq (ATAC), and RRBS (METHYL) data, 
 e.g., `TRNSCRPT_LIVER_RAW_COUNTS`.
 Note that epigenetic data (ATAC and METHYL) must be downloaded from Google Cloud Storage. See more details 
-[here](https://github.com/MoTrPAC/MotrpacRatTraining6moData/blob/main/README.md#access-epigenomics-data-through-google-cloud-storage).   
+[here](https://motrpac.github.io/MotrpacRatTraining6moData/index.html#access-epigenomics-data-through-google-cloud-storage).   
 * Normalized sample-level data, e.g., `TRNSCRPT_SKMGN_NORM_DATA`   
 * Differential analysis results, e.g., `HEART_PROT_DA`
 * Sample outliers excluded from differential analysis, `OUTLIERS`  
@@ -255,7 +257,7 @@ Note that epigenetic data (ATAC and METHYL) must be downloaded from Google Cloud
 * Pathway enrichment of main graphical clusters, `GRAPH_PW_ENRICH`  
 
 A list of all the available data objects and a brief description are available 
-[here](https://github.com/MoTrPAC/MotrpacRatTraining6moData/blob/main/README.md#explore-available-data-objects). 
+[here](https://motrpac.github.io/MotrpacRatTraining6moData/index.html#explore-available-data-objects). 
 
 ## Principal component analysis
 Here we show how to combine the normalized RNA-seq data from the gastrocnemius (leg skeletal muscle)
@@ -342,8 +344,8 @@ dim(f2g)
 ```
 
 Use the sample-to-BID mapping and the feature-to-gene mapping to subset the 
-RNA-seq and proteomics data to overlapping BIDs and genes. For cases where multiple feature IDs map to the same gene, take the average value 
-per BID.  
+RNA-seq and proteomics data to overlapping BIDs and genes. For cases where multiple 
+feature IDs map to the same gene, take the average value per BID.  
 ```{r}
 # Get new RNA-seq and proteomics data frames
 # here we compute the gene-wise average profiles, while limiting the
