@@ -7,7 +7,7 @@
 * [Installation](#installation)
   * [Troubleshooting](#troubleshooting)
   * [Last resort](#last-resort)
-* [Explore available data objects](explore-available-data-objects)
+* [Explore available data objects](#explore-available-data-objects)
 * [Access epigenomics data through Google Cloud Storage](#access-epigenomics-data-through-google-cloud-storage)
 * [Getting help](#getting-help)
 * [Acknowledgements](#acknowledgements)
