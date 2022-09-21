@@ -11,6 +11,8 @@
 * [Access epigenomics data through Google Cloud Storage](#access-epigenomics-data-through-google-cloud-storage)
 * [Getting help](#getting-help)
 * [Acknowledgements](#acknowledgements)
+* [Data use agreement](#data-use-agreement)
+* [Citing MoTrPAC data](#citing-motrpac-data)
 
 ## Overview
 
