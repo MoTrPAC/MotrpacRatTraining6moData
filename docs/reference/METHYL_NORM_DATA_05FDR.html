@@ -18,14 +18,11 @@
     </button>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
-      <ul class="navbar-nav me-auto"><li class="active nav-item">
-  <a class="nav-link" href="../reference/index.html">Reference</a>
+      <ul class="navbar-nav me-auto"><li class="nav-item">
+  <a class="nav-link" href="../articles/MotrpacRatTraining6moData.html">Get started</a>
 </li>
-<li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/tutorial.html">Tutorial for MotrpacRatTraining6moData R package</a>
-  </div>
+<li class="active nav-item">
+  <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
@@ -99,7 +96,7 @@ was &gt;=0.7. MCL was chosen for this task as it: (1) determines the number of c
 homogeneous clusters, and (3) keeps single sites that are not correlated with either sites as singletons (clusters of size one).
 The resulting sites/clusters were used as input for normalization and differential analysis with edgeR (Robinson et al., 2010).
 To generate this normalized sample-level data, the methylation coverages of filtered sites/clusters were first log2-transformed,
-and normalization was performed using <code>preprocessCore::normalize.quantiles.robust()</code> (Bolstad, 2021).</p>
+and normalization was performed using <code><a href="https://rdrr.io/pkg/preprocessCore/man/normalize.quantiles.robust.html" class="external-link">preprocessCore::normalize.quantiles.robust()</a></code> (Bolstad, 2021).</p>
 <p>For the full set of normalized sample-level data, see <a href="METHYL_NORM_DATA.html">METHYL_NORM_DATA</a>.</p>
     </div>
 

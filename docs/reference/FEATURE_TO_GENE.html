@@ -20,14 +20,11 @@ differential analysis with a gene and includes all current gene identifiers avai
     </button>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
-      <ul class="navbar-nav me-auto"><li class="active nav-item">
-  <a class="nav-link" href="../reference/index.html">Reference</a>
+      <ul class="navbar-nav me-auto"><li class="nav-item">
+  <a class="nav-link" href="../articles/MotrpacRatTraining6moData.html">Get started</a>
 </li>
-<li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/tutorial.html">Tutorial for MotrpacRatTraining6moData R package</a>
-  </div>
+<li class="active nav-item">
+  <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
@@ -106,7 +103,7 @@ is always less than "geneEnd", even if the gene is on the negative strand ("gene
     <p>All proteomics feature IDs (RefSeq accessions) were mapped to gene
 symbols and Entrez IDs using NCBI’s "gene2refseq" mapping files
 (<a href="https://ftp.ncbi.nlm.nih.gov/gene/DATA/gene2refseq.gz" class="external-link">https://ftp.ncbi.nlm.nih.gov/gene/DATA/gene2refseq.gz</a>, downloaded on 2020/12/18).
-Epigenomics features were mapped to the nearest gene using the R function <code>ChIPseeker::annotatePeak()</code>
+Epigenomics features were mapped to the nearest gene using the R function <code><a href="https://rdrr.io/pkg/ChIPseeker/man/annotatePeak.html" class="external-link">ChIPseeker::annotatePeak()</a></code>
 with Ensembl gene annotation (Rattus norvegicus release 96).
 Gene symbols, Entrez IDs, Ensembl IDs, and RGD IDs were mapped to each
 other using RGD’s rat gene annotation
