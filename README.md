@@ -235,10 +235,12 @@ U24AR071113 (Consortium Coordinating Center), U01AG055133, U01AG055137 and U01AG
 ## Data use agreement 
 Recipients and their Agents agree that in publications using **any** data from MoTrPAC public-use data sets 
 they will acknowledge MoTrPAC as the source of data, including the version number of the data sets used, e.g.:
-- Data used in the preparation of this article were obtained from the Molecular Transducers of Physical Activity 
+
+* Data used in the preparation of this article were obtained from the Molecular Transducers of Physical Activity 
 Consortium (MoTrPAC) database, which is available for public access at motrpac-data.org. 
 Specific datasets used are [version numbers].
-- Data used in the preparation of this article were obtained from the Molecular Transducers of Physical Activity 
+
+* Data used in the preparation of this article were obtained from the Molecular Transducers of Physical Activity 
 Consortium (MoTrPAC) MotrpacRatTraining6moData R package [version number]. 
 
 ## Citing MoTrPAC data 
