@@ -225,3 +225,19 @@ MoTrPAC is supported by the National Institutes of Health (NIH) Common
 Fund through cooperative agreements managed by the National Institute of Diabetes and
 Digestive and Kidney Diseases (NIDDK), National Institute of Arthritis and Musculoskeletal
 Diseases (NIAMS), and National Institute on Aging (NIA). 
+Specifically, the MoTrPAC Study is supported by NIH grants U24OD026629 (Bioinformatics Center), 
+U24DK112349, U24DK112342, U24DK112340, U24DK112341, U24DK112326, U24DK112331, U24DK112348 (Chemical Analysis Sites), 
+U01AR071133, U01AR071130, U01AR071124, U01AR071128, U01AR071150, U01AR071160, U01AR071158 (Clinical Centers), 
+U24AR071113 (Consortium Coordinating Center), U01AG055133, U01AG055137 and U01AG055135 (PASS/Animal Sites).
+
+## Data use agreement 
+Recipients and their Agents agree that in publications using **any** data from MoTrPAC public-use data sets 
+they will acknowledge MoTrPAC as the source of data, including the version number of the data sets used, e.g.:
+- Data used in the preparation of this article were obtained from the Molecular Transducers of Physical Activity 
+Consortium (MoTrPAC) database, which is available for public access at motrpac-data.org. 
+Specific datasets used are [version numbers].
+- Data used in the preparation of this article were obtained from the Molecular Transducers of Physical Activity 
+Consortium (MoTrPAC) MotrpacRatTraining6moData R package [version number]. 
+
+## Citing MoTrPAC data 
+A citation will be added when the preprint is available on [bioRxiv](https://www.biorxiv.org/). 
