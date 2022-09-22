@@ -211,7 +211,7 @@ Raw sample-level counts|METHYL|WAT-SC|METHYL_WATSC_RAW_COUNTS|53.91|[Link](https
 Feature annotation|METHYL|all|METHYL_FEATURE_ANNOT|152.77|[Link](https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_FEATURE_ANNOT.rda)
 
 ## Getting help 
-**See the [vignette](https://motrpac.github.io/MotrpacRatTraining6moData/articles/tutorial.html) 
+**See the [vignette](https://motrpac.github.io/MotrpacRatTraining6moData/articles/MotrpacRatTraining6moData.html) 
 for examples of how to use this package.**
 Still have questions? For questions, bug reporting, and data requests for this package, please 
 [submit a new issue](https://github.com/MoTrPAC/MotrpacRatTraining6moData/issues) 
