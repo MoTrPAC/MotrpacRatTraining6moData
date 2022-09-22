@@ -21,7 +21,7 @@ This package provides convenient access to the processed data and downstream
 analysis results presented in the main paper for the first 
 large-scale multi-omic multi-tissue endurance exercise training study conducted 
 in young adult rats by the Molecular Transducers of Physical Activity Consortium 
-(MoTrPAC). **See the [vignette](https://motrpac.github.io/MotrpacRatTraining6moData/articles/tutorial.html) for examples of how to use this package.**
+(MoTrPAC). **See the [vignette](https://motrpac.github.io/MotrpacRatTraining6moData/articles/MotrpacRatTraining6moData.html) for examples of how to use this package.**
 A [bioRxiv](https://www.biorxiv.org/) link to the corresponding 
 preprint will be added shortly. 
 
@@ -29,7 +29,7 @@ While the data in this package can be used by themselves, the
 [MotrpacRatTraining6mo](https://motrpac.github.io/MotrpacRatTraining6mo/)
 R package relies heavily on this package and provides many functions to help
 retrieve and explore the data. See examples in the 
-[MotrpacRatTraining6mo vignette](https://motrpac.github.io/MotrpacRatTraining6mo/articles/tutorial.html). 
+[MotrpacRatTraining6mo vignette](https://motrpac.github.io/MotrpacRatTraining6mo/articles/MotrpacRatTraining6mo.html). 
 
 ### About MoTrPAC
 MoTrPAC is a national research consortium designed to discover and perform 
