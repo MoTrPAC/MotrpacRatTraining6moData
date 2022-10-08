@@ -74,9 +74,8 @@ This package provides convenient access to the processed data and downstream
 analysis results presented in the main paper for the first 
 large-scale multi-omic multi-tissue endurance exercise training study conducted 
 in young adult rats by the Molecular Transducers of Physical Activity Consortium 
-(MoTrPAC). A [bioRxiv](https://www.biorxiv.org/) link to the corresponding 
-preprint will be added [here](https://motrpac.github.io/MotrpacRatTraining6moData/#citing-motrpac-data) shortly. **We highly recommend skimming the preprint 
-before using this package as it provides important context and much greater detail
+(MoTrPAC). Find the [preprint on bioRxiv](https://www.biorxiv.org/content/10.1101/2022.09.21.508770v2). 
+**We highly recommend skimming the preprint before using this package as it provides important context and much greater detail
 than we can provide here.**
 
 <div class = "blue">
@@ -189,8 +188,8 @@ installed and loaded with `library()` for this to work.
 </div>
 
 ## Study design 
-Details of the experimental design can be found in the supplementary methods 
-of the [bioRxiv preprint](https://motrpac.github.io/MotrpacRatTraining6moData/#citing-motrpac-data). Briefly, 6-month-old young adult rats 
+Details of the experimental design can be found in the 
+[supplementary methods of the bioRxiv preprint](https://www.biorxiv.org/content/biorxiv/early/2022/10/05/2022.09.21.508770/DC1/embed/media-1.pdf?download=true). Briefly, 6-month-old young adult rats 
 were subjected to progressive endurance exercise training
 for 1, 2, 4, or 8 weeks, with tissues collected 48 hours after the last training bout. 
 Sex-matched sedentary, untrained rats were used as controls. Whole blood, plasma, 
