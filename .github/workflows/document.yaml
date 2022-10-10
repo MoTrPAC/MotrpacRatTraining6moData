@@ -4,6 +4,7 @@ on:
   push:
     paths: ["R/**"]
     tags-ignore: '**'
+    branches: '**' 
   pull_request:
     paths: ["R/**"]
 
