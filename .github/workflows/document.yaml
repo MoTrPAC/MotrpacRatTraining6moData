@@ -5,6 +5,8 @@ on:
     paths: ["R/**"]
   pull_request:
     paths: ["R/**"]
+  tags-ignore:
+    '**'
 
 name: document
 
