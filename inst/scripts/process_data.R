@@ -11,7 +11,6 @@ library(data.table)
 library(sinew)
 load_all()
 
-setwd("../../../MotrpacRatTraining6moData")
 data_dir = "motrpac/internal_releases/motrpac-data-freeze-pass/v1.1"
 
 # Define tissue codes
@@ -481,6 +480,21 @@ usethis::use_data(REPEATED_FEATURES, overwrite = TRUE)
 sinew::makeOxygen(FEATURE_TO_GENE)
 sinew::makeOxygen(REPEATED_FEATURES)
 
+# 10/10/22: Make filtered version of feature to gene map 
+feat = data.table(FEATURE_TO_GENE)
+data("TRAINING_REGULATED_FEATURES")
+# remove non-diff epigen features
+to_remove = feat[grepl("*chr.*[0-9]", feature_ID), feature_ID]
+to_remove = to_remove[!to_remove %in% TRAINING_REGULATED_FEATURES$feature_ID]
+feat = feat[!feature_ID %in% to_remove]
+# save 
+FEATURE_TO_GENE_FILT = as.data.frame(feat)
+object.size(FEATURE_TO_GENE)
+object.size(FEATURE_TO_GENE_FILT)
+usethis::use_data(FEATURE_TO_GENE_FILT, overwrite = TRUE)
+# re-compress 
+tools::resaveRdaFiles(paths = 'data/FEATURE_TO_GENE_FILT.rda')
+
 
 # Rat-to-human ortholog map -----------------------------------------------------
 
@@ -488,6 +502,7 @@ rat_to_human = dl_read_gcp("gs://mawg-data/external-datasets/rat-id-mapping/genc
 RAT_TO_HUMAN_GENE = as.data.frame(rat_to_human)
 usethis::use_data(RAT_TO_HUMAN_GENE, overwrite = TRUE)
 sinew::makeOxygen(RAT_TO_HUMAN_GENE)
+
 
 # GET data type QC metrics ------------------------------------------------------
 

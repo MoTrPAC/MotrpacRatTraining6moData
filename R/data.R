@@ -93,8 +93,9 @@
 #' @details All proteomics feature IDs (RefSeq accessions) were mapped to gene 
 #'     symbols and Entrez IDs using NCBI’s "gene2refseq" mapping files 
 #'     (<https://ftp.ncbi.nlm.nih.gov/gene/DATA/gene2refseq.gz>, downloaded on 2020/12/18). 
-#'     Epigenomics features were mapped to the nearest gene using the R function [ChIPseeker::annotatePeak()] 
+#'     Epigenomics features were mapped to the nearest gene using [ChIPseeker::annotatePeak()] 
 #'     with Ensembl gene annotation (Rattus norvegicus release 96). 
+#'     See [MotrpacRatTraining6mo::get_peak_annotations] for implementation. 
 #'     Gene symbols, Entrez IDs, Ensembl IDs, and RGD IDs were mapped to each 
 #'     other using RGD’s rat gene annotation 
 #'     (<https://download.rgd.mcw.edu/data_release/RAT/GENES_RAT.txt>, generated on 2021/11/12).
@@ -104,6 +105,45 @@
 #'     This dramatically improves performance. 
 #'     
 "FEATURE_TO_GENE"
+
+
+#' @name FEATURE_TO_GENE_FILT
+#' @title Filtered feature-to-gene map
+#' @description Subset of [FEATURE_TO_GENE] that excludes non-differential epigenetic features.  
+#' @format A data frame with 241572 rows and 9 variables:
+#' \describe{
+#'   \item{\code{entrez_gene}}{double, Entrez gene ID}
+#'   \item{\code{feature_ID}}{`r feature_ID()`}
+#'   \item{\code{rgd_gene}}{integer, RGD gene ID}
+#'   \item{\code{gene_symbol}}{character, official gene symbol}
+#'   \item{\code{old_gene_symbol}}{character, semicolon-separated list of deprecated or alias gene symbols}
+#'   \item{\code{ensembl_gene}}{character, Ensembl gene ID}
+#'   \item{\code{relationship_to_gene}}{double, for ATAC and METHYL features only. Distance 
+#'     from the closest edge of the feature to the start or end of the closest gene, whichever is closer.
+#'     A value of 0 means there is non-zero overlap between the feature and the gene.
+#'     A negative value means the feature is upstream of "geneStart".
+#'     A a positive value means the feature is downstream of "geneEnd".
+#'     Note that "geneStart" and "geneEnd" are strand-agnostic, i.e. "geneStart" 
+#'     is always less than "geneEnd", even if the gene is on the negative strand ("geneStrand" == 2).}
+#'   \item{\code{custom_annotation}}{character, a version of the \code{ChIPseeker} annotations with many corrections. Values include:
+#'     "Distal Intergenic", "Promoter (<=1kb)", "Exon", "Promoter (1-2kb)", "Downstream (<5kb)", "Upstream (<5kb)", "5' UTR", "Intron", "3' UTR", "Overlaps Gene"}
+#'   \item{\code{kegg_id}}{character, KEGG ID for METAB features only. See [MotrpacBicQC::metabolomics_data_dictionary] for more details.} 
+#' }
+#' @details All proteomics feature IDs (RefSeq accessions) were mapped to gene 
+#'     symbols and Entrez IDs using NCBI’s "gene2refseq" mapping files 
+#'     (<https://ftp.ncbi.nlm.nih.gov/gene/DATA/gene2refseq.gz>, downloaded on 2020/12/18). 
+#'     Epigenomics features were mapped to the nearest gene using [ChIPseeker::annotatePeak()] 
+#'     with Ensembl gene annotation (Rattus norvegicus release 96). 
+#'     See [MotrpacRatTraining6mo::get_peak_annotations] for implementation. 
+#'     Gene symbols, Entrez IDs, Ensembl IDs, and RGD IDs were mapped to each 
+#'     other using RGD’s rat gene annotation 
+#'     (<https://download.rgd.mcw.edu/data_release/RAT/GENES_RAT.txt>, generated on 2021/11/12).
+#' 
+#'     For fast(er) indexing, convert this object to a [data.table::data.table()] and use 
+#'     [data.table::setkey()] to set the key to the column you are matching. 
+#'     This dramatically improves performance. 
+#'     
+"FEATURE_TO_GENE_FILT"
 
 
 #' @title Rat-to-human gene ortholog map
