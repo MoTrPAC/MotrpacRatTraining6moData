@@ -1,4 +1,3 @@
-# R related
 **.Rproj.user
 **.Rhistory
 **.RData
@@ -10,9 +9,8 @@
 .Rhistory
 .RData
 .Ruserdata
-
-# large RData
 large-data/
+docs/
 
 # repo cleaner
 bfg.jar

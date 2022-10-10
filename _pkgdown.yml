@@ -2,3 +2,81 @@ url: https://motrpac.github.io/MotrpacRatTraining6moData/
 template:
   bootstrap: 5
 
+home:
+  links:
+    - text: Preprint 
+      href: https://www.biorxiv.org/content/10.1101/2022.09.21.508770v2 
+    
+reference:
+
+- title: Metadata
+- subtitle: Phenotypic data 
+  contents:
+    - PHENO
+- subtitle: Ome-specific sample metadata 
+  contents:
+    - matches("_META$")
+
+- title: Sample-level molecular data 
+- subtitle: Raw sample-level data
+  contents:
+    - matches("_RAW_COUNTS$") 
+- subtitle: Normalized sample-level data
+  contents:
+    - matches("_NORM_DATA$")
+    - matches("_NORM_DATA_05FDR$")
+    - matches("_NORM_DATA_FLAT$")
+    - matches("_NORM_DATA_NESTED$")
+- subtitle: Sample outliers 
+  contents:
+    - OUTLIERS 
+    
+- title: Differential analysis results 
+  contents:
+    - TRAINING_REGULATED_FEATURES 
+    - matches("_DA$")
+    - matches("_DA_METAREG$")
+    
+- title: Bayesian graphical analysis
+- subtitle: Inputs
+  contents: 
+    - REPFDR_INPUTS
+- subtitle: Outputs
+  contents:
+    - GRAPH_STATES
+    - GRAPH_COMPONENTS
+    - REPFDR_RES
+    
+- title: Pathway enrichment analysis 
+- subtitle: Inputs 
+  contents:
+    - PATHWAY_PARENTS
+    - GENE_UNIVERSES
+- subtitle: Results 
+  contents:
+    - GRAPH_PW_ENRICH
+
+- title: Mappings
+- subtitle: Feature mapping 
+  contents:
+    - FEATURE_TO_GENE
+    - FEATURE_TO_GENE_FILT
+    - REPEATED_FEATURES
+    - RAT_TO_HUMAN_GENE
+    - METAB_FEATURE_ID_MAP
+- subtitle: Abbreviations 
+  contents:
+    - ASSAY_ABBREV_TO_CODE
+    - ASSAY_ABBREV
+    - ASSAY_CODE_TO_ABBREV
+    - TISSUE_ABBREV_TO_CODE
+    - TISSUE_ABBREV
+    - TISSUE_CODE_TO_ABBREV
+- subtitle: Colors and orders for plotting 
+  contents:
+    - ASSAY_COLORS
+    - ASSAY_ORDER
+    - GROUP_COLORS
+    - SEX_COLORS
+    - TISSUE_COLORS
+    - TISSUE_ORDER
