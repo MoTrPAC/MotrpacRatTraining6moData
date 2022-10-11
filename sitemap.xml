@@ -61,6 +61,9 @@
     <loc>https://motrpac.github.io/MotrpacRatTraining6moData/reference/FEATURE_TO_GENE.html</loc>
   </url>
   <url>
+    <loc>https://motrpac.github.io/MotrpacRatTraining6moData/reference/FEATURE_TO_GENE_FILT.html</loc>
+  </url>
+  <url>
     <loc>https://motrpac.github.io/MotrpacRatTraining6moData/reference/GENE_UNIVERSES.html</loc>
   </url>
   <url>
@@ -122,6 +125,9 @@
   </url>
   <url>
     <loc>https://motrpac.github.io/MotrpacRatTraining6moData/reference/METHYL_RAW_DATA.html</loc>
+  </url>
+  <url>
+    <loc>https://motrpac.github.io/MotrpacRatTraining6moData/reference/MotrpacRatTraining6moData-package.html</loc>
   </url>
   <url>
     <loc>https://motrpac.github.io/MotrpacRatTraining6moData/reference/OUTLIERS.html</loc>
