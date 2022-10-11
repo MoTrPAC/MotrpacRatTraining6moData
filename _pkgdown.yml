@@ -21,6 +21,7 @@ reference:
 - subtitle: Raw sample-level data
   contents:
     - matches("_RAW_COUNTS$") 
+    - METHYL_RAW_DATA
 - subtitle: Normalized sample-level data
   contents:
     - matches("_NORM_DATA$")
@@ -64,6 +65,8 @@ reference:
     - REPEATED_FEATURES
     - RAT_TO_HUMAN_GENE
     - METAB_FEATURE_ID_MAP
+    - ATAC_FEATURE_ANNOT
+    - METHYL_FEATURE_ANNOT
 - subtitle: Abbreviations 
   contents:
     - ASSAY_ABBREV_TO_CODE
