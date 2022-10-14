@@ -461,6 +461,7 @@ sinew::makeOxygen(PHENO)
 
 # Feature-to-gene map -----------------------------------------------------------
 
+
 #system("gsutil cp gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/resources/master_feature_to_gene_20211116.RData /tmp")
 load("/tmp/master_feature_to_gene_20211116.RData")
 
@@ -597,3 +598,19 @@ save(ATAC_FEATURE_ANNOT,
      file=sprintf("%s/extracted_sample_level_data/ATAC/ATAC_FEATURE_ANNOT.rda",data_dir),
      compress = "bzip2",
      compression_level = 9)
+
+
+# Rat-to-human phosphosite map 
+
+map = dl_read_gcp("gs://motrpac-data-hub/pass1b-06/analysis/resources/motrpac_pass1b-06_proteomics-ph-rat2human-20211016.csv", sep=",")
+nrow(map)
+map = map[!(is.na(ptm_id_rat_refseq) & is.na(ptm_id_human_uniprot))]
+nrow(map)
+head(map)
+# convert to data.frame
+RAT_TO_HUMAN_PHOSPHO = as.data.frame(map)
+use_data(RAT_TO_HUMAN_PHOSPHO, overwrite = TRUE)
+# recompress 
+tools::resaveRdaFiles(paths = 'data/RAT_TO_HUMAN_PHOSPHO.rda')
+# document
+sinew::makeOxygen(RAT_TO_HUMAN_PHOSPHO)

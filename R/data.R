@@ -103,7 +103,7 @@
 #'     For fast(er) indexing, convert this object to a [data.table::data.table()] and use 
 #'     [data.table::setkey()] to set the key to the column you are matching. 
 #'     This dramatically improves performance. 
-#'     
+#' @source \code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/resources/master_feature_to_gene_20211116.RData}
 "FEATURE_TO_GENE"
 
 
@@ -207,6 +207,28 @@
 #'     the feature-to-gene map and universe lists. Note that the graphical analysis
 #'     uses the modified feature_IDs; differential analysis results use the unmodified feature_IDs.
 "REPEATED_FEATURES"
+
+
+#' @name RAT_TO_HUMAN_PHOSPHO
+#' @title Rat-to-human phosphosite map 
+#' @description Sequence-identity-based mapping between rat and human protein phosphorylation sites 
+#' @format A data frame with 202610 rows and 2 variables:
+#' \describe{
+#'   \item{\code{ptm_id_rat_refseq}}{character, RefSeq ID for rat phosphosite}
+#'   \item{\code{ptm_id_human_uniprot}}{character, Uniprot ID for human phosphosite} 
+#'}
+#' @details We used the NCBI Reference Protein Sequence database (RefSeq) to annotate protein IDs. 
+#' Most of the Post-Translational Modification (PTM) resources and tools available are for humans; 
+#' rat annotation is lacking. To leverage information from humans, we mapped PTM sites from rats to 
+#' humans following a bioinformatics approach. Briefly, we used BLASTp to align all rat sequences 
+#' to the human review UniProt fasta sequence database (download date: 02/03/2021). The median 
+#' protein sequence identity between rats and humans is 85%. Only alignments with a sequence identity 
+#' greater than 60% were included for mapping. For most proteins, BLASTp outputs multiple pairwise 
+#' alignments (one-to-many). In those cases, we selected the alignment with the larger "positives" 
+#' and "identities" values and required an exact match for the S/T/Y residues identified in this study. 
+#' As a result, we could map with confidence 73.5% of all the phosphorylation sites we identified.
+#' @source \code{gs://motrpac-data-hub/pass1b-06/analysis/resources/motrpac_pass1b-06_proteomics-ph-rat2human-20211016.csv}
+"RAT_TO_HUMAN_PHOSPHO"
 
 
 #' @title Metabolite feature IDs and metadata
