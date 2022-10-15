@@ -25,6 +25,9 @@ is always less than "geneEnd", even if the gene is on the negative strand ("gene
 \item{\code{kegg_id}}{character, KEGG ID for METAB features only. See \link[MotrpacBicQC:metabolomics_data_dictionary]{MotrpacBicQC::metabolomics_data_dictionary} for more details.}
 }
 }
+\source{
+\code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/resources/master_feature_to_gene_20211116.RData}
+}
 \usage{
 FEATURE_TO_GENE
 }
