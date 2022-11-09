@@ -35,7 +35,7 @@ Suggests:
     dplyr,
     edgeR,
     FELLA,
-    ggplot2 (<= 3.3.6),
+    ggplot2 (== 3.3.6),
     gprofiler2,
     IHW,
     KEGGREST,
