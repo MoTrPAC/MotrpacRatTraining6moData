@@ -35,7 +35,7 @@ Suggests:
     dplyr,
     edgeR,
     FELLA,
-    ggplot2 (== 3.3.6),
+    ggplot2,
     gprofiler2,
     IHW,
     KEGGREST,
@@ -53,7 +53,8 @@ Suggests:
     usethis
 Remotes: 
     MoTrPAC/MotrpacBicQC,
-    MoTrPAC/MotrpacRatTraining6mo
+    MoTrPAC/MotrpacRatTraining6mo,
+    YuLab-SMU/ggtree
 Encoding: UTF-8
 LazyData: true
 LazyDataCompression: bzip2
