@@ -43,6 +43,7 @@ Suggests:
     limma,
     MotrpacBicQC (>= 0.6.9),
     MotrpacRatTraining6mo (>= 1.0.1),
+    ggtree (>= 3.7.1),
     preprocessCore,
     repfdr,
     rmarkdown,
