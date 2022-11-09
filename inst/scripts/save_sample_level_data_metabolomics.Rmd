@@ -380,6 +380,8 @@ METAB_SAMPLE_DATA_NESTED = METAB_SAMPLE_DATA
 # usethis::use_data(METAB_SAMPLE_DATA_NESTED,overwrite=T)
 # convert to nested list 
 # load("../../data/METAB_SAMPLE_DATA_NESTED.rda")
+
+# change format to nested list: data[[platform]][[tissue]]
 data_list = list()
 for(i in 1:nrow(METAB_SAMPLE_DATA_NESTED)){
   tissue_code = METAB_SAMPLE_DATA_NESTED$tissue[i]
@@ -394,8 +396,9 @@ usethis::use_data(METAB_NORM_DATA_NESTED,overwrite=T)
 
 # 4. Make metabolite-to-RefMet map from DEA
 ```{r}
-load("../../data/METAB_SAMPLE_DATA_NESTED.rda")
-load_all("../../../MotrpacRatTraining6mo") # for viallabel_to_pid, list_available_data
+load("../../data/METAB_NORM_DATA_NESTED.rda")
+#load_all("../../../MotrpacRatTraining6mo") # for viallabel_to_pid, list_available_data
+library(MotrpacRatTraining6mo)
 # load all DEA tables 
 obj_list = list_available_data(package="MotrpacRatTraining6moData")
 metab_dea = obj_list[grepl("^METAB_",obj_list) & grepl("_DA$",obj_list)]
@@ -416,38 +419,38 @@ differential_features = unique(TRAINING_REGULATED_FEATURES$feature)
 ```{r}
 data_list = list()
 feature_meta_list = list()
-for(i in 1:nrow(METAB_NORM_DATA_NESTED)){
-  tissue_code = METAB_NORM_DATA_NESTED$tissue[i]
-  tissue = TISSUE_CODE_TO_ABBREV[[tissue_code]]
-  assay_code = METAB_SAMPLE_DATA_NESTED$assay_code[i]
-  sample_data = as.data.frame(METAB_SAMPLE_DATA_NESTED$sample_data[i][[1]])
-  
-  # replace colname with pid 
-  colnames(sample_data) = viallabel_to_pid(colnames(sample_data))
-  feature_IDs = rownames(sample_data)
-  
-  # make original and "fixed" feature for ALL feature_ID
-  features = sprintf("METAB;%s;%s", tissue, feature_IDs)
-  new_features = sprintf("METAB;%s;%s:%s", tissue, assay_code, feature_IDs)
-  # make data.table
-  dt = as.data.table(cbind(feature=features, 
-                           new_feature=new_features, 
-                           feature_ID=feature_IDs,
-                           tissue=tissue,
-                           assay="METAB",
-                           dataset=assay_code,
-                           sample_data))
-  label=sprintf("%s;%s", tissue, assay_code)
-  data_list[[i]] = dt
-  
-  feature_meta_list[[i]] = data.table(cbind(tissue = METAB_SAMPLE_DATA_NESTED[i, "tissue"],
-                                    assay_code = METAB_SAMPLE_DATA_NESTED[i, "assay_code"],
-                                    as.data.table(METAB_SAMPLE_DATA_NESTED[i, "feature_metadata"][[1]])))
-  writeLines(label)
-  
+for(assay_code in names(METAB_NORM_DATA_NESTED)){
+  for(tissue in names(METAB_NORM_DATA_NESTED[[assay_code]])){
+    sample_data = as.data.frame(METAB_NORM_DATA_NESTED[[assay_code]][[tissue]])
+    
+    # replace colnames with pid 
+    colnames(sample_data) = viallabel_to_pid(colnames(sample_data))
+    feature_IDs = rownames(sample_data)
+    
+    # make original and "fixed" feature for ALL feature_ID
+    # this accounts for redundant features but NOT feature_IDs from metaregression, which is addressed below
+    features = sprintf("METAB;%s;%s", tissue, feature_IDs)
+    new_features = sprintf("METAB;%s;%s:%s", tissue, assay_code, feature_IDs)
+    # make data.table
+    dt = as.data.table(cbind(feature=features, 
+                             new_feature=new_features, 
+                             feature_ID=feature_IDs,
+                             tissue=tissue,
+                             assay="METAB",
+                             dataset=assay_code,
+                             sample_data))
+    label=sprintf("%s;%s", tissue, assay_code)
+    data_list[[label]] = dt
+    
+    ## since moved to METAB_FEATURE_ID_MAP
+    # feature_meta_list[[i]] = data.table(cbind(tissue = METAB_SAMPLE_DATA_NESTED[i, "tissue"],
+    #                                   assay_code = METAB_SAMPLE_DATA_NESTED[i, "assay_code"],
+    #                                   as.data.table(METAB_SAMPLE_DATA_NESTED[i, "feature_metadata"][[1]])))
+    writeLines(label)
+  }
 }
 metab_data = rbindlist(data_list, fill=T)
-feature_meta = rbindlist(feature_meta_list)
+#feature_meta = rbindlist(feature_meta_list)
 # fix duplicate feature names for differential metabolites 
 rep_feat = data.table(REPEATED_FEATURES)
 metab_data[,feature := ifelse(new_feature %in% rep_feat[,new_feature], new_feature, feature)]
@@ -500,7 +503,8 @@ mdd = data.table(metabolomics_data_dictionary)
 # # yes! 
 # # add it to map and metareg and DA
 refmet = mdd[metabolite_name == "TG(36:1)>TG(4:0_16:0_16:1)_and_TG(2:0_16:0_18:1)_feature4 ",refmet_name]
-METAB_FEATURE_ID_MAP[metabolite_name == "TG(36:1)>TG(4:0_16:0_16:1)_and_TG(2:0_16:0_18:1)_feature4", metabolite_refmet := refmet] 
+METAB_FEATURE_ID_MAP[metabolite_name == "TG(36:1)>TG(4:0_16:0_16:1)_and_TG(2:0_16:0_18:1)_feature4", 
+                     metabolite_refmet := refmet] 
 # metareg[feature_ID == "TG(36:1)>TG(4:0_16:0_16:1)_and_TG(2:0_16:0_18:1)_feature4", metabolite_refmet := refmet]
 # 
 # data("METAB_WATSC_DA_METAREG")
@@ -530,6 +534,7 @@ METAB_FEATURE_ID_MAP[,id := 1:nrow(METAB_FEATURE_ID_MAP)]
 setnames(metareg, c("feature_ID"), c("feature_ID_metareg"))
 # 1. feature in METAB_FEATURE_ID_MAP
 m1 = merge(METAB_FEATURE_ID_MAP, metareg[dataset!="meta-reg"], by=c('feature','metabolite_refmet','dataset','tissue'), all.y=T)
+# 2. metabolite_refmet
 m2 = merge(METAB_FEATURE_ID_MAP, metareg[dataset=="meta-reg"], by=c("tissue","metabolite_refmet"), all.y=T)
 setnames(m2, c("feature.x","dataset.x","feature.y","dataset.y"), c("feature","dataset","feature_metareg","dataset_metareg"))
 m1[,feature_metareg := feature]
@@ -620,7 +625,7 @@ missing = metab_diff[!metab_diff %in% METAB_NORM_DATA_FLAT$feature]
 missing
 # these look like RefMet IDs 
 missing_featureID = unique(sapply(missing, function(x) unname(unlist(strsplit(x, ";")))[3]))
-table(missing_featureID %in% METAB_FEATURE_ID_MAP$metabolite_refmet)
+table(missing_featureID %in% METAB_FEATURE_ID_MAP$metabolite_refmet) # all but "meta-reg:GMP"
 
 # for each of the missing features, find corresponding refmet
 # replace feature
@@ -647,7 +652,14 @@ METAB_NORM_DATA_FLAT[feature_ID == "sn-glycero-3-phosphocholine" & tissue == "WA
 # check again 
 table(na.omit(METAB_NORM_DATA_FLAT[,feature]) %in% metab_diff)
 table(metab_diff %in% METAB_NORM_DATA_FLAT[,feature])
+
+# fixed!
+# save and recompress
+METAB_NORM_DATA_FLAT = as.data.frame(METAB_NORM_DATA_FLAT)
+use_data(METAB_NORM_DATA_FLAT, overwrite = TRUE)
+tools::resaveRdaFiles(paths = '../../data/METAB_NORM_DATA_FLAT.rda')
 ```
+
 So now we've fixed the sample-level data, but what about the METAB_DA tables?
 ```{r check metab da}
 # load all DEA tables 

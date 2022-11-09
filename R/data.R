@@ -902,7 +902,9 @@ doctext = function(day){
 "PHENO"
 
 
-## RNA-seq sample-level data ####
+## Sample-level molecular data ####
+
+### RNA-seq sample-level data ####
 
 #' @title RNA-seq raw counts
 #' @description RNA-seq raw counts as quantified by RSEM
@@ -1036,7 +1038,7 @@ doctext = function(day){
 "TRNSCRPT_WATSC_NORM_DATA"
 
 
-## ATAC-seq sample-level data ####
+### ATAC-seq sample-level data ####
 
 #' @title ATAC-seq raw counts
 #' @format A data frame with chromatin accessibility peaks in rows and samples (vial labels) in columns
@@ -1166,7 +1168,7 @@ NULL
 "ATAC_WATSC_NORM_DATA_05FDR"
 
 
-## RRBS sample-level data ####
+### RRBS sample-level data ####
 
 #' @title RRBS raw data
 #' @description RRBS raw read counts; created by loading all bismark files into a single data object.
@@ -1324,7 +1326,7 @@ NULL
 "METHYL_WATSC_NORM_DATA_05FDR"
 
 
-## Proteomics sample-level data ####
+### Proteomics sample-level data ####
 
 #' @title Normalized protein expression data
 #' @description Median-MAD normalized protein expression (PROT) data used for visualization and differential analysis
@@ -1421,7 +1423,7 @@ NULL
 "UBIQ_LIVER_NORM_DATA"
 
 
-## Immunoassay sample-level data ####
+### Immunoassay sample-level data ####
 
 #' @title Processed immunoassay data used for differential analysis
 #' @description Normalized, imputed, and filtered multiplexed immunoassay data used for differential analysis  
@@ -1459,7 +1461,7 @@ NULL
 "IMMUNO_NORM_DATA_FLAT"
 
 
-## Metabolomics sample-level data ####
+### Metabolomics sample-level data ####
 
 #' @title Processed metabolomics data used for differential analysis
 #' @description Combined sample-level data organized by metabolomics platforms and tissue used for differential analysis
@@ -1488,6 +1490,24 @@ NULL
 #'   differential analysis functions while this format is compatible with visualization functions. 
 #' @format A data frame with metabolites in rows and participant IDs (PIDs) in columns 
 "METAB_NORM_DATA_FLAT"
+
+
+### Combined sample-level data for training-regulated features ####
+
+#' @title Normalized data for training-regulated features 
+#' @description Combined normalized sample-level data for all training-regulated features
+#'   at 5% FDR (see [TRAINING_REGULATED_FEATURES]). Specifically used to speed up plotting
+#'   of training-regulated features in [MotrpacRatTraining6mo::plot_feature_trajectories()].
+#' @format A data frame with features in rows and participant IDs (PIDs) in columns 
+#'   (in addition to feature metadata columns)
+#' @details Sample-level data were compiled using [MotrpacRatTraining6mo::load_sample_data()]
+#'   with \code{normalized=TRUE, training_regulated_only=TRUE}. [TRAINING_REGULATED_NORM_DATA_NO_OUTLIERS]
+#'   excludes outliers defined in [OUTLIERS] while [TRAINING_REGULATED_NORM_DATA] does not. 
+#' @name TRAINING_REGULATED_NORM_DATA
+"TRAINING_REGULATED_NORM_DATA"
+
+#' @rdname TRAINING_REGULATED_NORM_DATA
+"TRAINING_REGULATED_NORM_DATA_NO_OUTLIERS"
 
 
 ## Differential analysis ####
