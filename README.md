@@ -146,13 +146,22 @@ head(TRNSCRPT_LIVER_DA)
 Due to file size, only normalized sample-level data and differential analysis results 
 corresponding to **training-regulated features** (5% IHW FDR) are contained in this package
 for chromatin accessibility (ATAC) and DNA methylation (METHYL). The full sets of epigenetic results
-may be downloaded through the following public URLs. 
+may be downloaded either with R functions in the [MotrpacRatTraining6mo package](https://motrpac.github.io/MotrpacRatTraining6mo/) 
+or through the following public URLs. 
 
 **Note that clicking on a [Link]() automatically starts a download.**
 To instead copy the URL for an object, right-click the [Link]() and select `Copy Link Address`. 
 
+To download and load epigenetic data within R, use one of the following functions in the
+[MotrpacRatTraining6mo package](https://motrpac.github.io/MotrpacRatTraining6mo/): 
+
+* [load_sample_data()](https://motrpac.github.io/MotrpacRatTraining6mo/reference/load_sample_data.html): For sample-level data from a single tissue and ome.  
+* [combine_normalized_data()](https://motrpac.github.io/MotrpacRatTraining6mo/reference/combine_normalized_data.html): For sample-level data from multiple tissues or omes. Use `include_epigen = TRUE`.    
+* [combine_da_results()](https://motrpac.github.io/MotrpacRatTraining6mo/reference/combine_da_results.html): For differential analysis results from multiple tissues or omes. Use `include_epigen = TRUE`.  
+* Several other functions specifically for loading epigenetic data are documented [here](https://motrpac.github.io/MotrpacRatTraining6mo/reference/index.html#load-epigenetic-data).  
+
 Note that the size in this table is the compressed size. Each object occupies several times more
-memory when loaded into R. The total compressed size for all of these objects is 8.68 GiB (~9.32 GB).
+memory when loaded into R. The total compressed size for all of these objects is 8.68 GiB (~9.32 GB).  
 
 Type|Assay|Tissue|Object|Size (MiB)|Click to download|
 ---|---|---|---|---|---|

@@ -20,8 +20,8 @@ gitdir = "nicolerg/src/MOTRPAC/"
 scratch = 'nicolerg/tmp'
 datadir = 'motrpac/internal_releases/motrpac-data-freeze-pass/v1.1/extracted_sample_level_data'
 gsutil = 'gsutil'
-source(sprintf("%s/motrpac-mawg/pass1b-06/tools/get_fx.R", gitdir))
-source(sprintf("%s/motrpac-mawg/pass1b-06/integrative/clustering/cluster_viz_fx.R", gitdir))
+#source(sprintf("%s/motrpac-mawg/pass1b-06/tools/get_fx.R", gitdir))
+#source(sprintf("%s/motrpac-mawg/pass1b-06/integrative/clustering/cluster_viz_fx.R", gitdir))
 #load_all("../../R")
 ```
 
@@ -195,6 +195,8 @@ combine_normalized_data = function(gsutil_path,
   
   return(norm)
 }
+
+# note this is now a function in MotrpacRatTraining6mo
 viallabel_to_pid = function(viallabels){
   pheno = as.data.table(MotrpacRatTraining6moData::PHENO)
   pheno = unique(pheno[,.(viallabel, pid)])
@@ -374,9 +376,43 @@ usethis::use_data(IMMUNO_NORM_DATA_NESTED, overwrite=T)
 
 #### Single normalized data table
 
+This next chunk was added at a much later date (12/13/22) to troubleshoot an issue. 
+Note that this code no longer reveals any issues because the RData have been updated. 
+See: https://github.com/MoTrPAC/MotrpacRatTraining6moData/issues/36 
+```{r check for error, eval=F}
+# update as of 12/13/22
+# it is likely that viallabels got shuffled given the use of viallabel_to_pid()
+# spot-check a single dataset
+load("../../data/IMMUNO_NORM_DATA_NESTED.rda")
+load("../../data/IMMUNO_NORM_DATA_FLAT.rda")
+
+# format nested data
+data_nested = IMMUNO_NORM_DATA_NESTED$`rat-mag27plex`$LIVER
+rownames(data_nested) = data_nested$viallabel
+data_nested$viallabel = NULL
+data_nested = as.data.frame(t(data_nested))
+
+# format flat data
+data_flat = IMMUNO_NORM_DATA_FLAT[IMMUNO_NORM_DATA_FLAT$dataset == "rat-mag27plex" &  IMMUNO_NORM_DATA_FLAT$tissue == "LIVER",]
+rownames(data_flat) = data_flat$feature_ID
+data_flat[,c("feature","tissue","assay","dataset","feature_ID")] = NULL
+# remove all-NA cols
+for(c in colnames(data_flat)){
+  if(all(is.na(data_flat[,c]))){
+    data_flat[,c] = NULL
+  }
+}
+dim(data_flat) == dim(data_nested)
+table(data_flat == data_nested)
+# so values are the same, but do samples match?
+expected = MotrpacRatTraining6mo::viallabel_to_pid(colnames(data_nested))
+expected = expected[colnames(data_nested)]
+table(as.character(expected) == colnames(data_flat))
+# as expected, they do not. so we need to fix the code and regenerate IMMUNO_NORM_DATA_FLAT
+```
+
 Because there are multiple viallabels per animal per tissue for IMMUNO data,
 make a single normalized data table where column names are PID instead of viallabel. 
-
 ```{r format IMMUNO for viz}
 load("../../data/IMMUNO_NORM_DATA_NESTED.rda")
 load("../../data/REPEATED_FEATURES.rda")
@@ -399,8 +435,11 @@ for(panel in names(IMMUNO_NORM_DATA_NESTED)){
       new_features = sprintf("IMMUNO;%s;%s:%s", tissue, panel, feature_ID)
       features[new_features %in% rep[,new_feature]] = new_features[new_features %in% rep[,new_feature]]
     }
-    # replace colname with pid 
-    colnames(df_t) = viallabel_to_pid(colnames(df_t))
+    # replace colnames with pid 
+    vl_to_pid = MotrpacRatTraining6mo::viallabel_to_pid(colnames(df_t))
+    vl_to_pid = vl_to_pid[colnames(df_t)]
+    stopifnot(all(colnames(df_t) == names(vl_to_pid)))
+    colnames(df_t) = unname(vl_to_pid)
     # make data.table
     dt = as.data.table(cbind(feature=features, 
                              feature_ID=feature_ID,
@@ -423,6 +462,8 @@ immuno_data[!feature %in% differential_features, feature := NA]
 # save 
 IMMUNO_NORM_DATA_FLAT = as.data.frame(immuno_data)
 usethis::use_data(IMMUNO_NORM_DATA_FLAT, overwrite=T)
+# recompress
+tools::resaveRdaFiles(paths="../../data/IMMUNO_NORM_DATA_FLAT.rda")
 ```
 
 ## TRNSCRPT raw counts
