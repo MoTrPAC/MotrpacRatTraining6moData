@@ -9,6 +9,7 @@ output: html_document
 library(data.table)
 library(MotrpacBicQC)
 library(MotrpacRatTraining6moData)
+library(MotrpacRatTraining6mo)
 library(dplyr)
 library(testit)
 library(usethis)
@@ -372,22 +373,13 @@ mutate(feature_metadata = pmap(list(tissue,assay_code,data_for_dea), function(ti
 ```{r}
 METAB_SAMPLE_DATA <- metab_data %>%
   rename(sample_data = data_for_dea)
-# usethis::use_data(METAB_SAMPLE_DATA,overwrite=T)
-# 
-# # rename
-# load("../../data/METAB_SAMPLE_DATA.rda")
-METAB_SAMPLE_DATA_NESTED = METAB_SAMPLE_DATA
-# usethis::use_data(METAB_SAMPLE_DATA_NESTED,overwrite=T)
-# convert to nested list 
-# load("../../data/METAB_SAMPLE_DATA_NESTED.rda")
-
 # change format to nested list: data[[platform]][[tissue]]
 data_list = list()
-for(i in 1:nrow(METAB_SAMPLE_DATA_NESTED)){
-  tissue_code = METAB_SAMPLE_DATA_NESTED$tissue[i]
+for(i in 1:nrow(METAB_SAMPLE_DATA)){
+  tissue_code = METAB_SAMPLE_DATA$tissue[i]
   tissue = TISSUE_CODE_TO_ABBREV[[tissue_code]]
-  platform = METAB_SAMPLE_DATA_NESTED$assay_code[i]
-  data = as.data.frame(METAB_SAMPLE_DATA_NESTED$sample_data[i][[1]])
+  platform = METAB_SAMPLE_DATA$assay_code[i]
+  data = as.data.frame(METAB_SAMPLE_DATA$sample_data[i][[1]])
   data_list[[platform]][[tissue]] = data
 }
 METAB_NORM_DATA_NESTED = data_list
@@ -397,8 +389,6 @@ usethis::use_data(METAB_NORM_DATA_NESTED,overwrite=T)
 # 4. Make metabolite-to-RefMet map from DEA
 ```{r}
 load("../../data/METAB_NORM_DATA_NESTED.rda")
-#load_all("../../../MotrpacRatTraining6mo") # for viallabel_to_pid, list_available_data
-library(MotrpacRatTraining6mo)
 # load all DEA tables 
 obj_list = list_available_data(package="MotrpacRatTraining6moData")
 metab_dea = obj_list[grepl("^METAB_",obj_list) & grepl("_DA$",obj_list)]
@@ -418,13 +408,16 @@ differential_features = unique(TRAINING_REGULATED_FEATURES$feature)
 # 5. Make "flat" version of normalized data and metabolite metadata 
 ```{r}
 data_list = list()
-feature_meta_list = list()
 for(assay_code in names(METAB_NORM_DATA_NESTED)){
   for(tissue in names(METAB_NORM_DATA_NESTED[[assay_code]])){
     sample_data = as.data.frame(METAB_NORM_DATA_NESTED[[assay_code]][[tissue]])
     
     # replace colnames with pid 
-    colnames(sample_data) = viallabel_to_pid(colnames(sample_data))
+    vl = viallabel_to_pid(colnames(sample_data))
+    # order viallabels 
+    vl = vl[colnames(sample_data)]
+    stopifnot(all(names(vl) == colnames(sample_data)))
+    colnames(sample_data) = unname(vl)
     feature_IDs = rownames(sample_data)
     
     # make original and "fixed" feature for ALL feature_ID
@@ -450,7 +443,6 @@ for(assay_code in names(METAB_NORM_DATA_NESTED)){
   }
 }
 metab_data = rbindlist(data_list, fill=T)
-#feature_meta = rbindlist(feature_meta_list)
 # fix duplicate feature names for differential metabolites 
 rep_feat = data.table(REPEATED_FEATURES)
 metab_data[,feature := ifelse(new_feature %in% rep_feat[,new_feature], new_feature, feature)]
@@ -490,14 +482,6 @@ metareg = rbindlist(dea_list)
 metareg = unique(metareg[,.(feature, tissue, feature_ID, dataset, metabolite_refmet, metabolite)])
 # is refmet NA for any?
 table(is.na(metareg[,metabolite_refmet]))
-## this is now fixed in an upstream script 
-# metareg[is.na(metabolite_refmet)]
-# METAB_FEATURE_ID_MAP[feature_ID_da=="TG(36:1)>TG(4:0_16:0_16:1)_and_TG(2:0_16:0_18:1)_feature4"]
-# # can we get the refmet from the feature metadata?
-# head(feature_meta)
-# feature_meta[metabolite_name == "TG(36:1)>TG(4:0_16:0_16:1)_and_TG(2:0_16:0_18:1)_feature4"] # no 
-# # how about from MotrpacBicQC?
-# head(metabolomics_data_dictionary)
 mdd = data.table(metabolomics_data_dictionary)
 # mdd[metabolite_name == "TG(36:1)>TG(4:0_16:0_16:1)_and_TG(2:0_16:0_18:1)_feature4 "]
 # # yes! 
@@ -575,36 +559,38 @@ METAB_FEATURE_ID_MAP = rbindlist(list(METAB_FEATURE_ID_MAP, standard, metareg1),
 backup = copy(METAB_FEATURE_ID_MAP)
 ```
 
-```{r save flat data}
+```{r save feature to ID map}
 METAB_FEATURE_ID_MAP = as.data.frame(METAB_FEATURE_ID_MAP[,.(metabolite_name, metabolite_refmet, tissue, dataset,
                                                              feature_ID_sample_data, feature_ID_da, feature_ID_metareg,
                                                              dataset_metareg, feature)])
-# merge with feature meta 
-head(feature_meta)
-feature_meta[,tissue := TISSUE_CODE_TO_ABBREV[tissue]]
-feature_meta[,refmet_name := NULL]
-table(feature_meta[,metabolite_name] %in% METAB_FEATURE_ID_MAP$feature_ID_sample_data)
-table(METAB_FEATURE_ID_MAP$feature_ID_sample_data %in% feature_meta[,metabolite_name])
-METAB_FEATURE_ID_MAP$feature_ID_sample_data[! METAB_FEATURE_ID_MAP$feature_ID_sample_data %in% feature_meta[,metabolite_name]]
-# does mdd have meta for this feature?
-head(mdd)
-mdd[metabolite_name == "TG(36:1)>TG(4:0_16:0_16:1)_and_TG(2:0_16:0_18:1)_feature4 "]
-missing = data.table(tissue = "WAT-SC",
-                     assay_code = "metab-u-lrppos",
-                     metabolite_name = "TG(36:1)>TG(4:0_16:0_16:1)_and_TG(2:0_16:0_18:1)_feature4",
-                     formula = "C39H72O6")
-feature_meta = rbindlist(list(feature_meta, missing), fill=T)
-METAB_FEATURE_ID_MAP = merge(METAB_FEATURE_ID_MAP, feature_meta, 
-                             by.x=c("tissue","dataset","metabolite_name"), 
-                             by.y=c("tissue","assay_code","metabolite_name"),
-                             all.x=TRUE)
 METAB_FEATURE_ID_MAP[is.na(METAB_FEATURE_ID_MAP$rt),]
-# woohoo!
-use_data(METAB_FEATURE_ID_MAP, overwrite = TRUE)
 table(metab_data[,feature_ID] %in% METAB_FEATURE_ID_MAP$feature_ID_sample_data)
+# save METAB_FEATURE_ID_MAP
+use_data(METAB_FEATURE_ID_MAP, overwrite = TRUE)
+sinew::makeOxygen(METAB_FEATURE_ID_MAP)
+```
+
+```{r save flat data}
+# sanity check 
+feature = melt(metab_data[feature_ID == "TG(36:2)>TG(2:0_16:0_18:2)_feature4"],
+               measure.vars = colnames(metab_data)[grepl("^1", colnames(metab_data))],
+               id.vars = c("feature_ID"),
+               variable.name = "pid")
+# remove NA
+feature = feature[complete.cases(feature)]
+# merge with pheno
+PHENO$pid = as.character(PHENO$pid)
+feature[,pid := as.character(pid)]
+feature = merge(feature, unique(PHENO[,c("pid","sex","group")]), by="pid")
+# plot 
+ggplot(feature, aes(x=group, y=value)) +
+  geom_point() +
+  facet_wrap(~ sex) +
+  labs(title="WAT TG(36:2)>TG(2:0_16:0_18:2)_feature4")
+
+# save METAB_NORM_DATA_FLAT
 METAB_NORM_DATA_FLAT = as.data.frame(metab_data)
 use_data(METAB_NORM_DATA_FLAT, overwrite = TRUE)
-sinew::makeOxygen(METAB_FEATURE_ID_MAP)
 sinew::makeOxygen(METAB_NORM_DATA_FLAT)
 ```
 
