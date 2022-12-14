@@ -1,4 +1,4 @@
-# MotrpacRatTraining6moData 1.6.1 (2022-11-13)
+# MotrpacRatTraining6moData 1.6.1 (2022-12-13)
 
 * Fix shuffled PIDs in `METAB_NORM_DATA_FLAT` and `IMMUNO_NORM_DATA_FLAT` introduced by 
 not reordering the list returned by `MotrpacRatTraining6mo::viallabel_to_pid()`. 
