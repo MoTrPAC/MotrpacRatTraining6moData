@@ -40,7 +40,7 @@
     
     <a class="navbar-brand me-2" href="index.html">MotrpacRatTraining6moData</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.6.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.6.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -215,8 +215,21 @@ Run `rlang::last_error()` to see where the error occurred.</code></pre>
 <div class="section level2">
 <h2 id="access-epigenomics-data-through-google-cloud-storage">Access epigenomics data through Google Cloud Storage<a class="anchor" aria-label="anchor" href="#access-epigenomics-data-through-google-cloud-storage"></a>
 </h2>
-<p>Due to file size, only normalized sample-level data and differential analysis results corresponding to <strong>training-regulated features</strong> (5% IHW FDR) are contained in this package for chromatin accessibility (ATAC) and DNA methylation (METHYL). The full sets of epigenetic results may be downloaded through the following public URLs.</p>
+<p>Due to file size, only normalized sample-level data and differential analysis results corresponding to <strong>training-regulated features</strong> (5% IHW FDR) are contained in this package for chromatin accessibility (ATAC) and DNA methylation (METHYL). The full sets of epigenetic results may be downloaded either with R functions in the <a href="https://motrpac.github.io/MotrpacRatTraining6mo/" class="external-link">MotrpacRatTraining6mo package</a> or through the following public URLs.</p>
 <p><strong>Note that clicking on a <a href="">Link</a> automatically starts a download.</strong> To instead copy the URL for an object, right-click the <a href="">Link</a> and select <code>Copy Link Address</code>.</p>
+<p>To download and load epigenetic data within R, use one of the following functions in the <a href="https://motrpac.github.io/MotrpacRatTraining6mo/" class="external-link">MotrpacRatTraining6mo package</a>:</p>
+<ul>
+<li>
+<a href="https://motrpac.github.io/MotrpacRatTraining6mo/reference/load_sample_data.html" class="external-link">load_sample_data()</a>: For sample-level data from a single tissue and ome.<br>
+</li>
+<li>
+<a href="https://motrpac.github.io/MotrpacRatTraining6mo/reference/combine_normalized_data.html" class="external-link">combine_normalized_data()</a>: For sample-level data from multiple tissues or omes. Use <code>include_epigen = TRUE</code>.<br>
+</li>
+<li>
+<a href="https://motrpac.github.io/MotrpacRatTraining6mo/reference/combine_da_results.html" class="external-link">combine_da_results()</a>: For differential analysis results from multiple tissues or omes. Use <code>include_epigen = TRUE</code>.<br>
+</li>
+<li>Several other functions specifically for loading epigenetic data are documented <a href="https://motrpac.github.io/MotrpacRatTraining6mo/reference/index.html#load-epigenetic-data" class="external-link">here</a>.</li>
+</ul>
 <p>Note that the size in this table is the compressed size. Each object occupies several times more memory when loaded into R. The total compressed size for all of these objects is 8.68 GiB (~9.32 GB).</p>
 <table style="width:100%;" class="table">
 <colgroup>
