@@ -6,6 +6,14 @@
 ![Last commit](https://img.shields.io/github/last-commit/MoTrPAC/MotrpacRatTraining6moData/main)
 <!-- badges: end -->
 
+***
+
+**IMPORTANT: Watch this repository to get email notifications about new releases, which
+can include changes to the data. In the top-right corner of [this page](https://github.com/MoTrPAC/MotrpacRatTraining6moData), 
+choose `Watch` > `Custom` > `Releases`.**  
+
+***
+
 ## Table of Contents
 * [Overview](#overview)
   * [About this package](#about-this-package)
