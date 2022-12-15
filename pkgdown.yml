@@ -1,9 +1,9 @@
 pandoc: 2.19.2
-pkgdown: 2.0.6
+pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
   MotrpacRatTraining6moData: MotrpacRatTraining6moData.html
-last_built: 2022-12-14T04:01Z
+last_built: 2022-12-15T18:32Z
 urls:
   reference: https://motrpac.github.io/MotrpacRatTraining6moData/reference
   article: https://motrpac.github.io/MotrpacRatTraining6moData/articles
