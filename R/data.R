@@ -2221,7 +2221,7 @@ NULL
 #'   
 #'   For a given metabolite \eqn{m}, the input to this analysis included the timewise effect sizes \eqn{y_{g,p}} and their variances 
 #'   \eqn{v_{g,p}} where \eqn{g} denotes the analysis group, which is a combination of the training time point and the sex for 
-#'   which the summary statistics were computed using the regression models explained above, and \eqn{p \exists (1,...,n_{m})}  
+#'   which the summary statistics were computed using the regression models explained above, and \eqn{p \in (1,...,n_{m})}  
 #'   denotes the platform. If \eqn{m} had data from at least three platforms, of which at least one was untargeted and 
 #'   at least one was targeted, then we added nested random effects for both the platform and the targeted status. 
 #'   That is, in \code{metafor}’s notation we used: \code{"mods ~ 0+analysis_group"} and 

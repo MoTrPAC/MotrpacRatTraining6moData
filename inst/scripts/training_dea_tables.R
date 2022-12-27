@@ -64,3 +64,11 @@ written = system("gsutil ls gs://motrpac-rat-training-6mo-extdata/training-da/**
 stopifnot(length(written) == length(all))
 stopifnot(all(basename(written) %in% basename(all)))
 stopifnot(all(basename(all) %in% basename(written)))
+
+# # this was run in bash to remove date suffixes.
+# # otherwise it is difficult to reconstruct the URL. 
+# for file in $(gsutil ls gs://motrpac-rat-training-6mo-extdata/training-da/**/*training*); do
+#   new=$(echo $file | sed "s/-fdr_.*/-fdr\.txt/")
+#   gsutil mv $file $new
+#   echo $new
+# done
