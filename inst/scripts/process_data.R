@@ -347,43 +347,45 @@ sinew::makeOxygen(ATAC_BAT_DA)
 load(sprintf("%s/extracted_sample_level_data/METHYL/METHYL_BAT_DA.rda", data_dir))
 sinew::makeOxygen(METHYL_BAT_DA)
 
+
 # Phenotypic data ---------------------------------------------------------------
 
-dmaqc_metadata = 'gs://motrpac-data-freeze-pass/pass1b-06/v1.1/results/phenotype/pass1b_6m_viallabel_data.txt'
-dmaqc_dict = 'gs://motrpac-data-freeze-pass/pass1b-06/v1.1/results/phenotype/merged_dictionary.txt'
+dmaqc_metadata = 'gs://motrpac-data-hub/pass1b-06/phenotype/motrpac_pass1b-06_pheno_viallabel_data_merged_v3.0.txt'
+dmaqc_dict = 'gs://motrpac-data-hub/pass1b-06/phenotype/motrpac_pass1b-06_pheno_dictionary_merged_v3.0.txt'
 
 # download and format phenotypic data
 dmaqc_metadata = dl_read_gcp(dmaqc_metadata)
 dmaqc_dict = dl_read_gcp(dmaqc_dict)
 
-# make a map from old column name to new column name
-code_to_string = list()
-for (c in colnames(dmaqc_metadata)){
-  if(c %in% dmaqc_dict[,BICUniqueID]){
-    # is there an exact match?
-    corresponding_code = c
-  }else{
-    # is there a partial match?
-    corresponding_code = gsub("_.*", "", c)
-  }
-  string = dmaqc_dict[BICUniqueID == corresponding_code, FullName]
-  if(grepl("_", c)){
-    string = paste0(string, "_", gsub(".*_","",c))
-  }
-  code_to_string[[c]] = string
-}
-# rename columns
-code_to_string = unlist(code_to_string, use.names=TRUE)
-all(colnames(dmaqc_metadata) %in% names(code_to_string))
-colnames(dmaqc_metadata) = code_to_string[colnames(dmaqc_metadata)]
+## in new version of phenotypic data, column names are not codes
+# # make a map from old column name to new column name
+# code_to_string = list()
+# for (c in colnames(dmaqc_metadata)){
+#   if(c %in% dmaqc_dict[,BICUniqueID]){
+#     # is there an exact match?
+#     corresponding_code = c
+#   }else{
+#     # is there a partial match?
+#     corresponding_code = gsub("_.*", "", c)
+#   }
+#   string = dmaqc_dict[BICUniqueID == corresponding_code, FullName]
+#   if(grepl("_", c)){
+#     string = paste0(string, "_", gsub(".*_","",c))
+#   }
+#   code_to_string[[c]] = string
+# }
+# # rename columns
+# code_to_string = unlist(code_to_string, use.names=TRUE)
+# all(colnames(dmaqc_metadata) %in% names(code_to_string))
+# colnames(dmaqc_metadata) = code_to_string[colnames(dmaqc_metadata)]
 
 # make categorical variables human-readable
-for (var in unique(dmaqc_dict[`Categorical.Definitions`!="",FullName])){
-  if(var == "Key.d_sacrifice") next
+for (var in unique(dmaqc_dict[categorical_values!="",field_name])){
+  if(var == "key___d_sacrifice") next
 
-  d = dmaqc_dict[FullName == var]
-  keys = unname(unlist(strsplit(d[,Categorical.Values],'\\|')))
-  values = tolower(unname(unlist(strsplit(d[,Categorical.Definitions],'\\|'))))
+  d = dmaqc_dict[field_name == var]
+  keys = unname(unlist(strsplit(d[,categorical_values],'\\|')))
+  values = tolower(unname(unlist(strsplit(d[,categorical_definitions],'\\|'))))
   names(values) = keys
   values = values[values!=""]
 
@@ -403,12 +405,33 @@ for (var in unique(dmaqc_dict[`Categorical.Definitions`!="",FullName])){
 # make column names lowercase for ease of use
 colnames(dmaqc_metadata) = tolower(colnames(dmaqc_metadata))
 
+# column names were changed between versions. 
+# revert column names for backwards compatibility 
+newcols = gsub("___", ".", colnames(dmaqc_metadata), fixed=TRUE)
+table(newcols %in% colnames(PHENO))
+newcols = gsub("vo_2_max_test", "vo2.max.test", newcols, fixed=TRUE)
+newcols = gsub("nmr_testing", "nmr.testing", newcols, fixed=TRUE)
+newcols = gsub("specimen_collection", "specimen.collection", newcols, fixed=TRUE)
+newcols = gsub("specimen_processing", "specimen.processing", newcols, fixed=TRUE)
+newcols = gsub("calculated_variables", "calculated.variables", newcols, fixed=TRUE)
+newcols = gsub("training.day_", "training.day", newcols, fixed=TRUE)
+newcols = gsub("terminal_weight", "terminal.weight", newcols, fixed=TRUE)
+newcols = gsub("staff_id", "staffid", newcols, fixed=TRUE)
+newcols = gsub("site_id", "siteid", newcols, fixed=TRUE)
+newcols = gsub("form_name", "formname", newcols, fixed=TRUE)
+newcols = gsub("version_nbr", "versionnbr", newcols, fixed=TRUE)
+newcols = gsub("vo_2", "vo2", newcols, fixed=TRUE)
+newcols = gsub("vco_2", "vco2", newcols, fixed=TRUE)
+newcols = gsub("time_point", "timepoint", newcols, fixed=TRUE)
+# not all columns match yet
+colnames(dmaqc_metadata) = newcols
+
 # subset to PASS1B
 pass1b = dmaqc_metadata[key.protocol=="phase 1b"]
 
 ## clean up some variables
 # clean up "sacrificetime"
-pass1b[,sacrificetime := sapply(key.sacrificetime, function(x) gsub(' week.*','w',x))]
+pass1b[,sacrificetime := sapply(key.sacrifice_time, function(x) gsub(' week.*','w',x))]
 # clean up 'intervention'
 pass1b[,intervention := key.intervention]
 pass1b[grepl('training',intervention), intervention := 'training']
@@ -416,9 +439,11 @@ pass1b[grepl('training',intervention), intervention := 'training']
 pass1b[,group := sacrificetime]
 pass1b[intervention == 'control', group := 'control']
 # make tech ID a string
-pass1b[,specimen.collection.bloodtechid := paste0('tech',specimen.collection.bloodtechid)]
-pass1b[,specimen.collection.uterustechid := paste0('tech',specimen.collection.uterustechid)]
-pass1b[,specimen.processing.techid := paste0('tech',specimen.processing.techid)]
+cols = c("specimen.collection.bloodtechid", "specimen.collection.uterustechid", "specimen.processing.techid")
+pass1b[ , (cols) := lapply(.SD, as.character), .SDcols = cols]
+pass1b[!is.na(specimen.collection.bloodtechid),specimen.collection.bloodtechid := paste0('tech',specimen.collection.bloodtechid)]
+pass1b[!is.na(specimen.collection.uterustechid),specimen.collection.uterustechid := paste0('tech',specimen.collection.uterustechid)]
+pass1b[!is.na(specimen.processing.techid),specimen.processing.techid := paste0('tech',specimen.processing.techid)]
 # make "sex" column
 pass1b[,sex := registration.sex]
 # make viallabel char
@@ -446,10 +471,34 @@ pass1b[,tissue_code_no := sapply(viallabel, function(x){
 })]
 tissue_dt = data.table(MotrpacBicQC::bic_animal_tissue_code)
 tissue_dt = tissue_dt[!is.na(abbreviation)]
+pass1b[,tissue_description := specimen.processing.sampletypedescription] 
 pass1b[,tissue := tissue_dt[match(pass1b[,tissue_code_no], bic_tissue_code), abbreviation]]
 
 # remove improperly calculated weight training var
 pass1b[,calculated.variables.wgt_gain_after_train := NULL]
+
+# compare column names again
+table(colnames(pass1b) %in% colnames(PHENO))
+table(colnames(PHENO) %in% colnames(pass1b))
+writeLines(colnames(pass1b)[!colnames(pass1b) %in% colnames(PHENO)])
+
+# make more names match
+setnames(pass1b, 
+         old = c("key.age_group",
+                 "key.sacrifice_time",
+                 "key.ani_rand_group",
+                 "biclabeldata.ship_to_siteid"),
+         new = c("key.agegroup",
+                 "key.sacrificetime",
+                 "key.anirandgroup",
+                 "biclabeldata.shiptositeid"))
+# a few new column names to add to the docs:
+writeLines(colnames(pass1b)[!colnames(pass1b) %in% colnames(PHENO)])
+for (var in colnames(pass1b)[!colnames(pass1b) %in% colnames(PHENO)]){
+  print(dmaqc_dict[field_name == var,.(field_name, field_description)])
+}
+# a few columns removed:
+writeLines(colnames(PHENO)[!colnames(PHENO) %in% colnames(pass1b)])
 
 # convert to data.frame
 pass1b = as.data.frame(pass1b)
@@ -457,10 +506,11 @@ rownames(pass1b) = pass1b$viallabel
 assign("PHENO", pass1b)
 usethis::use_data(PHENO, overwrite = TRUE)
 sinew::makeOxygen(PHENO)
+# recompress
+tools::resaveRdaFiles(paths="data/PHENO.rda", compress="auto")
 
 
 # Feature-to-gene map -----------------------------------------------------------
-
 
 #system("gsutil cp gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/resources/master_feature_to_gene_20211116.RData /tmp")
 load("/tmp/master_feature_to_gene_20211116.RData")
