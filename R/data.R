@@ -290,7 +290,7 @@
 #' }
 #' @details 
 #'   METHYL feature annotation is only available via download from Google Cloud Storage:
-#'   <https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_FEATURE_ANNOT.rda>.
+#'   <https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/epigen-rda/METHYL_FEATURE_ANNOT.rda>.
 #'   You can use [MotrpacRatTraining6mo::load_methyl_feature_annotation()] to download and return this file. 
 #' 
 #'   Only CpG sites with methylation coverage of >=10 in all samples were included for downstream analysis,
@@ -340,7 +340,7 @@ NULL
 #' }
 #' @details 
 #'   ATAC feature annotation is only available via download from Google Cloud Storage:
-#'   <https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_FEATURE_ANNOT.rda>.
+#'   <https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/epigen-rda/ATAC_FEATURE_ANNOT.rda>.
 #'   You can use [MotrpacRatTraining6mo::load_atac_feature_annotation()] to download and return this file. 
 #' 
 #'   This table was generated using [MotrpacRatTraining6mo::get_peak_annotations()]. 
@@ -895,6 +895,7 @@ doctext = function(day){
 #'   \item{\code{sex}}{custom column: `r sex()`}
 #'   \item{\code{time_to_freeze}}{custom column: integer, sample time from death to freeze, \code{calculated.variables.frozetime_after_train - calculated.variables.deathtime_after_train}} 
 #'   \item{\code{tissue_code_no}}{custom column: character, BIC tissue code. See [MotrpacBicQC::bic_animal_tissue_code].}
+#'   \item{\code{tissue_description}}{custom column: character, original tissue description (from column \code{specimen.processing.sampletypedescription})}
 #'   \item{\code{tissue}}{custom column: `r tissue()`} 
 #' }
 #' @details Updated to v3 on 12/27/22. Relative to the original phenotypic data available 
@@ -1046,7 +1047,7 @@ doctext = function(day){
 #' @format A data frame with chromatin accessibility peaks in rows and samples (vial labels) in columns
 #' @details 
 #'   Unfiltered ATAC sample-level data are only available via download from Google Cloud Storage. 
-#'   For example, <https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_BAT_RAW_COUNTS.rda> 
+#'   For example, <https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/epigen-rda/ATAC_BAT_RAW_COUNTS.rda> 
 #'   is the file for brown adipose tissue (BAT) data. You can change the name of the file to specify other tissues including:
 #'   HEART, HIPPOC, KIDNEY, LIVER, LUNG, SKMGN (gastrocnemius skeletal muscle), and WATSC (subcutaneous white adipose tissue).
 #'   You can also use [MotrpacRatTraining6mo::load_sample_data()] or [MotrpacRatTraining6mo::get_rdata_from_url()] 
@@ -1079,7 +1080,7 @@ NULL
 #' @format A data frame with peaks in rows (\code{feature_ID}) and samples in columns (\code{viallabel})
 #' @details 
 #'   Unfiltered ATAC sample-level data are only available via download from Google Cloud Storage. 
-#'   For example, <https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_BAT_NORM_DATA.rda> 
+#'   For example, <https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/epigen-rda/ATAC_BAT_NORM_DATA.rda> 
 #'   is the file for brown adipose tissue (BAT) data. You can change the name of the file to specify other tissues including:
 #'   HEART, HIPPOC, KIDNEY, LIVER, LUNG, SKMGN (gastrocnemius skeletal muscle), and WATSC (subcutaneous white adipose tissue).
 #'   You can also use [MotrpacRatTraining6mo::load_sample_data()] or [MotrpacRatTraining6mo::get_rdata_from_url()] 
@@ -1177,7 +1178,7 @@ NULL
 #' @format A [edgeR::DGEList-class] object
 #' @details 
 #'   Raw METHYL data are only available via download from Google Cloud Storage. 
-#'   For example, <https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_BAT_RAW_DATA.rda> 
+#'   For example, <https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/epigen-rda/METHYL_BAT_RAW_DATA.rda> 
 #'   is the file for brown adipose tissue (BAT) data. You can change the name of the file to specify other tissues including:
 #'   HEART, HIPPOC, KIDNEY, LIVER, LUNG, SKMGN (gastrocnemius skeletal muscle), and WATSC (subcutaneous white adipose tissue).
 #'   You can also use [MotrpacRatTraining6mo::get_rdata_from_url()] 
@@ -1217,7 +1218,7 @@ NULL
 #' @format A data frame of sites as rows. Each sample has two columns: one for the methylated counts ("Me"), and nother for the unmethylated counts ("Un").
 #' @details 
 #'   Unfiltered METHYL sample-level data are only available via download from Google Cloud Storage. 
-#'   For example, <https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_BAT_RAW_COUNTS.rda> 
+#'   For example, <https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/epigen-rda/METHYL_BAT_RAW_COUNTS.rda> 
 #'   is the file for brown adipose tissue (BAT) data. You can change the name of the file to specify other tissues including:
 #'   HEART, HIPPOC, KIDNEY, LIVER, LUNG, SKMGN (gastrocnemius skeletal muscle), and WATSC (subcutaneous white adipose tissue).
 #'   You can also use [MotrpacRatTraining6mo::load_sample_data()] or [MotrpacRatTraining6mo::get_rdata_from_url()] 
@@ -1259,7 +1260,7 @@ NULL
 #' @format A data frame with CpG sites in rows (\code{feature_ID}) and samples in columns (\code{viallabel})
 #' @details 
 #'   Unfiltered METHYL sample-level data are only available via download from Google Cloud Storage. 
-#'   For example, <https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_BAT_NORM_DATA.rda> 
+#'   For example, <https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/epigen-rda/METHYL_BAT_NORM_DATA.rda> 
 #'   is the file for brown adipose tissue (BAT) data. You can change the name of the file to specify other tissues including:
 #'   HEART, HIPPOC, KIDNEY, LIVER, LUNG, SKMGN (gastrocnemius skeletal muscle), and WATSC (subcutaneous white adipose tissue).
 #'   You can also use [MotrpacRatTraining6mo::load_sample_data()] or [MotrpacRatTraining6mo::get_rdata_from_url()] 
@@ -1893,7 +1894,7 @@ NULL
 #' }
 #' @details If the sample was an outlier in principal component (PC) space, \code{reason}
 #'   lists the PC(s) in which it was an outlier. See ome-specific details of outlier calling 
-#'   in the supplementary methods of the manuscript. 
+#'   in the supplementary methods of the [manuscript](https://github.com/MoTrPAC/MotrpacRatTraining6moData#citing-motrpac-data). 
 #' @source <https://docs.google.com/spreadsheets/d/1DetAMovcmMJqulEA41yBLd4I9Q1XSHPH1U8U2aVMShg/edit#gid=2057863805>
 "OUTLIERS"
 
@@ -2211,9 +2212,40 @@ NULL
 #'   \item{\code{meta_reg_pvalue}}{`r meta_reg_pvalue()`}
 #'   \item{\code{selection_fdr}}{`r selection_fdr()`} 
 #' }
-#' @details TODO
-#' 
-#'   Reproduce our analysis with TODO. 
+#' @details
+#'   The metabolomics data were collected using different platforms from six different sites. 
+#'   Moreover, some platforms were *targeted* (i.e., quantified a predefined small set of metabolites of interest), 
+#'   whereas other platforms were *untargeted*. There were 1116 cases in which at least two sites measured the same 
+#'   metabolite in the same tissue. In these cases, we used meta-regression to integrate the differential analysis 
+#'   results, implemented using the [metafor R package](https://cran.r-project.org/web/packages/metafor/metafor.pdf). 
+#'   
+#'   For a given metabolite \eqn{m}, the input to this analysis included the timewise effect sizes \eqn{y_{g,p}} and their variances 
+#'   \eqn{v_{g,p}} where \eqn{g} denotes the analysis group, which is a combination of the training time point and the sex for 
+#'   which the summary statistics were computed using the regression models explained above, and \eqn{p \exists (1,...,n_{m})}  
+#'   denotes the platform. If \eqn{m} had data from at least three platforms, of which at least one was untargeted and 
+#'   at least one was targeted, then we added nested random effects for both the platform and the targeted status. 
+#'   That is, in \code{metafor}’s notation we used: \code{"mods ~ 0+analysis_group"} and 
+#'   \code{"random = list(~analysis_group|platform, ~analysis_group|is_targeted)"}. The \code{inner|outer} notation defines a 
+#'   blockwise dependence structure for the random effects, where different outer values are assumed to be independent, 
+#'   and the same outer values may be dependent based on their inner values. If the targeted status was redundant 
+#'   (e.g., we only had two platforms, one was targeted and the other was untargeted) then we kept the platform-level random effects only.
+#'   
+#'   In practice, we observed that in 154 cases the default \code{metafor} optimizer failed to converge. In these cases, 
+#'   we modified the default parameters to \code{optimizer = "nloptr", algorithm = "NLOPT_LN_SBPLX"}. Still, optimization 
+#'   failed in 61 additional cases. When both the default and alternative optimizers failed, we opted for a standard 
+#'   fixed effect model without random effects. Other than these cases, we had 361 models with random effects for both 
+#'   the platform and the targeted status, and 694 models with a platform-only random effect. 
+#'   
+#'   As a summary of each model we kept the overall model p-value (i.e., the modifiers p-value) \eqn{QMp} (used as the training p-value), 
+#'   and the residual heterogeneity p-value \eqn{QEp}. We flagged 103 models with \eqn{QEp < 0.001} as having excessive heterogeneity. 
+#'   Using this definition we partitioned the meta-analysis results into three classes: (1) excessive heterogeneity, 
+#'   and has a targeted platform (57 cases), (2) excessive heterogeneity, without a targeted platform (46 cases), 
+#'   and (3) low heterogeneity (1013 cases). For class (2) we discarded the meta-analysis and kept the all platform-level 
+#'   results for m as-is. For class (1) we discarded the meta-analysis and kept only the targeted platform-level results for m. 
+#'   For class (3) we kept the meta-analysis results only (i.e., discarded the platform-level results), and used the meta-regression 
+#'   model to calculate the timewise summary statistics, i.e., time- and sex-specific meta-analysis effect sizes, their variance, and their p-values.
+#'   
+#'   Reproduce our analysis with [MotrpacRatTraining6mo::metab_meta_regression()]. 
 #' 
 #' @name METAB_DA_METAREG
 "METAB_ADRNL_DA_METAREG"
@@ -2384,7 +2416,7 @@ NULL
 #' }
 #' @details 
 #'   Unfiltered ATAC differential analysis results are only available via download from Google Cloud Storage. 
-#'   For example, <https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_BAT_DA.rda> 
+#'   For example, <https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/epigen-rda/ATAC_BAT_DA.rda> 
 #'   is the file for brown adipose tissue (BAT) results. You can change the name of the file to specify other tissues including:
 #'   HEART, HIPPOC, KIDNEY, LIVER, LUNG, SKMGN (gastrocnemius skeletal muscle), and WATSC (subcutaneous white adipose tissue).
 #'   You can also use [MotrpacRatTraining6mo::get_rdata_from_url()] 
@@ -2430,7 +2462,7 @@ NULL
 #' }
 #' @details 
 #'   Unfiltered METHYL differential analysis results are only available via download from Google Cloud Storage. 
-#'   For example, <https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_BAT_DA.rda> 
+#'   For example, <https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/epigen-rda/METHYL_BAT_DA.rda> 
 #'   is the file for brown adipose tissue (BAT) results. You can change the name of the file to specify other tissues including:
 #'   HEART, HIPPOC, KIDNEY, LIVER, LUNG, SKMGN (gastrocnemius skeletal muscle), and WATSC (subcutaneous white adipose tissue).
 #'   You can also use [MotrpacRatTraining6mo::get_rdata_from_url()] 
@@ -2446,6 +2478,79 @@ NULL
 #'   Reproduce our analysis with [MotrpacRatTraining6mo::rrbs_differential_analysis()].
 #'
 #' @name METHYL_DA
+NULL
+
+
+#' @title Training differential analysis results
+#' @description Training summary statistics from differential analysis (DA) 
+#'   that tests the effect of training on each feature within each sex. 
+#'   One data frame per data type and tissue. 
+#' @format A data frame with up to 47 variables:
+#' \describe{
+#'   \item{\code{assay}}{`r assay_code()`}
+#'   \item{\code{tissue}}{`r tissue_code()`}
+#'   \item{\code{feature_ID}}{`r feature_ID()`}
+#'   \item{\code{removed_samples}}{`r removed_samples()`}
+#'   \item{\code{removed_samples_male}}{character, comma-separated list of male outliers (vial labels) removed from differential analysis}
+#'   \item{\code{removed_samples_female}}{character, comma-separated list of female outliers (vial labels) removed from differential analysis}
+#'   \item{\code{dataset}}{character, specific dataset}
+#'   \item{\code{dataset_male}}{character, specific dataset}
+#'   \item{\code{dataset_female}}{character, specific dataset}
+#'   \item{\code{panel}}{character, LUMINEX panel for immunoassay analytes}
+#'   \item{\code{full_model}}{character, full model used for differential analysis}
+#'   \item{\code{full_model_male}}{character, full model used for differential analysis in males}
+#'   \item{\code{full_model_female}}{character, full model used for differential analysis in females}
+#'   \item{\code{reduced_model}}{character, effective reduced model used for differential analysis}
+#'   \item{\code{reduced_model_male}}{character, effective reduced model used for differential analysis in males}
+#'   \item{\code{reduced_model_female}}{character, effective reduced model used for differential analysis in females}
+#'   \item{\code{covariates}}{character, comma-separated list of adjustment variables}
+#'   \item{\code{covariates_male}}{character, comma-separated list of adjustment variables used for males}
+#'   \item{\code{covariates_female}}{character, comma-separated list of adjustment variables used for females}
+#'   \item{\code{fscore_male}}{double, F-statistic for males}
+#'   \item{\code{fscore_female}}{double, F-statistic for females}
+#'   \item{\code{lrt}}{double, likelihood ratio test statistic when only one sex exists}
+#'   \item{\code{lrt_male}}{double, likelihood ratio test statistic for males}
+#'   \item{\code{lrt_female}}{double, likelihood ratio test statistic for females}
+#'   \item{\code{p_value_male}}{double, nominal p-value for males}
+#'   \item{\code{p_value_female}}{character, nominal p-value for females}
+#'   \item{\code{adj_p_value_male}}{double, IHW-adjusted p-value for males}
+#'   \item{\code{adj_p_value_female}}{double, IHW-adjusted p-value for females}
+#'   \item{\code{p_value}}{double, combined male and female nominal p-value using the sum of logs}
+#'   \item{\code{adj_p_value}}{double, IHW-adjusted combined p-value; value provided by \code{selection_fdr} in the timewise summary statistics}
+#'   \item{\code{tissue_abbreviation}}{`r tissue()`}
+#'   \item{\code{Chr}}{character, chromosome where feature is located. METHYL only.}
+#'   \item{\code{Locus}}{character, name of feature. METHYL only.}
+#'   \item{\code{EntrezID}}{integer, Entrez ID of corresponding gene. METHYL only.}
+#'   \item{\code{Symbol}}{character, gene symbol of corresponding gene. METHYL only.}
+#'   \item{\code{is_targeted}}{logical, whether metabolite is targeted. Metabolomics only.}
+#'   \item{\code{site}}{character, Chemical Analysis Site (CAS) name. Metabolomics only.}
+#'   \item{\code{metabolite}}{character, name of metabolite as appears in the CAS's data. Metabolomics only.}
+#'   \item{\code{metabolite_refmet}}{character, RefMet name of metabolite. Metabolomics only.}
+#'   \item{\code{groups_tested_male}}{character, timepoints used to perform the F-test in males. 
+#'     Some tissues or assays are missing timepoints. Metabolomics only.}
+#'   \item{\code{groups_tested_female}}{character, timepoints used to perform the F-test in females. 
+#'     Some tissues or assays are missing timepoints. Metabolomics only.}
+#'   \item{\code{mz}}{double, mass over charge. Metabolomics only.}
+#'   \item{\code{rt}}{double, retention time. Metabolomics only.}
+#'   \item{\code{neutral_mass}}{numeric, neutral mass. Metabolomics only.}
+#'   \item{\code{cv}}{double, feature coffeicient of variation in the dataset. Metabolomics only.}
+#'   \item{\code{meta_reg_het_p}}{double, heterogeneity p-value from meta-regression. A smaller p-value indicates more disagreement between platforms. 
+#'     Metabolomics meta-regression only.}
+#'   \item{\code{original_ftest_ps}}{character, comma-separated list of original F-test p-values. Metabolomics meta-regression only.} 
+#' }
+#' @details 
+#'   While the more commonly-used timewise summary statistics are available directly in 
+#'   this package (e.g., [TRNSCRPT_DA], [PROTEOME_DA], [IMMUNO_DA], [METAB_DA], [METAB_DA_METAREG], [TRAINING_REGULATED_FEATURES], [REPFDR_INPUTS]),
+#'   training summary statistics are available for download from Google Cloud Storage. 
+#'   Use [MotrpacRatTraining6mo::load_training_da()] to download results for a given tissue and ome. 
+#'   Note that the adjusted p-value from the training differential analysis is already included in the 
+#'   timewise summary statistics as \code{selection_fdr}. 
+#'   
+#'   Training differential analysis was performed using either F-tests or likelihood 
+#'   ratio tests depending on the ome. Find the functions used to generate these results listed 
+#'   [here](https://motrpac.github.io/MotrpacRatTraining6mo/reference/index.html#perform-differential-analysis). 
+#'   See details in the supplementary methods of the [manuscript](https://github.com/MoTrPAC/MotrpacRatTraining6moData#citing-motrpac-data).  
+#' @name TRAINING_DA
 NULL
 
 

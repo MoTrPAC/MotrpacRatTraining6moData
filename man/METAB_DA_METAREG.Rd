@@ -143,8 +143,38 @@ platform, the consensus result may be provided. For metabolites measured
 on a single platform, these results are identical to \link{METAB_DA}.
 }
 \details{
-TODO
+The metabolomics data were collected using different platforms from six different sites.
+Moreover, some platforms were \emph{targeted} (i.e., quantified a predefined small set of metabolites of interest),
+whereas other platforms were \emph{untargeted}. There were 1116 cases in which at least two sites measured the same
+metabolite in the same tissue. In these cases, we used meta-regression to integrate the differential analysis
+results, implemented using the \href{https://cran.r-project.org/web/packages/metafor/metafor.pdf}{metafor R package}.
 
-Reproduce our analysis with TODO.
+For a given metabolite \eqn{m}, the input to this analysis included the timewise effect sizes \eqn{y_{g,p}} and their variances
+\eqn{v_{g,p}} where \eqn{g} denotes the analysis group, which is a combination of the training time point and the sex for
+which the summary statistics were computed using the regression models explained above, and \eqn{p \exists (1,...,n_{m})}
+denotes the platform. If \eqn{m} had data from at least three platforms, of which at least one was untargeted and
+at least one was targeted, then we added nested random effects for both the platform and the targeted status.
+That is, in \code{metafor}’s notation we used: \code{"mods ~ 0+analysis_group"} and
+\code{"random = list(~analysis_group|platform, ~analysis_group|is_targeted)"}. The \code{inner|outer} notation defines a
+blockwise dependence structure for the random effects, where different outer values are assumed to be independent,
+and the same outer values may be dependent based on their inner values. If the targeted status was redundant
+(e.g., we only had two platforms, one was targeted and the other was untargeted) then we kept the platform-level random effects only.
+
+In practice, we observed that in 154 cases the default \code{metafor} optimizer failed to converge. In these cases,
+we modified the default parameters to \code{optimizer = "nloptr", algorithm = "NLOPT_LN_SBPLX"}. Still, optimization
+failed in 61 additional cases. When both the default and alternative optimizers failed, we opted for a standard
+fixed effect model without random effects. Other than these cases, we had 361 models with random effects for both
+the platform and the targeted status, and 694 models with a platform-only random effect.
+
+As a summary of each model we kept the overall model p-value (i.e., the modifiers p-value) \eqn{QMp} (used as the training p-value),
+and the residual heterogeneity p-value \eqn{QEp}. We flagged 103 models with \eqn{QEp < 0.001} as having excessive heterogeneity.
+Using this definition we partitioned the meta-analysis results into three classes: (1) excessive heterogeneity,
+and has a targeted platform (57 cases), (2) excessive heterogeneity, without a targeted platform (46 cases),
+and (3) low heterogeneity (1013 cases). For class (2) we discarded the meta-analysis and kept the all platform-level
+results for m as-is. For class (1) we discarded the meta-analysis and kept only the targeted platform-level results for m.
+For class (3) we kept the meta-analysis results only (i.e., discarded the platform-level results), and used the meta-regression
+model to calculate the timewise summary statistics, i.e., time- and sex-specific meta-analysis effect sizes, their variance, and their p-values.
+
+Reproduce our analysis with \code{\link[MotrpacRatTraining6mo:metab_meta_regression]{MotrpacRatTraining6mo::metab_meta_regression()}}.
 }
 \keyword{datasets}
