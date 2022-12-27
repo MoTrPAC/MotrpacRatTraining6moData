@@ -2,7 +2,7 @@ Type: Package
 Package: MotrpacRatTraining6moData
 Title: Data for analysis of the MoTrPAC endurance exercise training study
     in 6-month-old rats
-Version: 1.6.1
+Version: 1.7.0
 Authors@R: c(
     person("Nicole", "Gay", , "nicole.r.gay@gmail.com", role = c("cre", "aut")),
     person("Pierre", "Jean Beltran", , "pjeanbeltran@gmail.com", role = "aut"),

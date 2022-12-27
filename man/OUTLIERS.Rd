@@ -30,6 +30,6 @@ Outliers excluded during differential analysis
 \details{
 If the sample was an outlier in principal component (PC) space, \code{reason}
 lists the PC(s) in which it was an outlier. See ome-specific details of outlier calling
-in the supplementary methods of the manuscript.
+in the supplementary methods of the \href{https://github.com/MoTrPAC/MotrpacRatTraining6moData#citing-motrpac-data}{manuscript}.
 }
 \keyword{datasets}

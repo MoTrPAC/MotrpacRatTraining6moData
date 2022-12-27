@@ -525,6 +525,7 @@ specimen collection date and freeze time - last time trained}
 \item{\code{sex}}{custom column: character, one of 'male' or 'female'}
 \item{\code{time_to_freeze}}{custom column: integer, sample time from death to freeze, \code{calculated.variables.frozetime_after_train - calculated.variables.deathtime_after_train}}
 \item{\code{tissue_code_no}}{custom column: character, BIC tissue code. See \link[MotrpacBicQC:bic_animal_tissue_code]{MotrpacBicQC::bic_animal_tissue_code}.}
+\item{\code{tissue_description}}{custom column: character, original tissue description (from column \code{specimen.processing.sampletypedescription})}
 \item{\code{tissue}}{custom column: character, tissue abbreviation, one of \link{TISSUE_ABBREV}}
 }
 }

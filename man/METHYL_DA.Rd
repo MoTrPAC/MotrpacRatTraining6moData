@@ -35,7 +35,7 @@ methylation feature within each sex. One data frame per tissue.
 }
 \details{
 Unfiltered METHYL differential analysis results are only available via download from Google Cloud Storage.
-For example, \url{https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_BAT_DA.rda}
+For example, \url{https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/epigen-rda/METHYL_BAT_DA.rda}
 is the file for brown adipose tissue (BAT) results. You can change the name of the file to specify other tissues including:
 HEART, HIPPOC, KIDNEY, LIVER, LUNG, SKMGN (gastrocnemius skeletal muscle), and WATSC (subcutaneous white adipose tissue).
 You can also use \code{\link[MotrpacRatTraining6mo:get_rdata_from_url]{MotrpacRatTraining6mo::get_rdata_from_url()}}

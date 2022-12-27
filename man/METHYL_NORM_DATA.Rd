@@ -16,7 +16,7 @@ see \link{METHYL_RAW_DATA}, \link{METHYL_RAW_COUNTS}, and \link{METHYL_NORM_DATA
 }
 \details{
 Unfiltered METHYL sample-level data are only available via download from Google Cloud Storage.
-For example, \url{https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_BAT_NORM_DATA.rda}
+For example, \url{https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/epigen-rda/METHYL_BAT_NORM_DATA.rda}
 is the file for brown adipose tissue (BAT) data. You can change the name of the file to specify other tissues including:
 HEART, HIPPOC, KIDNEY, LIVER, LUNG, SKMGN (gastrocnemius skeletal muscle), and WATSC (subcutaneous white adipose tissue).
 You can also use \code{\link[MotrpacRatTraining6mo:load_sample_data]{MotrpacRatTraining6mo::load_sample_data()}} or \code{\link[MotrpacRatTraining6mo:get_rdata_from_url]{MotrpacRatTraining6mo::get_rdata_from_url()}}
