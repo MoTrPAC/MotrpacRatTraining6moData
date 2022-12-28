@@ -25,7 +25,7 @@ RRBS feature annotation
 }
 \details{
 METHYL feature annotation is only available via download from Google Cloud Storage:
-\url{https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/METHYL_FEATURE_ANNOT.rda}.
+\url{https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/epigen-rda/METHYL_FEATURE_ANNOT.rda}.
 You can use \code{\link[MotrpacRatTraining6mo:load_methyl_feature_annotation]{MotrpacRatTraining6mo::load_methyl_feature_annotation()}} to download and return this file.
 
 Only CpG sites with methylation coverage of >=10 in all samples were included for downstream analysis,

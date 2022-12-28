@@ -1,3 +1,10 @@
+# MotrpacRatTraining6moData 1.7.0 (2022-12-27)
+
+* Update phenotypic data (`PHENO`) to v3, which includes changes to the VO2max data as announced by the BIC. 
+Retain old column names for backwards compatibility.  
+* Copy all `training-dea` tables to GCP and add documentation (`TRAINING_DA`).  
+* Add details of metabolomics meta-regression to `METAB_DA_METAREG`.  
+
 # MotrpacRatTraining6moData 1.6.1 (2022-12-13)
 
 * Fix shuffled PIDs in `METAB_NORM_DATA_FLAT` and `IMMUNO_NORM_DATA_FLAT` introduced by 

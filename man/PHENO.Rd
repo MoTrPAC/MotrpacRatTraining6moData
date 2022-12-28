@@ -26,8 +26,6 @@ that provides a link to specimen processing and used for shipments to the biorep
 \item{\code{registration.days_visit}}{integer, day registration was completed relative to \code{registration.d_arrive} (count)}
 \item{\code{registration.staffid}}{integer, registration staff ID}
 \item{\code{registration.siteid}}{character, registration site}
-\item{\code{registration.formname}}{character, registration form name}
-\item{\code{registration.versionnbr}}{integer, registration form version number}
 \item{\code{registration.ratid}}{character, site rat ID}
 \item{\code{registration.d_arrive}}{character, date the rat arrived at the site}
 \item{\code{registration.days_arrive}}{integer, day of arrival relative to \code{registration.d_arrive} (count)}
@@ -39,12 +37,11 @@ that provides a link to specimen processing and used for shipments to the biorep
 \item{\code{registration.sex}}{character, sex, one of "male", "female"}
 \item{\code{registration.weight}}{double, rat's body weight}
 \item{\code{registration.cagenumber}}{integer, cage number in which the rat was housed}
+\item{\code{registration.comments}}{character, registration comments}
 \item{\code{familiarization.d_visit}}{character, date familiarization was completed}
 \item{\code{familiarization.days_visit}}{integer, day familiarization was completed relative to \code{registration.d_arrive} (count)}
 \item{\code{familiarization.staffid}}{integer, familiarization staff ID}
 \item{\code{familiarization.siteid}}{character, familiarization site}
-\item{\code{familiarization.formname}}{character, familiarization form name}
-\item{\code{familiarization.versionnbr}}{integer, familiarization form version number}
 \item{\code{familiarization.d_treadmillbegin}}{character, date the rat began treadmill familiarization}
 \item{\code{familiarization.days_treadmillbegin}}{integer, day the rat began treadmill familiarization relative to \code{registration.d_arrive} (count)}
 \item{\code{familiarization.d_treadmillcomplete}}{character, date the rat completed treadmill familiarization}
@@ -56,8 +53,6 @@ that provides a link to specimen processing and used for shipments to the biorep
 \item{\code{training.days_visit}}{integer, day intervention started relative to \code{registration.d_arrive}}
 \item{\code{training.staffid}}{integer, training staff ID}
 \item{\code{training.siteid}}{character, training site}
-\item{\code{training.formname}}{character, training form name}
-\item{\code{training.versionnbr}}{integer, training form version number}
 \item{\code{training.day1date}}{character, date of given training day}
 \item{\code{training.day1_days}}{integer, day of given training day relative to \code{registration.d_arrive} (count)}
 \item{\code{training.day1time}}{character, time of given training day}
@@ -474,8 +469,6 @@ that provides a link to specimen processing and used for shipments to the biorep
 \item{\code{specimen.collection.staffid}}{integer, specimen collection staff ID}
 \item{\code{specimen.collection.siteid}}{character, specimen collection site}
 \item{\code{specimen.collection.visitcode}}{character, specimen collection site visit code}
-\item{\code{specimen.collection.formname}}{character, specimen collection form name}
-\item{\code{specimen.collection.versionnbr}}{integer, specimen collection form version number}
 \item{\code{specimen.collection.anesthesiaid}}{integer, anesthesia administrator ID}
 \item{\code{specimen.collection.t_anesthesia}}{character, anesthesia administration time}
 \item{\code{specimen.collection.bloodtype}}{character, blood type}
@@ -485,8 +478,8 @@ that provides a link to specimen processing and used for shipments to the biorep
 \item{\code{specimen.collection.t_bloodstart}}{character, blood collection start time}
 \item{\code{specimen.collection.t_bloodstop}}{character, blood collection stop time}
 \item{\code{specimen.collection.t_edtafill}}{character, EDTA fill time}
+\item{\code{specimen.collection.bloodcomments}}{character, comments about blood collection}
 \item{\code{specimen.collection.uterustype}}{character, uterus type}
-\item{\code{specimen.collection.uterustechid}}{character, uterus technician ID}
 \item{\code{specimen.collection.uteruscomplete}}{character, uterus complete}
 \item{\code{specimen.collection.t_death}}{character, time of death}
 \item{\code{specimen.collection.deathtype}}{character, type of death}
@@ -500,6 +493,7 @@ that provides a link to specimen processing and used for shipments to the biorep
 \item{\code{specimen.processing.aliquotdescription}}{character, specimen aliquot tube}
 \item{\code{specimen.processing.volume}}{character, specimen aliquot volume}
 \item{\code{specimen.processing.hemolyzed}}{character, specimen hemolyzed?}
+\item{\code{specimen.processing.comments}}{character, specimen processing comments}
 \item{\code{specimen.processing.t_collection}}{character, specimen collection time}
 \item{\code{specimen.processing.t_edtaspin}}{character, EDTA spin time}
 \item{\code{specimen.processing.t_freeze}}{character, specimen freeze time}
@@ -520,14 +514,19 @@ specimen collection date and time - last time trained}
 death date and time - last time trained}
 \item{\code{calculated.variables.frozetime_after_train}}{integer, time of sample freezing after training (seconds):
 specimen collection date and freeze time - last time trained}
+\item{\code{biclabeldata.barcode}}{double, scannable tube identifier used to map samples to vial labels}
 \item{\code{biclabeldata.shiptositeid}}{character, Chemical Analysis Site (CAS), i.e. the omics site)}
-\item{\code{sacrificetime}}{character, sacrifice time point in weeks, one of "1w", "2w", "4w", "8w"}
-\item{\code{intervention}}{character, intervention, one of "training", "control"}
-\item{\code{group}}{character, intervention group, one of "1w", "2w", "4w", "8w", "control"}
-\item{\code{sex}}{character, one of 'male' or 'female'}
-\item{\code{time_to_freeze}}{integer, sample time to freeze, \code{calculated.variables.frozetime_after_train - calculated.variables.deathtime_after_train}}
-\item{\code{tissue_code_no}}{character, BIC tissue code. See \link[MotrpacBicQC:bic_animal_tissue_code]{MotrpacBicQC::bic_animal_tissue_code}.}
-\item{\code{tissue}}{character, tissue abbreviation, one of \link{TISSUE_ABBREV}}
+\item{\code{biclabeldata.received_cas}}{character, was the sample recieved by the Chemical Analysis Site (CAS)?}
+\item{\code{biclabeldata.protocol}}{character, study protocol ("phase 1b")}
+\item{\code{study_group_timepoint}}{character, a BIC-created field that combines the intervention and sacrifice time codes}
+\item{\code{sacrificetime}}{custom column: character, sacrifice time point in weeks, one of "1w", "2w", "4w", "8w"}
+\item{\code{intervention}}{custom column: character, intervention, one of "training", "control"}
+\item{\code{group}}{custom column: character, intervention group, one of "1w", "2w", "4w", "8w", "control"}
+\item{\code{sex}}{custom column: character, one of 'male' or 'female'}
+\item{\code{time_to_freeze}}{custom column: integer, sample time from death to freeze, \code{calculated.variables.frozetime_after_train - calculated.variables.deathtime_after_train}}
+\item{\code{tissue_code_no}}{custom column: character, BIC tissue code. See \link[MotrpacBicQC:bic_animal_tissue_code]{MotrpacBicQC::bic_animal_tissue_code}.}
+\item{\code{tissue_description}}{custom column: character, original tissue description (from column \code{specimen.processing.sampletypedescription})}
+\item{\code{tissue}}{custom column: character, tissue abbreviation, one of \link{TISSUE_ABBREV}}
 }
 }
 \usage{
@@ -536,5 +535,11 @@ PHENO
 \description{
 Phenotypic data for samples from the MoTrPAC endurance exercise
 training study in 6-month-old rats. One row per sample (\code{viallabel}).
+}
+\details{
+Updated to v3 on 12/27/22. Relative to the original phenotypic data available
+through the \href{https://motrpac-data.org/}{MoTrPAC Data Portal},
+all-NA columns are removed, and column names are reverted to a previous version
+for backwards compatibility. Several columns are also added for simplicity.
 }
 \keyword{datasets}

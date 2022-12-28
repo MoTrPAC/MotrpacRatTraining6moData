@@ -38,7 +38,7 @@ ATAC-seq feature annotation
 }
 \details{
 ATAC feature annotation is only available via download from Google Cloud Storage:
-\url{https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/ATAC_FEATURE_ANNOT.rda}.
+\url{https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/epigen-rda/ATAC_FEATURE_ANNOT.rda}.
 You can use \code{\link[MotrpacRatTraining6mo:load_atac_feature_annotation]{MotrpacRatTraining6mo::load_atac_feature_annotation()}} to download and return this file.
 
 This table was generated using \code{\link[MotrpacRatTraining6mo:get_peak_annotations]{MotrpacRatTraining6mo::get_peak_annotations()}}.
