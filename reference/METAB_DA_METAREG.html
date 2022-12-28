@@ -4,7 +4,7 @@ differential analysis (DA) that tests the effect of training on each
 metabolite within each sex. One data frame per tissue.
 For metabolites measured on more than one
 platform, the consensus result may be provided. For metabolites measured
-on a single platform, these results are identical to METAB_DA."><title>Meta-regression of metabolomics differential analysis results — METAB_DA_METAREG • MotrpacRatTraining6moData</title><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.1.3/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.1.3/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Meta-regression of metabolomics differential analysis results — METAB_DA_METAREG"><meta property="og:description" content="Timewise summary statistics and training FDR from
+on a single platform, these results are identical to METAB_DA."><title>Meta-regression of metabolomics differential analysis results — METAB_DA_METAREG • MotrpacRatTraining6moData</title><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Meta-regression of metabolomics differential analysis results — METAB_DA_METAREG"><meta property="og:description" content="Timewise summary statistics and training FDR from
 differential analysis (DA) that tests the effect of training on each
 metabolite within each sex. One data frame per tissue.
 For metabolites measured on more than one
@@ -20,7 +20,7 @@ on a single platform, these results are identical to METAB_DA."><!-- mathjax -->
     
     <a class="navbar-brand me-2" href="../index.html">MotrpacRatTraining6moData</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.6.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.7.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -222,8 +222,35 @@ on a single platform, these results are identical to <a href="METAB_DA.html">MET
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>TODO</p>
-<p>Reproduce our analysis with TODO.</p>
+    <p>The metabolomics data were collected using different platforms from six different sites.
+Moreover, some platforms were <em>targeted</em> (i.e., quantified a predefined small set of metabolites of interest),
+whereas other platforms were <em>untargeted</em>. There were 1116 cases in which at least two sites measured the same
+metabolite in the same tissue. In these cases, we used meta-regression to integrate the differential analysis
+results, implemented using the <a href="https://cran.r-project.org/web/packages/metafor/metafor.pdf" class="external-link">metafor R package</a>.</p>
+<p>For a given metabolite \(m\), the input to this analysis included the timewise effect sizes \(y_{g,p}\) and their variances
+\(v_{g,p}\) where \(g\) denotes the analysis group, which is a combination of the training time point and the sex for
+which the summary statistics were computed using the regression models explained above, and \(p \in (1,...,n_{m})\)
+denotes the platform. If \(m\) had data from at least three platforms, of which at least one was untargeted and
+at least one was targeted, then we added nested random effects for both the platform and the targeted status.
+That is, in <code>metafor</code>’s notation we used: <code>"mods ~ 0+analysis_group"</code> and
+<code>"random = list(~analysis_group|platform, ~analysis_group|is_targeted)"</code>. The <code>inner|outer</code> notation defines a
+blockwise dependence structure for the random effects, where different outer values are assumed to be independent,
+and the same outer values may be dependent based on their inner values. If the targeted status was redundant
+(e.g., we only had two platforms, one was targeted and the other was untargeted) then we kept the platform-level random effects only.</p>
+<p>In practice, we observed that in 154 cases the default <code>metafor</code> optimizer failed to converge. In these cases,
+we modified the default parameters to <code>optimizer = "nloptr", algorithm = "NLOPT_LN_SBPLX"</code>. Still, optimization
+failed in 61 additional cases. When both the default and alternative optimizers failed, we opted for a standard
+fixed effect model without random effects. Other than these cases, we had 361 models with random effects for both
+the platform and the targeted status, and 694 models with a platform-only random effect.</p>
+<p>As a summary of each model we kept the overall model p-value (i.e., the modifiers p-value) \(QMp\) (used as the training p-value),
+and the residual heterogeneity p-value \(QEp\). We flagged 103 models with \(QEp &lt; 0.001\) as having excessive heterogeneity.
+Using this definition we partitioned the meta-analysis results into three classes: (1) excessive heterogeneity,
+and has a targeted platform (57 cases), (2) excessive heterogeneity, without a targeted platform (46 cases),
+and (3) low heterogeneity (1013 cases). For class (2) we discarded the meta-analysis and kept the all platform-level
+results for m as-is. For class (1) we discarded the meta-analysis and kept only the targeted platform-level results for m.
+For class (3) we kept the meta-analysis results only (i.e., discarded the platform-level results), and used the meta-regression
+model to calculate the timewise summary statistics, i.e., time- and sex-specific meta-analysis effect sizes, their variance, and their p-values.</p>
+<p>Reproduce our analysis with <code>MotrpacRatTraining6mo::metab_meta_regression()</code>.</p>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
