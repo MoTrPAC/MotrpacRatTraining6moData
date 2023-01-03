@@ -14,6 +14,8 @@ name: document
 jobs:
   document:
     runs-on: ubuntu-latest
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Checkout branch
         if: github.event_name == 'push'
