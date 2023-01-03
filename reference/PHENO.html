@@ -63,10 +63,12 @@ training study in 6-month-old rats. One row per sample (<code>viallabel</code>).
     <div class="section level2">
     <h2 id="format">Format<a class="anchor" aria-label="anchor" href="#format"></a></h2>
     <p>A data frame with 5955 rows and 510 variables:</p><dl><dt><code>pid</code></dt>
-<dd><p>integer, unique, randomly generated 8 digit numeric identifier used in linkage to phenotypic data</p></dd>
+<dd><p>integer, randomly generated 8-digit numeric identifier used in linkage to phenotypic data.
+One PID per animal, i.e., all samples from the same animal have the same PID.</p></dd>
 
 <dt><code>bid</code></dt>
-<dd><p>integer, unique, randomly generated 8 digit numeric identifier used in linkage to phenotypic data</p></dd>
+<dd><p>integer, 5-digit numeric identifier for all samples collected for a sample collection period.
+All samples collected during that period will have the same BID.</p></dd>
 
 <dt><code>labelid</code></dt>
 <dd><p>double, unique 11 digit identifier for specimen label ID, originating at the collection site,
