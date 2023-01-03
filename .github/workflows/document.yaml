@@ -7,6 +7,7 @@ on:
     branches: '**' 
   pull_request:
     paths: ["R/**"]
+  workflow_dispatch:
 
 name: document
 
