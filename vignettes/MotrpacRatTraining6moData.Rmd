@@ -195,7 +195,7 @@ for 1, 2, 4, or 8 weeks, with tissues collected 48 hours after the last training
 Sex-matched sedentary, untrained rats were used as controls. Whole blood, plasma, 
 and 18 solid tissues were analyzed using genomics, proteomics, metabolomics, 
 and protein immunoassay technologies, with most assays performed in a subset of these tissues. 
-Depending on the assay, between 3 and 5 replicates per sex per time point were
+Depending on the assay, between 3 and 6 replicates per sex per time point were
 analyzed. 
 
 ## Tissue and assay abbreviations  
