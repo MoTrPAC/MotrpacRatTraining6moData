@@ -377,8 +377,10 @@ doctext = function(day){
 #'     training study in 6-month-old rats. One row per sample (\code{viallabel}).
 #' @format A data frame with 5955 rows and 510 variables:
 #' \describe{
-#'   \item{\code{pid}}{integer, unique, randomly generated 8 digit numeric identifier used in linkage to phenotypic data}
-#'   \item{\code{bid}}{integer, unique, randomly generated 8 digit numeric identifier used in linkage to phenotypic data}
+#'   \item{\code{pid}}{integer, randomly generated 8-digit numeric identifier used in linkage to phenotypic data. 
+#'       One PID per animal, i.e., all samples from the same animal have the same PID.}
+#'   \item{\code{bid}}{integer, 5-digit numeric identifier for all samples collected for a sample collection period. 
+#'       All samples collected during that period will have the same BID.}
 #'   \item{\code{labelid}}{double, unique 11 digit identifier for specimen label ID, originating at the collection site, 
 #'       that provides a link to specimen processing and used for shipments to the biorepository (same as 
 #'       \code{viallabel} only in instances where aliquots were not further processed at the biorepository)}
