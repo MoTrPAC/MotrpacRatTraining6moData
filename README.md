@@ -59,6 +59,7 @@ Install this package with `devtools`:
 if (!require("devtools", quietly = TRUE)){
   install.packages("devtools")
 }
+options(timeout=1e5) # extend the timeout
 devtools::install_github("MoTrPAC/MotrpacRatTraining6moData")
 ```
 
@@ -90,19 +91,7 @@ Downloading GitHub repo MoTrPAC/MotrpacRatTraining6moData@HEAD
 ```
 
 ### Troubleshooting
-If you get this error:  
-```
-Downloading GitHub repo MoTrPAC/MotrpacRatTraining6moData@HEAD
-Error in utils::download.file(url, path, method = method, quiet = quiet,  : 
-  download from 'https://api.github.com/repos/MoTrPAC/MotrpacRatTraining6moData/tarball/HEAD' failed
-```
-Try extending the timeout:  
-```r
-options(timeout=1e5)
-devtools::install_github("MoTrPAC/MotrpacRatTraining6moData")
-```
-
-If you get this error after extending the `timeout`:  
+If you get this error after setting `options(timeout=1e5)`:  
 ```
 Downloading GitHub repo MoTrPAC/MotrpacRatTraining6moData@HEAD
 Error in utils::download.file(url, path, method = method, quiet = quiet,  : 
