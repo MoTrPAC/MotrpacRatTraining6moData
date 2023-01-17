@@ -351,6 +351,127 @@ NULL
 #' @name ATAC_FEATURE_ANNOT
 NULL
 
+#' @title Global protein expression feature annotation 
+#' @format A data frame with 1379979 rows and 8 variables:
+#' \describe{
+#'   \item{\code{protein_id}}{character COLUMN_DESCRIPTION}
+#'   \item{\code{redundant_ids}}{character COLUMN_DESCRIPTION}
+#'   \item{\code{is_contaminant}}{logical COLUMN_DESCRIPTION}
+#'   \item{\code{peptide_score}}{double COLUMN_DESCRIPTION}
+#'   \item{\code{sequence}}{character COLUMN_DESCRIPTION}
+#'   \item{\code{organism_name}}{character COLUMN_DESCRIPTION}
+#'   \item{\code{tissue}}{`r tissue()`}
+#'   \item{\code{assay}}{character, assay "PROT"} 
+#'}
+#' @details 
+#'   PROT feature annotation is only available via download from Google Cloud Storage:
+#'   <https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/feature-annot/PROT_FEATURE_ANNOT.rda>.
+#'   You can use [MotrpacRatTraining6mo::load_feature_annotation()] to download and return this file. 
+#' @name PROT_FEATURE_ANNOT
+#' @source \code{pass1b-06/results/proteomics-untargeted/*/prot-pr/*rii-results.txt}
+NULL
+
+#' @title Protein acetylation feature annotation 
+#' @format A data frame with 18341 rows and 12 variables:
+#' \describe{
+#'   \item{\code{protein_id}}{character COLUMN_DESCRIPTION}
+#'   \item{\code{redundant_ids}}{character COLUMN_DESCRIPTION}
+#'   \item{\code{is_contaminant}}{logical COLUMN_DESCRIPTION}
+#'   \item{\code{peptide_score}}{double COLUMN_DESCRIPTION}
+#'   \item{\code{sequence}}{character COLUMN_DESCRIPTION}
+#'   \item{\code{organism_name}}{character COLUMN_DESCRIPTION}
+#'   \item{\code{ptm_id}}{character COLUMN_DESCRIPTION}
+#'   \item{\code{ptm_peptide}}{character COLUMN_DESCRIPTION}
+#'   \item{\code{confident_score}}{double COLUMN_DESCRIPTION}
+#'   \item{\code{confident_site}}{logical COLUMN_DESCRIPTION}
+#'   \item{\code{tissue}}{`r tissue()`}
+#'   \item{\code{assay}}{character, assay "ACETYL"} 
+#'}
+#' @details 
+#'   PHOSPHO feature annotation is only available via download from Google Cloud Storage:
+#'   <https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/feature-annot/PHOSPHO_FEATURE_ANNOT.rda>.
+#'   You can use [MotrpacRatTraining6mo::load_feature_annotation()] to download and return this file. 
+#' @name ACETYL_FEATURE_ANNOT
+#' @source \code{pass1b-06/results/proteomics-untargeted/*/prot-ac/*rii-results.txt}
+NULL
+
+#' @title Protein ubiquitination feature annotation 
+#' @format A data frame with 21436 rows and 12 variables:
+#' \describe{
+#'   \item{\code{protein_id}}{character COLUMN_DESCRIPTION}
+#'   \item{\code{redundant_ids}}{character COLUMN_DESCRIPTION}
+#'   \item{\code{is_contaminant}}{logical COLUMN_DESCRIPTION}
+#'   \item{\code{peptide_score}}{double COLUMN_DESCRIPTION}
+#'   \item{\code{sequence}}{character COLUMN_DESCRIPTION}
+#'   \item{\code{organism_name}}{character COLUMN_DESCRIPTION}
+#'   \item{\code{ptm_id}}{character COLUMN_DESCRIPTION}
+#'   \item{\code{ptm_peptide}}{character COLUMN_DESCRIPTION}
+#'   \item{\code{confident_score}}{double COLUMN_DESCRIPTION}
+#'   \item{\code{confident_site}}{logical COLUMN_DESCRIPTION}
+#'   \item{\code{tissue}}{`r tissue()`}
+#'   \item{\code{assay}}{character, assay "UBIQ"} 
+#'}
+#' @details 
+#'   UBIQ feature annotation is only available via download from Google Cloud Storage:
+#'   <https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/feature-annot/UBIQ_FEATURE_ANNOT.rda>.
+#'   You can use [MotrpacRatTraining6mo::load_feature_annotation()] to download and return this file. 
+#' @name UBIQ_FEATURE_ANNOT
+#' @source \code{pass1b-06/results/proteomics-untargeted/*/prot-ub/*rii-results.txt}
+NULL
+
+#' @title Protein phosphorylation feature annotation 
+#' @format A data frame with 421237 rows and 12 variables:
+#' \describe{
+#'   \item{\code{protein_id}}{character COLUMN_DESCRIPTION}
+#'   \item{\code{redundant_ids}}{character COLUMN_DESCRIPTION}
+#'   \item{\code{is_contaminant}}{logical COLUMN_DESCRIPTION}
+#'   \item{\code{peptide_score}}{double COLUMN_DESCRIPTION}
+#'   \item{\code{sequence}}{character COLUMN_DESCRIPTION}
+#'   \item{\code{organism_name}}{character COLUMN_DESCRIPTION}
+#'   \item{\code{ptm_id}}{character COLUMN_DESCRIPTION}
+#'   \item{\code{ptm_peptide}}{character COLUMN_DESCRIPTION}
+#'   \item{\code{confident_score}}{double COLUMN_DESCRIPTION}
+#'   \item{\code{confident_site}}{logical COLUMN_DESCRIPTION}
+#'   \item{\code{tissue}}{`r tissue()`}
+#'   \item{\code{assay}}{character, assay "PHOSPHO"} 
+#'}
+#' @details 
+#'   PHOSPHO feature annotation is only available via download from Google Cloud Storage:
+#'   <https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/feature-annot/PHOSPHO_FEATURE_ANNOT.rda>.
+#'   You can use [MotrpacRatTraining6mo::load_feature_annotation()] to download and return this file. 
+#' @name PHOSPHO_FEATURE_ANNOT
+#' @source \code{pass1b-06/results/proteomics-untargeted/*/prot-ph/*rii-results.txt}
+NULL
+
+#' @title Transcriptomics gene annotation
+#' @description Gene annotation adapted from Ensembl's *Rattus norvegicus* rn6 release 95 GTF.  
+#'   Importantly, MoTrPAC prepended autosomes 'chr' and changed 'MT' to 'chrM'.   
+#' @format A data frame with 32883 rows and 13 variables: 
+#' \describe{
+#'   \item{\code{seqname}}{character, name of the chromosome or scaffold. Chromosome names have the 'chr' prefix.}
+#'   \item{\code{source}}{character, name of the program that generated this feature, or the data source (database or project name)}
+#'   \item{\code{feature}}{character, feature type name, e.g. Gene, Variation, Similarity}
+#'   \item{\code{start}}{integer, start position of the feature, with sequence numbering starting at 1}
+#'   \item{\code{end}}{integer, end position of the feature, with sequence numbering starting at 1}
+#'   \item{\code{score}}{character, a floating point value}
+#'   \item{\code{strand}}{character, defined as + (forward) or - (reverse)}
+#'   \item{\code{frame}}{character, one of '0', '1' or '2'. 
+#'     '0' indicates that the first base of the feature is the first base of a codon, 
+#'     '1' that the second base is the first base of a codon, and so on.}
+#'   \item{\code{gene_id}}{character, Ensembl gene ID from the 'attribute' field of the GTF}
+#'   \item{\code{gene_version}}{character, gene version from the 'attribute' field of the GTF}
+#'   \item{\code{gene_name}}{character, gene name from the 'attribute' field of the GTF}
+#'   \item{\code{gene_source}}{character, gene source from the 'attribute' field of the GTF}
+#'   \item{\code{gene_biotype}}{character, gene biotype from the 'attribute' field of the GTF} 
+#' }
+#' @name TRNSCRPT_FEATURE_ANNOT
+#' @source <https://ftp.ensembl.org/pub/release-95/gtf/rattus_norvegicus/Rattus_norvegicus.Rnor_6.0.95.gtf.gz>
+#' @details 
+#'   TRNSCRPT feature annotation is only available via download from Google Cloud Storage:
+#'   <https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/feature-annot/TRNSCRPT_FEATURE_ANNOT.rda>.
+#'   You can use [MotrpacRatTraining6mo::load_feature_annotation()] to download and return this file. 
+NULL
+
 
 ## Phenotypic data ####
 
