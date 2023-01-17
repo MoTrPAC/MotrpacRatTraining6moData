@@ -184,7 +184,7 @@ Raw sample-level counts|ATAC|LIVER|ATAC_LIVER_RAW_COUNTS|47.25|[Link](https://st
 Raw sample-level counts|ATAC|LUNG|ATAC_LUNG_RAW_COUNTS|48.92|[Link](https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/epigen-rda/ATAC_LUNG_RAW_COUNTS.rda)
 Raw sample-level counts|ATAC|SKM-GN|ATAC_SKMGN_RAW_COUNTS|50.96|[Link](https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/epigen-rda/ATAC_SKMGN_RAW_COUNTS.rda)
 Raw sample-level counts|ATAC|WAT-SC|ATAC_WATSC_RAW_COUNTS|48.91|[Link](https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/epigen-rda/ATAC_WATSC_RAW_COUNTS.rda)
-Feature annotation|ATAC|all|ATAC_FEATURE_ANNOT|27.73|[Link](https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/epigen-rda/ATAC_FEATURE_ANNOT.rda)
+Feature annotation|ATAC|all|ATAC_FEATURE_ANNOT|27.73|[Link](https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/feature-annot/ATAC_FEATURE_ANNOT.rda)
 Differential analysis results|METHYL|BAT|METHYL_BAT_DA|281.5|[Link](https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/epigen-rda/METHYL_BAT_DA.rda)
 Differential analysis results|METHYL|HEART|METHYL_HEART_DA|244.44|[Link](https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/epigen-rda/METHYL_HEART_DA.rda)
 Differential analysis results|METHYL|HIPPOC|METHYL_HIPPOC_DA|194.39|[Link](https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/epigen-rda/METHYL_HIPPOC_DA.rda)
@@ -217,7 +217,7 @@ Raw sample-level counts|METHYL|LIVER|METHYL_LIVER_RAW_COUNTS|52.54|[Link](https:
 Raw sample-level counts|METHYL|LUNG|METHYL_LUNG_RAW_COUNTS|77.17|[Link](https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/epigen-rda/METHYL_LUNG_RAW_COUNTS.rda)
 Raw sample-level counts|METHYL|SKM-GN|METHYL_SKMGN_RAW_COUNTS|67.99|[Link](https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/epigen-rda/METHYL_SKMGN_RAW_COUNTS.rda)
 Raw sample-level counts|METHYL|WAT-SC|METHYL_WATSC_RAW_COUNTS|53.91|[Link](https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/epigen-rda/METHYL_WATSC_RAW_COUNTS.rda)
-Feature annotation|METHYL|all|METHYL_FEATURE_ANNOT|152.77|[Link](https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/epigen-rda/METHYL_FEATURE_ANNOT.rda)
+Feature annotation|METHYL|all|METHYL_FEATURE_ANNOT|152.77|[Link](https://storage.googleapis.com/motrpac-rat-training-6mo-extdata/feature-annot/METHYL_FEATURE_ANNOT.rda)
 
 ## Getting help 
 **See the [vignette](https://motrpac.github.io/MotrpacRatTraining6moData/articles/MotrpacRatTraining6moData.html) 

@@ -12,6 +12,9 @@ gsutil = 'gsutil'
 scratch = '/tmp'
 gitdir='src/MOTRPAC/motrpac-mawg/'
 outdir="MOTRPAC/PASS_ANALYSIS/PASS1B/INTEGRATIVE/GRAPHICAL"
+```
+
+```{r load old functions}
 source(sprintf('%s/pass1b-06/integrative/clustering/cluster_viz_fx.R',gitdir))
 source(sprintf('%s/pass1b-06/integrative/clustering/graphical_analysis_functions.R',gitdir)) # if you get an error loading igraph, restart R and rerun this chunk. the order of libraries loaded matters
 ```
@@ -77,10 +80,17 @@ dea_clean_zs = dea_clean_zs[,c("feature","assay","assay_code","tissue","tissue_c
                         "meta_reg_het_p","meta_reg_pvalue",
                         "training_p_value","training_q"),
                         with = F]
+
+# add logFC_se for METHYL
+# added 1/16/23
+table(dea_clean_zs[is.na(timewise_logFC_se), assay])
+dea_clean_zs[assay == "METHYL" & is.na(timewise_logFC_se), timewise_logFC_se := timewise_logFC/timewise_zscore]
+
 # convert to data.frame
 TRAINING_REGULATED_FEATURES = as.data.frame(dea_clean_zs)
-usethis::use_data(TRAINING_REGULATED_FEATURES, overwrite = T)
+usethis::use_data(TRAINING_REGULATED_FEATURES, overwrite = TRUE)
 sinew::makeOxygen(TRAINING_REGULATED_FEATURES)
+tools::resaveRdaFiles(paths = '../../data/TRAINING_REGULATED_FEATURES.rda')
 #write.table(dea_clean_zs, "~/presentation_figures/PASS1B/sig_dea_results.txt", sep="\t", col.names=T, row.names=F, quote=F)
 ```
 
