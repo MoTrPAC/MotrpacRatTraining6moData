@@ -65,7 +65,7 @@
 "TISSUE_ORDER"
 
 
-## Gene mappings ####
+## Gene and feature mappings ####
 
 #' @name FEATURE_TO_GENE
 #' @title Feature-to-gene map
@@ -103,7 +103,7 @@
 #'     For fast(er) indexing, convert this object to a [data.table::data.table()] and use 
 #'     [data.table::setkey()] to set the key to the column you are matching. 
 #'     This dramatically improves performance. 
-#' @source \code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/resources/master_feature_to_gene_20211116.RData}
+#' @source \code{pass1b-06/analysis/resources/master_feature_to_gene_20211116.RData}
 "FEATURE_TO_GENE"
 
 
@@ -227,7 +227,7 @@
 #' alignments (one-to-many). In those cases, we selected the alignment with the larger "positives" 
 #' and "identities" values and required an exact match for the S/T/Y residues identified in this study. 
 #' As a result, we could map with confidence 73.5% of all the phosphorylation sites we identified.
-#' @source \code{gs://motrpac-data-hub/pass1b-06/analysis/resources/motrpac_pass1b-06_proteomics-ph-rat2human-20211016.csv}
+#' @source \code{pass1b-06/analysis/resources/motrpac_pass1b-06_proteomics-ph-rat2human-20211016.csv}
 "RAT_TO_HUMAN_PHOSPHO"
 
 
@@ -354,12 +354,16 @@ NULL
 #' @title Global protein expression feature annotation 
 #' @format A data frame with 1379979 rows and 8 variables:
 #' \describe{
-#'   \item{\code{protein_id}}{character COLUMN_DESCRIPTION}
-#'   \item{\code{redundant_ids}}{character COLUMN_DESCRIPTION}
-#'   \item{\code{is_contaminant}}{logical COLUMN_DESCRIPTION}
-#'   \item{\code{peptide_score}}{double COLUMN_DESCRIPTION}
-#'   \item{\code{sequence}}{character COLUMN_DESCRIPTION}
-#'   \item{\code{organism_name}}{character COLUMN_DESCRIPTION}
+#'   \item{\code{protein_id}}{character, RefSeq identifier in format \code{[accession].[version]}, 
+#'     e.g., NP_001004415.1. Note: contaminants should be identified with the following nomenclature: "Contaminant_XXXX"}
+#'   \item{\code{redundant_ids}}{character, pipe-separated list of additional RefSeq identifiers with 
+#'     redundant peptide-matching sequences to \code{protein_id} that cannot be resolved by inference due 
+#'     to lack of unique peptides}
+#'   \item{\code{is_contaminant}}{logical, whether \code{protein_id} is a contaminant}
+#'   \item{\code{peptide_score}}{double, MSGF+ SpecE Value or Spectrum Mill score (\code{1/bestScore})}
+#'   \item{\code{sequence}}{character, peptide sequence determined by MSGF+ or Spectrum Mill analysis of LC-MS/MS features}
+#'   \item{\code{organism_name}}{character, organism whose protein collection database was 
+#'     used for LC-MS/MS peptide identification, e.g., Rattus norvegicus}
 #'   \item{\code{tissue}}{`r tissue()`}
 #'   \item{\code{assay}}{character, assay "PROT"} 
 #'}
@@ -374,16 +378,26 @@ NULL
 #' @title Protein acetylation feature annotation 
 #' @format A data frame with 18341 rows and 12 variables:
 #' \describe{
-#'   \item{\code{protein_id}}{character COLUMN_DESCRIPTION}
-#'   \item{\code{redundant_ids}}{character COLUMN_DESCRIPTION}
-#'   \item{\code{is_contaminant}}{logical COLUMN_DESCRIPTION}
-#'   \item{\code{peptide_score}}{double COLUMN_DESCRIPTION}
-#'   \item{\code{sequence}}{character COLUMN_DESCRIPTION}
-#'   \item{\code{organism_name}}{character COLUMN_DESCRIPTION}
-#'   \item{\code{ptm_id}}{character COLUMN_DESCRIPTION}
-#'   \item{\code{ptm_peptide}}{character COLUMN_DESCRIPTION}
-#'   \item{\code{confident_score}}{double COLUMN_DESCRIPTION}
-#'   \item{\code{confident_site}}{logical COLUMN_DESCRIPTION}
+#'   \item{\code{protein_id}}{character, RefSeq identifier in format \code{[accession].[version]}, 
+#'     e.g., NP_001004415.1. Note: contaminants should be identified with the following nomenclature: "Contaminant_XXXX"}
+#'   \item{\code{redundant_ids}}{character, pipe-separated list of additional RefSeq identifiers with 
+#'     redundant peptide-matching sequences to \code{protein_id} that cannot be resolved by inference due 
+#'     to lack of unique peptides}
+#'   \item{\code{is_contaminant}}{logical, whether \code{protein_id} is a contaminant}
+#'   \item{\code{peptide_score}}{double, MSGF+ SpecE Value or Spectrum Mill score (\code{1/bestScore})}
+#'   \item{\code{sequence}}{character, peptide sequence determined by MSGF+ or Spectrum Mill analysis of LC-MS/MS features}
+#'   \item{\code{organism_name}}{character, organism whose protein collection database was 
+#'     used for LC-MS/MS peptide identification, e.g., Rattus norvegicus}
+#'   \item{\code{ptm_id}}{character, concatenation of \code{protein_id} 
+#'     and the modified amino acid residue (e.g., serine residue, 20 denoted as S20s), 
+#'     with "-" as a separator}
+#'   \item{\code{ptm_peptide}}{character, concatenation of \code{ptm_id} and peptide with "-" as a separator. 
+#'     Values in this column are unique.}
+#'   \item{\code{confident_score}}{double, score indicating confidence 
+#'     of modified amino acid residue localization by LC-MS/MS fragmentation as calculated by 
+#'     Ascore algorith (0-1000) or Spectrum Mill (0-1)}
+#'   \item{\code{confident_site}}{logical, whether a modified site was confidently 
+#'     localized by LC-MS/MS fragmentation}
 #'   \item{\code{tissue}}{`r tissue()`}
 #'   \item{\code{assay}}{character, assay "ACETYL"} 
 #'}
@@ -398,16 +412,26 @@ NULL
 #' @title Protein ubiquitination feature annotation 
 #' @format A data frame with 21436 rows and 12 variables:
 #' \describe{
-#'   \item{\code{protein_id}}{character COLUMN_DESCRIPTION}
-#'   \item{\code{redundant_ids}}{character COLUMN_DESCRIPTION}
-#'   \item{\code{is_contaminant}}{logical COLUMN_DESCRIPTION}
-#'   \item{\code{peptide_score}}{double COLUMN_DESCRIPTION}
-#'   \item{\code{sequence}}{character COLUMN_DESCRIPTION}
-#'   \item{\code{organism_name}}{character COLUMN_DESCRIPTION}
-#'   \item{\code{ptm_id}}{character COLUMN_DESCRIPTION}
-#'   \item{\code{ptm_peptide}}{character COLUMN_DESCRIPTION}
-#'   \item{\code{confident_score}}{double COLUMN_DESCRIPTION}
-#'   \item{\code{confident_site}}{logical COLUMN_DESCRIPTION}
+#'   \item{\code{protein_id}}{character, RefSeq identifier in format \code{[accession].[version]}, 
+#'     e.g., NP_001004415.1. Note: contaminants should be identified with the following nomenclature: "Contaminant_XXXX"}
+#'   \item{\code{redundant_ids}}{character, pipe-separated list of additional RefSeq identifiers with 
+#'     redundant peptide-matching sequences to \code{protein_id} that cannot be resolved by inference due 
+#'     to lack of unique peptides}
+#'   \item{\code{is_contaminant}}{logical, whether \code{protein_id} is a contaminant}
+#'   \item{\code{peptide_score}}{double, MSGF+ SpecE Value or Spectrum Mill score (\code{1/bestScore})}
+#'   \item{\code{sequence}}{character, peptide sequence determined by MSGF+ or Spectrum Mill analysis of LC-MS/MS features}
+#'   \item{\code{organism_name}}{character, organism whose protein collection database was 
+#'     used for LC-MS/MS peptide identification, e.g., Rattus norvegicus}
+#'   \item{\code{ptm_id}}{character, concatenation of \code{protein_id} 
+#'     and the modified amino acid residue (e.g., serine residue, 20 denoted as S20s), 
+#'     with "-" as a separator}
+#'   \item{\code{ptm_peptide}}{character, concatenation of \code{ptm_id} and peptide with "-" as a separator. 
+#'     Values in this column are unique.}
+#'   \item{\code{confident_score}}{double, score indicating confidence 
+#'     of modified amino acid residue localization by LC-MS/MS fragmentation as calculated by 
+#'     Ascore algorith (0-1000) or Spectrum Mill (0-1)}
+#'   \item{\code{confident_site}}{logical, whether a modified site was confidently 
+#'     localized by LC-MS/MS fragmentation}
 #'   \item{\code{tissue}}{`r tissue()`}
 #'   \item{\code{assay}}{character, assay "UBIQ"} 
 #'}
@@ -422,16 +446,26 @@ NULL
 #' @title Protein phosphorylation feature annotation 
 #' @format A data frame with 421237 rows and 12 variables:
 #' \describe{
-#'   \item{\code{protein_id}}{character COLUMN_DESCRIPTION}
-#'   \item{\code{redundant_ids}}{character COLUMN_DESCRIPTION}
-#'   \item{\code{is_contaminant}}{logical COLUMN_DESCRIPTION}
-#'   \item{\code{peptide_score}}{double COLUMN_DESCRIPTION}
-#'   \item{\code{sequence}}{character COLUMN_DESCRIPTION}
-#'   \item{\code{organism_name}}{character COLUMN_DESCRIPTION}
-#'   \item{\code{ptm_id}}{character COLUMN_DESCRIPTION}
-#'   \item{\code{ptm_peptide}}{character COLUMN_DESCRIPTION}
-#'   \item{\code{confident_score}}{double COLUMN_DESCRIPTION}
-#'   \item{\code{confident_site}}{logical COLUMN_DESCRIPTION}
+#'   \item{\code{protein_id}}{character, RefSeq identifier in format \code{[accession].[version]}, 
+#'     e.g., NP_001004415.1. Note: contaminants should be identified with the following nomenclature: "Contaminant_XXXX"}
+#'   \item{\code{redundant_ids}}{character, pipe-separated list of additional RefSeq identifiers with 
+#'     redundant peptide-matching sequences to \code{protein_id} that cannot be resolved by inference due 
+#'     to lack of unique peptides}
+#'   \item{\code{is_contaminant}}{logical, whether \code{protein_id} is a contaminant}
+#'   \item{\code{peptide_score}}{double, MSGF+ SpecE Value or Spectrum Mill score (\code{1/bestScore})}
+#'   \item{\code{sequence}}{character, peptide sequence determined by MSGF+ or Spectrum Mill analysis of LC-MS/MS features}
+#'   \item{\code{organism_name}}{character, organism whose protein collection database was 
+#'     used for LC-MS/MS peptide identification, e.g., Rattus norvegicus}
+#'   \item{\code{ptm_id}}{character, concatenation of \code{protein_id} 
+#'     and the modified amino acid residue (e.g., serine residue, 20 denoted as S20s), 
+#'     with "-" as a separator}
+#'   \item{\code{ptm_peptide}}{character, concatenation of \code{ptm_id} and peptide with "-" as a separator. 
+#'     Values in this column are unique.}
+#'   \item{\code{confident_score}}{double, score indicating confidence 
+#'     of modified amino acid residue localization by LC-MS/MS fragmentation as calculated by 
+#'     Ascore algorith (0-1000) or Spectrum Mill (0-1)}
+#'   \item{\code{confident_site}}{logical, whether a modified site was confidently 
+#'     localized by LC-MS/MS fragmentation}
 #'   \item{\code{tissue}}{`r tissue()`}
 #'   \item{\code{assay}}{character, assay "PHOSPHO"} 
 #'}
@@ -1105,7 +1139,7 @@ doctext = function(day){
 #'   defined as having 0.5 or fewer counts per million in all but one sample. 
 #'   To generate normalized sample-level data, filtered gene counts were 
 #'   TMM-normalized using [edgeR::calcNormFactors()], followed by conversion to log counts per million with [edgeR::cpm()].
-#' @source \code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/transcriptomics/transcript-rna-seq/normalized-data/*normalized-log-cpm*}
+#' @source \code{pass1b-06/analysis/transcriptomics/transcript-rna-seq/normalized-data/*normalized-log-cpm*}
 #' @name TRNSCRPT_NORM_DATA
 "TRNSCRPT_BLOOD_NORM_DATA"
 
@@ -1233,7 +1267,7 @@ NULL
 #'   
 #'   For the subset of normalized data corresponding to training-regulated features at 5% IHW FDR, see [ATAC_NORM_DATA_05FDR].
 #'   
-#' @source \code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/epigenomics/epigen-atac-seq/normalized-data/*quant-norm*}
+#' @source \code{pass1b-06/analysis/epigenomics/epigen-atac-seq/normalized-data/*quant-norm*}
 #' @name ATAC_NORM_DATA
 NULL
 
@@ -1268,7 +1302,7 @@ NULL
 #'   
 #'   For the full set of normalized sample-level data, see [ATAC_NORM_DATA] and [ATAC_RAW_COUNTS]. 
 #'
-#' @source \code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/epigenomics/epigen-atac-seq/normalized-data/*quant-norm*}
+#' @source \code{pass1b-06/analysis/epigenomics/epigen-atac-seq/normalized-data/*quant-norm*}
 #' @name ATAC_NORM_DATA_05FDR
 "ATAC_HIPPOC_NORM_DATA_05FDR"
 
@@ -1406,7 +1440,7 @@ NULL
 #'   
 #'   For the subset of normalized data corresponding to training-regulated features at 5% IHW FDR, see [METHYL_NORM_DATA_05FDR].
 #'   
-#' @source \code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/epigenomics/epigen-rrbs/normalized-data/*normalized-log-M-window.txt}
+#' @source \code{pass1b-06/analysis/epigenomics/epigen-rrbs/normalized-data/*normalized-log-M-window.txt}
 #' @name METHYL_NORM_DATA
 NULL
 
@@ -1426,7 +1460,7 @@ NULL
 #'   
 #'   For the full set of normalized sample-level data, see [METHYL_NORM_DATA]. 
 #'   
-#' @source \code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/epigenomics/epigen-rrbs/normalized-data/*normalized-log-M-window.txt}
+#' @source \code{pass1b-06/analysis/epigenomics/epigen-rrbs/normalized-data/*normalized-log-M-window.txt}
 #' @name METHYL_NORM_DATA_05FDR
 "METHYL_HIPPOC_NORM_DATA_05FDR"
 
@@ -1462,7 +1496,7 @@ NULL
 #'   two plexes within a tissue and non-rat contaminants were removed. Log2 TMT ratios were sample-normalized by 
 #'   median-centering and mean absolute deviation scaling. Plex batch effects were removed using linear models 
 #'   implemented by the [limma::removeBatchEffect()].  
-#' @source \code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/proteomics-untargeted/prot-pr/normalized-data/*med-mad-normalized-logratio.txt}
+#' @source \code{pass1b-06/analysis/proteomics-untargeted/prot-pr/normalized-data/*med-mad-normalized-logratio.txt}
 #' @name PROT_NORM_DATA
 "PROT_CORTEX_NORM_DATA"
 
@@ -1493,7 +1527,7 @@ NULL
 #'   two plexes within a tissue and non-rat contaminants were removed. Log2 TMT ratios were sample-normalized by 
 #'   median-centering and mean absolute deviation scaling. Plex batch effects were removed using linear models 
 #'   implemented by the [limma::removeBatchEffect()].  
-#' @source \code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/proteomics-untargeted/prot-ac/normalized-data/*med-mad-normalized-logratio.txt}
+#' @source \code{pass1b-06/analysis/proteomics-untargeted/prot-ac/normalized-data/*med-mad-normalized-logratio.txt}
 #' @name ACETYL_NORM_DATA
 "ACETYL_HEART_NORM_DATA"
 
@@ -1509,7 +1543,7 @@ NULL
 #'   two plexes within a tissue and non-rat contaminants were removed. Log2 TMT ratios were sample-normalized by 
 #'   median-centering and mean absolute deviation scaling. Plex batch effects were removed using linear models 
 #'   implemented by the [limma::removeBatchEffect()].  
-#' @source \code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/proteomics-untargeted/prot-ph/normalized-data/*med-mad-normalized-logratio.txt}
+#' @source \code{pass1b-06/analysis/proteomics-untargeted/prot-ph/normalized-data/*med-mad-normalized-logratio.txt}
 #' @name PHOSPHO_NORM_DATA
 "PHOSPHO_CORTEX_NORM_DATA"
 
@@ -1541,7 +1575,7 @@ NULL
 #'   median-centering and mean absolute deviation scaling. Plex batch effects were removed using linear models 
 #'   implemented by the [limma::removeBatchEffect()]. The ubiquitynation datasets were corrected for changes in protein abundances 
 #'   by fitting a global linear model between the ubiquitylsite and the cognate protein and extracting the residuals. 
-#' @source \code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/proteomics-untargeted/prot-ph/normalized-data/*med-mad-normalized-protein-corrected-logratio.txt}
+#' @source \code{pass1b-06/analysis/proteomics-untargeted/prot-ph/normalized-data/*med-mad-normalized-protein-corrected-logratio.txt}
 #' @name UBIQ_NORM_DATA
 "UBIQ_HEART_NORM_DATA"
 
@@ -1574,7 +1608,7 @@ NULL
 #'   and one was optimal for SERPIN-E while the other was optimal for ADIPONECTIN.
 #'   Hence, in some places \code{dataset} refers to "rat-adipokine" while in other places, 
 #'   like here, \code{dataset} refers to "SERPIN-E" or "ADIPONECTIN", among others. 
-#' @source \code{gs://mawg-data/pass1b-06/immunoassay/data/release/pass1b-06*_mfi-log2-filt-imputed-na-outliers.txt} 
+#' @source \code{mawg-data/pass1b-06/immunoassay/data/release/pass1b-06*_mfi-log2-filt-imputed-na-outliers.txt} 
 "IMMUNO_NORM_DATA_NESTED"
 
 
@@ -1583,7 +1617,7 @@ NULL
 #'   Data are equivalent to the data provided in [IMMUNO_NORM_DATA_NESTED]. [IMMUNO_NORM_DATA_NESTED] is compatible with the 
 #'   differential analysis functions while this format is compatible with visualization functions. 
 #' @format A data frame with analytes in rows and participant IDs (PIDs) in columns
-#' @source \code{gs://mawg-data/pass1b-06/immunoassay/data/release/pass1b-06*_mfi-log2-filt-imputed-na-outliers.txt} 
+#' @source \code{mawg-data/pass1b-06/immunoassay/data/release/pass1b-06*_mfi-log2-filt-imputed-na-outliers.txt} 
 "IMMUNO_NORM_DATA_FLAT"
 
 
@@ -1729,7 +1763,7 @@ NULL
 #'   \item{\code{pct_mrna}}{double, percent of bases mapped to mRNA}
 #'   \item{\code{median_5_3_bias}}{double, median 5' to 3' bias} 
 #' }
-#' @source <gs://motrpac-data-freeze-pass/pass1b-06/v1.1/results/transcriptomics/qa-qc/motrpac_pass1b-06_transcript-rna-seq_qa-qc-metrics.csv>
+#' @source \code{pass1b-06/results/transcriptomics/qa-qc/motrpac_pass1b-06_transcript-rna-seq_qa-qc-metrics.csv}
 "TRNSCRPT_META"
 
 
@@ -1850,7 +1884,7 @@ NULL
 #'   Columns with a period are QC metrics from this pipeline. Note that the ENCODE pipeline reports alignments per paired-end read, 
 #'   so \code{align.samstat.total_reads} reports the number of paired-end reads that align, which corresponds to twice the number of sequenced fragments.    
 #' 
-#' @source <gs://motrpac-data-freeze-pass/pass1b-06/v1.1/results/epigenomics/qa-qc/motrpac_pass1b-06_epigen-atac-seq_qa-qc-metrics.csv>
+#' @source \code{pass1b-06/results/epigenomics/qa-qc/motrpac_pass1b-06_epigen-atac-seq_qa-qc-metrics.csv}
 "ATAC_META"
 
 
@@ -1936,7 +1970,7 @@ NULL
 #'   \item{\code{lambda_pct_CHH}}{double, global CHH methylation level  based on the deduplicated data}
 #'   \item{\code{Seq_batch}}{character, unique identifier for sequencing batch}
 #' }
-#' @source <gs://motrpac-data-freeze-pass/pass1b-06/v1.1/results/epigenomics/qa-qc/motrpac_pass1b-06_epigen-rrbs_qa-qc-metrics.csv>
+#' @source \code{pass1b-06/results/epigenomics/qa-qc/motrpac_pass1b-06_epigen-rrbs_qa-qc-metrics.csv}
 "METHYL_META"
 
 
@@ -2808,6 +2842,7 @@ NULL
 #'   \item{\code{ome}}{`r assay()`}
 #'   \item{\code{kegg_id}}{character, pathway ID returned from [FELLA::enrich()]}
 #'   \item{\code{adj_p_value}}{double, IHW FDR, calculated using [IHW::ihw()] with \code{tissue} as a covariate} 
+#'   \item{\code{graphical_cluster}}{character, \code{cluster} column with tissue prefix removed} 
 #' }
 #' @details All non-metabolite training-regulated features (5% FDR) were mapped 
 #'   to Ensembl gene symbols using [FEATURE_TO_GENE]. Training-regulated metabolites 
