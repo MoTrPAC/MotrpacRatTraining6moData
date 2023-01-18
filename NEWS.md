@@ -1,3 +1,13 @@
+# MotrpacRatTraining6moData 1.8.0 (2023-01-18)
+
+* Add `PROT_FEATURE_ANNOT`, `PHOPSHO_FEATURE_ANNOT`, `UBIQ_FEATURE_ANNOT`, 
+`ACETYL_FEATURE_ANNOT`, `TRNSCRPT_FEATURE_ANNOT`.  
+* Add `graphical_cluster` column to `GRAPH_PW_ENRICH`.  
+* In `TRAINING_REGULATED_FEATURES` only, calculate missing `timewise_logFC_se` 
+for METHYL features: `timewise_logFC_se = timewise_logFC/timewise_zscore`  
+* Change URLs for `ATAC_FEATURE_ANNOT` and `METHYL_FEATURE_ANNOT`.  
+* Update `@source` entries.  
+
 # MotrpacRatTraining6moData 1.7.0 (2022-12-27)
 
 * Update phenotypic data (`PHENO`) to v3, which includes changes to the VO2max data as announced by the BIC. 

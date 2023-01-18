@@ -7,7 +7,7 @@
 A data frame with peaks in rows (\code{feature_ID}) and samples in columns (\code{viallabel})
 }
 \source{
-\code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/epigenomics/epigen-atac-seq/normalized-data/*quant-norm*}
+\code{pass1b-06/analysis/epigenomics/epigen-atac-seq/normalized-data/*quant-norm*}
 }
 \description{
 Normalized sample-level ATAC-seq (ATAC) data used for visualization and differential analysis

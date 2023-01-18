@@ -26,7 +26,7 @@ is always less than "geneEnd", even if the gene is on the negative strand ("gene
 }
 }
 \source{
-\code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/resources/master_feature_to_gene_20211116.RData}
+\code{pass1b-06/analysis/resources/master_feature_to_gene_20211116.RData}
 }
 \usage{
 FEATURE_TO_GENE

@@ -26,9 +26,10 @@ tissue_codes = tissue_codes[tissue_codes != ""]
 #' @param tmpdir scratch path to download files from GCP
 #' @param GSUTIL_PATH path to "gsutil" on your computer
 #' @param check_first check if file exists before downloading it. read in existing file if it exists. should be set to TRUE if you are running this function in parallel
+#' @param ... additional arguments passed to [data.table::fread()]
 #'
 #' @return A data.table
-dl_read_gcp = function(path,sep='\t',tmpdir='/tmp',GSUTIL_PATH='gsutil',check_first=F){
+dl_read_gcp = function(path,sep='\t',tmpdir='/tmp',GSUTIL_PATH='gsutil',check_first=F,...){
   system(sprintf('mkdir -p %s',tmpdir))
   # download
   new_path = sprintf('%s/%s',tmpdir,basename(path))
@@ -44,7 +45,7 @@ dl_read_gcp = function(path,sep='\t',tmpdir='/tmp',GSUTIL_PATH='gsutil',check_fi
   }
   # read in the data as a data.table
   if(file.exists(new_path)){
-    dt = fread(new_path,sep=sep,header=T)
+    dt = fread(new_path,sep=sep,...)
     return(dt)
   }
   warning(sprintf("gsutil file %s does not exist.\n",path))
@@ -613,6 +614,39 @@ for(assay_code in c('prot-pr','prot-ac','prot-ub','prot-ph')){
   do.call("use_data", list(as.name(new_name), overwrite = TRUE))
 }
 
+# Proteomics feature-level metadata -------------------------------------------------
+
+system("gsutil -m cp gs://motrpac-data-hub/pass1b-06/results/proteomics-untargeted/*/prot-*/*rii-results.txt /tmp")
+
+for(assay_code in c('prot-pr','prot-ac','prot-ub','prot-ph')){
+  dtlist = list()
+  files = list.files(path="/tmp", pattern=sprintf("%s_rii-results", assay_code), full.names=T)
+  for(f in files){
+    dt = fread(f, sep="\t", header=T)
+    # remove viallabel and Ref_S* columns
+    remove = colnames(dt)[grepl("^[0-9]|^Ref_S", colnames(dt))]
+    dt[, (remove) := NULL ]
+    # remove gene ID cols, which can be found in FEATURE_TO_GENE
+    dt[, c("gene_symbol", "entrez_id") := NULL ]
+    # add tissue label
+    dt[,tissue := TISSUE_CODE_TO_ABBREV[[unname(unlist(strsplit(basename(f), '_')))[3]]]]
+    dtlist[[f]] = dt
+  }
+  dt = rbindlist(dtlist)
+  dt[,assay := ASSAY_CODE_TO_ABBREV[[assay_code]]]
+  df = as.data.frame(dt)
+  print(head(df))
+  
+  # save to GCS instead of the data package 
+  new_name = sprintf("%s_FEATURE_ANNOT", ASSAY_CODE_TO_ABBREV[[assay_code]])
+  outfile = sprintf("/tmp/%s.txt", new_name)
+  write.table(df, file=outfile, sep = "\t", col.names = TRUE, row.names = FALSE, quote = FALSE)
+  system(sprintf("gsutil cp %s gs://motrpac-rat-training-6mo-extdata/feature-annot/", outfile))
+  
+  message(new_name)
+  sinew::makeOxygen(df)
+}
+
 
 # RRBS feature annotation ------------------------------------------------------
 
@@ -649,8 +683,35 @@ save(ATAC_FEATURE_ANNOT,
      compress = "bzip2",
      compression_level = 9)
 
+# RNA-seq feature annotation ---------------------------------------------------
 
-# Rat-to-human phosphosite map 
+get_chunk = function(string, int){
+  chunk = unname(unlist(strsplit(string, ";")))[int]
+  value = gsub('.* "',"",chunk)
+  value = gsub('"$','',value)
+  return(value)
+}
+
+rna_feature_annot = dl_read_gcp("gs://mawg-data/pass1b-06/transcript-rna-seq/mapping/genome.gtf", 
+                                sep="\t",
+                                fill=TRUE,
+                                header=FALSE)
+rna_feature_annot = rna_feature_annot[V3 == "gene"]
+rna_feature_annot[,gene_id := sapply(V9, get_chunk, 1)]
+rna_feature_annot[,gene_version := sapply(V9, get_chunk, 2)]
+rna_feature_annot[,gene_name := sapply(V9, get_chunk, 3)]
+rna_feature_annot[,gene_source := sapply(V9, get_chunk, 4)]
+rna_feature_annot[,gene_biotype := sapply(V9, get_chunk, 5)]
+rna_feature_annot[,V9 := NULL]
+colnames(rna_feature_annot)[1:8] = c("seqname","source","feature","start","end","score","strand","frame")
+sinew::makeOxygen(rna_feature_annot)
+# save to GCS
+outfile = "/tmp/TRNSCRPT_FEATURE_ANNOT.txt"
+write.table(rna_feature_annot, file=outfile, sep = "\t", col.names = TRUE, row.names = FALSE, quote = FALSE)
+system(sprintf("gsutil cp %s gs://motrpac-rat-training-6mo-extdata/feature-annot/", outfile))
+
+
+# Rat-to-human phosphosite map ------------------------------------------------------
 
 map = dl_read_gcp("gs://motrpac-data-hub/pass1b-06/analysis/resources/motrpac_pass1b-06_proteomics-ph-rat2human-20211016.csv", sep=",")
 nrow(map)
