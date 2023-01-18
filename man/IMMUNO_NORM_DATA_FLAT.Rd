@@ -8,7 +8,7 @@
 A data frame with analytes in rows and participant IDs (PIDs) in columns
 }
 \source{
-\code{gs://mawg-data/pass1b-06/immunoassay/data/release/pass1b-06*_mfi-log2-filt-imputed-na-outliers.txt}
+\code{mawg-data/pass1b-06/immunoassay/data/release/pass1b-06*_mfi-log2-filt-imputed-na-outliers.txt}
 }
 \usage{
 IMMUNO_NORM_DATA_FLAT

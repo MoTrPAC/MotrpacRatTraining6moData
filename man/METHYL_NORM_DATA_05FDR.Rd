@@ -30,7 +30,7 @@ An object of class \code{data.frame} with 621 rows and 54 columns.
 An object of class \code{data.frame} with 328 rows and 54 columns.
 }
 \source{
-\code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/epigenomics/epigen-rrbs/normalized-data/*normalized-log-M-window.txt}
+\code{pass1b-06/analysis/epigenomics/epigen-rrbs/normalized-data/*normalized-log-M-window.txt}
 }
 \usage{
 METHYL_HIPPOC_NORM_DATA_05FDR

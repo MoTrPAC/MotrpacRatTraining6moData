@@ -7,7 +7,7 @@
 A data frame with CpG sites in rows (\code{feature_ID}) and samples in columns (\code{viallabel})
 }
 \source{
-\code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/epigenomics/epigen-rrbs/normalized-data/*normalized-log-M-window.txt}
+\code{pass1b-06/analysis/epigenomics/epigen-rrbs/normalized-data/*normalized-log-M-window.txt}
 }
 \description{
 Normalized DNA methylation (METHYL) data used for visualization.

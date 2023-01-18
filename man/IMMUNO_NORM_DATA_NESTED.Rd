@@ -8,7 +8,7 @@
 A nested list of data frames
 }
 \source{
-\code{gs://mawg-data/pass1b-06/immunoassay/data/release/pass1b-06*_mfi-log2-filt-imputed-na-outliers.txt}
+\code{mawg-data/pass1b-06/immunoassay/data/release/pass1b-06*_mfi-log2-filt-imputed-na-outliers.txt}
 }
 \usage{
 IMMUNO_NORM_DATA_NESTED

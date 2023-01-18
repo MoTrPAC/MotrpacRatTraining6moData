@@ -63,7 +63,7 @@ An object of class \code{data.frame} with 16154 rows and 54 columns.
 An object of class \code{data.frame} with 16764 rows and 54 columns.
 }
 \source{
-\code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/transcriptomics/transcript-rna-seq/normalized-data/*normalized-log-cpm*}
+\code{pass1b-06/analysis/transcriptomics/transcript-rna-seq/normalized-data/*normalized-log-cpm*}
 }
 \usage{
 TRNSCRPT_BLOOD_NORM_DATA

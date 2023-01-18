@@ -94,7 +94,7 @@ site performed the assay, "Stanford" or "MSSM" (Icahn School of Medicine at Moun
 }
 }
 \source{
-\url{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/results/transcriptomics/qa-qc/motrpac_pass1b-06_transcript-rna-seq_qa-qc-metrics.csv}
+\code{pass1b-06/results/transcriptomics/qa-qc/motrpac_pass1b-06_transcript-rna-seq_qa-qc-metrics.csv}
 }
 \usage{
 TRNSCRPT_META

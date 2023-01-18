@@ -12,7 +12,7 @@ A data frame with 202610 rows and 2 variables:
 }
 }
 \source{
-\code{gs://motrpac-data-hub/pass1b-06/analysis/resources/motrpac_pass1b-06_proteomics-ph-rat2human-20211016.csv}
+\code{pass1b-06/analysis/resources/motrpac_pass1b-06_proteomics-ph-rat2human-20211016.csv}
 }
 \usage{
 RAT_TO_HUMAN_PHOSPHO

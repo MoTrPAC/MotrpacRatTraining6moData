@@ -32,6 +32,7 @@ features due to missing groups (e.g., females trained for 1 week).}
 \item{\code{ome}}{character, assay abbreviation, one of \link{ASSAY_ABBREV}}
 \item{\code{kegg_id}}{character, pathway ID returned from \code{\link[FELLA:enrich-funs]{FELLA::enrich()}}}
 \item{\code{adj_p_value}}{double, IHW FDR, calculated using \code{\link[IHW:ihw.default]{IHW::ihw()}} with \code{tissue} as a covariate}
+\item{\code{graphical_cluster}}{character, \code{cluster} column with tissue prefix removed}
 }
 }
 \usage{
