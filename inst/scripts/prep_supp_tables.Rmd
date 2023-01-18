@@ -105,6 +105,8 @@ sinew::makeOxygen(GRAPH_STATES)
 # GRAPH_PW_ENRICH 
 head(e)
 GRAPH_PW_ENRICH = as.data.frame(e)
+# 1/18/23: add "graphical_cluster" column
+GRAPH_PW_ENRICH$graphical_cluster = gsub(".*:","",GRAPH_PW_ENRICH$cluster)
 usethis::use_data(GRAPH_PW_ENRICH, overwrite = T)
 sinew::makeOxygen(GRAPH_PW_ENRICH)
 # GENE_UNIVERSES
