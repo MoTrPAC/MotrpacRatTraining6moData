@@ -42,7 +42,7 @@ Suggests:
     knitr,
     limma,
     MotrpacBicQC (>= 0.6.9),
-    MotrpacRatTraining6mo (>= 1.4.3),
+    MotrpacRatTraining6mo (>= 1.5.0),
     ggtree (>= 3.7.1),
     preprocessCore,
     repfdr,
