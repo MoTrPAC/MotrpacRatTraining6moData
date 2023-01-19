@@ -240,6 +240,7 @@ write.table(metab_files_dt, "~/Desktop/metab-norm-data-files.tsv", sep="\t", col
 
 ATAC_FEATURE_ANNOT = load_atac_feature_annotation(scratchdir = "/tmp")
 METHYL_FEATURE_ANNOT = load_methyl_feature_annotation(scratchdir = "/tmp")
+TRNSCRPT_FEATURE_ANNOT = load_feature_annotation("TRNSCRPT", scratchdir = "/tmp")
 tables = c(
   "TRAINING_REGULATED_FEATURES",
   "TRAINING_REGULATED_NORM_DATA",
@@ -253,7 +254,8 @@ tables = c(
   "OUTLIERS",
   "IMMUNO_META",
   "ATAC_FEATURE_ANNOT",
-  "METHYL_FEATURE_ANNOT")
+  "METHYL_FEATURE_ANNOT",
+  "TRNSCRPT_FEATURE_ANNOT")
 
 # start with tables because that's easy
 for(table in tables){

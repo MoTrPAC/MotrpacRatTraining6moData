@@ -30,7 +30,7 @@ An object of class \code{data.frame} with 253 rows and 54 columns.
 An object of class \code{data.frame} with 4 rows and 54 columns.
 }
 \source{
-\code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/epigenomics/epigen-atac-seq/normalized-data/*quant-norm*}
+\code{pass1b-06/analysis/epigenomics/epigen-atac-seq/normalized-data/*quant-norm*}
 }
 \usage{
 ATAC_HIPPOC_NORM_DATA_05FDR

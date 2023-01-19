@@ -27,7 +27,7 @@ An object of class \code{data.frame} with 43567 rows and 63 columns.
 An object of class \code{data.frame} with 30304 rows and 64 columns.
 }
 \source{
-\code{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/analysis/proteomics-untargeted/prot-ph/normalized-data/*med-mad-normalized-logratio.txt}
+\code{pass1b-06/analysis/proteomics-untargeted/prot-ph/normalized-data/*med-mad-normalized-logratio.txt}
 }
 \usage{
 PHOSPHO_CORTEX_NORM_DATA

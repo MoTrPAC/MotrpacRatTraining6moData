@@ -87,7 +87,7 @@ site performed the assay, "Stanford" or "MSSM" (Icahn School of Medicine at Moun
 }
 }
 \source{
-\url{gs://motrpac-data-freeze-pass/pass1b-06/v1.1/results/epigenomics/qa-qc/motrpac_pass1b-06_epigen-rrbs_qa-qc-metrics.csv}
+\code{pass1b-06/results/epigenomics/qa-qc/motrpac_pass1b-06_epigen-rrbs_qa-qc-metrics.csv}
 }
 \usage{
 METHYL_META

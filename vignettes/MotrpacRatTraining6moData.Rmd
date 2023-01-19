@@ -106,6 +106,7 @@ Install this package with `devtools`:
 if (!require("devtools", quietly = TRUE)){
   install.packages("devtools")
 }
+options(timeout=1e5) # extend the timeout
 devtools::install_github("MoTrPAC/MotrpacRatTraining6moData")
 ```
 
@@ -137,19 +138,7 @@ Downloading GitHub repo MoTrPAC/MotrpacRatTraining6moData@HEAD
 ```
 
 #### Troubleshooting
-If you get this error:  
-```
-Downloading GitHub repo MoTrPAC/MotrpacRatTraining6moData@HEAD
-Error in utils::download.file(url, path, method = method, quiet = quiet,  : 
-  download from 'https://api.github.com/repos/MoTrPAC/MotrpacRatTraining6moData/tarball/HEAD' failed
-```
-..try extending the timeout:  
-```r
-options(timeout=1e5)
-devtools::install_github("MoTrPAC/MotrpacRatTraining6moData")
-```
-
-If you get this error after extending the `timeout`:  
+If you get this error after setting `options(timeout=1e5)`:  
 ```
 Downloading GitHub repo MoTrPAC/MotrpacRatTraining6moData@HEAD
 Error in utils::download.file(url, path, method = method, quiet = quiet,  : 
@@ -242,8 +231,11 @@ Here is a brief summary of the kinds of data included in this package:
 * Assay, tissue, sex, and training group abbreviations, codes, colors, and order used in plots
 * Phenotypic data, `PHENO`  
 * Mapping between various feature identifiers, i.e., `FEATURE_TO_GENE`, `RAT_TO_HUMAN_GENE`  
-* Ome-specific feature annotation, i.e., `METAB_FEATURE_ID_MAP`, `METHYL_FEATURE_ANNOT` (GCP only), `ATAC_FEATURE_ANNOT` (GCP only)
-* Ome-specific sample-level metadata, i.e., `TRNSCRPT_META`, `ATAC_META`, `METHYL_META`, `IMMUNO_META`, `PHOSPHO_META`, `PROT_META`, `ACETYL_META`, `UBIQ_META`  
+* Ome-specific feature annotation, i.e., `METAB_FEATURE_ID_MAP`, `METHYL_FEATURE_ANNOT` (GCP only), 
+`ATAC_FEATURE_ANNOT` (GCP only), `PROT_FEATURE_ANNOT` (GCP only), `PHOSPHO_FEATURE_ANNOT` (GCP only),
+`UBIQ_FEATURE_ANNOT` (GCP only), `ACETYL_FEATURE_ANNOT` (GCP only), `TRNSCRPT_FEATURE_ANNOT` (GCP only)  
+* Ome-specific sample-level metadata, i.e., `TRNSCRPT_META`, `ATAC_META`, `METHYL_META`, `IMMUNO_META`, 
+`PHOSPHO_META`, `PROT_META`, `ACETYL_META`, `UBIQ_META`  
 * Raw counts for RNA-Seq (TRNSCRPT), ATAC-Seq (ATAC), and RRBS (METHYL) data, 
 e.g., `TRNSCRPT_LIVER_RAW_COUNTS`.
 Note that epigenetic data (ATAC and METHYL) must be downloaded from Google Cloud Storage. See more details 

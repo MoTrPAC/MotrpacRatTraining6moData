@@ -66,8 +66,7 @@ reference:
     - RAT_TO_HUMAN_GENE
     - RAT_TO_HUMAN_PHOSPHO
     - METAB_FEATURE_ID_MAP
-    - ATAC_FEATURE_ANNOT
-    - METHYL_FEATURE_ANNOT
+    - matches("_FEATURE_ANNOT$")
 - subtitle: Abbreviations 
   contents:
     - ASSAY_ABBREV_TO_CODE
