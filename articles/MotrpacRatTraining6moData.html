@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">MotrpacRatTraining6moData</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.7.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.8.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -153,6 +153,7 @@ details.</p>
 <code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://devtools.r-lib.org/" class="external-link">"devtools"</a></span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>timeout<span class="op">=</span><span class="fl">1e5</span><span class="op">)</span> <span class="co"># extend the timeout</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"MoTrPAC/MotrpacRatTraining6moData"</span><span class="op">)</span></span></code></pre></div>
 <p>The output for a successful installation looks something like this.
 Note that the <code>*** moving datasets to lazyload DB</code> step takes
@@ -182,15 +183,8 @@ the longest (~5 minutes):</p>
 <div class="section level4">
 <h4 id="troubleshooting">Troubleshooting<a class="anchor" aria-label="anchor" href="#troubleshooting"></a>
 </h4>
-<p>If you get this error:</p>
-<pre><code>Downloading GitHub repo MoTrPAC/MotrpacRatTraining6moData@HEAD
-Error in utils::download.file(url, path, method = method, quiet = quiet,  : 
-  download from 'https://api.github.com/repos/MoTrPAC/MotrpacRatTraining6moData/tarball/HEAD' failed</code></pre>
-<p>..try extending the timeout:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>timeout<span class="op">=</span><span class="fl">1e5</span><span class="op">)</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"MoTrPAC/MotrpacRatTraining6moData"</span><span class="op">)</span></span></code></pre></div>
-<p>If you get this error after extending the <code>timeout</code>:</p>
+<p>If you get this error after setting
+<code>options(timeout=1e5)</code>:</p>
 <pre><code>Downloading GitHub repo MoTrPAC/MotrpacRatTraining6moData@HEAD
 Error in utils::download.file(url, path, method = method, quiet = quiet,  : 
   download from 'https://api.github.com/repos/MoTrPAC/MotrpacRatTraining6moData/tarball/HEAD' failed
@@ -213,7 +207,7 @@ which will automatically start downloading this repository in a
 tarball</p></li>
 <li>
 <p>Install the package from source:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"~/Downloads/MoTrPAC-MotrpacRatTraining6moData-0729e2e.tar.gz"</span>, </span>
 <span>  repos <span class="op">=</span> <span class="cn">NULL</span>, </span>
 <span>  type <span class="op">=</span> <span class="st">"source"</span><span class="op">)</span></span>
@@ -221,7 +215,7 @@ tarball</p></li>
 </li>
 </ol>
 <p>Once we install this package, we can load the library.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://motrpac.github.io/MotrpacRatTraining6moData/">MotrpacRatTraining6moData</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span> <span class="co"># for plots in this tutorial </span></span></code></pre></div>
 <div>
@@ -370,7 +364,13 @@ and order used in plots</li>
 </li>
 <li>Ome-specific feature annotation, i.e.,
 <code>METAB_FEATURE_ID_MAP</code>, <code>METHYL_FEATURE_ANNOT</code>
-(GCP only), <code>ATAC_FEATURE_ANNOT</code> (GCP only)</li>
+(GCP only), <code>ATAC_FEATURE_ANNOT</code> (GCP only),
+<code>PROT_FEATURE_ANNOT</code> (GCP only),
+<code>PHOSPHO_FEATURE_ANNOT</code> (GCP only),
+<code>UBIQ_FEATURE_ANNOT</code> (GCP only),
+<code>ACETYL_FEATURE_ANNOT</code> (GCP only),
+<code>TRNSCRPT_FEATURE_ANNOT</code> (GCP only)<br>
+</li>
 <li>Ome-specific sample-level metadata, i.e.,
 <code>TRNSCRPT_META</code>, <code>ATAC_META</code>,
 <code>METHYL_META</code>, <code>IMMUNO_META</code>,
@@ -408,7 +408,7 @@ available <a href="https://motrpac.github.io/MotrpacRatTraining6moData/index.htm
 gastrocnemius (leg skeletal muscle) with the phenotypic data to perform
 principal component analysis (PCA). We also take advantage of the
 training group colors.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Load data </span></span>
 <span><span class="co"># While this is not necessary, we want to make it clear what objects are available in the package.</span></span>
 <span><span class="co"># Note you can use data directly without loading with `data()`, e.g., `head(PHENO)`</span></span>
@@ -439,7 +439,7 @@ training group colors.</p>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">df</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">PC1</span>, y<span class="op">=</span><span class="va">PC2</span>, colour<span class="op">=</span><span class="va">group</span>, shape<span class="op">=</span><span class="va">sex</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>size<span class="op">=</span><span class="fl">3</span><span class="op">)</span> </span></code></pre></div>
 <p><img src="MotrpacRatTraining6moData_files/figure-html/unnamed-chunk-2-1.png" width="700" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Use GROUP_COLORS and make it prettier </span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">df</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">PC1</span>, y<span class="op">=</span><span class="va">PC2</span>, fill<span class="op">=</span><span class="va">group</span>, shape<span class="op">=</span><span class="va">sex</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
@@ -461,7 +461,7 @@ their sample IDs, and map the features to gene IDs.</p>
 <h3 id="data-processing">Data processing<a class="anchor" aria-label="anchor" href="#data-processing"></a>
 </h3>
 <p>First, load the normalized data from each ome.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rnaseq_d</span> <span class="op">=</span> <span class="va">TRNSCRPT_HEART_NORM_DATA</span></span>
 <span><span class="va">prot_d</span> <span class="op">=</span> <span class="va">PROT_HEART_NORM_DATA</span></span></code></pre></div>
 <p>By default, the column names of most sample-level data are vial
@@ -473,7 +473,7 @@ Here, we map vial labels (sample IDs) to BIDs because BIDs are
 conveniently a substring of the vial labels. <code>PHENO</code> can also
 be used to map between vial labels (<code>viallabel</code>), PID
 (<code>pid</code>), and BID (<code>bid</code>).</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Match sample ids</span></span>
 <span><span class="co">#' A helper function for getting a named vector that maps biospecimen ids to sample ids</span></span>
 <span><span class="co">#' The biospecimen id of each sample is the substring of the sample id.</span></span>
@@ -488,7 +488,7 @@ be used to map between vial labels (<code>viallabel</code>), PID
 proteomics feature IDs to gene symbols. <code>FEATURE_TO_GENE</code> is
 very large (&gt;4M rows), so we start by subsetting it to the features
 in the current analysis.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">FEATURE_TO_GENE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 4044034       9</span></span>
 <span><span class="va">f2g</span> <span class="op">=</span> <span class="va">FEATURE_TO_GENE</span><span class="op">[</span></span>
@@ -500,7 +500,7 @@ in the current analysis.</p>
 subset the RNA-seq and proteomics data to overlapping BIDs and genes.
 For cases where multiple feature IDs map to the same gene, take the
 average value per BID.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Get new RNA-seq and proteomics data frames</span></span>
 <span><span class="co"># here we compute the gene-wise average profiles, while limiting the</span></span>
 <span><span class="co"># data to the shared biospecimen ids</span></span>
@@ -537,7 +537,7 @@ proteomics data. We use t-tests here for simplicity, but a more
 appropriate way to compute differential abundance is to use tools like
 <code>limma</code> and <code>DESeq2</code>. Fortunately, these more
 robust results are also available in this package!</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Perform simple t-tests</span></span>
 <span><span class="va">ttest_wrapper</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">groups</span>, <span class="va">group1</span>, <span class="va">group2</span><span class="op">)</span><span class="op">{</span></span>
 <span>  <span class="va">x1</span> <span class="op">=</span> <span class="va">x</span><span class="op">[</span><span class="va">groups</span><span class="op">==</span><span class="va">group1</span><span class="op">]</span></span>
@@ -578,7 +578,7 @@ robust results are also available in this package!</p>
 <p>Now we compare the results from the simple t-test above to the
 differential analysis results from DESeq2 (for RNA-seq) and limma (for
 proteomics).</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rnaseq_DA</span> <span class="op">=</span> <span class="va">TRNSCRPT_HEART_DA</span></span>
 <span><span class="va">prot_DA</span> <span class="op">=</span> <span class="va">PROT_HEART_DA</span></span>
 <span></span>
@@ -613,7 +613,7 @@ proteomics).</p>
 <span>     xlab <span class="op">=</span> <span class="st">"DESeq2 t-score"</span>,ylab <span class="op">=</span> <span class="st">"Simple t-test statistic"</span>,</span>
 <span>     pch<span class="op">=</span><span class="fl">20</span>,col<span class="op">=</span><span class="st">"gray"</span><span class="op">)</span>;<span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,lty<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <p><img src="MotrpacRatTraining6moData_files/figure-html/unnamed-chunk-8-1.png" width="700" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Same as above, but for proteomics</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">prot_t</span><span class="op">[</span><span class="va">shared_genes</span><span class="op">]</span>,<span class="va">male_8w_prot_ttests</span><span class="op">[</span><span class="st">"tscore"</span>,<span class="va">shared_genes</span><span class="op">]</span>,</span>
@@ -645,7 +645,7 @@ and National Institute on Aging (NIA).</p>
 <div class="section level2">
 <h2 id="session-info">Session Info<a class="anchor" aria-label="anchor" href="#session-info"></a>
 </h2>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; R version 4.2.2 (2022-10-31)</span></span>
 <span><span class="co">#&gt; Platform: x86_64-pc-linux-gnu (64-bit)</span></span>
@@ -665,12 +665,12 @@ and National Institute on Aging (NIA).</p>
 <span><span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; other attached packages:</span></span>
-<span><span class="co">#&gt; [1] ggplot2_3.4.0                   MotrpacRatTraining6moData_1.7.0</span></span>
+<span><span class="co">#&gt; [1] ggplot2_3.4.0                   MotrpacRatTraining6moData_1.8.0</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
 <span><span class="co">#&gt;  [1] highr_0.10        bslib_0.4.2       compiler_4.2.2    pillar_1.8.1     </span></span>
 <span><span class="co">#&gt;  [5] jquerylib_0.1.4   tools_4.2.2       digest_0.6.31     jsonlite_1.8.4   </span></span>
-<span><span class="co">#&gt;  [9] evaluate_0.19     memoise_2.0.1     lifecycle_1.0.3   tibble_3.1.8     </span></span>
+<span><span class="co">#&gt;  [9] evaluate_0.20     memoise_2.0.1     lifecycle_1.0.3   tibble_3.1.8     </span></span>
 <span><span class="co">#&gt; [13] gtable_0.3.1      pkgconfig_2.0.3   rlang_1.0.6       DBI_1.1.3        </span></span>
 <span><span class="co">#&gt; [17] cli_3.6.0         yaml_2.3.6        pkgdown_2.0.7     xfun_0.36        </span></span>
 <span><span class="co">#&gt; [21] fastmap_1.1.0     withr_2.5.0       dplyr_1.0.10      stringr_1.5.0    </span></span>
@@ -679,7 +679,7 @@ and National Institute on Aging (NIA).</p>
 <span><span class="co">#&gt; [33] rprojroot_2.0.3   grid_4.2.2        glue_1.6.2        R6_2.5.1         </span></span>
 <span><span class="co">#&gt; [37] textshaping_0.3.6 fansi_1.0.3       rmarkdown_2.19    farver_2.1.1     </span></span>
 <span><span class="co">#&gt; [41] purrr_1.0.1       magrittr_2.0.3    scales_1.2.1      htmltools_0.5.4  </span></span>
-<span><span class="co">#&gt; [45] assertthat_0.2.1  colorspace_2.0-3  labeling_0.4.2    ragg_1.2.4       </span></span>
+<span><span class="co">#&gt; [45] assertthat_0.2.1  colorspace_2.0-3  labeling_0.4.2    ragg_1.2.5       </span></span>
 <span><span class="co">#&gt; [49] utf8_1.2.2        stringi_1.7.12    munsell_0.5.0     cachem_1.0.6</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
