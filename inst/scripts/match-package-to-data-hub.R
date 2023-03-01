@@ -1,9 +1,9 @@
 #!/bin/R
 # Nicole Gay
 # 1/11/23
+# Updated 3/1/23
 
-library(MotrpacRatTraining6mo)
-library(MotrpacRatTraining6moData)
+library(MotrpacRatTraining6mo) # also attaches MotrpacRatTraining6moData
 library(data.table)
 secret = "it's a secret"
 secret2 = "it's also a secret"
@@ -323,21 +323,79 @@ colors = rbindlist(color_list)
 colors[hex_colour == "white", hex_colour := "#FFFFFF"]
 write.table(colors, "~/Desktop/pass1b-06_color_codes.txt", col.names = TRUE, row.names = FALSE, quote = FALSE, sep="\t")
 
-####### I LEFT OFF HERE
-# TODO
+#### Write text files for lists #### 
 
-# custom handling for lists/nested lists 
 # "GENE_UNIVERSES"
 names(GENE_UNIVERSES)
 names(GENE_UNIVERSES$gene_symbol)
 names(GENE_UNIVERSES$gene_symbol$IMMUNO)
 
+# for each ID type, one column per tissue and ome 
+for (id_type in names(GENE_UNIVERSES)){
+  cols = list() # names: ome_tissue
+  row_ome = c()
+  row_tissue = c()
+  longest = 0
+  for(ome in names(GENE_UNIVERSES[[id_type]])){
+    for(tissue in names(GENE_UNIVERSES[[id_type]][[ome]])){
+      label = sprintf("%s_%s", ome, tissue)
+      genes = GENE_UNIVERSES[[id_type]][[ome]][[tissue]]
+      genes = genes[order(genes)]
+      longest = max(longest, length(genes))
+      row_ome = c(row_ome, ome)
+      row_tissue = c(row_tissue, tissue)
+      cols[[label]] = as.character(genes)
+    }
+  }
+  # now extend each list to longest
+  cols_filled = lapply(cols, function(x){
+    c(x, rep(NA_character_, times=(longest-length(x))))
+  })
+  # now make it a data.table
+  dt = data.table::copy(cols_filled)
+  setDT(dt)   
+  # add column headers
+  header = data.table(V1 = row_ome, V2 = row_tissue)
+  header = data.table(t(header))
+  dt = rbindlist(list(header, dt), use.names=FALSE)
+  
+  write.table(dt, file=sprintf("~/Desktop/GENE_UNIVERSES_by_%s.txt",id_type), col.names=FALSE, row.names=FALSE, quote=FALSE, sep='\t')
+}
 
 # "PATHWAY_PARENTS"
-
+head(names(PATHWAY_PARENTS))
+dt = data.table(PATHWAY_ID = names(PATHWAY_PARENTS),
+                PATHWAY_PARENTS = unname(unlist(PATHWAY_PARENTS)))
+write.table(dt, file=sprintf("~/Desktop/PATHWAY_PARENTS.txt"), col.names=TRUE, row.names=FALSE, quote=FALSE, sep='\t')
 
 # "REPFDR_INPUTS"
-
+names(REPFDR_INPUTS)
+for(f in names(REPFDR_INPUTS)){
+  df = as.data.frame(REPFDR_INPUTS[[f]])
+  if(!is.null(rownames(df)) & !'feature' %in% colnames(df)){
+    df = cbind(feature=rownames(df), df)
+  }
+  write.table(df, file=sprintf("~/Desktop/REPFDR_INPUTS_%s.txt",f), col.names=TRUE, row.names=FALSE, quote=FALSE, sep='\t')
+}
 
 # "REPFDR_RES"
+names(REPFDR_RES)
+# repfdr_em_res
+dt = data.table(cbind(data.table(feature=rownames(REPFDR_RES$repfdr_em_res$mat)),
+                      REPFDR_RES$repfdr_em_res$mat))
+write.table(dt, file=sprintf("~/Desktop/REPFDR_RES_repfdr_em_res_matrix.txt"), col.names=TRUE, row.names=FALSE, quote=FALSE, sep='\t')
 
+dt = data.table(cbind(data.table(state=rownames(REPFDR_RES$repfdr_em_res$Pi)),
+                      REPFDR_RES$repfdr_em_res$Pi))
+write.table(dt, file=sprintf("~/Desktop/REPFDR_RES_repfdr_em_res_Pi.txt"), col.names=TRUE, row.names=FALSE, quote=FALSE, sep='\t')
+
+# repfdr_clusters
+dt = data.table(cbind(data.table(rowname=rownames(REPFDR_RES$repfdr_clusters)),
+                      REPFDR_RES$repfdr_clusters))
+write.table(dt, file=sprintf("~/Desktop/REPFDR_RES_repfdr_clusters.txt"), col.names=TRUE, row.names=FALSE, quote=FALSE, sep='\t')
+
+# repfdr_clusters_str
+# repfdr_clusters_pi
+dt = data.table(cluster = names(REPFDR_RES$repfdr_clusters_pi),
+                pi = REPFDR_RES$repfdr_clusters_pi)
+write.table(dt, file=sprintf("~/Desktop/REPFDR_RES_repfdr_clusters_pi.txt"), col.names=TRUE, row.names=FALSE, quote=FALSE, sep='\t')
