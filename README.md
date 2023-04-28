@@ -1,6 +1,7 @@
 # MotrpacRatTraining6moData
 
 <!-- badges: start -->
+[![DOI](https://zenodo.org/badge/511279465.svg)](https://zenodo.org/badge/latestdoi/511279465)
 ![R package version](https://img.shields.io/github/r-package/v/MoTrPAC/MotrpacRatTraining6moData?label=R%20package)
 [![R-CMD-check](https://github.com/MoTrPAC/MotrpacRatTraining6moData/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/MoTrPAC/MotrpacRatTraining6moData/actions/workflows/R-CMD-check.yaml)
 ![Last commit](https://img.shields.io/github/last-commit/MoTrPAC/MotrpacRatTraining6moData/main)
