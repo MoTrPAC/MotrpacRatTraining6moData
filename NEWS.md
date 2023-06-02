@@ -1,3 +1,11 @@
+# MotrpacRatTraining6moData 1.8.2 (2023-06-02)
+
+* Update `MotrpacRatTraining6mo` version requirement.
+
+# MotrpacRatTraining6moData 1.8.1 (2023-04-28)
+
+* Create a new tag to associate with Zenodo.
+
 # MotrpacRatTraining6moData 1.8.0 (2023-01-18)
 
 * Add `PROT_FEATURE_ANNOT`, `PHOPSHO_FEATURE_ANNOT`, `UBIQ_FEATURE_ANNOT`, 
