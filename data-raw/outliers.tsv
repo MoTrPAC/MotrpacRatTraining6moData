@@ -21,8 +21,8 @@ viallabel	tissue	pid	group	platform	reason
 90439016105	t61-colon	10486003	male,2w	immunoassay-rat-mag27plex	large fraction of missing values: 0.7037037
 90449016105	t61-colon	10641858	male,2w	immunoassay-rat-mag27plex	large fraction of missing values: 0.8148148
 90292016105	t61-colon	10220917	male,4w	immunoassay-rat-mag27plex	large fraction of missing values: 0.7037037
-all	t65-aorta (vena cava)		female,1w	all	brown adipose contamination
-all	t65-aorta (vena cava)		female,2w	all	brown adipose contamination
+all	t99-vena-cava		female,1w	all	brown adipose contamination
+all	t99-vena-cava		female,2w	all	brown adipose contamination
 90406015204	t52-hippocampus,stanford	10306471	female,4w	epigen-atac-seq	PC1
 90423015204	t52-hippocampus,stanford	10424911	male,1w	epigen-atac-seq	PC1
 90217015204	t52-hippocampus,stanford	10023259	male,control	epigen-atac-seq	PC1
@@ -51,7 +51,7 @@ all	t65-aorta (vena cava)		female,2w	all	brown adipose contamination
 90571016002	t60-adrenal	10953744	female,1w	transcript-rna-seq	PC1
 90229016102	t61-colon	10026355	male,control	transcript-rna-seq	PC2
 90289016302	t63-testes	10185585	male,4w	transcript-rna-seq	PC2
-90564016502	t65-aorta	10833331	female,1w	transcript-rna-seq	PC2
+90564016502	t99-vena-cava	10833331	female,1w	transcript-rna-seq	PC2
 90441016702	t67-small-intestine	10502300	male,2w	transcript-rna-seq	PC3
 90218016803	t68-liver	10024735	male,8w	transcript-rna-seq	PC2
 90266016902	t69-brown-adipose	10046380	female,control	transcript-rna-seq	PC3

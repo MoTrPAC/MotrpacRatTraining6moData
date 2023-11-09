@@ -28,13 +28,13 @@ OUTLIERS[assay_code == "immunoassay-rat-mag27plex", assay_code := "immunoassay"]
 OUTLIERS[,group := gsub(",", "_", group)]
 
 # add all 1w, 2w vena cava samples
-venacv = data.table(PHENO[PHENO$specimen.processing.sampletypedescription == "Aorta",])
+venacv = data.table(PHENO[PHENO$specimen.processing.sampletypedescription == "Vena Cava",])
 table(venacv[,specimen.processing.sampletypedescription])
 venacv = venacv[sex == "female" & group %in% c("1w","2w")]
 venacv[,.(viallabel, sex, group)]
 out2 = data.table(viallabel = as.character(venacv[,viallabel]),
                   tissue = "VENACV",
-                  tissue_code = "t65-aorta",
+                  tissue_code = "t99-vena-cava",
                   pid = venacv[,pid],
                   group = sprintf("female_%s", venacv[,group]),
                   reason = "BAT contamination")
