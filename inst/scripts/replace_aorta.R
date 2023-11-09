@@ -1,6 +1,6 @@
 library(data.table)
-# library(devtools)
-# load_all()
+library(devtools)
+load_all()
 
 # copied from MotrpacRatTraining6mo
 list_available_data = function(package=NULL){

@@ -1,3 +1,7 @@
+# MotrpacRatTraining6moData 2.0.0 (2023-11-08)
+
+* Replace all instances of `t65-aorta` with `t99-vena-cava`, and `Aorta` with `Vena Cava`.
+
 # MotrpacRatTraining6moData 1.9.1 (2023-06-02)
 
 * Update `MotrpacRatTraining6mo` version requirement.
