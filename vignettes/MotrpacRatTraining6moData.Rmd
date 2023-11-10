@@ -64,7 +64,7 @@ div.yellow {
 
 <div class = "yellow">
 
-This vignette is under construction. If something is unclear or obviously missing, 
+If you run into problems, 
 please submit an issue [here](https://github.com/MoTrPAC/MotrpacRatTraining6moData/issues). 
 
 </div>

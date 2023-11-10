@@ -339,7 +339,7 @@ separate(dataset,into=c("phase","tissue","ome","modality","platform"),
 #5. Remove vena cava contaminated samples---------------------------------------
 # First remove female 1w and 2w vena cava samples from data 
 mutate(data_for_dea = pmap(list(tissue,data_for_dea,pheno), function(tissue,dat,pheno){
-  if(tissue == "t65-aorta"){
+  if(tissue == "t99-vena-cava"){
     to_include <- pheno %>% filter(!((sex == "F") &
                                        (tr_group == "1_0" | tr_group == "2_0")))
     return(dat[,to_include$viallabel])
