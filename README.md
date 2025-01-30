@@ -244,7 +244,7 @@ U24AR071113 (Consortium Coordinating Center), U01AG055133, U01AG055137 and U01AG
 
 ## Licenses
 
-#### MIT License (Code)
+### MIT License (Code)
 
 The code in this package is licensed under the MIT License. Check the file available [here](LICENSE.md) for the full license text.
 
