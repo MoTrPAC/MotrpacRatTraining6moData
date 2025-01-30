@@ -209,7 +209,7 @@ sex per time point were analyzed.
 
 The **PHENO** object represents phenotypic data from the MoTrPAC endurance exercise training study in six-month-old rats. It is a comprehensive dataset containing **5,955 rows and 510 variables**, with each row corresponding to a unique sample identified by `viallabel`. The dataset captures detailed information on the animals, their training regimens, specimen collection, and various physiological metrics. Here is a summary of the major components:
 
-### Categories of Variables in the PHENO Dataset
+### Categories of variables in the PHENO dataset
 
 1. **Identifiers**: Unique identifiers such as `pid`, `bid`, `viallabel`, and `labelid` are used to link samples to individual animals and their specimen labels.
 
