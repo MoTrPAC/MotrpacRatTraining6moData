@@ -24,7 +24,7 @@ choose `Watch` > `Custom` > `Releases`.**
 * [Access epigenomics data through Google Cloud Storage](#access-epigenomics-data-through-google-cloud-storage)
 * [Getting help](#getting-help)
 * [Acknowledgements](#acknowledgements)
-* [Data use agreement](#data-use-agreement)
+* [Licenses](#licenses)
 * [Citing MoTrPAC data](#citing-motrpac-data)
 
 ## Overview
@@ -242,17 +242,28 @@ U24DK112349, U24DK112342, U24DK112340, U24DK112341, U24DK112326, U24DK112331, U2
 U01AR071133, U01AR071130, U01AR071124, U01AR071128, U01AR071150, U01AR071160, U01AR071158 (Clinical Centers), 
 U24AR071113 (Consortium Coordinating Center), U01AG055133, U01AG055137 and U01AG055135 (PASS/Animal Sites).
 
-## Data use agreement 
-Recipients and their Agents agree that in publications using **any** data from MoTrPAC public-use data sets 
-they will acknowledge MoTrPAC as the source of data, including the version number of the data sets used, e.g.:
+## Licenses
 
-* Data used in the preparation of this article were obtained from the Molecular Transducers of Physical Activity 
-Consortium (MoTrPAC) database, which is available for public access at motrpac-data.org. 
-Specific datasets used are [version numbers].
+#### MIT License (Code)
 
-* Data used in the preparation of this article were obtained from the Molecular Transducers of Physical Activity 
-Consortium (MoTrPAC) MotrpacRatTraining6moData R package [version number]. 
+The code in this package is licensed under the MIT License. Check the file available [here](LICENSE.md) for the full license text.
 
-## Citing MoTrPAC data 
-[MoTrPAC Study Group. 2024. Temporal dynamics of the multi-omic response to endurance exercise training.](https://www.nature.com/articles/s41586-023-06877-w)
-Nature. Volume 629, pages 174–183 (2024). [Featured on the cover](https://www.nature.com/nature/volumes/629/issues/8010). doi: 10.1038/s41586-023-06877-w
+### Creative Commons Attribution 4.0 International License (Data)
+
+The data included in this package is available under the CC BY 4.0 license. You are free to:
+- Share: copy and redistribute the material in any medium or format
+- Adapt:remix, transform, and build upon the material for any purpose, even commercially.
+
+Under the following terms:
+- Attribution: You must give appropriate credit, provide a link to the license, and indicate if changes were made.
+
+For the full license text, visit http://creativecommons.org/licenses/by/4.0/. (edited) 
+
+## Citing MoTrPAC data
+
+MoTrPAC Study Group. 2024. **Temporal dynamics of the multi-omic response to endurance exercise training**   
+[Nature](https://www.nature.com/articles/s41586-023-06877-w). Volume 629, pages 174–183 (2024). [Featured on the cover](https://www.nature.com/nature/volumes/629/issues/8010). doi: 10.1038/s41586-023-06877-w  
+
+
+
+
