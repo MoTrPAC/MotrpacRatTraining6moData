@@ -231,7 +231,7 @@ The **PHENO** object represents phenotypic data from the MoTrPAC endurance exerc
 
 10. **Custom Variables**: Variables like `sacrificetime`, `intervention`, and `time_to_freeze` have been added for simplified grouping and analysis, reflecting key time points, interventions, and time-to-processing of samples.
 
-### Key Variables for Analysis
+### Key variables for analysis
 
 - **`pid`**: Participant Identifier. A unique 8-digit identifier assigned to each animal subject (rats in this study). All samples (`viallabel`) coming from the same animal have the same `pid`. This variable is crucial when combining results from multiple assays with phenotypic data, allowing for animal-specific longitudinal analysis.
 - **`viallabel`**: Vial Label ID. A unique 11-digit code assigned to each sample vial. This ID is present across all related results and metadata files, serving as a key to link the quantitative results with the phenotypic data.
