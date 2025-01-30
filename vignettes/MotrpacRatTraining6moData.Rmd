@@ -239,7 +239,7 @@ The `PHENO` object represents phenotypic data from the MoTrPAC endurance exercis
 - **`study_group_timepoint`**: A combined variable that integrates the intervention type and sacrifice time into the format `[study group (training|control)] - [time point (1w|2w|4w|8w)]`. This variable is useful for filtering and comparing between different groups and time points.
 - **`specimen_processing___sampletypedescription`**: Tissue name from which the sample was derived (e.g., liver, heart, muscle). This variable is important when focusing on tissue-specific responses to endurance training.
 
-In summary, the **PHENO** object provides a comprehensive overview of each animal's involvement in the study, including the conditions under which they were kept, the specific training they underwent, and the physiological changes observed as a result of the endurance training intervention. This dataset allows for in-depth analysis of the effects of physical activity at various biological levels.
+In summary, the `PHENO` object provides a comprehensive overview of each animal's involvement in the study, including the conditions under which they were kept, the specific training they underwent, and the physiological changes observed as a result of the endurance training intervention. This dataset allows for in-depth analysis of the effects of physical activity at various biological levels.
 
 
 ## Tissue and assay abbreviations
