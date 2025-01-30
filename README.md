@@ -34,7 +34,7 @@ This package provides convenient access to the processed data and downstream
 analysis results presented in the main paper for the first 
 large-scale multi-omic multi-tissue endurance exercise training study conducted 
 in young adult rats by the Molecular Transducers of Physical Activity Consortium 
-(MoTrPAC). Find the open access [manuscript published on Nature](https://www.nature.com/nature/volumes/629/issues/8010).
+(MoTrPAC). Find the open access [manuscript published in Nature](https://www.nature.com/nature/volumes/629/issues/8010).
 **See the [vignette](https://motrpac.github.io/MotrpacRatTraining6moData/articles/MotrpacRatTraining6moData.html) for examples of how to use this package.** 
 
 While the data in this package can be used by themselves, the 
