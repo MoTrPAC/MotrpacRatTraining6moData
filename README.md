@@ -137,6 +137,8 @@ data(TRNSCRPT_LIVER_DA)
 head(TRNSCRPT_LIVER_DA)
 ```
 
+<a name="access-epigenomics-data-through-google-cloud-storage"></a>
+
 ## Access epigenomics data through Content Delivery Network (CDN)
 
 Due to file size, only normalized sample-level data and differential analysis results 
